@@ -62,7 +62,7 @@ export const setThemeLang = (lang) => {
 export const getUserRole = () => {
   let role = environment.defaultRole;
   try {
-      role = localStorage.getItem('theme_user_role') || environment.defaultRole;
+      role = UserRole[localStorage.getItem('theme_user_role')] || environment.defaultRole;
   } catch (error) {
       console.log(">>>> src/app/utils/util.js : getUserRole -> error", error)
       role = environment.defaultRole

@@ -4,7 +4,6 @@ import { filter, map } from 'rxjs/operators';
 import { SidebarService, ISidebar } from './sidebar.service';
 import menuItems, { IMenuItem } from 'src/app/constants/menu';
 import { Subscription } from 'rxjs';
-import { UserRole } from 'src/app/shared/auth.roles';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({

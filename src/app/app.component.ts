@@ -13,10 +13,11 @@ import { AuthService } from './shared/auth.service';
 export class AppComponent implements OnInit, AfterViewInit {
   isMultiColorActive = environment.isMultiColorActive;
   constructor(
+    private authService: AuthService,
     private langService: LangService,
     private renderer: Renderer2,
   ) {
-    // this.authService.init();
+    this.authService.init();
   }
 
   ngOnInit(): void {
