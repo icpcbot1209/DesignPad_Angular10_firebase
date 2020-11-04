@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase';
 import { from, Subject } from 'rxjs';
-
-import { getUserRole } from 'src/app/utils/util';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { UserRole } from './auth.roles';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 export interface ISignInCredentials {
   email: string;
@@ -26,13 +28,18 @@ export class AuthService {
   user;
   subjectAuth = new Subject<boolean>();
 
-  constructor(private auth: AngularFireAuth) {}
+  constructor(
+    private auth: AngularFireAuth,
+    private notifications: NotificationsService,
+    private router: Router,
+    public ngZone: NgZone
+  ) {}
 
   init() {
-    this.auth.authState.subscribe((user) => {
-      if (user) {
-        this.user = user;
-        localStorage.setItem('user', JSON.stringify(user));
+    this.auth.authState.subscribe((userData) => {
+      if (userData) {
+        this.user = { ...userData, role: UserRole.Admin };
+        localStorage.setItem('user', JSON.stringify(userData));
         JSON.parse(localStorage.getItem('user'));
         this.subjectAuth.next(true);
       } else {
@@ -41,7 +48,6 @@ export class AuthService {
         JSON.parse(localStorage.getItem('user'));
         this.subjectAuth.next(false);
       }
-
     });
   }
 
@@ -56,7 +62,7 @@ export class AuthService {
 
   async signOut() {
     await this.auth.signOut();
-    await localStorage.removeItem("user");
+    await localStorage.removeItem('user');
   }
 
   // tslint:disable-next-line:typedef
@@ -68,23 +74,44 @@ export class AuthService {
           displayName: credentials.displayName,
         });
         this.auth.updateCurrentUser(user);
+        this.user = user;
         return user;
       });
   }
 
   googleAuth() {
-    return this.auth
+    this.auth
       .signInWithPopup(new auth.GoogleAuthProvider())
       .then(({ user }) => {
-        return user;
+        this.ngZone.run(() => {
+          this.router.navigate([environment.adminRoot]);
+        });
+      })
+      .catch((error) => {
+        this.notifications.create(
+          'Error',
+          error.message,
+          NotificationType.Bare,
+          { theClass: 'outline primary', timeOut: 6000, showProgressBar: false }
+        );
       });
   }
 
   facebookAuth() {
-    return this.auth
+    this.auth
       .signInWithPopup(new auth.FacebookAuthProvider())
       .then(({ user }) => {
-        return user;
+        this.ngZone.run(() => {
+          this.router.navigate([environment.adminRoot]);
+        });
+      })
+      .catch((error) => {
+        this.notifications.create(
+          'Error',
+          error.message,
+          NotificationType.Bare,
+          { theClass: 'outline primary', timeOut: 6000, showProgressBar: false }
+        );
       });
   }
 
@@ -102,11 +129,5 @@ export class AuthService {
       .then((data) => {
         return data;
       });
-  }
-
-  // tslint:disable-next-line:typedef
-  async getUser() {
-    const u = await this.auth.currentUser;
-    return { ...u, role: getUserRole() };
   }
 }

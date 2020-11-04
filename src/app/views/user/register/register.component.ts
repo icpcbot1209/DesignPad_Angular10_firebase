@@ -14,7 +14,7 @@ export class RegisterComponent  {
   buttonDisabled = false;
   buttonState = '';
 
-  constructor(private authService: AuthService, private notifications: NotificationsService, private router: Router) { }
+  constructor(public authService: AuthService, private notifications: NotificationsService, private router: Router) { }
 
   onSubmit(): void {
     if (!this.registerForm.valid || this.buttonDisabled) {

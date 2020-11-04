@@ -16,7 +16,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
   adminRoot = environment.adminRoot;
   sidebar: ISidebar;
   subscription: Subscription;
-  displayName = 'Sarah Cortney';
   languages: Language[];
   currentLanguage: string;
   isSingleLang;
@@ -26,7 +25,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
 
   constructor(
     private sidebarService: SidebarService,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     private langService: LangService
   ) {
@@ -71,12 +70,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
     this.currentLanguage = this.langService.languageShorthand;
   }
 
-  async ngOnInit(): Promise<void> {
-    if (await this.authService.getUser()) {
-      this.displayName = await this.authService.getUser().then((user) => {
-        return user.displayName;
-      });
-    }
+  ngOnInit() {
     this.subscription = this.sidebarService.getSidebar().subscribe(
       (res) => {
         this.sidebar = res;

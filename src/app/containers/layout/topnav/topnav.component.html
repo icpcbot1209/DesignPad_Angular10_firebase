@@ -1,18 +1,5 @@
 <nav class="navbar fixed-top">
   <div class="d-flex align-items-center navbar-left">
-    <a (click)="menuButtonClick($event, sidebar.menuClickCount, sidebar.containerClassnames); false;"
-      href="javascript:;" class="menu-button d-none d-md-block">
-      <svg class="main" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 17">
-        <rect x="0.48" y="0.5" width="7" height="1" />
-        <rect x="0.48" y="7.5" width="7" height="1" />
-        <rect x="0.48" y="15.5" width="7" height="1" />
-      </svg> {{" "}}
-      <svg class="sub" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17">
-        <rect x="1.56" y="0.5" width="16" height="1" />
-        <rect x="1.56" y="7.5" width="16" height="1" />
-        <rect x="1.56" y="15.5" width="16" height="1" />
-      </svg>
-    </a>
 
     <a (click)="mobileMenuButtonClick($event, sidebar.containerClassnames)" href="javascript:;"
       class="menu-button-mobile d-xs-block d-sm-block d-md-none">
@@ -23,31 +10,13 @@
       </svg>
     </a>
 
-    <div class="search" (click)="searchAreaClick($event)">
-      <input placeholder="Search..." [(ngModel)]="searchKey" (keyup)="searchKeyUp($event)">
-      <span class="search-icon" (click)="searchClick($event)">
-        <i class="simple-icon-magnifier"></i>
-      </span>
-    </div>
+    <a class="navbar-logo ml-5" [routerLink]="'/'" >
+      <span class="logo d-none d-xs-block"></span>
+      <span class="logo-mobile d-block d-xs-none"></span>
+    </a>
 
-    <div class="btn-group ml-2" dropdown *ngIf="!isSingleLang">
-      <button dropdownToggle type="button" class="language-button dropdown-toggle btn btn-light btn-sm">
-        {{currentLanguage | uppercase}} <span class="caret"></span>
-      </button>
-      <ul *dropdownMenu class="dropdown-menu" role="menu">
-        <li role="menuitem" *ngFor="let item of languages" (click)="onLanguageChange(item)"><a class="dropdown-item"
-            href="javascript:;">{{item.label}}</a></li>
-      </ul>
-    </div>
-
-    <a class="btn btn-sm btn-outline-primary ml-2 d-none d-xl-inline-block" [href]="buyUrl"
-      target="_blank">&nbsp;BUY&nbsp;</a>
   </div>
 
-  <a class="navbar-logo" [routerLink]="adminRoot" >
-    <span class="logo d-none d-xs-block"></span>
-    <span class="logo-mobile d-block d-xs-none"></span>
-  </a>
 
   <div class="navbar-right">
     <div class="header-icons d-inline-block align-middle">
@@ -174,8 +143,14 @@
     </div>
 
     <div class="user d-inline-block" dropdown>
-      <button class="btn btn-empty p-0" type="button" dropdownToggle>
-        <span class="name">{{displayName}}</span>
+      <button *ngIf="!authService.user"
+      routerLink="/user/login"
+      class="btn btn-outline-primary" type="button"
+      >Login/Register</button>
+
+      <button *ngIf="authService.user"
+      class="btn btn-empty p-0" type="button" dropdownToggle>
+        <span class="name">{{authService.user?.displayName}}</span>
         <span>
           <img alt="Profile Picture" src="/assets/img/profiles/l-1.jpg" />
         </span>

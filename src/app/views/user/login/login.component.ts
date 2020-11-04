@@ -18,42 +18,10 @@ export class LoginComponent {
   buttonState = '';
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private notifications: NotificationsService,
     private router: Router
   ) {}
-
-  googleAuth() {
-    this.authService
-      .googleAuth()
-      .then((user) => {
-        this.router.navigate([environment.adminRoot]);
-      })
-      .catch((error) => {
-        this.notifications.create(
-          'Error',
-          error.message,
-          NotificationType.Bare,
-          { theClass: 'outline primary', timeOut: 6000, showProgressBar: false }
-        );
-      });
-  }
-
-  facebookAuth() {
-    this.authService
-      .facebookAuth()
-      .then((user) => {
-        this.router.navigate([environment.adminRoot]);
-      })
-      .catch((error) => {
-        this.notifications.create(
-          'Error',
-          error.message,
-          NotificationType.Bare,
-          { theClass: 'outline primary', timeOut: 6000, showProgressBar: false }
-        );
-      });
-  }
 
   onSubmit(): void {
     if (!this.loginForm.valid || this.buttonDisabled) {

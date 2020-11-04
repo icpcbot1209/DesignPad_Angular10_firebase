@@ -20,7 +20,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   closedCollapseList = [];
 
-  currentUser = null;
 
   constructor(
     private router: Router,
@@ -28,9 +27,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private authService: AuthService
   ) {
-    this.authService.getUser().then((user) => {
-      this.currentUser = user;
-    });
 
     this.subscription = this.sidebarService.getSidebar().subscribe(
       (res) => {
@@ -301,7 +297,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     return menuItems
       ? menuItems.filter(
           (x) =>
-            !x.roles || (x.roles && x.roles.includes(this.currentUser.role))
+            !x.roles || (x.roles && x.roles.includes(this.authService.user?.role))
         )
       : [];
   }

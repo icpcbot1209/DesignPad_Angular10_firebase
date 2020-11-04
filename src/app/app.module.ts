@@ -11,6 +11,7 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { LayoutContainersModule } from './containers/layout/layout.containers.module';
 import { ToastrModule } from 'ngx-toastr';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     ToastrModule.forRoot(),
+    SimpleNotificationsModule.forRoot(),
   ],
   declarations: [AppComponent],
   providers: [],

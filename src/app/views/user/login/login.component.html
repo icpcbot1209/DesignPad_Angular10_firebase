@@ -9,12 +9,12 @@
     <h2 class="mb-4">Login</h2>
 
     <div>
-      <button (click)="googleAuth()"
+      <button (click)="authService.googleAuth()"
       type="button" class="btn btn-outline-danger mb-5 mr-5">
         <span><img src="https://img.icons8.com/color/48/000000/google-logo.png" class="img-fluid mr-1" width="25"></span>
         Google Signin
       </button>
-      <button (click)="facebookAuth()"
+      <button (click)="authService.facebookAuth()"
       type="button" class="btn btn-outline-secondary mb-5 mr-5">
         <span><img src="https://i.imgur.com/URmkevm.png" class="img-fluid mr-1" width="25"></span>
         Facebook Signin

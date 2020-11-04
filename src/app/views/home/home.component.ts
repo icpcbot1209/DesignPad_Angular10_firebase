@@ -6,7 +6,9 @@ import {
   HostListener,
   ElementRef,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
+import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,7 +16,9 @@ import { environment } from 'src/environments/environment';
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  constructor(private renderer: Renderer2, private elRef: ElementRef, private scrollToService: ScrollToService) {}
+  constructor(
+    private renderer: Renderer2, private elRef: ElementRef, private scrollToService: ScrollToService,
+  ) { }
 
   showMobileMenu = false;
 

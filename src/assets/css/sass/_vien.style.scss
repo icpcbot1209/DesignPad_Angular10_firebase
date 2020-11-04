@@ -2935,7 +2935,7 @@ body.default-transition main {
 
 /* 15.Cards*/
 .card {
-  border: 1px solid lightgray;
+  border: none;
   background: $foreground-color;
 
   .card-header .card-icon {
@@ -3434,11 +3434,11 @@ body.default-transition main {
     line-height: 1rem;
     }
   }
-  
+
     .fc-toolbar.fc-header-toolbar .fc-prev-button {
       margin-right: 0;
     }
-  
+
     .fc-toolbar.fc-header-toolbar .fc-next-button {
       margin-right: 5px;
     }
@@ -7759,7 +7759,7 @@ app-profile-who-to-follow app-user-follow:last-of-type > div {
     border-radius: $border-radius;
   }
 
-  
+
 
   .input-group-append .btn + .btn,
   .input-group-append .btn + .input-group-text,
