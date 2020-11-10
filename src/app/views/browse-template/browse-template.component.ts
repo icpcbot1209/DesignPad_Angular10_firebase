@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TemplateService } from 'src/app/services/template.service';
 
 @Component({
   selector: 'app-browse-template',
@@ -17,7 +19,19 @@ export class BrowseTemplateComponent implements OnInit {
     { title: 'Personal', isSelected: true },
   ];
 
-  constructor() {}
+  constructor(
+    private templateService: TemplateService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.searchByFilter('');
+  }
+
+  data = [];
+  async searchByFilter(filterStr) {
+    this.data = await this.templateService.searchByFilter({ filterStr });
+  }
+
+  onBackClick() {}
 }
