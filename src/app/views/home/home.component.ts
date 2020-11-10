@@ -11,6 +11,7 @@ import {
   ScrollToService,
   ScrollToConfigOptions,
 } from '@nicky-lenaers/ngx-scroll-to';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
 
@@ -23,7 +24,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private renderer: Renderer2,
     private elRef: ElementRef,
-    private scrollToService: ScrollToService
+    private scrollToService: ScrollToService,
+    public authService: AuthService
   ) {}
 
   showMobileMenu = false;
@@ -95,24 +97,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     },
   ];
 
-  themes = [
-    { title: 'Navy Blue', class: 'bluenavy' },
-    { title: 'Olympic Blue', class: 'blueolympic' },
-    { title: 'Yale Blue', class: 'blueyale' },
-    { title: 'Moss Green', class: 'greenmoss' },
-    { title: 'Lime Green', class: 'greenlime' },
-    { title: 'Carrot Orange', class: 'carrotorange' },
-    { title: 'Ruby Red', class: 'rubyred' },
-    { title: 'Monster Purple', class: 'monsterpurple' },
-    { title: 'Steel Grey', class: 'steelgrey' },
-    { title: 'Granola Yellow', class: 'granolayellow' },
-  ];
-
+  isAuthed: boolean;
+  private subsAuth: Subscription;
   ngOnInit(): void {
     this.renderer.addClass(document.body, 'no-footer');
+    this.subsAuth = this.authService.subjectAuth.subscribe((isAuthed) => {
+      this.isAuthed = isAuthed;
+      console.log(this.isAuthed);
+    });
   }
   ngOnDestroy(): void {
     this.renderer.removeClass(document.body, 'no-footer');
+    this.subsAuth.unsubscribe();
   }
 
   @HostListener('window:resize', ['$event'])
