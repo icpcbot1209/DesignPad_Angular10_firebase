@@ -7,18 +7,24 @@ import {
   ElementRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
+import {
+  ScrollToService,
+  ScrollToConfigOptions,
+} from '@nicky-lenaers/ngx-scroll-to';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   constructor(
-    private renderer: Renderer2, private elRef: ElementRef, private scrollToService: ScrollToService,
-  ) { }
+    private renderer: Renderer2,
+    private elRef: ElementRef,
+    private scrollToService: ScrollToService
+  ) {}
 
   showMobileMenu = false;
 
@@ -89,78 +95,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     },
   ];
 
-  features = [
-    {
-      title: 'Pleasant Design',
-      img: '/assets/img/landing-page/features/pleasant-design.png',
-      detail:
-        'As a web developer we enjoy to work on something looks nice. It is not an absolute necessity but it really motivates us that final product will look good for user point of view. <br /><br />So we put a lot of work into colors, icons, composition and design harmony. Themed components and layouts with same design language. <br /><br />We kept user experience principles always at the heart of the design process.',
-    },
-    {
-      title: 'Extra Responsive',
-      img: '/assets/img/landing-page/features/extra-responsive.png',
-      detail:
-        'Xxs breakpoint is for smaller screens that has a resolution lower than 420px. Xs works between 576px and 420px. Xxl breakpoint is for larger screens that has a resolution higher than 1440px. Xl works between 1200px and 1440px.<br><br>With this approach we were able to create better experiences for smaller and larger screens.',
-    },
-    {
-      title: 'Superfine Charts',
-      img: '/assets/img/landing-page/features/superfine-charts.png',
-      detail:
-        'Using charts is a good way to visualize data but they often look ugly and break the rhythm of design. <br /><br />We concentrated on a single chart library and tried to create charts that look good with color, opacity, border and shadow. <br /><br />Used certain plugins and created some to make charts even more useful and beautiful.',
-    },
-    {
-      title: 'Layouts for the Job',
-      img: '/assets/img/landing-page/features/layouts-for-the-job.png',
-      detail:
-        'Layouts are the real thing, they need to be accurate and right for the job. They should be functional for both user and developer. <br /><br />We created lots of different layouts for different jobs.<br /><br />Listing pages with view mode changing capabilities, shift select and select all functionality, application layouts with an additional menu, authentication and error layouts which has a different design than the other pages were our main focus. We also created details page with tabs that can hold many components.',
-    },
-    {
-      title: 'Smart Menu',
-      img: '/assets/img/landing-page/features/smart-menu.png',
-      detail:
-        'Instead of good old single panel menus with accordion structure that looks over complicated, we created 2 panels and categorized pages accordingly.<br><br>The default menu auto hides sub panel when resolution is under some breakpoint to open some space. You may also hide menu completely or use only main panel open only.',
-    },
-  ];
-
-  layouts = [
-    { title: 'Menu Default', img: '/assets/img/landing-page/layouts/menu-default.jpg' },
-    { title: 'Menu Subhidden', img: '/assets/img/landing-page/layouts/menu-subhidden.jpg' },
-    { title: 'Menu Hidden', img: '/assets/img/landing-page/layouts/menu-hidden.jpg' },
-    { title: 'Image List', img: '/assets/img/landing-page/layouts/image-list.jpg' },
-    { title: 'Thumb List', img: '/assets/img/landing-page/layouts/thumb-list.jpg' },
-    { title: 'Data List', img: '/assets/img/landing-page/layouts/data-list.jpg' },
-    { title: 'Details', img: '/assets/img/landing-page/layouts/details.jpg' },
-    { title: 'Authentication', img: '/assets/img/landing-page/layouts/authentication.jpg' },
-    { title: 'Search Results', img: '/assets/img/landing-page/layouts/search-result.jpg' },
-    {
-      title: 'Single Page Application',
-      img: '/assets/img/landing-page/layouts/spa.jpg',
-    },
-    {
-      title: 'Data List App Menu Hidden',
-      img: '/assets/img/landing-page/layouts/data-list-app-menu-hidden.jpg',
-    },
-    { title: 'Tabs', img: '/assets/img/landing-page/layouts/tabs.jpg' },
-  ];
-
-  applications = [
-    {
-      title: 'Survey',
-      path: `${this.adminRoot}/#survey`,
-      img: '/assets/img/landing-page/applications/survey.jpg',
-    },
-    {
-      title: 'Chat',
-      path: `${this.adminRoot}/#chat`,
-      img: '/assets/img/landing-page/applications/chat.jpg',
-    },
-    {
-      title: 'Todo',
-      path: `${this.adminRoot}/#todo`,
-      img: '/assets/img/landing-page/applications/todo.jpg',
-    },
-  ];
-
   themes = [
     { title: 'Navy Blue', class: 'bluenavy' },
     { title: 'Olympic Blue', class: 'blueolympic' },
@@ -195,7 +129,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     const footerSection = this.elRef.nativeElement.querySelector(
       '.landing-page .section.footer'
     );
-    footerSection.style.backgroundPositionX = event.target.innerWidth - homeRect.x - 2000 + 'px';
+    footerSection.style.backgroundPositionX =
+      event.target.innerWidth - homeRect.x - 2000 + 'px';
 
     if (event.target.innerWidth >= 992) {
       this.renderer.removeClass(
@@ -218,7 +153,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   scrollTo(target): void {
     const config: ScrollToConfigOptions = {
       target,
-      offset: -150
+      offset: -150,
     };
 
     this.scrollToService.scrollTo(config);

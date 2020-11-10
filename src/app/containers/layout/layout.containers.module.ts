@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     ColorSwitcherComponent,
     FooterComponent,
     HeadingComponent,
-    ApplicationMenuComponent
+    ApplicationMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -34,6 +35,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     FormsModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
+    TabsModule.forRoot(),
   ],
   exports: [
     TopnavComponent,
@@ -42,7 +44,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     ColorSwitcherComponent,
     FooterComponent,
     HeadingComponent,
-    ApplicationMenuComponent
-  ]
+    ApplicationMenuComponent,
+  ],
 })
-export class LayoutContainersModule { }
+export class LayoutContainersModule {}

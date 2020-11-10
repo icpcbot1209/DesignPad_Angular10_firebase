@@ -1,0 +1,29 @@
+<div class="landing-page" style="padding: 0">
+  <div class="content-container">
+    <div class="section home container-fluid">
+      <div class="row">
+        <button class="btn btn-secondary mt-5 ml-3">
+          <i class="iconsminds-arrow-back-3"></i> Back
+        </button>
+      </div>
+      <div class="row mt-5 search-panel">
+        <input placeholder="Browse Templates" />
+      </div>
+
+      <div class="row mt-3 ml-3">
+        <button
+          *ngFor="let x of categoryTypes"
+          [ngClass]="
+            x.isSelected ? 'btn btn-secondary' : 'btn btn-outline-secondary'
+          "
+          (click)="x.isSelected = !x.isSelected"
+          style="margin: 1rem"
+        >
+          {{ x.title }}
+        </button>
+      </div>
+
+      <div class="row mt-3 ml-3"></div>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,13 @@ let routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'browse-template',
+    loadChildren: () =>
+      import('./browse-template/browse-template.module').then(
+        (m) => m.BrowseTemplateModule
+      ),
+  },
+  {
     path: adminRoot,
     loadChildren: () => import('./app/app.module').then((m) => m.AppModule),
     data: { roles: [UserRole.Admin, UserRole.Editor] },
@@ -35,7 +42,8 @@ if (!environment.isAuthGuardActive) {
   routes = [
     {
       path: '',
-      loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+      loadChildren: () =>
+        import('./home/home.module').then((m) => m.HomeModule),
       pathMatch: 'full',
     },
     {
