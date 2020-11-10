@@ -47,6 +47,13 @@ if (!environment.isAuthGuardActive) {
       pathMatch: 'full',
     },
     {
+      path: 'browse-template',
+      loadChildren: () =>
+        import('./browse-template/browse-template.module').then(
+          (m) => m.BrowseTemplateModule
+        ),
+    },
+    {
       path: 'app',
       loadChildren: () => import('./app/app.module').then((m) => m.AppModule),
     },
