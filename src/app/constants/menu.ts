@@ -6,45 +6,67 @@ export interface IMenuItem {
   id?: string;
   icon?: string;
   label: string;
-  to: string;
   newWindow?: boolean;
-  subs?: IMenuItem[];
   roles?: UserRole[];
 }
 
 const data: IMenuItem[] = [
   {
-    icon: 'iconsminds-air-balloon-1',
-    label: 'menu.vien',
-    to: `${adminRoot}/vien`,
-    roles: [UserRole.Admin, UserRole.Editor],
-    subs: [
-      {
-        icon: 'simple-icon-paper-plane',
-        label: 'menu.start',
-        to: `${adminRoot}/vien/start`,
-        // roles: [UserRole.Admin],
-      },
-    ],
+    icon: 'iconsminds-project',
+    label: 'Templates',
+    // roles: [UserRole.Admin, UserRole.Editor],
+  },
+  {
+    icon: 'simple-icon-cloud-upload',
+    label: 'Uploads',
+    // roles: [UserRole.Editor],
+  },
+  {
+    icon: 'iconsminds-photo',
+    label: 'Photos',
+    // roles: [UserRole.Editor],
+  },
+  {
+    icon: 'simple-icon-puzzle',
+    label: 'Elements',
+    // roles: [UserRole.Editor],
   },
   {
     icon: 'iconsminds-three-arrow-fork',
-    label: 'menu.second-menu',
-    to: `${adminRoot}/second-menu`,
-     // roles: [UserRole.Editor],
-    subs: [
-      {
-        icon: 'simple-icon-paper-plane',
-        label: 'menu.second',
-        to: `${adminRoot}/second-menu/second`,
-      },
-    ],
+    label: 'Text',
+    // roles: [UserRole.Editor],
   },
   {
-    icon: 'iconsminds-bucket',
-    label: 'menu.blank-page',
-    to: `${adminRoot}/blank-page`,
+    icon: 'iconsminds-palette',
+    label: 'Styles',
+    // roles: [UserRole.Editor],
   },
+  {
+    icon: 'simple-icon-music-tone-alt',
+    label: 'Music',
+    // roles: [UserRole.Editor],
+  },
+  {
+    icon: 'iconsminds-video',
+    label: 'Videos',
+    // roles: [UserRole.Editor],
+  },
+  {
+    icon: 'iconsminds-stop-2',
+    label: 'Background',
+    // roles: [UserRole.Editor],
+  },
+  {
+    icon: 'iconsminds-folder-cloud',
+    label: 'Folders',
+    // roles: [UserRole.Editor],
+  },
+
+  // {
+  //   icon: 'iconsminds-bucket',
+  //   label: 'menu.blank-page',
+  //   to: `${adminRoot}/blank-page`,
+  // },
   // {
   //   icon: 'iconsminds-library',
   //   label: 'menu.docs',
