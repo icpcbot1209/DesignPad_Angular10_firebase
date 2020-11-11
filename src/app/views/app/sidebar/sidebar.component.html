@@ -19,10 +19,6 @@
     </perfect-scrollbar>
   </div>
   <div class="sub-menu">
-    <perfect-scrollbar class="scroll" [config]="{ suppressScrollX: true }">
-      <div style="text-align: center">
-        <h2>{{ theItem.label }}</h2>
-      </div>
-    </perfect-scrollbar>
+    <uploader *ngIf="theItem.label == 'Uploads'"></uploader>
   </div>
 </div>

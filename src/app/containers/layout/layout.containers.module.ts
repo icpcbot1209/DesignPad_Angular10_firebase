@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { SidebarComponent } from './sidebar/sidebar.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { TopnavComponent } from './topnav/topnav.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,7 +18,6 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 @NgModule({
   declarations: [
     TopnavComponent,
-    SidebarComponent,
     BreadcrumbComponent,
     ColorSwitcherComponent,
     FooterComponent,
@@ -39,7 +37,6 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
   ],
   exports: [
     TopnavComponent,
-    SidebarComponent,
     BreadcrumbComponent,
     ColorSwitcherComponent,
     FooterComponent,

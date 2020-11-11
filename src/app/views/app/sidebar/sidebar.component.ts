@@ -1,9 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
-import { SidebarService, ISidebar } from './sidebar.service';
 import menuItems, { IMenuItem } from 'src/app/constants/menu';
-import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({

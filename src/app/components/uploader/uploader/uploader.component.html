@@ -1,0 +1,37 @@
+<div
+  class="dropzone"
+  dropzone
+  (hovered)="toggleHover($event)"
+  (dropped)="onDrop($event)"
+  [class.hovering]="isHovering"
+>
+  <div style="display: flex">
+    <button
+      class="btn btn-outline-primary"
+      style="margin: 1rem; flex: 1"
+      (click)="fileInput.click()"
+    >
+      Upload from device
+    </button>
+    <input
+      #fileInput
+      style="display: none"
+      type="file"
+      (change)="onDrop($event.target.files)"
+    />
+  </div>
+
+  <perfect-scrollbar [config]="{ suppressScrollX: true }">
+    <div *ngFor="let file of files">
+      <upload-task [file]="file"></upload-task>
+    </div>
+
+    <img
+      *ngFor="let file of myfilesService.myfiles$ | async; let i = index"
+      [src]="file.downloadURL"
+      height="100px"
+      width="auto"
+      style="margin: 5px; cursor: pointer"
+    />
+  </perfect-scrollbar>
+</div>
