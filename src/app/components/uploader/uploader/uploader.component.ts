@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MyfilesService } from 'src/app/services/myfiles.service';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'uploader',
@@ -7,7 +8,10 @@ import { MyfilesService } from 'src/app/services/myfiles.service';
   styleUrls: ['./uploader.component.scss'],
 })
 export class UploaderComponent implements OnInit {
-  constructor(public myfilesService: MyfilesService) {}
+  constructor(
+    public myfilesService: MyfilesService,
+    public authService: AuthService
+  ) {}
 
   ngOnInit() {
     if (!this.myfilesService.myfiles$) this.myfilesService.init();

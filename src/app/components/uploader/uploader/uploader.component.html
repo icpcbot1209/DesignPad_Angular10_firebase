@@ -1,4 +1,16 @@
+<div style="display: flex">
+  <button
+    *ngIf="!authService.user"
+    class="btn btn-outline-primary"
+    style="margin: 1rem; flex: 1"
+    routerLink="/user/login"
+  >
+    Login/Signup
+  </button>
+</div>
+
 <div
+  *ngIf="authService.user"
   class="dropzone"
   dropzone
   (hovered)="toggleHover($event)"

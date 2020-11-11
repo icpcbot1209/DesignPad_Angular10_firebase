@@ -2,18 +2,26 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AuthService } from '../shared/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MyfilesService {
-  constructor(private db: AngularFirestore) {}
+  constructor(private db: AngularFirestore, private authService: AuthService) {
+    this.authService.subjectAuth.subscribe((isAuthed) => {
+      if (isAuthed) this.init();
+    });
+  }
 
   myfiles$: Observable<MyFile[]>;
 
   init() {
+    if (!this.authService.user) return;
+    let userId = this.authService.user.uid;
+
     this.myfiles$ = this.db
-      .collection<MyFile>('files', (ref) => ref.orderBy('timestamp'))
+      .collection<MyFile>('files', (ref) => ref.where('userId', '==', userId))
       .snapshotChanges()
       .pipe(
         map((actions) =>
@@ -31,4 +39,5 @@ interface MyFile {
   downloadURL: string;
   path: string;
   timestamp: number;
+  userId: string;
 }
