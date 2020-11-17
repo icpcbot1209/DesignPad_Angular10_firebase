@@ -1,0 +1,38 @@
+<div style="padding-top: 120px; margin-left: 420px; margin-right: 10px" #host>
+  <div class="station-body">
+    <div>
+      <button class="btn btn-primary">
+        <i class="iconsminds-palette"></i>
+      </button>
+    </div>
+    <hr />
+    <perfect-scrollbar
+      class="scroll"
+      [config]="{ suppressScrollX: true, wheelPropagation: false }"
+    >
+      <div class="flex-container">
+        <div [ngStyle]="{ width: responsive_w + 'px' }">
+          <div
+            *ngFor="let page of designService.theDesign?.pages; let i = index"
+            [ngStyle]="{
+              height: responsive_h + 'px',
+              width: responsive_w + 'px',
+              border: '1px solid green',
+              margin: '20px 0'
+            }"
+          >
+            <app-page
+              [responsive_w]="responsive_w"
+              [responsive_h]="responsive_h"
+              [W]="designService.theDesign?.category.size.x"
+              [H]="designService.theDesign?.category.size.y"
+              [page]="page"
+            ></app-page>
+          </div>
+
+          <button class="btn btn-primary" style="width: 100%">Add Page</button>
+        </div>
+      </div>
+    </perfect-scrollbar>
+  </div>
+</div>

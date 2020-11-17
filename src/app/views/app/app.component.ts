@@ -1,23 +1,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SidebarService, ISidebar } from 'src/app/containers/layout/sidebar/sidebar.service';
+import {
+  SidebarService,
+  ISidebar,
+} from 'src/app/containers/layout/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-app',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
   sidebar: ISidebar;
   subscription: Subscription;
-  constructor(private sidebarService: SidebarService) {
-  }
+  constructor(private sidebarService: SidebarService) {}
 
   ngOnInit(): void {
     this.subscription = this.sidebarService.getSidebar().subscribe(
-      res => {
+      (res) => {
         this.sidebar = res;
       },
-      err => {
+      (err) => {
         console.error(`An error occurred: ${err.message}`);
       }
     );
@@ -26,5 +29,4 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

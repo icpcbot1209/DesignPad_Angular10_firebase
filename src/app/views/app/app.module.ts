@@ -6,9 +6,11 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { LayoutContainersModule } from 'src/app/containers/layout/layout.containers.module';
 import { UploaderModule } from 'src/app/components/uploader/uploader.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { DesignPanelComponent } from './design-panel/design-panel.component';
+import { PageComponent } from './page/page.component';
 
 @NgModule({
-  declarations: [AppComponent, SidebarComponent],
+  declarations: [AppComponent, SidebarComponent, DesignPanelComponent, PageComponent],
   imports: [
     CommonModule,
     AppRoutingModule,
