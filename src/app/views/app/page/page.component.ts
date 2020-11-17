@@ -13,6 +13,7 @@ export class PageComponent implements OnInit {
   @Input() W: number;
   @Input() H: number;
   @Input() page: Page;
+  @Input() pageId: number;
 
   constructor() {}
 

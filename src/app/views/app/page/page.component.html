@@ -1,5 +1,17 @@
-<svg
-  [attr.width]="responsive_w"
-  [attr.height]="responsive_h"
-  [attr.viewBox]="'0 0 ' + W + ' ' + H"
-></svg>
+<div>Page {{ pageId + 1 }}: {{ page.title }}</div>
+<div class="card" style="border-radius: 0%">
+  <svg
+    [attr.width]="responsive_w"
+    [attr.height]="responsive_h"
+    [attr.viewBox]="'0 0 ' + W + ' ' + H"
+  >
+    <image
+      *ngFor="let imageOne of page.imageOnes"
+      [attr.href]="imageOne.url"
+      [attr.x]="imageOne.left"
+      [attr.y]="imageOne.top"
+      [attr.width]="imageOne.width"
+      [attr.height]="imageOne.height"
+    ></image>
+  </svg>
+</div>

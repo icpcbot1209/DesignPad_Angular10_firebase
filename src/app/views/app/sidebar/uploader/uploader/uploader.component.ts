@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MyfilesService } from 'src/app/services/myfiles.service';
 import { AuthService } from 'src/app/shared/auth.service';
-
+import { MyFile } from 'src/app/services/myfiles.service';
+import { DesignService } from 'src/app/services/design.service';
 @Component({
   selector: 'uploader',
   templateUrl: './uploader.component.html',
@@ -10,7 +11,8 @@ import { AuthService } from 'src/app/shared/auth.service';
 export class UploaderComponent implements OnInit {
   constructor(
     public myfilesService: MyfilesService,
-    public authService: AuthService
+    public authService: AuthService,
+    private designService: DesignService
   ) {}
 
   ngOnInit() {
@@ -29,5 +31,15 @@ export class UploaderComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.files.push(files.item(i));
     }
+  }
+
+  onImgClick(file: MyFile) {
+    this.designService.theDesign.pages[0].imageOnes.push({
+      url: file.downloadURL,
+      left: 50,
+      top: 50,
+      width: 300,
+      height: 300,
+    });
   }
 }

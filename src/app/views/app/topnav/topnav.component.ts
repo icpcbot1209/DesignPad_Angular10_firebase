@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SidebarService, ISidebar } from '../sidebar/sidebar.service';
+import {
+  SidebarService,
+  ISidebar,
+} from 'src/app/containers/layout/sidebar/sidebar.service';
 import { Router } from '@angular/router';
 import { LangService, Language } from 'src/app/shared/lang.service';
 import { AuthService } from 'src/app/shared/auth.service';

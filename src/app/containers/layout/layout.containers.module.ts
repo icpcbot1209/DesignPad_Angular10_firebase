@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { TopnavComponent } from './topnav/topnav.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { ColorSwitcherComponent } from './color-switcher/color-switcher.component';
@@ -17,7 +16,6 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [
-    TopnavComponent,
     BreadcrumbComponent,
     ColorSwitcherComponent,
     FooterComponent,
@@ -36,7 +34,6 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     TabsModule.forRoot(),
   ],
   exports: [
-    TopnavComponent,
     BreadcrumbComponent,
     ColorSwitcherComponent,
     FooterComponent,

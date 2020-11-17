@@ -35,7 +35,7 @@ export class MyfilesService {
   }
 }
 
-interface MyFile {
+export interface MyFile {
   downloadURL: string;
   path: string;
   timestamp: number;

@@ -14,12 +14,7 @@
         <div [ngStyle]="{ width: responsive_w + 'px' }">
           <div
             *ngFor="let page of designService.theDesign?.pages; let i = index"
-            [ngStyle]="{
-              height: responsive_h + 'px',
-              width: responsive_w + 'px',
-              border: '1px solid green',
-              margin: '20px 0'
-            }"
+            style="margin: 50px 0"
           >
             <app-page
               [responsive_w]="responsive_w"
@@ -27,6 +22,7 @@
               [W]="designService.theDesign?.category.size.x"
               [H]="designService.theDesign?.category.size.y"
               [page]="page"
+              [pageId]="i"
             ></app-page>
           </div>
 
