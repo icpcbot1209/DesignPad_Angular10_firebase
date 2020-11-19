@@ -1,16 +1,4 @@
-<div style="display: flex">
-  <button
-    *ngIf="!authService.user"
-    class="btn btn-outline-primary"
-    style="margin: 1rem; flex: 1"
-    routerLink="/user/login"
-  >
-    Login/Signup
-  </button>
-</div>
-
 <div
-  *ngIf="authService.user"
   class="dropzone"
   dropzone
   (hovered)="toggleHover($event)"
@@ -40,7 +28,7 @@
     </div>
 
     <img
-      *ngFor="let myfile of myfilesService.myfiles$ | async; let i = index"
+      *ngFor="let myfile of assetService.assetImages$ | async; let i = index"
       [src]="myfile.downloadURL"
       height="100px"
       width="auto"

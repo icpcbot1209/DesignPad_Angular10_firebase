@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MyfilesService } from 'src/app/services/myfiles.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { MyFile } from 'src/app/services/myfiles.service';
 import { DesignService } from 'src/app/services/design.service';
+import { AssetService } from '../../asset.service';
 @Component({
   selector: 'uploader',
   templateUrl: './uploader.component.html',
@@ -10,13 +10,13 @@ import { DesignService } from 'src/app/services/design.service';
 })
 export class UploaderComponent implements OnInit {
   constructor(
-    public myfilesService: MyfilesService,
+    public assetService: AssetService,
     public authService: AuthService,
     private designService: DesignService
   ) {}
 
   ngOnInit() {
-    if (!this.myfilesService.myfiles$) this.myfilesService.init();
+    if (!this.assetService.assetImages$) this.assetService.init();
   }
 
   isHovering: boolean;

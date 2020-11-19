@@ -16,6 +16,11 @@ let routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'admin',
+    loadChildren: () =>
+      import('./admin/admin.module').then((m) => m.AdminModule),
+  },
+  {
     path: 'browse-template',
     loadChildren: () =>
       import('./browse-template/browse-template.module').then(

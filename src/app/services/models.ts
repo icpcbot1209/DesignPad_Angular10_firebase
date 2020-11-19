@@ -1,24 +1,17 @@
-export interface TextOne {
-  text: string;
-  font: string;
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-}
-
-export interface ImageOne {
-  url: string;
-  left: number;
-  top: number;
-  width: number;
-  height: number;
+export interface Item {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  type: string; //image, text
+  url?: string;
+  text?: string;
+  font?: string;
 }
 
 export interface Page {
   title: string;
-  imageOnes: ImageOne[];
-  textOnes: TextOne[];
+  items: Item[];
 }
 
 export interface Design {

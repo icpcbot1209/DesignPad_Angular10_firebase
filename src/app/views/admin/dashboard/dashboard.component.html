@@ -1,0 +1,21 @@
+<div class="card" style="padding: 20px; display: flex">
+  <h1>Design Pad Admin</h1>
+  <ul class="nav nav-pills">
+    <li class="nav-item" *ngFor="let tab of tabs; let i = index">
+      <a
+        class="nav-link c-pointer"
+        [ngClass]="{ active: theTabId == i, disabled: tab.disabled }"
+        (click)="theTabId = i"
+        >{{ tab.title }}</a
+      >
+    </li>
+  </ul>
+</div>
+
+<div class="container h-100" style="margin-top: 5rem">
+  <div class="row h-100" *ngIf="theTabId == 0">
+    <div class="col-12 h-100">
+      <uploader></uploader>
+    </div>
+  </div>
+</div>

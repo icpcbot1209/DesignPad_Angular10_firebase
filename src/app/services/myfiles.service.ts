@@ -21,7 +21,9 @@ export class MyfilesService {
     let userId = this.authService.user.uid;
 
     this.myfiles$ = this.db
-      .collection<MyFile>('files', (ref) => ref.where('userId', '==', userId))
+      .collection<MyFile>('UserFiles', (ref) =>
+        ref.where('userId', '==', userId)
+      )
       .snapshotChanges()
       .pipe(
         map((actions) =>
@@ -38,6 +40,9 @@ export class MyfilesService {
 export interface MyFile {
   downloadURL: string;
   path: string;
+  width: number;
+  height: number;
   timestamp: number;
   userId: string;
+  mimetype: string;
 }

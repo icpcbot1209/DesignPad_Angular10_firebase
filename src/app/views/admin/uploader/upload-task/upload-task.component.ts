@@ -6,8 +6,7 @@ import {
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
-import { AuthService } from 'src/app/shared/auth.service';
-import { MyFile } from 'src/app/services/myfiles.service';
+import { AssetImage } from '../../asset.service';
 
 @Component({
   selector: 'upload-task',
@@ -24,8 +23,7 @@ export class UploadTaskComponent implements OnInit {
 
   constructor(
     private storage: AngularFireStorage,
-    private db: AngularFirestore,
-    private authService: AuthService
+    private db: AngularFirestore
   ) {}
 
   imagePreview: string;
@@ -46,10 +44,8 @@ export class UploadTaskComponent implements OnInit {
   }
 
   startUpload() {
-    let userId = this.authService.user.uid;
-
     // The storage path
-    const path = `user_files/${userId}/image/${Date.now()}_${this.file.name}`;
+    const path = `assets/image/${Date.now()}_${this.file.name}`;
 
     // Reference to storage bucket
     const ref = this.storage.ref(path);
@@ -66,14 +62,12 @@ export class UploadTaskComponent implements OnInit {
       finalize(async () => {
         this.downloadURL = await ref.getDownloadURL().toPromise();
 
-        this.db.collection<MyFile>('UserFiles').add({
+        this.db.collection<AssetImage>('Images').add({
           downloadURL: this.downloadURL,
           path,
           width: this.width,
           height: this.height,
           timestamp: Date.now(),
-          userId,
-          mimetype: 'image',
         });
       })
     );

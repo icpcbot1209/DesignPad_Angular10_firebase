@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TouchPanelComponent } from './touch-panel/touch-panel.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     SidebarComponent,
     DesignPanelComponent,
     PageComponent,
+    TouchPanelComponent,
   ],
   imports: [
     CommonModule,
