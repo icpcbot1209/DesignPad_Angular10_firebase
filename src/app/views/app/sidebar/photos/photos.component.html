@@ -1,0 +1,10 @@
+<perfect-scrollbar [config]="{ suppressScrollX: true }">
+  <img
+    *ngFor="let assetImage of assetService.assetImages$ | async; let i = index"
+    [src]="assetImage.downloadURL"
+    height="100px"
+    width="auto"
+    style="margin: 5px; cursor: pointer"
+    (click)="onImgClick(assetImage)"
+  />
+</perfect-scrollbar>

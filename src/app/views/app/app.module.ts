@@ -15,6 +15,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TouchPanelComponent } from './touch-panel/touch-panel.component';
+import { PhotosComponent } from './sidebar/photos/photos.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { TouchPanelComponent } from './touch-panel/touch-panel.component';
     DesignPanelComponent,
     PageComponent,
     TouchPanelComponent,
+    PhotosComponent,
   ],
   imports: [
     CommonModule,

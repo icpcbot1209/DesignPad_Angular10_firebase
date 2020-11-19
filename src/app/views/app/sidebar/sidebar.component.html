@@ -19,6 +19,12 @@
     </perfect-scrollbar>
   </div>
   <div class="sub-menu">
-    <uploader *ngIf="theItem.label == 'Uploads'"></uploader>
+    <ng-container *ngIf="theItem.label == 'Uploads'">
+      <uploader></uploader>
+    </ng-container>
+
+    <ng-container *ngIf="theItem.label == 'Photos'">
+      <app-sidebar-photos></app-sidebar-photos>
+    </ng-container>
   </div>
 </div>

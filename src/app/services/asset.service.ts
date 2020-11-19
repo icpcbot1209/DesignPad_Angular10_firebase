@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AssetService {
   constructor(private db: AngularFirestore) {}
   assetImages$: Observable<AssetImage[]>;

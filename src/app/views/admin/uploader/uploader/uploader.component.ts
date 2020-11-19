@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth.service';
 import { MyFile } from 'src/app/services/myfiles.service';
 import { DesignService } from 'src/app/services/design.service';
-import { AssetService } from '../../asset.service';
+import { AssetService } from 'src/app/services/asset.service';
 @Component({
   selector: 'uploader',
   templateUrl: './uploader.component.html',

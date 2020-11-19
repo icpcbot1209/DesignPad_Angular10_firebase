@@ -6,7 +6,7 @@ import {
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
-import { AssetImage } from '../../asset.service';
+import { AssetImage } from 'src/app/services/asset.service';
 
 @Component({
   selector: 'upload-task',

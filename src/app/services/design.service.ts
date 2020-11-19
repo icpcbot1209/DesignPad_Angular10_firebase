@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AssetImage } from './asset.service';
 import { Design } from './models';
 import { MyFile } from './myfiles.service';
 
@@ -52,6 +53,31 @@ export class DesignService {
     this.theDesign.pages[0].items.push({
       type: 'image',
       url: myfile.downloadURL,
+      x,
+      y,
+      w,
+      h,
+    });
+  }
+
+  photos_click_image(assetImage: AssetImage) {
+    let W = this.theDesign.category.size.x;
+    let H = this.theDesign.category.size.y;
+
+    if (assetImage.height <= 0 || assetImage.width <= 0) return;
+    let ratio = assetImage.width / assetImage.height;
+
+    let w, h, x, y;
+    w = W * 0.8;
+    h = Math.min(w / ratio, H * 0.8);
+    w = h * ratio;
+
+    x = (W - w) / 2;
+    y = (H - h) / 2;
+
+    this.theDesign.pages[0].items.push({
+      type: 'image',
+      url: assetImage.downloadURL,
       x,
       y,
       w,
