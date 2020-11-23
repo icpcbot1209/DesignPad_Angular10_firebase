@@ -8,6 +8,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
+import { Colors } from 'src/app/constants/colors.service';
+import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 
 declare var ResizeObserver;
 
@@ -15,16 +17,21 @@ declare var ResizeObserver;
   selector: 'app-design-panel',
   templateUrl: './design-panel.component.html',
   styleUrls: ['./design-panel.component.scss'],
+  providers: [
+    {
+      provide: BsDropdownConfig,
+      useValue: { isAnimated: true, autoClose: true },
+    },
+  ],
 })
 export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(public designService: DesignService, private zone: NgZone) {}
 
+  foreColor = Colors.getColors().separatorColor;
+
   @ViewChild('host') host: ElementRef;
 
   resizeObserver;
-  responsive_w: number = 1000;
-  responsive_h: number = 500;
-  pageRate = 2;
 
   ngOnInit(): void {
     this.designService.init();
@@ -36,13 +43,11 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         let width = entries[0].contentRect.width;
         let height = entries[0].contentRect.height;
 
-        this.responsive_w = Math.min(
-          (height - 50) * this.pageRate,
-          width - 200
-        );
-
-        if (this.responsive_w < 300) this.responsive_w = 300;
-        this.responsive_h = this.responsive_w / this.pageRate;
+        if (this.designService.zoomMethod === 'fit') {
+          this.designService.zoomFitInside(width, height);
+        } else if (this.designService.zoomMethod === 'fill') {
+          this.designService.zoomFillInside(width, height);
+        }
       });
     });
 
@@ -53,12 +58,34 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resizeObserver.unobserve(this.host.nativeElement);
   }
 
-  fillColor = 'rgb(255, 0, 0)';
+  zoomOptions = [
+    { value: 300, label: '300%' },
+    { value: 200, label: '200%' },
+    { value: 125, label: '125%' },
+    { value: 100, label: '100%' },
+    { value: 75, label: '75%' },
+    { value: 50, label: '50%' },
+    { value: 25, label: '25%' },
+    { value: 10, label: '10%' },
+  ];
 
-  changeColor() {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    this.fillColor = `rgb(${r}, ${g}, ${b})`;
+  onSelectZoomOption(method: string, value?: number) {
+    if (method === 'custom') {
+      this.designService.zoomCustomValue(value);
+    } else if (method === 'fit') {
+      let width = this.host.nativeElement.clientWidth;
+      let height = this.host.nativeElement.clientHeight;
+
+      this.designService.zoomFitInside(width, height);
+    } else if (method === 'fill') {
+      let width = this.host.nativeElement.clientWidth;
+      let height = this.host.nativeElement.clientHeight;
+
+      this.designService.zoomFillInside(width, height);
+    }
+  }
+
+  addPage() {
+    this.designService.addPage();
   }
 }

@@ -10,12 +10,14 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { DesignPanelComponent } from './design-panel/design-panel.component';
 import { PageComponent } from './page/page.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TouchPanelComponent } from './touch-panel/touch-panel.component';
 import { PhotosComponent } from './sidebar/photos/photos.component';
+import { ItemComponent } from './item/item.component';
+import { RemoveHostDirective } from './remove-host.directive';
 
 @NgModule({
   declarations: [
@@ -26,11 +28,14 @@ import { PhotosComponent } from './sidebar/photos/photos.component';
     PageComponent,
     TouchPanelComponent,
     PhotosComponent,
+    ItemComponent,
+    RemoveHostDirective,
   ],
   imports: [
     CommonModule,
     CollapseModule,
     FormsModule,
+    ReactiveFormsModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     TabsModule.forRoot(),

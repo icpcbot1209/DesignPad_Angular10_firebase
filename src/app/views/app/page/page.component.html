@@ -1,39 +1,35 @@
 <div>Page {{ pageId + 1 }}: {{ page.title }}</div>
 <div class="card" style="border-radius: 0%">
   <svg
-    style="border: 1px solid red; position: absolute; top: -50; left: -50"
-    [attr.width]="responsive_w + 100"
-    [attr.height]="responsive_h + 100"
-    [attr.viewBox]="'0 0 ' + W + ' ' + H"
+    #touchPanel
+    [style]="{
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      overflow: 'visible'
+    }"
+    [attr.width]="ds.page_vw"
+    [attr.height]="ds.page_vh"
+    [attr.viewBox]="'0 0 ' + ds.pageW() + ' ' + ds.pageH()"
   >
-    <ng-container *ngFor="let item of page.items">
+    <ng-container *ngFor="let item of page.items; let i = index">
       <g [attr.transform]="strTransform(item.x, item.y)">
         <rect
-          x="0"
-          y="0"
+          [attr.x]="0"
+          [attr.y]="0"
           [attr.width]="item.w"
           [attr.height]="item.h"
-          style="stroke: aquamarine; fill: none"
-        />
-
-        <ng-container
-          *ngFor="let pos of eightPos(0, 0, item.w, item.h); let k = index"
-        >
-          <circle
-            [attr.cx]="pos.x"
-            [attr.cy]="pos.y"
-            [attr.r]="Point_Radius()"
-            style="fill: white"
-          />
-        </ng-container>
+          class="item-bound"
+          [id]="'item-' + pageId + '-' + i"
+        ></rect>
       </g>
     </ng-container>
   </svg>
 
   <svg
-    [attr.width]="responsive_w"
-    [attr.height]="responsive_h"
-    [attr.viewBox]="'0 0 ' + W + ' ' + H"
+    [attr.width]="ds.page_vw"
+    [attr.height]="ds.page_vh"
+    [attr.viewBox]="'0 0 ' + ds.pageW() + ' ' + ds.pageH()"
   >
     <ng-container *ngFor="let item of page.items">
       <ng-container *ngIf="item.type == 'image'">

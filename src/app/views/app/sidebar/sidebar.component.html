@@ -1,6 +1,9 @@
 <div class="menu" (click)="menuClicked($event)">
   <div class="main-menu">
-    <perfect-scrollbar class="scroll" [config]="{ suppressScrollX: true }">
+    <perfect-scrollbar
+      class="scroll"
+      [config]="{ suppressScrollX: true, wheelPropagation: false }"
+    >
       <ul class="list-unstyled">
         <li
           *ngFor="let item of menuItems; let i = index"

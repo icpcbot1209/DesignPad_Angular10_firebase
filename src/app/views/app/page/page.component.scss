@@ -1,6 +1,7 @@
-.image-svg {
-  border: 1px solid red;
+.item-bound {
+  fill: transparent;
   &:hover {
-    border: 1px solid green;
+    stroke: aquamarine;
+    stroke-width: 2px;
   }
 }

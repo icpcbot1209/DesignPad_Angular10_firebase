@@ -1,4 +1,6 @@
-<perfect-scrollbar [config]="{ suppressScrollX: true }">
+<perfect-scrollbar
+  [config]="{ suppressScrollX: true, wheelPropagation: false }"
+>
   <img
     *ngFor="let assetImage of assetService.assetImages$ | async; let i = index"
     [src]="assetImage.downloadURL"

@@ -1,6 +1,12 @@
-<div id="app-container" [className]="sidebar.containerClassnames">
+<div
+  id="app-container"
+  [className]="sidebar.containerClassnames"
+  style="overflow-y: auto"
+>
   <app-topnav></app-topnav>
   <app-sidebar></app-sidebar>
 
-  <app-design-panel></app-design-panel>
+  <main>
+    <app-design-panel></app-design-panel>
+  </main>
 </div>

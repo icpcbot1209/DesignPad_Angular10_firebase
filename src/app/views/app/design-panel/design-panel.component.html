@@ -1,34 +1,79 @@
-<div style="padding-top: 120px; margin-left: 420px; margin-right: 10px" #host>
-  <div class="station-body">
+<div class="container-fluid" style="height: 100%" #host>
+  <div
+    [style]="{
+      height: '50px',
+      padding: '5px 20px',
+      borderBottom: '1px solid ' + foreColor
+    }"
+  >
     <div>
       <button class="btn btn-primary">
         <i class="iconsminds-palette"></i>
       </button>
     </div>
-    <hr />
-    <perfect-scrollbar
-      class="scroll"
-      [config]="{ suppressScrollX: true, wheelPropagation: false }"
-    >
-      <div class="flex-container">
-        <div [ngStyle]="{ width: responsive_w + 'px' }">
-          <div
-            *ngFor="let page of designService.theDesign?.pages; let i = index"
-            style="margin: 50px 0"
-          >
-            <app-page
-              [responsive_w]="responsive_w"
-              [responsive_h]="responsive_h"
-              [W]="designService.theDesign?.category.size.x"
-              [H]="designService.theDesign?.category.size.y"
-              [page]="page"
-              [pageId]="i"
-            ></app-page>
-          </div>
-
-          <button class="btn btn-primary" style="width: 100%">Add Page</button>
-        </div>
-      </div>
-    </perfect-scrollbar>
   </div>
+
+  <div
+    style="position: absolute; bottom: 20px; right: 20px; z-index: 100"
+    dropdown
+    [dropup]="true"
+  >
+    <button dropdownToggle type="button" class="btn btn-outline-primary">
+      {{ designService.zoomValue + "%" }}
+    </button>
+    <ul
+      *dropdownMenu
+      class="dropdown-menu dropdown-menu-right"
+      role="menu"
+      style="height: 430px"
+    >
+      <li
+        role="menuitem"
+        *ngFor="let option of zoomOptions"
+        (click)="onSelectZoomOption('custom', option.value)"
+        style="text-align: center"
+      >
+        <a class="dropdown-item" href="javascript:;">{{ option.label }} </a>
+      </li>
+      <li class="divider dropdown-divider"></li>
+      <li
+        role="menuitem"
+        (click)="onSelectZoomOption('fit')"
+        style="text-align: center"
+      >
+        <a class="dropdown-item" href="javascript:;">Fit</a>
+      </li>
+      <li
+        role="menuitem"
+        (click)="onSelectZoomOption('fill')"
+        style="text-align: center"
+      >
+        <a class="dropdown-item" href="javascript:;">Fill</a>
+      </li>
+    </ul>
+  </div>
+
+  <perfect-scrollbar
+    style="height: calc(100% - 60px)"
+    [config]="{ wheelPropagation: false }"
+  >
+    <div class="flex-container">
+      <div [ngStyle]="{ width: designService.page_vw + 'px' }">
+        <div
+          *ngFor="let page of designService.theDesign?.pages; let i = index"
+          style="margin: 50px 0"
+        >
+          <app-page [page]="page" [pageId]="i"></app-page>
+        </div>
+
+        <button
+          class="btn btn-primary"
+          style="width: 100%; margin-bottom: 50px"
+          (click)="addPage()"
+        >
+          Add Page
+        </button>
+      </div>
+    </div>
+  </perfect-scrollbar>
 </div>

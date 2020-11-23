@@ -4,6 +4,8 @@ export interface Item {
   w: number;
   h: number;
   type: string; //image, text
+  selected?: boolean;
+  hovered?: boolean;
   url?: string;
   text?: string;
   font?: string;
