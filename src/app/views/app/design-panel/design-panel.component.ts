@@ -25,7 +25,7 @@ declare var ResizeObserver;
   ],
 })
 export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
-  constructor(public designService: DesignService, private zone: NgZone) {}
+  constructor(public ds: DesignService, private zone: NgZone) {}
 
   foreColor = Colors.getColors().separatorColor;
 
@@ -34,7 +34,7 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   resizeObserver;
 
   ngOnInit(): void {
-    this.designService.init();
+    this.ds.init();
   }
 
   ngAfterViewInit(): void {
@@ -43,10 +43,10 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         let width = entries[0].contentRect.width;
         let height = entries[0].contentRect.height;
 
-        if (this.designService.zoomMethod === 'fit') {
-          this.designService.zoomFitInside(width, height);
-        } else if (this.designService.zoomMethod === 'fill') {
-          this.designService.zoomFillInside(width, height);
+        if (this.ds.zoomMethod === 'fit') {
+          this.ds.zoomFitInside(width, height);
+        } else if (this.ds.zoomMethod === 'fill') {
+          this.ds.zoomFillInside(width, height);
         }
       });
     });
@@ -71,21 +71,21 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onSelectZoomOption(method: string, value?: number) {
     if (method === 'custom') {
-      this.designService.zoomCustomValue(value);
+      this.ds.zoomCustomValue(value);
     } else if (method === 'fit') {
       let width = this.host.nativeElement.clientWidth;
       let height = this.host.nativeElement.clientHeight;
 
-      this.designService.zoomFitInside(width, height);
+      this.ds.zoomFitInside(width, height);
     } else if (method === 'fill') {
       let width = this.host.nativeElement.clientWidth;
       let height = this.host.nativeElement.clientHeight;
 
-      this.designService.zoomFillInside(width, height);
+      this.ds.zoomFillInside(width, height);
     }
   }
 
   addPage() {
-    this.designService.addPage();
+    this.ds.addPage();
   }
 }

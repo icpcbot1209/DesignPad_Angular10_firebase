@@ -18,6 +18,7 @@ import { TouchPanelComponent } from './touch-panel/touch-panel.component';
 import { PhotosComponent } from './sidebar/photos/photos.component';
 import { ItemComponent } from './item/item.component';
 import { RemoveHostDirective } from './remove-host.directive';
+import { NgxMoveableModule } from 'ngx-moveable';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { RemoveHostDirective } from './remove-host.directive';
     SharedModule,
     LayoutContainersModule,
     UploaderModule,
+    NgxMoveableModule,
   ],
 })
 export class AppModule {}

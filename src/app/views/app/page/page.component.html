@@ -1,46 +1,20 @@
 <div>Page {{ pageId + 1 }}: {{ page.title }}</div>
-<div class="card" style="border-radius: 0%">
-  <svg
-    #touchPanel
-    [style]="{
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      overflow: 'visible'
+<div
+  class="card"
+  style="border-radius: 0%"
+  [ngStyle]="{
+    width: ds.page_vw + 'px',
+    height: ds.page_vh + 'px'
+  }"
+>
+  <div
+    style="transform-origin: top left; overflow: hidden"
+    [ngStyle]="{
+      width: ds.pageW() + 'px',
+      height: ds.pageH() + 'px',
+      transform: 'scale(' + ds.zoomValue / 100 + ')'
     }"
-    [attr.width]="ds.page_vw"
-    [attr.height]="ds.page_vh"
-    [attr.viewBox]="'0 0 ' + ds.pageW() + ' ' + ds.pageH()"
   >
-    <ng-container *ngFor="let item of page.items; let i = index">
-      <g [attr.transform]="strTransform(item.x, item.y)">
-        <rect
-          [attr.x]="0"
-          [attr.y]="0"
-          [attr.width]="item.w"
-          [attr.height]="item.h"
-          class="item-bound"
-          [id]="'item-' + pageId + '-' + i"
-        ></rect>
-      </g>
-    </ng-container>
-  </svg>
-
-  <svg
-    [attr.width]="ds.page_vw"
-    [attr.height]="ds.page_vh"
-    [attr.viewBox]="'0 0 ' + ds.pageW() + ' ' + ds.pageH()"
-  >
-    <ng-container *ngFor="let item of page.items">
-      <ng-container *ngIf="item.type == 'image'">
-        <image
-          [attr.href]="item.url"
-          [attr.x]="item.x"
-          [attr.y]="item.y"
-          [attr.width]="item.w"
-          [attr.height]="item.h"
-        ></image>
-      </ng-container>
-    </ng-container>
-  </svg>
+    <app-item *ngFor="let item of page.items" [item]="item"></app-item>
+  </div>
 </div>

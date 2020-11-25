@@ -1,0 +1,23 @@
+<ng-container *ngIf="item.type == 'image'">
+  <img
+    #target
+    [src]="item.url"
+    style="position: absolute"
+    [ngStyle]="{
+      left: item.x + 'px',
+      top: item.y + 'px',
+      width: item.w + 'px',
+      height: item.h + 'px',
+      border: 'none'
+    }"
+  />
+  <ngx-moveable
+    #moveable
+    [target]="target"
+    [draggable]="true"
+    [throttleDrag]="0"
+    (drag)="onDrag($event)"
+    [container]="elRef.nativeElement"
+  ></ngx-moveable>
+  <div class="label" #label></div>
+</ng-container>

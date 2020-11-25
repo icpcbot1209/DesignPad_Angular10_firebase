@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AssetImage } from './asset.service';
 import { Design, Item } from './models';
 import { MyFile } from './myfiles.service';
-import interact from 'interactjs';
 
 @Injectable({
   providedIn: 'root',
@@ -104,58 +103,6 @@ export class DesignService {
 
   addItem(item: Item) {
     this.theDesign.pages[this.thePageId].items.push(item);
-    let itemId = this.theDesign.pages[this.thePageId].items.length - 1;
-
-    let zoomValue = this.zoomValue;
-    const setResizable = () => {
-      let elem = window.document.getElementById(
-        `item-${this.thePageId}-${itemId}`
-      );
-      interact(elem)
-        .resizable({
-          edges: { left: true, right: true, bottom: true, top: true },
-          listeners: {
-            move(event) {
-              let target = event.target;
-
-              item.w = (event.rect.width * 100) / zoomValue;
-              item.h = (event.rect.height * 100) / zoomValue;
-
-              item.x = item.x + (event.deltaRect.left * 100) / zoomValue;
-              item.y = item.y + (event.deltaRect.top * 100) / zoomValue;
-            },
-          },
-          modifiers: [
-            interact.modifiers.restrictSize({
-              min: { width: 12, height: 12 },
-            }),
-            interact.modifiers.aspectRatio({ ratio: item.w / item.h }),
-          ],
-          inertia: true,
-        })
-        .draggable({
-          listeners: {
-            move(event) {
-              let target = event.target;
-
-              item.x = item.x + (event.dx * 100) / zoomValue;
-              item.y = item.y + (event.dy * 100) / zoomValue;
-            },
-          },
-          modifiers: [],
-          inertia: true,
-        });
-    };
-
-    setTimeout(setResizable, 1000);
-  }
-
-  /*********************************************
-   * Select
-   **********************************************/
-  zone: SelectionZone;
-  drawZone(zone: SelectionZone) {
-    this.zone = zone;
   }
 
   /*********************************************
@@ -215,12 +162,4 @@ export class DesignService {
       h,
     });
   }
-}
-
-export interface SelectionZone {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  status: number; // 0: none, 1: selecting, 2: selected
 }

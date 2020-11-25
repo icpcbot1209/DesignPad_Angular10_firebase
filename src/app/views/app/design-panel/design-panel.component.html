@@ -19,7 +19,7 @@
     [dropup]="true"
   >
     <button dropdownToggle type="button" class="btn btn-outline-primary">
-      {{ designService.zoomValue + "%" }}
+      {{ ds.zoomValue + "%" }}
     </button>
     <ul
       *dropdownMenu
@@ -53,14 +53,11 @@
     </ul>
   </div>
 
-  <perfect-scrollbar
-    style="height: calc(100% - 60px)"
-    [config]="{ wheelPropagation: false }"
-  >
+  <perfect-scrollbar style="height: calc(100% - 60px)">
     <div class="flex-container">
-      <div [ngStyle]="{ width: designService.page_vw + 'px' }">
+      <div [ngStyle]="{ width: ds.page_vw + 'px' }">
         <div
-          *ngFor="let page of designService.theDesign?.pages; let i = index"
+          *ngFor="let page of ds.theDesign?.pages; let i = index"
           style="margin: 50px 0"
         >
           <app-page [page]="page" [pageId]="i"></app-page>
