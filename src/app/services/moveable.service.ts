@@ -58,6 +58,10 @@ export class MoveableService {
       draggable: true,
       resizable: true,
       rotatable: true,
+      defaultGroupRotate: 0,
+      defaultGroupOrigin: '50% 50%',
+      originDraggable: true,
+      originRelative: true,
       // scalable: true,
       // warpable: true,
       // Enabling pinchable lets you use events that
@@ -71,6 +75,7 @@ export class MoveableService {
       throttleResize: 0,
       throttleScale: 0,
       throttleRotate: 0,
+      rotationPosition: 'bottom',
     });
 
     /* draggable */
@@ -131,10 +136,13 @@ export class MoveableService {
       .on('rotateStart', (e: OnRotateStart) => {
         let item = this.getItem(e.target);
         e.set(item.rotate);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on('rotate', (e: OnRotate) => {
         let item = this.getItem(e.target);
-        item.rotate = e.beforeRotate;
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.rotate = e.rotate;
 
         e.target.style.transform = this.strTransform(item);
       })
