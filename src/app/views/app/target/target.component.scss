@@ -1,0 +1,9 @@
+.item-border {
+  &:hover {
+    border: 2px dashed aquamarine;
+  }
+}
+
+.selected {
+  border: 2px solid aquamarine;
+}

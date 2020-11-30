@@ -19,6 +19,7 @@ import { PhotosComponent } from './sidebar/photos/photos.component';
 import { ItemComponent } from './item/item.component';
 import { RemoveHostDirective } from './remove-host.directive';
 import { NgxMoveableModule } from 'ngx-moveable';
+import { TargetComponent } from './target/target.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { NgxMoveableModule } from 'ngx-moveable';
     PhotosComponent,
     ItemComponent,
     RemoveHostDirective,
+    TargetComponent,
   ],
   imports: [
     CommonModule,

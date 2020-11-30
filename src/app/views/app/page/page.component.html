@@ -6,15 +6,38 @@
     width: ds.page_vw + 'px',
     height: ds.page_vh + 'px'
   }"
+  (click)="setActivePage()"
 >
   <div
-    style="transform-origin: top left; overflow: hidden"
     [ngStyle]="{
       width: ds.pageW() + 'px',
       height: ds.pageH() + 'px',
+      transformOrigin: 'top left',
       transform: 'scale(' + ds.zoomValue / 100 + ')'
     }"
   >
-    <app-item *ngFor="let item of page.items" [item]="item"></app-item>
+    <div
+      style="
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: all;
+      "
+    >
+      <app-item *ngFor="let item of page.items" [item]="item"></app-item>
+    </div>
+
+    <div
+      #moveContainer
+      style="position: absolute; width: 100%; height: 100%; overflow: visible"
+    >
+      <app-target
+        *ngFor="let item of page.items; let i = index"
+        [item]="item"
+        [pageId]="pageId"
+        [itemId]="i"
+      ></app-target>
+    </div>
   </div>
 </div>

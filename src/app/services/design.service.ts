@@ -90,7 +90,7 @@ export class DesignService {
   /*********************************************
    * Page
    **********************************************/
-  thePageId = 0;
+  thePageId = -1;
 
   addPage() {
     let newPage = {
@@ -98,7 +98,6 @@ export class DesignService {
       items: [],
     };
     this.theDesign.pages.push(newPage);
-    this.thePageId = this.theDesign.pages.length - 1;
   }
 
   addItem(item: Item) {
@@ -131,6 +130,7 @@ export class DesignService {
       y,
       w,
       h,
+      rotate: 0,
     });
   }
 
@@ -160,6 +160,7 @@ export class DesignService {
       y,
       w,
       h,
+      rotate: 0,
     });
   }
 }

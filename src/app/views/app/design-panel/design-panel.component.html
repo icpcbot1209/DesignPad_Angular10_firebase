@@ -54,7 +54,7 @@
   </div>
 
   <perfect-scrollbar style="height: calc(100% - 60px)">
-    <div class="flex-container">
+    <div class="flex-container" id="selecto-container">
       <div [ngStyle]="{ width: ds.page_vw + 'px' }">
         <div
           *ngFor="let page of ds.theDesign?.pages; let i = index"

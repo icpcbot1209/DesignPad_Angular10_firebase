@@ -3,6 +3,7 @@ export interface Item {
   y: number;
   w: number;
   h: number;
+  rotate: number;
   type: string; //image, text
   selected?: boolean;
   hovered?: boolean;
