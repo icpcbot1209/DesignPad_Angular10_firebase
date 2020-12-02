@@ -41,6 +41,7 @@ export interface CategoryType {
 export interface AssetImage {
   uid?: string;
   downloadURL: string;
+  path: string;
   thumbnail: string;
   width: number;
   height: number;

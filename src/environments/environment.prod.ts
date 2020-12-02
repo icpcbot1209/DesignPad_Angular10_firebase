@@ -19,11 +19,11 @@ export const environment = {
   'light.blueyale', 'light.blueolympic', 'light.bluenavy', 'light.greenmoss', 'light.greenlime', 'light.yellowgranola', 'light.greysteel', 'light.orangecarrot', 'light.redruby', 'light.purplemonster'
   'dark.blueyale', 'dark.blueolympic', 'dark.bluenavy', 'dark.greenmoss', 'dark.greenlime', 'dark.yellowgranola', 'dark.greysteel', 'dark.orangecarrot', 'dark.redruby', 'dark.purplemonster'
   */
-  defaultColor: 'dark.redruby',
+  defaultColor: 'dark.blueyale',
   isDarkSwitchActive: true,
   defaultDirection: 'ltr',
   themeRadiusStorageKey: 'vien-themeradius',
-  isAuthGuardActive: false,
+  isAuthGuardActive: true,
   defaultRole: UserRole.Admin,
   firebase: {
     apiKey: 'AIzaSyA5VSdAOORBrWFGkb9cStLLftq2YKuS6f0',

@@ -98,6 +98,7 @@ export class ImageUpload {
 
         this.db.collection<AssetImage>(collectionName).add({
           downloadURL: this.downloadURL,
+          path,
           thumbnail: this.thumbnail,
           width: this.width,
           height: this.height,
