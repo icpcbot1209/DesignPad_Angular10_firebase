@@ -43,34 +43,6 @@ let routes: Routes = [
   { path: '**', redirectTo: '/error' },
 ];
 
-if (!environment.isAuthGuardActive) {
-  routes = [
-    {
-      path: '',
-      loadChildren: () =>
-        import('./home/home.module').then((m) => m.HomeModule),
-      pathMatch: 'full',
-    },
-    {
-      path: 'browse-template',
-      loadChildren: () =>
-        import('./browse-template/browse-template.module').then(
-          (m) => m.BrowseTemplateModule
-        ),
-    },
-    {
-      path: 'app',
-      loadChildren: () => import('./app/app.module').then((m) => m.AppModule),
-    },
-    {
-      path: 'user',
-      loadChildren: () =>
-        import('./user/user.module').then((m) => m.UserModule),
-    },
-    { path: 'error', component: ErrorComponent },
-    { path: '**', redirectTo: '/error' },
-  ];
-}
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],

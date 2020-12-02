@@ -10,11 +10,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: '/admin/auth',
-  },
-  {
-    path: 'auth',
     component: AdminAuthComponent,
   },
   {
