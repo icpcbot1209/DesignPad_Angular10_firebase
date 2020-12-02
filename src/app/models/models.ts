@@ -8,6 +8,7 @@ export interface Item {
   selected?: boolean;
   hovered?: boolean;
   url?: string;
+  thumbnail?: string;
   text?: string;
   font?: string;
 }

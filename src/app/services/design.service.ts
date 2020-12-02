@@ -124,6 +124,7 @@ export class DesignService {
     this.addItem({
       type: 'image',
       url: myfile.downloadURL,
+      thumbnail: myfile.thumbnail,
       x,
       y,
       w,
@@ -154,6 +155,7 @@ export class DesignService {
     this.addItem({
       type: 'image',
       url: assetImage.downloadURL,
+      thumbnail: assetImage.thumbnail,
       x,
       y,
       w,

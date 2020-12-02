@@ -1,6 +1,7 @@
 <ng-container *ngIf="item.type == 'image'">
   <img
     [lazyLoad]="item.url"
+    [defaultImage]="item.thumbnail"
     [ngStyle]="{
       position: 'absolute',
       transform: strTransform(item),
