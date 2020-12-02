@@ -40,6 +40,7 @@
     "chart.js": "^2.9.3",
     "firebase": "^7.15.5",
     "moveable": "^0.21.1",
+    "ng-lazyload-image": "^9.1.0",
     "ng2-nouislider": "^1.8.2",
     "ngx-bootstrap": "^5.6.1",
     "ngx-contextmenu": "^5.4.0",

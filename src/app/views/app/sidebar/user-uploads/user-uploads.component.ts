@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MyfilesService } from 'src/app/services/myfiles.service';
 import { AuthService } from 'src/app/shared/auth.service';
-import { MyFile } from 'src/app/services/myfiles.service';
 import { DesignService } from 'src/app/services/design.service';
+import { AssetImage } from 'src/app/models/models';
 @Component({
-  selector: 'uploader',
-  templateUrl: './uploader.component.html',
-  styleUrls: ['./uploader.component.scss'],
+  selector: 'user-uploads',
+  templateUrl: './user-uploads.component.html',
+  styleUrls: ['./user-uploads.component.scss'],
 })
-export class UploaderComponent implements OnInit {
+export class UserUploadsComponent implements OnInit {
   constructor(
     public myfilesService: MyfilesService,
     public authService: AuthService,
@@ -33,7 +33,7 @@ export class UploaderComponent implements OnInit {
     }
   }
 
-  onImgClick(myfile: MyFile) {
+  onImgClick(myfile: AssetImage) {
     this.designService.uploads_click_image(myfile);
   }
 }

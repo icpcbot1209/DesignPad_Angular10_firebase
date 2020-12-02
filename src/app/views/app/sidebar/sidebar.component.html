@@ -22,12 +22,21 @@
     </perfect-scrollbar>
   </div>
   <div class="sub-menu">
-    <ng-container *ngIf="theItem.label == 'Uploads'">
-      <uploader></uploader>
-    </ng-container>
-
-    <ng-container *ngIf="theItem.label == 'Photos'">
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display: theItem.label == 'Uploads' ? 'block' : 'none'
+      }"
+    >
+      <user-uploads></user-uploads>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display: theItem.label == 'Photos' ? 'block' : 'none'
+      }"
+    >
       <app-sidebar-photos></app-sidebar-photos>
-    </ng-container>
+    </div>
   </div>
 </div>

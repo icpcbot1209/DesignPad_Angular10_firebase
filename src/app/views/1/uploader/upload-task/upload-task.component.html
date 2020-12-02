@@ -1,35 +1,30 @@
-<div *ngIf="!downloadURL" style="margin: 1rem">
+<div *ngIf="!upload.downloadURL" style="margin: 1rem">
   <p>{{ file.name }}</p>
-  <img
-    [src]="imagePreview"
-    #preview
-    height="100"
-    (load)="onLoadPreview(preview)"
-  />
+  <img [src]="upload.thumbnail" height="100" />
 
-  <div *ngIf="percentage | async as pct">
+  <div *ngIf="upload.percentage | async as pct">
     <progress class="progress is-info" [value]="pct" max="100"></progress>
 
     {{ pct | number }}%
   </div>
 
-  <div *ngIf="snapshot | async as snap">
+  <div *ngIf="upload.snapshot | async as snap">
     <button
-      (click)="task.pause()"
+      (click)="upload.task.pause()"
       class="btn btn-warning btn-xs"
       [disabled]="!isActive(snap)"
     >
       Pause
     </button>
     <button
-      (click)="task.cancel()"
+      (click)="upload.task.cancel()"
       class="btn btn-danger btn-xs"
       [disabled]="!isActive(snap)"
     >
       Cancel
     </button>
     <button
-      (click)="task.resume()"
+      (click)="upload.task.resume()"
       class="btn btn-secondary btn-xs"
       [disabled]="!(snap?.state === 'paused')"
     >

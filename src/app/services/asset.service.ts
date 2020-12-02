@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AssetImage } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class AssetService {
@@ -22,12 +23,28 @@ export class AssetService {
         )
       );
   }
-}
 
-export interface AssetImage {
-  downloadURL: string;
-  path: string;
-  width: number;
-  height: number;
-  timestamp: number;
+  readImageByTag(tag: string) {
+    if (tag === '')
+      return this.db.collection<AssetImage>('Images').snapshotChanges();
+    else
+      return this.db
+        .collection<AssetImage>('Images', (ref) =>
+          ref.where('tags', 'array-contains', tag)
+        )
+        .snapshotChanges();
+  }
+
+  updateImageTags(assetImage: AssetImage) {
+    this.db.collection<AssetImage>('Images').doc(assetImage.uid).update({
+      tags: assetImage.tags,
+      timestamp: Date.now(),
+    });
+  }
+
+  removeImages(arr: AssetImage[]) {
+    arr.forEach((asset) => {
+      this.db.collection<AssetImage>('Images').doc(asset.uid).delete();
+    });
+  }
 }

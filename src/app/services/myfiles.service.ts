@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AuthService } from '../shared/auth.service';
+import { AssetImage } from '../models/models';
 
 @Injectable({
   providedIn: 'root',
@@ -14,35 +15,25 @@ export class MyfilesService {
     });
   }
 
-  myfiles$: Observable<MyFile[]>;
+  myfiles$: Observable<AssetImage[]>;
 
   init() {
     if (!this.authService.user) return;
     let userId = this.authService.user.uid;
 
     this.myfiles$ = this.db
-      .collection<MyFile>('UserFiles', (ref) =>
+      .collection<AssetImage>('UserFiles', (ref) =>
         ref.where('userId', '==', userId)
       )
       .snapshotChanges()
       .pipe(
         map((actions) =>
           actions.map((a) => {
-            const data = a.payload.doc.data() as MyFile;
+            const data = a.payload.doc.data() as AssetImage;
             const id = a.payload.doc.id;
             return { id, ...data };
           })
         )
       );
   }
-}
-
-export interface MyFile {
-  downloadURL: string;
-  path: string;
-  width: number;
-  height: number;
-  timestamp: number;
-  userId: string;
-  mimetype: string;
 }

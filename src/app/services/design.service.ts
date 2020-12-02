@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AssetImage } from './asset.service';
-import { Design, Item } from './models';
-import { MyFile } from './myfiles.service';
+import { AssetImage, Design, Item } from '../models/models';
 
 @Injectable({
   providedIn: 'root',
@@ -108,7 +106,7 @@ export class DesignService {
    * Uploads sidebar
    **********************************************/
 
-  uploads_click_image(myfile: MyFile) {
+  uploads_click_image(myfile: AssetImage) {
     let { x: W, y: H } = this.theDesign?.category.size;
     if (!H) return;
 

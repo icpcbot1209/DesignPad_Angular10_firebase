@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { LayoutContainersModule } from 'src/app/containers/layout/layout.containers.module';
-import { UploaderModule } from './sidebar/uploader/uploader.module';
+import { UploaderModule } from '../1/uploader/uploader.module';
 import { TopnavComponent } from './topnav/topnav.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { DesignPanelComponent } from './design-panel/design-panel.component';
@@ -20,6 +20,8 @@ import { ItemComponent } from './item/item.component';
 import { RemoveHostDirective } from './remove-host.directive';
 import { NgxMoveableModule } from 'ngx-moveable';
 import { TargetComponent } from './target/target.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { UserUploadsComponent } from './sidebar/user-uploads/user-uploads.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { TargetComponent } from './target/target.component';
     ItemComponent,
     RemoveHostDirective,
     TargetComponent,
+    UserUploadsComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +50,7 @@ import { TargetComponent } from './target/target.component';
     LayoutContainersModule,
     UploaderModule,
     NgxMoveableModule,
+    LazyLoadImageModule,
   ],
 })
 export class AppModule {}

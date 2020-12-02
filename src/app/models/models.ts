@@ -37,3 +37,14 @@ export interface CategoryType {
   uid: string;
   title: string;
 }
+
+export interface AssetImage {
+  uid?: string;
+  downloadURL: string;
+  thumbnail: string;
+  width: number;
+  height: number;
+  timestamp: number;
+  userId: string;
+  tags: string[];
+}

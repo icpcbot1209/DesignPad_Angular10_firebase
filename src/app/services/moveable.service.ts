@@ -16,7 +16,7 @@ import Moveable, {
 } from 'moveable';
 import Selecto, { OnSelect, OnSelectEnd } from 'selecto';
 import { DesignService } from './design.service';
-import { Item } from './models';
+import { Item } from '../models/models';
 
 @Injectable({
   providedIn: 'root',
@@ -182,7 +182,7 @@ export class MoveableService {
       // The container for keydown and keyup events
       keyContainer: window,
       // The rate at which the target overlaps the drag area to be selected. (default: 100)
-      hitRate: 100,
+      hitRate: 0,
     });
 
     selecto.on('select', (e: OnSelect) => {

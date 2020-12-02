@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Item } from 'src/app/services/models';
+import { Item } from 'src/app/models/models';
 
 @Component({
   selector: 'app-target',

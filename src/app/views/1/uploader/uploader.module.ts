@@ -5,13 +5,12 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { DropzoneDirective } from './dropzone.directive';
-import { UploaderComponent } from './uploader/uploader.component';
 import { UploadTaskComponent } from './upload-task/upload-task.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [DropzoneDirective, UploaderComponent, UploadTaskComponent],
+  declarations: [DropzoneDirective, UploadTaskComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -19,6 +18,6 @@ import { RouterModule } from '@angular/router';
     AngularFireStorageModule,
     PerfectScrollbarModule,
   ],
-  exports: [UploaderComponent],
+  exports: [DropzoneDirective, UploadTaskComponent],
 })
 export class UploaderModule {}

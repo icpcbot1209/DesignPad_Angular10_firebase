@@ -1,4 +1,4 @@
-import { Item } from 'src/app/services/models';
+import { Item } from 'src/app/models/models';
 import {
   Input,
   Component,

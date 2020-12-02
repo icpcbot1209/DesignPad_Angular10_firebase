@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
-import { Item, Page } from 'src/app/services/models';
+import { Item, Page } from 'src/app/models/models';
 
 @Component({
   selector: 'app-page',

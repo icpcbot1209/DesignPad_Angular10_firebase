@@ -1,9 +1,15 @@
+<input
+  class="form-control search-box"
+  (keyup)="onKeyUpSearch($event)"
+  placeholder="Search by tag"
+/>
+
 <perfect-scrollbar
   [config]="{ suppressScrollX: true, wheelPropagation: false }"
 >
   <img
-    *ngFor="let assetImage of assetService.assetImages$ | async; let i = index"
-    [src]="assetImage.downloadURL"
+    *ngFor="let assetImage of assetImages; let i = index"
+    [lazyLoad]="assetImage.thumbnail"
     height="100px"
     width="auto"
     style="margin: 5px; cursor: pointer"

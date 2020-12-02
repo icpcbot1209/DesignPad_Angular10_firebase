@@ -38,12 +38,12 @@
     [config]="{ suppressScrollX: true, wheelPropagation: false }"
   >
     <div *ngFor="let file of files">
-      <upload-task [file]="file"></upload-task>
+      <upload-task [file]="file" [taskType]="'user_uploads'"></upload-task>
     </div>
 
     <img
       *ngFor="let myfile of myfilesService.myfiles$ | async; let i = index"
-      [src]="myfile.downloadURL"
+      [lazyLoad]="myfile.thumbnail"
       height="100px"
       width="auto"
       style="margin: 5px; cursor: pointer"
