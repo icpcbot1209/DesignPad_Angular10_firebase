@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { ItemType } from '../models/enums';
 import { AssetImage, Design, Item } from '../models/models';
+import { ToolbarService } from './toolbar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DesignService {
   theDesign: Design;
-  constructor() {}
+  constructor(private ts: ToolbarService) {}
 
   init() {
     this.theDesign = {
@@ -30,6 +33,7 @@ export class DesignService {
         },
       ],
     };
+
     return this.theDesign;
   }
 
@@ -122,7 +126,7 @@ export class DesignService {
     y = (H - h) / 2;
 
     this.addItem({
-      type: 'image',
+      type: ItemType.image,
       url: myfile.downloadURL,
       thumbnail: myfile.thumbnail,
       x,
@@ -153,7 +157,7 @@ export class DesignService {
     y = (H - h) / 2;
 
     this.addItem({
-      type: 'image',
+      type: ItemType.image,
       url: assetImage.downloadURL,
       thumbnail: assetImage.thumbnail,
       x,
@@ -162,5 +166,34 @@ export class DesignService {
       h,
       rotate: 0,
     });
+  }
+
+  /*********************************************
+   * Key events
+   **********************************************/
+  deleteSelectedItems = () => {
+    let items = this.theDesign.pages[this.thePageId].items;
+    this.theDesign.pages[this.thePageId].items = items.filter(
+      (item) => !item.selected
+    );
+  };
+
+  /*********************************************
+   * Action Broadcasting
+   **********************************************/
+
+  onSelectItems() {
+    let items = this.theDesign.pages[this.thePageId].items.filter(
+      (item) => item.selected
+    );
+
+    if (items.length === 0) {
+      this.ts.status = this.ts.STATUS().none;
+    }
+    if (items.length === 1 && items[0].type === ItemType.image) {
+      this.ts.status = this.ts.STATUS().image;
+      this.ts.image_status = this.ts.IMAGE_STATUS().none;
+      console.log();
+    }
   }
 }

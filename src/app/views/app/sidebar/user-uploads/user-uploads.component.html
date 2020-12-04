@@ -2,7 +2,7 @@
   <button
     *ngIf="!authService.user"
     class="btn btn-outline-primary"
-    style="margin: 1rem; flex: 1"
+    style="margin: 5px; flex: 1"
     routerLink="/user/login"
   >
     Login/Signup
@@ -20,7 +20,7 @@
   <div style="display: flex">
     <button
       class="btn btn-outline-primary"
-      style="margin: 1rem; flex: 1"
+      style="margin: 5px; flex: 1"
       (click)="fileInput.click()"
     >
       Upload from device
@@ -35,19 +35,22 @@
   </div>
 
   <perfect-scrollbar
+    style="height: calc(100% - 50px)"
     [config]="{ suppressScrollX: true, wheelPropagation: false }"
   >
     <div *ngFor="let file of files">
       <upload-task [file]="file" [taskType]="'user_uploads'"></upload-task>
     </div>
 
-    <img
-      *ngFor="let myfile of myfilesService.myfiles$ | async; let i = index"
-      [lazyLoad]="myfile.thumbnail"
-      height="100px"
-      width="auto"
-      style="margin: 5px; cursor: pointer"
-      (click)="onImgClick(myfile)"
-    />
+    <div #gridContainer class="grid-container">
+      <img
+        class="grid-item"
+        *ngFor="let assetImage of assetImages; let i = index"
+        [lazyLoad]="assetImage.thumbnail"
+        [height]="heights[i]"
+        width="auto"
+        (click)="onImgClick(assetImage)"
+      />
+    </div>
   </perfect-scrollbar>
 </div>

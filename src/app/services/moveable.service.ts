@@ -29,20 +29,15 @@ export class MoveableService {
 
   constructor(private ds: DesignService) {}
 
-  // initFrameMap(target) {
-  //   if (!this.frameMap.has(target)) {
-  //     this.frameMap.set(target, {
-  //       translate: [0, 0],
-  //       rotate: 0,
-  //     });
-  //   }
-  // }
-
   getItem(target: HTMLElement | SVGElement): Item {
-    const pageId = target.getAttribute('pageId');
-    const itemId = target.getAttribute('itemId');
-
-    return this.ds.theDesign.pages[pageId].items[itemId];
+    const pageid = Number(target.getAttribute('pageId'));
+    const itemid = Number(target.getAttribute('itemId'));
+    if (
+      this.ds.theDesign.pages.length > pageid &&
+      this.ds.theDesign.pages[pageid].items.length > itemid
+    )
+      return this.ds.theDesign.pages[pageid].items[itemid];
+    return null;
   }
 
   strTransform(item: Item): string {
@@ -85,11 +80,13 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        let item = this.getItem(e.target);
-        item.x = e.beforeTranslate[0];
-        item.y = e.beforeTranslate[1];
+        if (e.inputEvent.ctrlKey || e.inputEvent.metaKey) {
+          let item = this.getItem(e.target);
+          item.x = e.beforeTranslate[0];
+          item.y = e.beforeTranslate[1];
 
-        e.target.style.transform = this.strTransform(item);
+          e.target.style.transform = this.strTransform(item);
+        }
       })
       .on('dragGroupStart', (ev: OnDragGroupStart) => {
         ev.events.forEach((e) => {
@@ -188,15 +185,21 @@ export class MoveableService {
     selecto.on('select', (e: OnSelect) => {
       e.added.forEach((el) => {
         el.classList.add('selected');
+        let item = this.getItem(el);
+        if (item) item.selected = true;
       });
       e.removed.forEach((el) => {
         el.classList.remove('selected');
+        let item = this.getItem(el);
+        if (item) item.selected = false;
       });
     });
 
     selecto.on('selectEnd', (e: OnSelectEnd) => {
       this.targets = e.selected;
       this.moveable.setState({ target: this.targets });
+      this.ds.onSelectItems();
+
       if (e.isDragStart) {
         e.inputEvent.preventDefault();
         setTimeout(() => {

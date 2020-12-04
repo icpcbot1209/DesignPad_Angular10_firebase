@@ -8,12 +8,14 @@
   style="height: calc(100% - 50px)"
   [config]="{ suppressScrollX: true, wheelPropagation: false }"
 >
-  <img
-    *ngFor="let assetImage of assetImages; let i = index"
-    [lazyLoad]="assetImage.thumbnail"
-    height="100px"
-    width="auto"
-    style="margin: 5px; cursor: pointer"
-    (click)="onImgClick(assetImage)"
-  />
+  <div #gridContainer class="grid-container">
+    <img
+      class="grid-item"
+      *ngFor="let assetImage of assetImages; let i = index"
+      [lazyLoad]="assetImage.thumbnail"
+      [height]="heights[i]"
+      width="auto"
+      (click)="onImgClick(assetImage)"
+    />
+  </div>
 </perfect-scrollbar>

@@ -11,22 +11,6 @@ export class AssetService {
     private db: AngularFirestore,
     private storage: AngularFireStorage
   ) {}
-  assetImages$: Observable<AssetImage[]>;
-
-  init() {
-    this.assetImages$ = this.db
-      .collection<AssetImage>('Images')
-      .snapshotChanges()
-      .pipe(
-        map((actions) =>
-          actions.map((a) => {
-            const data = a.payload.doc.data() as AssetImage;
-            const id = a.payload.doc.id;
-            return { id, ...data };
-          })
-        )
-      );
-  }
 
   readImageByTag(tag: string) {
     if (tag === '')

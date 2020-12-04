@@ -1,4 +1,6 @@
 import { Item } from 'src/app/models/models';
+import { ItemType } from 'src/app/models/enums';
+
 import {
   Input,
   Component,
@@ -16,7 +18,7 @@ import {
 })
 export class ItemComponent implements OnInit, AfterViewInit {
   @Input() item: Item;
-
+  ItemType = ItemType;
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {}

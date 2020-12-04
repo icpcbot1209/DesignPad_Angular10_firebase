@@ -7,6 +7,7 @@ import {
   ISidebar,
 } from 'src/app/containers/layout/sidebar/sidebar.service';
 import { Subscription } from 'rxjs';
+import { ToolbarService } from 'src/app/services/toolbar.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,10 +23,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(
-    private router: Router,
     private sidebarService: SidebarService,
-    private activatedRoute: ActivatedRoute,
-    private authService: AuthService
+    public ts: ToolbarService
   ) {
     this.subscription = this.sidebarService.getSidebar().subscribe(
       (res) => {

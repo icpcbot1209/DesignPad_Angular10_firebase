@@ -4,7 +4,8 @@
   style="border-radius: 0%"
   [ngStyle]="{
     width: ds.page_vw + 'px',
-    height: ds.page_vh + 'px'
+    height: ds.page_vh + 'px',
+    boxShadow: pageId == ds.thePageId ? '' : 'none'
   }"
   (click)="setActivePage()"
 >

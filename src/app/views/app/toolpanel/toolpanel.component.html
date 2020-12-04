@@ -1,0 +1,16 @@
+<div class="toolpanel">
+  <ng-container *ngIf="ts.status == ts.STATUS().image">
+    <ng-container *ngIf="ts.image_status == ts.IMAGE_STATUS().filter">
+      Filter Presets
+    </ng-container>
+    <ng-container *ngIf="ts.image_status == ts.IMAGE_STATUS().adjust">
+      <toolpanel-adjust></toolpanel-adjust>
+    </ng-container>
+    <ng-container *ngIf="ts.image_status == ts.IMAGE_STATUS().crop">
+      Crop
+    </ng-container>
+    <ng-container *ngIf="ts.image_status == ts.IMAGE_STATUS().flip">
+      Flip
+    </ng-container>
+  </ng-container>
+</div>

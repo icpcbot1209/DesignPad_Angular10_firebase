@@ -1,7 +1,8 @@
-<ng-container *ngIf="item.type == 'image'">
+<ng-container *ngIf="item.type == ItemType.image">
   <img
     [lazyLoad]="item.url"
     [defaultImage]="item.thumbnail"
+    style="filter: saturate(50%)"
     [ngStyle]="{
       position: 'absolute',
       transform: strTransform(item),

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
 import { Item, Page } from 'src/app/models/models';
-
+import { Colors } from 'src/app/constants/colors.service';
 @Component({
   selector: 'app-page',
   templateUrl: './page.component.html',
@@ -26,15 +26,21 @@ export class PageComponent implements OnInit, AfterViewInit {
     public moveableService: MoveableService
   ) {}
 
+  colors = Colors;
+
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.setActivePage();
+    setTimeout(() => {
+      this.setActivePage();
+    });
   }
 
   setActivePage() {
     if (this.ds.thePageId == this.pageId) return;
+
     console.log('active page:' + this.pageId);
+
     this.ds.thePageId = this.pageId;
     this.moveableService.initSelecto();
     this.moveableService.initMoveable(this.moveContainer.nativeElement);

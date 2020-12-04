@@ -32,16 +32,24 @@ html {
   }
 }
 
-img {
-  margin: 5px;
+.search-box {
+  border-radius: 30px;
+  margin: 5px 10px;
+  width: calc(100% - 20px);
+}
+
+.grid-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.grid-item {
+  box-sizing: border-box;
+  padding: 3px;
   cursor: pointer;
+  border: 1px solid transparent;
+
   &:hover {
     border: 1px solid #f16624;
   }
-}
-
-.search-box {
-  border-radius: 30px;
-  margin: 5px 5px;
-  width: 80%;
 }

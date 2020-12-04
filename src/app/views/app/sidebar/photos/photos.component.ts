@@ -1,5 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AssetImage } from 'src/app/models/models';
+import { decideHeights } from 'src/app/models/geometry';
+
 import { AssetService } from 'src/app/services/asset.service';
 import { DesignService } from 'src/app/services/design.service';
 
@@ -8,13 +16,14 @@ import { DesignService } from 'src/app/services/design.service';
   templateUrl: './photos.component.html',
   styleUrls: ['./photos.component.scss'],
 })
-export class PhotosComponent implements OnInit {
+export class PhotosComponent implements AfterViewInit {
+  @ViewChild('gridContainer', { static: false }) gridContainer: ElementRef;
   constructor(
     public assetService: AssetService,
     public designService: DesignService
   ) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.readImagesByTag('');
   }
 
@@ -30,6 +39,7 @@ export class PhotosComponent implements OnInit {
 
   isLoading = false;
   assetImages: AssetImage[] = [];
+  heights: number[] = [];
   readImagesByTag(tag: string) {
     this.isLoading = true;
     this.assetService.readImageByTag(tag).subscribe((data) => {
@@ -40,6 +50,7 @@ export class PhotosComponent implements OnInit {
         } as AssetImage;
       });
 
+      this.heights = decideHeights(this.assetImages, 329, 150, 4);
       this.isLoading = false;
     });
   }

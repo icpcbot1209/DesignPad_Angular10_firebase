@@ -10,6 +10,7 @@ import {
 import { DesignService } from 'src/app/services/design.service';
 import { Colors } from 'src/app/constants/colors.service';
 import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
+import { MoveableService } from 'src/app/services/moveable.service';
 
 declare var ResizeObserver;
 
@@ -25,7 +26,11 @@ declare var ResizeObserver;
   ],
 })
 export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
-  constructor(public ds: DesignService, private zone: NgZone) {}
+  constructor(
+    public ds: DesignService,
+    private moveableService: MoveableService,
+    private zone: NgZone
+  ) {}
 
   foreColor = Colors.getColors().separatorColor;
 
@@ -52,6 +57,8 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.resizeObserver.observe(this.host.nativeElement);
+
+    this.addKeyEventListeners();
   }
 
   ngOnDestroy() {
@@ -87,5 +94,18 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addPage() {
     this.ds.addPage();
+  }
+
+  addKeyEventListeners() {
+    window.addEventListener('keyup', (e: KeyboardEvent) => {
+      console.log(e.key);
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        this.ds.deleteSelectedItems();
+        this.moveableService.moveable.setState({
+          target: [],
+        });
+        this.moveableService.targets = [];
+      }
+    });
   }
 }

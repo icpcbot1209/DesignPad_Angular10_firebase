@@ -25,7 +25,8 @@
     <div
       [ngStyle]="{
         height: '100%',
-        display: theItem.label == 'Uploads' ? 'block' : 'none'
+        display:
+          !ts.showToolpanel() && theItem.label == 'Uploads' ? 'block' : 'none'
       }"
     >
       <user-uploads></user-uploads>
@@ -33,10 +34,20 @@
     <div
       [ngStyle]="{
         height: '100%',
-        display: theItem.label == 'Photos' ? 'block' : 'none'
+        display:
+          !ts.showToolpanel() && theItem.label == 'Photos' ? 'block' : 'none'
       }"
     >
       <app-sidebar-photos></app-sidebar-photos>
+    </div>
+
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display: ts.showToolpanel() ? 'block' : 'none'
+      }"
+    >
+      <app-toolpanel></app-toolpanel>
     </div>
   </div>
 </div>
