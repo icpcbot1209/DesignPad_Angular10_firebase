@@ -33,8 +33,8 @@ export class MoveableService {
     const pageid = Number(target.getAttribute('pageId'));
     const itemid = Number(target.getAttribute('itemId'));
     if (
-      this.ds.theDesign.pages.length > pageid &&
-      this.ds.theDesign.pages[pageid].items.length > itemid
+      pageid === this.ds.thePageId &&
+      itemid < this.ds.theDesign.pages[pageid].items.length
     )
       return this.ds.theDesign.pages[pageid].items[itemid];
     return null;
@@ -46,6 +46,8 @@ export class MoveableService {
 
   // matrix: number[];
   initMoveable(container: HTMLElement) {
+    if (this.moveable) this.moveable.setState({ target: [] });
+
     const moveable = new Moveable(container, {
       // target: elements[0],
       // If the container is null, the position is fixed. (default: parentElement(document.body))
@@ -184,14 +186,18 @@ export class MoveableService {
 
     selecto.on('select', (e: OnSelect) => {
       e.added.forEach((el) => {
-        el.classList.add('selected');
         let item = this.getItem(el);
-        if (item) item.selected = true;
+        if (item) {
+          item.selected = true;
+          el.classList.add('selected');
+        }
       });
       e.removed.forEach((el) => {
-        el.classList.remove('selected');
         let item = this.getItem(el);
-        if (item) item.selected = false;
+        if (item) {
+          item.selected = false;
+          el.classList.remove('selected');
+        }
       });
     });
 

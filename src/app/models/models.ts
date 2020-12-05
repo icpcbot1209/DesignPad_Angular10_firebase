@@ -1,12 +1,14 @@
 import { ItemType } from './enums';
 
 export interface Item {
+  type: ItemType;
   x: number;
   y: number;
   w: number;
   h: number;
   rotate: number;
-  type: ItemType;
+  flipX?: boolean;
+  flipY?: boolean;
   selected?: boolean;
   hovered?: boolean;
   url?: string;

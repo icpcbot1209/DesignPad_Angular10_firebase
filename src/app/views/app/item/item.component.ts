@@ -23,7 +23,10 @@ export class ItemComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {}
 
-  strTransform(item: Item) {
-    return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`;
+  strTransform(item: Item): string {
+    let str = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`;
+    if (item.flipX) str += ` scaleX(-1)`;
+    if (item.flipY) str += ` scaleY(-1)`;
+    return str;
   }
 }

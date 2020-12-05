@@ -1,10 +1,10 @@
 <div class="toolpanel">
   <ng-container *ngIf="ts.status == ts.STATUS().image">
-    <ng-container *ngIf="ts.image_status == ts.IMAGE_STATUS().filter">
-      Filter Presets
+    <ng-container *ngIf="ts.image_status == ts.IMAGE_STATUS().preset">
+      <toolpanel-preset></toolpanel-preset>
     </ng-container>
-    <ng-container *ngIf="ts.image_status == ts.IMAGE_STATUS().adjust">
-      <toolpanel-adjust></toolpanel-adjust>
+    <ng-container *ngIf="ts.image_status == ts.IMAGE_STATUS().filter">
+      <toolpanel-filter></toolpanel-filter>
     </ng-container>
     <ng-container *ngIf="ts.image_status == ts.IMAGE_STATUS().crop">
       Crop

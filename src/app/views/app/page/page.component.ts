@@ -19,7 +19,8 @@ export class PageComponent implements OnInit, AfterViewInit {
   @Input() page: Page;
   @Input() pageId: number;
 
-  @ViewChild('moveContainer', { static: false }) moveContainer: ElementRef;
+  @ViewChild('moveableContainer', { static: false })
+  moveableContainer: ElementRef;
 
   constructor(
     public ds: DesignService,
@@ -38,11 +39,17 @@ export class PageComponent implements OnInit, AfterViewInit {
 
   setActivePage() {
     if (this.ds.thePageId == this.pageId) return;
-
     console.log('active page:' + this.pageId);
-
     this.ds.thePageId = this.pageId;
-    this.moveableService.initSelecto();
-    this.moveableService.initMoveable(this.moveContainer.nativeElement);
+
+    this.moveableService.initMoveable(this.moveableContainer.nativeElement);
+  }
+
+  onClickPage() {
+    this.setActivePage();
+  }
+
+  test() {
+    alert('aa');
   }
 }

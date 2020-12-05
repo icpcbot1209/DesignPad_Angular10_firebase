@@ -1,38 +1,31 @@
 <div>Page {{ pageId + 1 }}: {{ page.title }}</div>
 <div
   class="card"
-  style="border-radius: 0%"
+  style="border-radius: 0%; overflow: visible"
   [ngStyle]="{
     width: ds.page_vw + 'px',
     height: ds.page_vh + 'px',
     boxShadow: pageId == ds.thePageId ? '' : 'none'
   }"
-  (click)="setActivePage()"
+  (mousedown)="onClickPage()"
 >
   <div
     [ngStyle]="{
-      width: ds.pageW() + 'px',
-      height: ds.pageH() + 'px',
       transformOrigin: 'top left',
       transform: 'scale(' + ds.zoomValue / 100 + ')'
     }"
   >
     <div
-      style="
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        pointer-events: all;
-      "
+      style="position: absolute; overflow: hidden; pointer-events: all"
+      [ngStyle]="{
+        width: ds.pageW() + 'px',
+        height: ds.pageH() + 'px'
+      }"
     >
       <app-item *ngFor="let item of page.items" [item]="item"></app-item>
     </div>
 
-    <div
-      #moveContainer
-      style="position: absolute; width: 100%; height: 100%; overflow: visible"
-    >
+    <div #moveableContainer style="position: absolute; overflow: visible">
       <app-target
         *ngFor="let item of page.items; let i = index"
         [item]="item"

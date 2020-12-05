@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ItemType } from '../models/enums';
+import { ImageFilterObj } from '../models/image-filter';
 import { AssetImage, Design, Item } from '../models/models';
 import { ToolbarService } from './toolbar.service';
 
@@ -182,18 +183,107 @@ export class DesignService {
    * Action Broadcasting
    **********************************************/
 
+  theItem: Item;
   onSelectItems() {
     let items = this.theDesign.pages[this.thePageId].items.filter(
       (item) => item.selected
     );
 
-    if (items.length === 0) {
+    if (items.length === 1) {
+      this.theItem = items[0];
+      this.updateFilterObj(this.theItem);
+      if (this.theItem.type === ItemType.image) {
+        this.ts.status = this.ts.STATUS().image;
+        this.ts.image_status = this.ts.IMAGE_STATUS().none;
+      }
+    } else {
+      this.theItem = null;
       this.ts.status = this.ts.STATUS().none;
     }
-    if (items.length === 1 && items[0].type === ItemType.image) {
-      this.ts.status = this.ts.STATUS().image;
-      this.ts.image_status = this.ts.IMAGE_STATUS().none;
-      console.log();
+  }
+
+  /*********************************************
+   * Image Flip
+   **********************************************/
+
+  flipX() {
+    if (this.theItem) {
+      if (this.theItem.flipX) this.theItem.flipX = false;
+      else this.theItem.flipX = true;
     }
   }
+
+  flipY() {
+    if (this.theItem) {
+      if (this.theItem.flipY) this.theItem.flipY = false;
+      else this.theItem.flipY = true;
+    }
+  }
+
+  filterObj: ImageFilterObj;
+  updateFilterObj(item: Item) {
+    this.filterObj = new ImageFilterObj(item.filter);
+  }
+  setFilterCss(css) {
+    if (this.theItem) {
+      this.theItem.filter = css;
+      this.updateFilterObj(this.theItem);
+    }
+  }
+
+  presets: Preset[] = [
+    {
+      label: '1977',
+      css: 'brightness(110%) contrast(110%) saturate(130%)',
+    },
+    {
+      label: 'Aden',
+      css: 'brightness(120%) contrast(90%) hue-rotate(20deg) saturate(85%)',
+    },
+    {
+      label: 'Brooklyn',
+      css: 'brightness(110%) contrast(90%)',
+    },
+    {
+      label: 'Earlybird',
+      css: 'contrast(90%) sepia(20%)',
+    },
+    {
+      label: 'Gingham',
+      css: 'brightness(105%) hue-rotate(350deg)',
+    },
+    {
+      label: 'Hudson',
+      css: 'brightness(120%) contrast(90%) saturate(110%)',
+    },
+    {
+      label: 'Inkwell',
+      css: 'brightness(110%) contrast(110%) grayscale(100%) sepia(30%)',
+    },
+    {
+      label: 'Lofi',
+      css: 'contrast(150%) saturate(110%)',
+    },
+    {
+      label: 'Reyes',
+      css: 'brightness(110%) contrast(85%) saturate(75%) sepia(22%)',
+    },
+    {
+      label: 'Toaster',
+      css: 'brightness(90%) contrast(150%)',
+    },
+    {
+      label: 'Moon',
+      css: 'brightness(110%) contrast(110%) grayscale(100%)',
+    },
+    {
+      label: 'Willow',
+      css: 'brightness(90%) contrast(95%) grayscale(50%)',
+    },
+  ];
+}
+
+interface Preset {
+  label: string;
+  css: string;
 }

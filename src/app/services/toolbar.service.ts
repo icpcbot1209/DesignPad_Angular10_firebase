@@ -16,10 +16,9 @@ export class ToolbarService {
 
   IMAGE_STATUS = () => ({
     none: 0,
-    filter: 1,
-    adjust: 2,
+    preset: 1,
+    filter: 2,
     crop: 3,
-    flip: 4,
   });
 
   image_status = this.IMAGE_STATUS().none;

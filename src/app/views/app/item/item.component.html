@@ -2,13 +2,14 @@
   <img
     [lazyLoad]="item.url"
     [defaultImage]="item.thumbnail"
-    style="filter: saturate(50%)"
     [ngStyle]="{
       position: 'absolute',
       transform: strTransform(item),
       width: item.w + 'px',
       height: item.h + 'px',
-      border: 'none'
+      border: 'none',
+      filter: item.filter,
+      webkitFilter: item.filter
     }"
   />
 </ng-container>

@@ -1,30 +1,26 @@
 <div *ngIf="ts.status == ts.STATUS().image">
   <button
     mat-button
+    (click)="setImageStatus(ts.IMAGE_STATUS().preset)"
+    [style.color]="ts.image_status == ts.IMAGE_STATUS().preset ? foreColor : ''"
+  >
+    Presets
+  </button>
+  <button
+    mat-button
     (click)="setImageStatus(ts.IMAGE_STATUS().filter)"
     [style.color]="ts.image_status == ts.IMAGE_STATUS().filter ? foreColor : ''"
   >
     Filter
   </button>
-  <button
-    mat-button
-    (click)="setImageStatus(ts.IMAGE_STATUS().adjust)"
-    [style.color]="ts.image_status == ts.IMAGE_STATUS().adjust ? foreColor : ''"
-  >
-    Adjust
-  </button>
-  <button
+
+  <!-- <button
     mat-button
     (click)="setImageStatus(ts.IMAGE_STATUS().crop)"
     [style.color]="ts.image_status == ts.IMAGE_STATUS().crop ? foreColor : ''"
   >
     Crop
-  </button>
-  <button
-    mat-button
-    (click)="setImageStatus(ts.IMAGE_STATUS().flip)"
-    [style.color]="ts.image_status == ts.IMAGE_STATUS().flip ? foreColor : ''"
-  >
-    Flip
-  </button>
+  </button> -->
+  <button mat-button (click)="ds.flipX()">FlipX</button>
+  <button mat-button (click)="ds.flipY()">FlipY</button>
 </div>

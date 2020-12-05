@@ -59,6 +59,8 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resizeObserver.observe(this.host.nativeElement);
 
     this.addKeyEventListeners();
+
+    this.moveableService.initSelecto();
   }
 
   ngOnDestroy() {

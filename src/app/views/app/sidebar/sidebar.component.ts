@@ -52,5 +52,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   menuItemClicked(event, item, index) {
     this.theId = index;
     this.theItem = item;
+
+    this.ts.status = this.ts.STATUS().none;
   }
 }

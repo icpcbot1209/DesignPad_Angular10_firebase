@@ -24,8 +24,9 @@ import { UserUploadsComponent } from './sidebar/user-uploads/user-uploads.compon
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MaterialModule } from 'src/app/material.module';
 import { ToolpanelComponent } from './toolpanel/toolpanel.component';
-import { AdjustComponent } from './toolpanel/adjust/adjust.component';
 import { NouisliderModule } from 'ng2-nouislider';
+import { FilterComponent } from './toolpanel/filter/filter.component';
+import { PresetComponent } from './toolpanel/preset/preset.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { NouisliderModule } from 'ng2-nouislider';
     UserUploadsComponent,
     ToolbarComponent,
     ToolpanelComponent,
-    AdjustComponent,
+    FilterComponent,
+    PresetComponent,
   ],
   imports: [
     CommonModule,
