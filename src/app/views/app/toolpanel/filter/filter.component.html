@@ -1,9 +1,9 @@
 <perfect-scrollbar>
   <div
     style="
-      padding: 20px;
+      padding: 20px 10px;
       display: grid;
-      grid-template-columns: 100px 1fr;
+      grid-template-columns: 70px 1fr 40px;
       grid-template-rows: repeat(50px);
       grid-row-gap: 50px;
       align-items: center;
@@ -15,87 +15,111 @@
     <nouislider
       [min]="ds.filterObj.params.brightness[0]"
       [max]="ds.filterObj.params.brightness[1]"
-      [tooltips]="true"
       [step]="1"
       [(ngModel)]="ds.filterObj.brightness"
-      (update)="onChangeObj($event)"
+      (update)="onChangeObj()"
     ></nouislider>
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.brightness"
+      (change)="onChangeObj()"
+    />
 
     <label>Contrast</label>
 
     <nouislider
       [min]="ds.filterObj.params.contrast[0]"
       [max]="ds.filterObj.params.contrast[1]"
-      [tooltips]="true"
       [step]="1"
       [(ngModel)]="ds.filterObj.contrast"
-      (update)="onChangeObj($event)"
+      (update)="onChangeObj()"
     ></nouislider>
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.contrast"
+      (change)="onChangeObj()"
+    />
 
     <label>Saturate</label>
 
     <nouislider
       [min]="ds.filterObj.params.saturate[0]"
       [max]="ds.filterObj.params.saturate[1]"
-      [tooltips]="true"
       [step]="1"
       [(ngModel)]="ds.filterObj.saturate"
-      (update)="onChangeObj($event)"
+      (update)="onChangeObj()"
     ></nouislider>
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.saturate"
+      (change)="onChangeObj()"
+    />
 
     <label>Sepia</label>
 
     <nouislider
       [min]="ds.filterObj.params.sepia[0]"
       [max]="ds.filterObj.params.sepia[1]"
-      [tooltips]="true"
       [step]="1"
       [(ngModel)]="ds.filterObj.sepia"
-      (update)="onChangeObj($event)"
+      (update)="onChangeObj()"
     ></nouislider>
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.sepia"
+      (change)="onChangeObj()"
+    />
 
     <label>Grayscale</label>
 
     <nouislider
       [min]="ds.filterObj.params.grayscale[0]"
       [max]="ds.filterObj.params.grayscale[1]"
-      [tooltips]="true"
       [step]="1"
       [(ngModel)]="ds.filterObj.grayscale"
-      (update)="onChangeObj($event)"
+      (update)="onChangeObj()"
     ></nouislider>
 
-    <!-- <label>Hue rotate</label>
-
-  <nouislider
-    [min]="ds.filterObj.params.hue[0]"
-    [max]="ds.filterObj.params.hue[1]"
-    [tooltips]="true"
-    [step]="1"
-    [(ngModel)]="ds.filterObj.hue"
-    (dirChange)="onChangeObj($event)"
-  ></nouislider> -->
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.grayscale"
+      (change)="onChangeObj()"
+    />
 
     <label>Blur</label>
 
     <nouislider
       [min]="ds.filterObj.params.blur[0]"
       [max]="ds.filterObj.params.blur[1]"
-      [tooltips]="true"
       [step]="1"
       [(ngModel)]="ds.filterObj.blur"
-      (update)="onChangeObj($event)"
+      (update)="onChangeObj()"
     ></nouislider>
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.blur"
+      (change)="onChangeObj()"
+    />
 
     <label>Invert</label>
 
     <nouislider
       [min]="ds.filterObj.params.invert[0]"
       [max]="ds.filterObj.params.invert[1]"
-      [tooltips]="true"
       [step]="1"
       [(ngModel)]="ds.filterObj.invert"
-      (update)="onChangeObj($event)"
+      (update)="onChangeObj()"
     ></nouislider>
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.invert"
+      (change)="onChangeObj()"
+    />
   </div>
 </perfect-scrollbar>

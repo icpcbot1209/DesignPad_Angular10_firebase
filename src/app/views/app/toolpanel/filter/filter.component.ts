@@ -12,7 +12,7 @@ export class FilterComponent implements OnInit {
   constructor(public ds: DesignService) {}
   ngOnInit(): void {}
 
-  onChangeObj(event) {
+  onChangeObj() {
     let css = this.ds.filterObj.css();
     this.ds.setFilterCss(css);
   }
