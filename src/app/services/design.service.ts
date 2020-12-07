@@ -174,9 +174,11 @@ export class DesignService {
    **********************************************/
   deleteSelectedItems = () => {
     let items = this.theDesign.pages[this.thePageId].items;
+    console.log(items);
     this.theDesign.pages[this.thePageId].items = items.filter(
       (item) => !item.selected
     );
+    this.ts.status = this.ts.STATUS().none;
   };
 
   /*********************************************

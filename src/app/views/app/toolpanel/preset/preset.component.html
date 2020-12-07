@@ -4,12 +4,13 @@
     display: grid;
     grid-template-columns: auto auto auto;
     grid-template-rows: repeat(100px);
-    grid-row-gap: 50px;
+    grid-row-gap: 30px;
+    grid-column-gap: 5px;
     align-items: center;
   "
 >
   <button
-    mat-stroked-button
+    mat-button
     *ngFor="let preset of ds.presets"
     (click)="ds.setFilterCss(preset.css)"
   >

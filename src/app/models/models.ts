@@ -9,6 +9,7 @@ export interface Item {
   rotate: number;
   flipX?: boolean;
   flipY?: boolean;
+  clipStyle?: any;
   selected?: boolean;
   hovered?: boolean;
   url?: string;

@@ -99,14 +99,17 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addKeyEventListeners() {
-    window.addEventListener('keyup', (e: KeyboardEvent) => {
-      console.log(e.key);
+    window.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'Delete' || e.key === 'Backspace') {
+        e.preventDefault();
+
         this.ds.deleteSelectedItems();
         this.moveableService.moveable.setState({
           target: [],
         });
         this.moveableService.targets = [];
+        e.stopImmediatePropagation();
+        return false;
       }
     });
   }

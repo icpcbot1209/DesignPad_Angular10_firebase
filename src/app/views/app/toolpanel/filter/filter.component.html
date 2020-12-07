@@ -3,22 +3,25 @@
     style="
       padding: 20px 10px;
       display: grid;
-      grid-template-columns: 70px 1fr 40px;
+      grid-template-columns: 70px 1fr 50px;
       grid-template-rows: repeat(50px);
-      grid-row-gap: 50px;
+      grid-row-gap: 20px;
+      grid-column-gap: 5px;
       align-items: center;
     "
     *ngIf="ds.filterObj"
   >
     <label>Brightness</label>
 
-    <nouislider
+    <input
+      class="slider"
+      type="range"
       [min]="ds.filterObj.params.brightness[0]"
       [max]="ds.filterObj.params.brightness[1]"
       [step]="1"
       [(ngModel)]="ds.filterObj.brightness"
-      (update)="onChangeObj()"
-    ></nouislider>
+      (input)="onChangeObj()"
+    />
 
     <input
       class="form-control"
@@ -28,13 +31,15 @@
 
     <label>Contrast</label>
 
-    <nouislider
+    <input
+      class="slider"
+      type="range"
       [min]="ds.filterObj.params.contrast[0]"
       [max]="ds.filterObj.params.contrast[1]"
       [step]="1"
       [(ngModel)]="ds.filterObj.contrast"
-      (update)="onChangeObj()"
-    ></nouislider>
+      (input)="onChangeObj()"
+    />
 
     <input
       class="form-control"
@@ -44,13 +49,15 @@
 
     <label>Saturate</label>
 
-    <nouislider
+    <input
+      class="slider"
+      type="range"
       [min]="ds.filterObj.params.saturate[0]"
       [max]="ds.filterObj.params.saturate[1]"
       [step]="1"
       [(ngModel)]="ds.filterObj.saturate"
-      (update)="onChangeObj()"
-    ></nouislider>
+      (input)="onChangeObj()"
+    />
 
     <input
       class="form-control"
@@ -60,13 +67,15 @@
 
     <label>Sepia</label>
 
-    <nouislider
+    <input
+      class="slider"
+      type="range"
       [min]="ds.filterObj.params.sepia[0]"
       [max]="ds.filterObj.params.sepia[1]"
       [step]="1"
       [(ngModel)]="ds.filterObj.sepia"
-      (update)="onChangeObj()"
-    ></nouislider>
+      (input)="onChangeObj()"
+    />
 
     <input
       class="form-control"
@@ -76,13 +85,15 @@
 
     <label>Grayscale</label>
 
-    <nouislider
+    <input
+      class="slider"
+      type="range"
       [min]="ds.filterObj.params.grayscale[0]"
       [max]="ds.filterObj.params.grayscale[1]"
       [step]="1"
       [(ngModel)]="ds.filterObj.grayscale"
-      (update)="onChangeObj()"
-    ></nouislider>
+      (input)="onChangeObj()"
+    />
 
     <input
       class="form-control"
@@ -92,13 +103,15 @@
 
     <label>Blur</label>
 
-    <nouislider
+    <input
+      class="slider"
+      type="range"
       [min]="ds.filterObj.params.blur[0]"
       [max]="ds.filterObj.params.blur[1]"
       [step]="1"
       [(ngModel)]="ds.filterObj.blur"
-      (update)="onChangeObj()"
-    ></nouislider>
+      (input)="onChangeObj()"
+    />
 
     <input
       class="form-control"
@@ -108,13 +121,15 @@
 
     <label>Invert</label>
 
-    <nouislider
+    <input
+      class="slider"
+      type="range"
       [min]="ds.filterObj.params.invert[0]"
       [max]="ds.filterObj.params.invert[1]"
       [step]="1"
       [(ngModel)]="ds.filterObj.invert"
-      (update)="onChangeObj()"
-    ></nouislider>
+      (input)="onChangeObj()"
+    />
 
     <input
       class="form-control"

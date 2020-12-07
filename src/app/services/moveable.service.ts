@@ -13,6 +13,7 @@ import Moveable, {
   OnRotateStart,
   OnRotateGroupStart,
   OnRotateGroup,
+  OnClip,
 } from 'moveable';
 import Selecto, { OnSelect, OnSelectEnd } from 'selecto';
 import { DesignService } from './design.service';
@@ -59,6 +60,8 @@ export class MoveableService {
       defaultGroupOrigin: '50% 50%',
       originDraggable: true,
       originRelative: true,
+
+      snapThreshold: 5,
       // scalable: true,
       // warpable: true,
       // Enabling pinchable lets you use events that
@@ -82,13 +85,13 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        if (e.inputEvent.ctrlKey || e.inputEvent.metaKey) {
-          let item = this.getItem(e.target);
-          item.x = e.beforeTranslate[0];
-          item.y = e.beforeTranslate[1];
+        // if (e.inputEvent.ctrlKey || e.inputEvent.metaKey) {
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
 
-          e.target.style.transform = this.strTransform(item);
-        }
+        e.target.style.transform = this.strTransform(item);
+        // }
       })
       .on('dragGroupStart', (ev: OnDragGroupStart) => {
         ev.events.forEach((e) => {
@@ -210,7 +213,7 @@ export class MoveableService {
         e.inputEvent.preventDefault();
         setTimeout(() => {
           this.moveable.dragStart(e.inputEvent);
-        });
+        }, 10);
       }
     });
 
