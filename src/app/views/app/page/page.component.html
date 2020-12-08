@@ -25,7 +25,11 @@
       <app-item *ngFor="let item of page.items" [item]="item"></app-item>
     </div>
 
-    <div #moveableContainer style="position: absolute; overflow: visible">
+    <div
+      [id]="'page-' + pageId"
+      #moveableContainer
+      style="position: absolute; overflow: visible"
+    >
       <app-target
         *ngFor="let item of page.items; let i = index"
         [item]="item"

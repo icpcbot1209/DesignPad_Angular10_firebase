@@ -35,6 +35,7 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   foreColor = Colors.getColors().separatorColor;
 
   @ViewChild('host') host: ElementRef;
+  @ViewChild('moveableContainer') moveableContainer: ElementRef;
 
   resizeObserver;
 
@@ -60,7 +61,7 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.addKeyEventListeners();
 
-    this.moveableService.initSelecto();
+    this.moveableService.init();
   }
 
   ngOnDestroy() {

@@ -23,8 +23,4 @@ export class ToolbarComponent implements OnInit {
       this.ts.image_status = this.ts.IMAGE_STATUS().none;
     else this.ts.image_status = image_status;
   }
-
-  flipX() {}
-
-  flipY() {}
 }

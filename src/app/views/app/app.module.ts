@@ -27,6 +27,7 @@ import { ToolpanelComponent } from './toolpanel/toolpanel.component';
 import { NouisliderModule } from 'ng2-nouislider';
 import { FilterComponent } from './toolpanel/filter/filter.component';
 import { PresetComponent } from './toolpanel/preset/preset.component';
+import { TextComponent } from './sidebar/text/text.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { PresetComponent } from './toolpanel/preset/preset.component';
     ToolpanelComponent,
     FilterComponent,
     PresetComponent,
+    TextComponent,
   ],
   imports: [
     CommonModule,

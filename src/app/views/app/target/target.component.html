@@ -1,6 +1,7 @@
 <div
   #target
-  class="item-border target"
+  class="item-border"
+  [ngClass]="'target-on-page-' + pageId"
   [attr.pageId]="pageId"
   [attr.itemId]="itemId"
   [ngStyle]="{

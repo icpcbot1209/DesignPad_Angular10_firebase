@@ -15,7 +15,7 @@ import Moveable, {
   OnRotateGroup,
   OnClip,
 } from 'moveable';
-import Selecto, { OnSelect, OnSelectEnd } from 'selecto';
+import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
 import { DesignService } from './design.service';
 import { Item } from '../models/models';
 
@@ -23,36 +23,103 @@ import { Item } from '../models/models';
   providedIn: 'root',
 })
 export class MoveableService {
-  moveable: Moveable;
   selecto: Selecto;
+  moveable: Moveable;
   targets: (HTMLElement | SVGElement)[] = [];
   // frameMap = new Map();
 
   constructor(private ds: DesignService) {}
 
-  getItem(target: HTMLElement | SVGElement): Item {
-    const pageid = Number(target.getAttribute('pageId'));
-    const itemid = Number(target.getAttribute('itemId'));
-    if (
-      pageid === this.ds.thePageId &&
-      itemid < this.ds.theDesign.pages[pageid].items.length
-    )
-      return this.ds.theDesign.pages[pageid].items[itemid];
-    return null;
+  init() {
+    let container: HTMLElement = document.querySelector('#selecto-container');
+    let scroller: HTMLElement = document.querySelector('#selecto-area');
+
+    this.initSelecto(container, scroller);
+    // this.initMoveable();
   }
 
-  strTransform(item: Item): string {
-    return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`;
+  initSelecto(container: HTMLElement, scroller: HTMLElement) {
+    const selecto = new Selecto({
+      // The container to add a selection element
+      container: container,
+      dragContainer: scroller,
+      // Container to bound the selection area. If false, do not bound. If true, it is the container of selecto. (default: false)
+      boundContainer: true,
+      // Targets to select. You can register a queryselector or an Element.
+      selectableTargets: [],
+      // Whether to select by click (default: true)
+      selectByClick: true,
+      // Whether to select from the target inside (default: true)
+      selectFromInside: false,
+      // After the select, whether to select the next target with the selected target (deselected if the target is selected again).
+      continueSelect: false,
+      // Determines which key to continue selecting the next target via keydown and keyup.
+      toggleContinueSelect: 'shift',
+      // The container for keydown and keyup events
+      keyContainer: container,
+      // The rate at which the target overlaps the drag area to be selected. (default: 100)
+      hitRate: 0,
+      scrollOptions: {
+        container: scroller,
+        throttleTime: 30,
+        threshold: 0,
+      },
+    });
+
+    selecto.on('scroll', (e: OnScroll) => {
+      scroller.scrollBy(e.direction[0] * 10, e.direction[1] * 10);
+    });
+
+    selecto.on('select', (e: OnSelect) => {
+      e.added.forEach((el) => {
+        let item = this.getItem(el);
+        console.log(el);
+        if (item) {
+          item.selected = true;
+        }
+      });
+      e.removed.forEach((el) => {
+        let item = this.getItem(el);
+        if (item) {
+          item.selected = false;
+        }
+      });
+    });
+
+    selecto.on('selectEnd', (e: OnSelectEnd) => {
+      this.targets = e.selected;
+      this.moveable.setState({ target: this.targets });
+      this.ds.onSelectItems();
+
+      if (e.isDragStart) {
+        e.inputEvent.preventDefault();
+        setTimeout(() => {
+          this.moveable.dragStart(e.inputEvent);
+        }, 10);
+      }
+    });
+
+    selecto.on('dragStart', (e) => {
+      const target = e.inputEvent.target;
+      if (
+        this.moveable?.isMoveableElement(target) ||
+        this.targets.some((t) => t === target || t.contains(target))
+      ) {
+        e.stop();
+      }
+    });
+
+    this.selecto = selecto;
   }
 
   // matrix: number[];
-  initMoveable(container: HTMLElement) {
+  initMoveable(pageContainer: HTMLElement) {
     if (this.moveable) this.moveable.setState({ target: [] });
 
-    const moveable = new Moveable(container, {
+    const moveable = new Moveable(pageContainer, {
       // target: elements[0],
       // If the container is null, the position is fixed. (default: parentElement(document.body))
-      container: container,
+      container: pageContainer,
       draggable: true,
       resizable: true,
       rotatable: true,
@@ -162,71 +229,28 @@ export class MoveableService {
     this.moveable = moveable;
   }
 
-  initSelecto(container?: HTMLElement) {
-    // #select-container exists on the design-panel.component
-    if (!container) container = document.querySelector('#selecto-container');
-
-    const selecto = new Selecto({
-      // The container to add a selection element
-      container: container,
-      // Container to bound the selection area. If false, do not bound. If true, it is the container of selecto. (default: false)
-      boundContainer: true,
-      // Targets to select. You can register a queryselector or an Element.
-      selectableTargets: ['.target'],
-      // Whether to select by click (default: true)
-      selectByClick: true,
-      // Whether to select from the target inside (default: true)
-      selectFromInside: false,
-      // After the select, whether to select the next target with the selected target (deselected if the target is selected again).
-      continueSelect: false,
-      // Determines which key to continue selecting the next target via keydown and keyup.
-      toggleContinueSelect: 'shift',
-      // The container for keydown and keyup events
-      keyContainer: window,
-      // The rate at which the target overlaps the drag area to be selected. (default: 100)
-      hitRate: 0,
+  onActivePage(pageId) {
+    let className: string = '.target' + '-on-page-' + pageId;
+    this.selecto.selectableTargets = [className];
+    let pageContainer: HTMLElement = document.querySelector('#page-' + pageId);
+    this.initMoveable(pageContainer);
+    this.ds.theDesign.pages.forEach((page) => {
+      page.items.forEach((item) => (item.selected = false));
     });
+  }
 
-    selecto.on('select', (e: OnSelect) => {
-      e.added.forEach((el) => {
-        let item = this.getItem(el);
-        if (item) {
-          item.selected = true;
-          el.classList.add('selected');
-        }
-      });
-      e.removed.forEach((el) => {
-        let item = this.getItem(el);
-        if (item) {
-          item.selected = false;
-          el.classList.remove('selected');
-        }
-      });
-    });
+  getItem(target: HTMLElement | SVGElement): Item {
+    const pageid = Number(target.getAttribute('pageId'));
+    const itemid = Number(target.getAttribute('itemId'));
+    if (
+      pageid === this.ds.thePageId &&
+      itemid < this.ds.theDesign.pages[pageid].items.length
+    )
+      return this.ds.theDesign.pages[pageid].items[itemid];
+    return null;
+  }
 
-    selecto.on('selectEnd', (e: OnSelectEnd) => {
-      this.targets = e.selected;
-      this.moveable.setState({ target: this.targets });
-      this.ds.onSelectItems();
-
-      if (e.isDragStart) {
-        e.inputEvent.preventDefault();
-        setTimeout(() => {
-          this.moveable.dragStart(e.inputEvent);
-        }, 10);
-      }
-    });
-
-    selecto.on('dragStart', (e) => {
-      const target = e.inputEvent.target;
-      if (
-        this.moveable?.isMoveableElement(target) ||
-        this.targets.some((t) => t === target || t.contains(target))
-      ) {
-        e.stop();
-      }
-    });
-
-    this.selecto = selecto;
+  strTransform(item: Item): string {
+    return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`;
   }
 }

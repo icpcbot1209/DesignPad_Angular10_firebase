@@ -41,8 +41,7 @@ export class PageComponent implements OnInit, AfterViewInit {
     if (this.ds.thePageId == this.pageId) return;
     console.log('active page:' + this.pageId);
     this.ds.thePageId = this.pageId;
-
-    this.moveableService.initMoveable(this.moveableContainer.nativeElement);
+    this.moveableService.onActivePage(this.pageId);
   }
 
   onClickPage() {

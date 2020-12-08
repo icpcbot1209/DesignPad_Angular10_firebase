@@ -14,3 +14,18 @@
     }"
   />
 </ng-container>
+
+<ng-container *ngIf="item.type == ItemType.text">
+  <div
+    contenteditable="true"
+    [ngStyle]="{
+      position: 'absolute',
+      transform: strTransform(item),
+      width: item.w + 'px',
+      height: item.h + 'px',
+      border: '1px solid red'
+    }"
+  >
+    {{ item.text }}
+  </div>
+</ng-container>

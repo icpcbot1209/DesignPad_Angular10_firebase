@@ -170,11 +170,35 @@ export class DesignService {
   }
 
   /*********************************************
+   * Text sidebar
+   **********************************************/
+  sidebar_text_add() {
+    let { x: W, y: H } = this.theDesign?.category.size;
+    if (!H) return;
+
+    let w, h, x, y;
+    w = W * 0.8;
+    h = 100;
+
+    x = (W - w) / 2;
+    y = (H - h) / 2;
+
+    this.addItem({
+      type: ItemType.text,
+      x,
+      y,
+      w,
+      h,
+      rotate: 0,
+    });
+  }
+
+  /*********************************************
    * Key events
    **********************************************/
   deleteSelectedItems = () => {
     let items = this.theDesign.pages[this.thePageId].items;
-    console.log(items);
+
     this.theDesign.pages[this.thePageId].items = items.filter(
       (item) => !item.selected
     );
