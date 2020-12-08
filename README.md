@@ -78,7 +78,7 @@
 <td>Crop Functionality</td>
 <td>1</td>
 <td>Working</td>
-<td>Dec. 9</td>
+<td>Dec. 8</td>
 <td></td>
 </tr>
 
@@ -86,7 +86,7 @@
 <td>Text: Place & Edit content</td>
 <td>1</td>
 <td>Working</td>
-<td>Dec. 9</td>
+<td>Dec. 8</td>
 <td></td>
 </tr>
 
@@ -94,7 +94,7 @@
 <td>Text: Scale & setting width by dragging</td>
 <td>1</td>
 <td></td>
-<td>Dec. 9</td>
+<td>Dec. 8</td>
 <td></td>
 </tr>
 
@@ -102,7 +102,7 @@
 <td>Text: Font Sizing</td>
 <td>1</td>
 <td></td>
-<td>Dec. 9</td>
+<td>Dec. 8</td>
 <td></td>
 </tr>
 
