@@ -59,7 +59,7 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.resizeObserver.observe(this.host.nativeElement);
 
-    this.addKeyEventListeners();
+    // this.addKeyEventListeners();
 
     this.moveableService.init();
   }
@@ -97,20 +97,5 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addPage() {
     this.ds.addPage();
-  }
-
-  addKeyEventListeners() {
-    window.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Delete' || e.key === 'Backspace') {
-        e.preventDefault();
-
-        this.ds.deleteSelectedItems();
-        this.moveableService.moveable.setState({
-          target: [],
-        });
-        e.stopImmediatePropagation();
-        return false;
-      }
-    });
   }
 }

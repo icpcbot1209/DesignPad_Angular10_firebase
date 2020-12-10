@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import Moveable from 'moveable';
 import { Subject } from 'rxjs';
+import Selecto from 'selecto/declaration/SelectoManager';
 import { ItemType } from '../models/enums';
 import { ImageFilterObj } from '../models/image-filter';
 import { AssetImage, Design, Item } from '../models/models';
@@ -196,6 +198,19 @@ export class DesignService {
   /*********************************************
    * Key events
    **********************************************/
+
+  addKeyEventListeners() {
+    window.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        e.preventDefault();
+
+        this.deleteSelectedItems();
+        e.stopImmediatePropagation();
+        return false;
+      }
+    });
+  }
+
   deleteSelectedItems = () => {
     let items = this.theDesign.pages[this.thePageId].items;
 
@@ -307,6 +322,12 @@ export class DesignService {
       css: 'brightness(90%) contrast(95%) grayscale(50%)',
     },
   ];
+
+  /*********************************************
+   * Selecto Moveable
+   **********************************************/
+  selecto: Selecto;
+  moveable: Moveable;
 }
 
 interface Preset {

@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { AdminAuthComponent } from './admin-auth/admin-auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DevprogressComponent } from './devprogress/devprogress.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+  },
+  {
+    path: 'devprogress',
+    component: DevprogressComponent,
   },
 ];
 

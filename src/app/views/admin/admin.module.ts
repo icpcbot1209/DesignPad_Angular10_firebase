@@ -11,9 +11,16 @@ import { RouterModule } from '@angular/router';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DevprogressComponent } from './devprogress/devprogress.component';
+import { MaterialModule } from 'src/app/material.module';
 
 @NgModule({
-  declarations: [AdminAuthComponent, DashboardComponent, PhotosComponent],
+  declarations: [
+    AdminAuthComponent,
+    DashboardComponent,
+    PhotosComponent,
+    DevprogressComponent,
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -24,6 +31,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    MaterialModule,
   ],
 })
 export class AdminModule {}
