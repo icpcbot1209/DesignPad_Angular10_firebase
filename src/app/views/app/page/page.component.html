@@ -1,4 +1,4 @@
-<div>Page {{ pageId + 1 }}: {{ page.title }}</div>
+<div style="z-index: 1000">Page {{ pageId + 1 }}: {{ page.title }}</div>
 <div
   class="card"
   style="border-radius: 0%; overflow: visible"
@@ -16,26 +16,46 @@
     }"
   >
     <div
-      style="position: absolute; overflow: hidden; pointer-events: all"
+      style="position: absolute; overflow: hidden; pointer-events: none"
       [ngStyle]="{
         width: ds.pageW() + 'px',
         height: ds.pageH() + 'px'
       }"
     >
-      <app-item *ngFor="let item of page.items" [item]="item"></app-item>
+      <ng-container *ngFor="let item of page.items; let itemId = index">
+        <div
+          [ngStyle]="{
+            position: 'absolute',
+            transform: strTransform(item),
+            width: item.w + 'px',
+            height: item.h + 'px'
+          }"
+        >
+          <app-item [item]="item"></app-item>
+        </div>
+      </ng-container>
     </div>
 
     <div
       [id]="'page-' + pageId"
-      #moveableContainer
-      style="position: absolute; overflow: visible"
+      style="position: absolute; overflow: visible; pointer-events: all"
     >
-      <app-target
-        *ngFor="let item of page.items; let i = index"
-        [item]="item"
-        [pageId]="pageId"
-        [itemId]="i"
-      ></app-target>
+      <ng-container *ngFor="let item of page.items; let itemId = index">
+        <div
+          class="target"
+          [attr.pageId]="pageId"
+          [attr.itemId]="itemId"
+          [ngStyle]="{
+            position: 'absolute',
+            border: item.hovered || item.selected ? '1px solid aqua' : 'none',
+            top: 0,
+            left: 0,
+            width: item.w + 'px',
+            height: item.h + 'px',
+            transform: strTransform(item)
+          }"
+        ></div>
+      </ng-container>
     </div>
   </div>
 </div>

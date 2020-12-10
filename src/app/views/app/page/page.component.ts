@@ -19,9 +19,6 @@ export class PageComponent implements OnInit, AfterViewInit {
   @Input() page: Page;
   @Input() pageId: number;
 
-  @ViewChild('moveableContainer', { static: false })
-  moveableContainer: ElementRef;
-
   constructor(
     public ds: DesignService,
     public moveableService: MoveableService
@@ -41,7 +38,7 @@ export class PageComponent implements OnInit, AfterViewInit {
     if (this.ds.thePageId == this.pageId) return;
     console.log('active page:' + this.pageId);
     this.ds.thePageId = this.pageId;
-    this.moveableService.onActivePage(this.pageId);
+    // this.moveableService.onActivePage(this.pageId);
   }
 
   onClickPage() {
@@ -50,5 +47,13 @@ export class PageComponent implements OnInit, AfterViewInit {
 
   test() {
     alert('aa');
+  }
+
+  strTransform(item: Item) {
+    return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`;
+  }
+
+  setHovered(item: Item, hovered: boolean) {
+    if (item.hovered !== hovered) item.hovered = hovered;
   }
 }

@@ -18,6 +18,7 @@ import Moveable, {
 import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
 import { DesignService } from './design.service';
 import { Item } from '../models/models';
+import { ItemType } from '../models/enums';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +26,6 @@ import { Item } from '../models/models';
 export class MoveableService {
   selecto: Selecto;
   moveable: Moveable;
-  targets: (HTMLElement | SVGElement)[] = [];
-  // frameMap = new Map();
 
   constructor(private ds: DesignService) {}
 
@@ -35,10 +34,11 @@ export class MoveableService {
     let scroller: HTMLElement = document.querySelector('#selecto-area');
 
     this.initSelecto(container, scroller);
-    // this.initMoveable();
   }
 
   initSelecto(container: HTMLElement, scroller: HTMLElement) {
+    let targets: (HTMLElement | SVGElement)[] = [];
+
     const selecto = new Selecto({
       // The container to add a selection element
       container: container,
@@ -46,7 +46,7 @@ export class MoveableService {
       // Container to bound the selection area. If false, do not bound. If true, it is the container of selecto. (default: false)
       boundContainer: true,
       // Targets to select. You can register a queryselector or an Element.
-      selectableTargets: [],
+      selectableTargets: ['.target'],
       // Whether to select by click (default: true)
       selectByClick: true,
       // Whether to select from the target inside (default: true)
@@ -72,14 +72,13 @@ export class MoveableService {
 
     selecto.on('select', (e: OnSelect) => {
       e.added.forEach((el) => {
-        let item = this.getItem(el);
-        console.log(el);
+        let { item } = this.getItem(el);
         if (item) {
           item.selected = true;
         }
       });
       e.removed.forEach((el) => {
-        let item = this.getItem(el);
+        let { item } = this.getItem(el);
         if (item) {
           item.selected = false;
         }
@@ -87,14 +86,15 @@ export class MoveableService {
     });
 
     selecto.on('selectEnd', (e: OnSelectEnd) => {
-      this.targets = e.selected;
-      this.moveable.setState({ target: this.targets });
-      this.ds.onSelectItems();
+      targets = e.selected;
 
+      this.makeMoveable(targets);
+
+      console.log(this.moveable);
       if (e.isDragStart) {
         e.inputEvent.preventDefault();
         setTimeout(() => {
-          this.moveable.dragStart(e.inputEvent);
+          this.moveable?.dragStart(e.inputEvent);
         }, 10);
       }
     });
@@ -102,8 +102,8 @@ export class MoveableService {
     selecto.on('dragStart', (e) => {
       const target = e.inputEvent.target;
       if (
-        this.moveable?.isMoveableElement(target) ||
-        this.targets.some((t) => t === target || t.contains(target))
+        (this.moveable && this.moveable.isMoveableElement(target)) ||
+        targets.some((t) => t === target || t.contains(target))
       ) {
         e.stop();
       }
@@ -112,14 +112,44 @@ export class MoveableService {
     this.selecto = selecto;
   }
 
-  // matrix: number[];
-  initMoveable(pageContainer: HTMLElement) {
+  makeMoveable(targets: (HTMLElement | SVGElement)[]) {
     if (this.moveable) this.moveable.setState({ target: [] });
+
+    if (targets.length > 1) {
+      this.moveable = this.makeMoveableGroup(targets);
+    } else if (targets.length === 1) {
+      let { item } = this.getItem(targets[0]);
+      if (item.type === ItemType.image)
+        this.moveable = this.makeMoveableImage(targets[0]);
+      else if (item.type === ItemType.text)
+        this.moveable = this.makeMoveableText(targets[0]);
+    } else {
+      this.moveable = null;
+    }
+  }
+
+  makeMoveableGroup(targets: (HTMLElement | SVGElement)[]) {
+    let thePageId = -1;
+    targets.forEach((target) => {
+      let { item, pageId, itemId } = this.getItem(target);
+      if (thePageId === -1) thePageId = pageId;
+      else if (thePageId > pageId) thePageId = pageId;
+    });
+
+    targets = targets.filter((target) => {
+      let { item, pageId, itemId } = this.getItem(target);
+      return pageId === thePageId;
+    });
+
+    let pageContainer: HTMLElement | SVGElement = document.querySelector(
+      '#page-' + thePageId
+    );
 
     const moveable = new Moveable(pageContainer, {
       // target: elements[0],
       // If the container is null, the position is fixed. (default: parentElement(document.body))
       container: pageContainer,
+      target: targets,
       draggable: true,
       resizable: true,
       rotatable: true,
@@ -130,10 +160,6 @@ export class MoveableService {
 
       snapThreshold: 5,
       // scalable: true,
-      // warpable: true,
-      // Enabling pinchable lets you use events that
-      // can be used in draggable, resizable, scalable, and rotateable.
-      // pinchable: true, // ["resizable", "scalable", "rotatable"]
       origin: true,
       keepRatio: true,
       // Resize, Scale Events at edges.
@@ -148,12 +174,12 @@ export class MoveableService {
     /* draggable */
     moveable
       .on('dragStart', (e: OnDragStart) => {
-        let item = this.getItem(e.target);
+        let { item } = this.getItem(e.target);
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
         // if (e.inputEvent.ctrlKey || e.inputEvent.metaKey) {
-        let item = this.getItem(e.target);
+        let { item } = this.getItem(e.target);
         item.x = e.beforeTranslate[0];
         item.y = e.beforeTranslate[1];
 
@@ -174,12 +200,12 @@ export class MoveableService {
     /* resizable */
     moveable
       .on('resizeStart', (e: OnResizeStart) => {
-        let item = this.getItem(e.target);
+        let { item } = this.getItem(e.target);
         e.setOrigin(['%', '%']);
         e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on('resize', (e: OnResize) => {
-        let item = this.getItem(e.target);
+        let { item } = this.getItem(e.target);
         item.x = e.drag.beforeTranslate[0];
         item.y = e.drag.beforeTranslate[1];
         item.w = e.width;
@@ -203,12 +229,12 @@ export class MoveableService {
     /* rotatable */
     moveable
       .on('rotateStart', (e: OnRotateStart) => {
-        let item = this.getItem(e.target);
+        let { item } = this.getItem(e.target);
         e.set(item.rotate);
         e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on('rotate', (e: OnRotate) => {
-        let item = this.getItem(e.target);
+        let { item } = this.getItem(e.target);
         item.x = e.drag.beforeTranslate[0];
         item.y = e.drag.beforeTranslate[1];
         item.rotate = e.rotate;
@@ -226,27 +252,110 @@ export class MoveableService {
         });
       });
 
-    this.moveable = moveable;
+    return moveable;
   }
 
-  onActivePage(pageId) {
-    let className: string = '.target' + '-on-page-' + pageId;
-    this.selecto.selectableTargets = [className];
-    let pageContainer: HTMLElement = document.querySelector('#page-' + pageId);
-    this.initMoveable(pageContainer);
-    this.ds.theDesign.pages.forEach((page) => {
-      page.items.forEach((item) => (item.selected = false));
+  makeMoveableImage(target: HTMLElement | SVGElement) {
+    let { pageId: thePageId } = this.getItem(target);
+
+    let pageContainer: HTMLElement | SVGElement = document.querySelector(
+      '#page-' + thePageId
+    );
+
+    const moveable = new Moveable(pageContainer, {
+      // target: elements[0],
+      // If the container is null, the position is fixed. (default: parentElement(document.body))
+      container: pageContainer,
+      target: [target],
+      draggable: true,
+      resizable: true,
+      rotatable: true,
+      originDraggable: true,
+      originRelative: true,
+
+      snapThreshold: 5,
+      // scalable: true,
+      origin: true,
+      keepRatio: true,
+      // Resize, Scale Events at edges.
+      edge: false,
+      throttleDrag: 0,
+      throttleResize: 0,
+      throttleScale: 0,
+      throttleRotate: 0,
+      rotationPosition: 'bottom',
     });
+
+    /* draggable */
+    moveable
+      .on('dragStart', (e: OnDragStart) => {
+        let { item } = this.getItem(e.target);
+        e.set([item.x, item.y]);
+      })
+      .on('drag', (e: OnDrag) => {
+        // if (e.inputEvent.ctrlKey || e.inputEvent.metaKey) {
+        let { item } = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
+
+        e.target.style.transform = this.strTransform(item);
+        // }
+      });
+
+    /* resizable */
+    moveable
+      .on('resizeStart', (e: OnResizeStart) => {
+        let { item } = this.getItem(e.target);
+        e.setOrigin(['%', '%']);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
+      })
+      .on('resize', (e: OnResize) => {
+        let { item } = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.w = e.width;
+        item.h = e.height;
+
+        e.target.style.transform = this.strTransform(item);
+        e.target.style.width = `${e.width}px`;
+        e.target.style.height = `${e.height}px`;
+      });
+
+    /* rotatable */
+    moveable
+      .on('rotateStart', (e: OnRotateStart) => {
+        let { item } = this.getItem(e.target);
+        e.set(item.rotate);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
+      })
+      .on('rotate', (e: OnRotate) => {
+        let { item } = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.rotate = e.rotate;
+
+        e.target.style.transform = this.strTransform(item);
+      });
+
+    return moveable;
   }
 
-  getItem(target: HTMLElement | SVGElement): Item {
-    const pageid = Number(target.getAttribute('pageId'));
-    const itemid = Number(target.getAttribute('itemId'));
+  makeMoveableText(target: HTMLElement | SVGElement) {
+    return null;
+  }
+
+  getItem(
+    target: HTMLElement | SVGElement
+  ): { item: Item; pageId: number; itemId: number } {
+    const pageId = Number(target.getAttribute('pageId'));
+    const itemId = Number(target.getAttribute('itemId'));
     if (
-      pageid === this.ds.thePageId &&
-      itemid < this.ds.theDesign.pages[pageid].items.length
-    )
-      return this.ds.theDesign.pages[pageid].items[itemid];
+      pageId < this.ds.theDesign.pages.length &&
+      itemId < this.ds.theDesign.pages[pageId].items.length
+    ) {
+      let item = this.ds.theDesign.pages[pageId].items[itemId];
+      return { item, pageId, itemId };
+    }
     return null;
   }
 

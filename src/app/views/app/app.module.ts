@@ -18,7 +18,6 @@ import { PhotosComponent } from './sidebar/photos/photos.component';
 import { ItemComponent } from './item/item.component';
 import { RemoveHostDirective } from './remove-host.directive';
 import { NgxMoveableModule } from 'ngx-moveable';
-import { TargetComponent } from './target/target.component';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { UserUploadsComponent } from './sidebar/user-uploads/user-uploads.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -39,7 +38,6 @@ import { TextComponent } from './sidebar/text/text.component';
     PhotosComponent,
     ItemComponent,
     RemoveHostDirective,
-    TargetComponent,
     UserUploadsComponent,
     ToolbarComponent,
     ToolpanelComponent,

@@ -108,7 +108,6 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         this.moveableService.moveable.setState({
           target: [],
         });
-        this.moveableService.targets = [];
         e.stopImmediatePropagation();
         return false;
       }
