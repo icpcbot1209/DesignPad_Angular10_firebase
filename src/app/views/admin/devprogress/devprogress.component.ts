@@ -372,24 +372,22 @@ export class DevprogressComponent implements OnInit {
         },
         {
           title: `The top header as mentioned earlier in my previous email, reduce the height and make the banner color a gradient. https://uigradients.com/#Celestial (#34e89e -> #0f3443)`,
-          isDone: false,
+          isDone: true,
         },
         { title: `Login with facebook is not working`, isDone: false },
         {
-          title: `Drag drop of images into the canvas is not working, only clicking on the image is working.
-`,
+          title: `Drag drop of images into the canvas is not working, only clicking on the image is working.`,
           isDone: false,
         },
         { title: `Click once drag issue has to be fixed`, isDone: false },
         {
-          title: `Flipx/Flipy needs to be according to canva. (Flip horizontal / vertical) drop down menu.
-`,
-          isDone: false,
+          title: `Flipx/Flipy needs to be according to canva. (Flip horizontal / vertical) drop down menu.`,
+          isDone: true,
         },
         { title: `Cropping of image feature. `, isDone: false },
         {
           title: ` remove this icon and make the site as 2nd one of the light theme as default `,
-          isDone: false,
+          isDone: true,
         },
       ],
     },

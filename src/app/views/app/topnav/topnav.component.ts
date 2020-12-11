@@ -13,6 +13,7 @@ import { getThemeColor, setThemeColor } from 'src/app/utils/util';
 @Component({
   selector: 'app-topnav',
   templateUrl: './topnav.component.html',
+  styleUrls: ['./topnav.component.scss'],
 })
 export class TopnavComponent implements OnInit, OnDestroy {
   buyUrl = environment.buyUrl;

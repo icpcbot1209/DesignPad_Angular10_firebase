@@ -33,7 +33,7 @@ export class MoveableService {
     let container: HTMLElement = document.querySelector('#selecto-container');
     let scroller: HTMLElement = document.querySelector('#selecto-area');
 
-    this.initSelecto(container, scroller);
+    this.selecto = this.initSelecto(container, scroller);
   }
 
   initSelecto(container: HTMLElement, scroller: HTMLElement) {
@@ -109,7 +109,7 @@ export class MoveableService {
       }
     });
 
-    this.selecto = selecto;
+    return selecto;
   }
 
   makeMoveable(targets: (HTMLElement | SVGElement)[]) {

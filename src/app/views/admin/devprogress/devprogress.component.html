@@ -19,16 +19,17 @@
           <table class="table table-bordered">
             <thead>
               <tr>
+                <th>status</th>
                 <th>No</th>
                 <th>Task Title</th>
                 <th>hrs</th>
                 <th>Note</th>
                 <th>Date</th>
-                <th>status</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of milestone.items; let itemId = index">
+                <td><span *ngIf="item.isDone">✅</span></td>
                 <td>
                   {{ itemId + 1 }}
                 </td>
@@ -36,7 +37,6 @@
                 <td>{{ item.hours }}</td>
                 <td>{{ item.note }}</td>
                 <td>{{ item.date | date: "short" }}</td>
-                <td><span *ngIf="item.isDone">✅</span></td>
               </tr>
             </tbody>
           </table>
@@ -56,16 +56,16 @@
           <table class="table table-bordered">
             <thead>
               <tr>
+                <th>status</th>
                 <th>No</th>
                 <th>Title</th>
-                <th>Fixed</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let bug of report.bugs; let i = index">
+                <td><span *ngIf="bug.isDone">✅</span></td>
                 <td>{{ i + 1 }}</td>
                 <td>{{ bug.title }}</td>
-                <td><span *ngIf="bug.isDone">✅</span></td>
               </tr>
             </tbody>
           </table>

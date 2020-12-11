@@ -64,10 +64,10 @@ $sub-menu-width-lg: 330px;
 $sub-menu-width-md: 330px;
 $sub-menu-width-xs: 330px;
 
-$navbar-height: 100px;
+$navbar-height: 70px;
 $navbar-height-xs: 70px;
-$navbar-height-md: 80px;
-$navbar-height-lg: 90px;
+$navbar-height-md: 70px;
+$navbar-height-lg: 70px;
 
 $main-margin: 60px;
 $main-margin-lg: 50px;
@@ -1737,7 +1737,7 @@ a.btn-secondary:not([href]):not([tabindex]) {
 .navbar {
   background: $foreground-color;
   height: $navbar-height;
-  padding: 1.5rem 0 1.5rem 0;
+  padding: 0.5rem 0 0.5rem 0;
   @include depth(1);
 
   .navbar-contents {
