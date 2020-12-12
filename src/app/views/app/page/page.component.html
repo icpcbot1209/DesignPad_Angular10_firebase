@@ -8,6 +8,8 @@
     boxShadow: pageId == ds.thePageId ? '' : 'none'
   }"
   (mousedown)="onClickPage()"
+  tabindex="1"
+  (keydown)="ds.onKeyEvent($event)"
 >
   <div
     [ngStyle]="{
@@ -51,7 +53,8 @@
             left: 0,
             width: item.w + 'px',
             height: item.h + 'px',
-            transform: strTransform(item)
+            transform: strTransform(item),
+            border: item.selected ? '1px solid aqua' : '1px solid transparent'
           }"
         ></div>
       </ng-container>

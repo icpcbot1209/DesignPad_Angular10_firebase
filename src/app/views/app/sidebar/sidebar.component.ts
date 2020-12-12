@@ -7,7 +7,8 @@ import {
   ISidebar,
 } from 'src/app/containers/layout/sidebar/sidebar.service';
 import { Subscription } from 'rxjs';
-import { ToolbarService } from 'src/app/services/toolbar.service';
+import { DesignService } from 'src/app/services/design.service';
+import { ItemStatus } from 'src/app/models/enums';
 
 @Component({
   selector: 'app-sidebar',
@@ -24,7 +25,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   constructor(
     private sidebarService: SidebarService,
-    public ts: ToolbarService
+    public ds: DesignService
   ) {
     this.subscription = this.sidebarService.getSidebar().subscribe(
       (res) => {
@@ -53,6 +54,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.theId = index;
     this.theItem = item;
 
-    this.ts.status = this.ts.STATUS().none;
+    this.ds.setStatus(ItemStatus.none);
   }
 }

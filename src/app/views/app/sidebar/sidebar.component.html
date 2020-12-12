@@ -7,7 +7,7 @@
       <ul class="list-unstyled">
         <li
           *ngFor="let item of menuItems; let i = index"
-          [ngClass]="{ active: i == theId }"
+          [ngClass]="{ active: !ds.isToolpanel() && i == theId }"
         >
           <a
             href="javascript:;"
@@ -26,7 +26,7 @@
       [ngStyle]="{
         height: '100%',
         display:
-          !ts.showToolpanel() && theItem.label == 'Uploads' ? 'block' : 'none'
+          !ds.isToolpanel() && theItem.label == 'Uploads' ? 'block' : 'none'
       }"
     >
       <user-uploads></user-uploads>
@@ -35,7 +35,7 @@
       [ngStyle]="{
         height: '100%',
         display:
-          !ts.showToolpanel() && theItem.label == 'Photos' ? 'block' : 'none'
+          !ds.isToolpanel() && theItem.label == 'Photos' ? 'block' : 'none'
       }"
     >
       <app-sidebar-photos></app-sidebar-photos>
@@ -44,8 +44,7 @@
     <div
       [ngStyle]="{
         height: '100%',
-        display:
-          !ts.showToolpanel() && theItem.label == 'Text' ? 'block' : 'none'
+        display: !ds.isToolpanel() && theItem.label == 'Text' ? 'block' : 'none'
       }"
     >
       <sidebar-text></sidebar-text>
@@ -54,7 +53,7 @@
     <div
       [ngStyle]="{
         height: '100%',
-        display: ts.showToolpanel() ? 'block' : 'none'
+        display: ds.isToolpanel() ? 'block' : 'none'
       }"
     >
       <app-toolpanel></app-toolpanel>

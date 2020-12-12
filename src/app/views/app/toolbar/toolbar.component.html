@@ -1,27 +1,35 @@
 <div
   *ngIf="
-    ts.status == ts.STATUS().image && ts.image_status != ts.IMAGE_STATUS().crop
+    ds.isStatus(ItemStatus.image_selected) ||
+    ds.isStatus(ItemStatus.image_preset) ||
+    ds.isStatus(ItemStatus.image_filter)
   "
 >
   <button
     mat-button
-    (click)="setImageStatus(ts.IMAGE_STATUS().preset)"
-    [style.color]="ts.image_status == ts.IMAGE_STATUS().preset ? foreColor : ''"
+    [style.backgroundColor]="
+      ds.isStatus(ItemStatus.image_preset) ? activeColor : ''
+    "
+    (click)="ds.setStatus(ItemStatus.image_preset)"
   >
     Presets
   </button>
   <button
     mat-button
-    (click)="setImageStatus(ts.IMAGE_STATUS().filter)"
-    [style.color]="ts.image_status == ts.IMAGE_STATUS().filter ? foreColor : ''"
+    [style.backgroundColor]="
+      ds.isStatus(ItemStatus.image_filter) ? activeColor : ''
+    "
+    (click)="ds.setStatus(ItemStatus.image_filter)"
   >
     Filter
   </button>
 
   <button
     mat-button
-    (click)="setImageStatus(ts.IMAGE_STATUS().crop)"
-    [style.color]="ts.image_status == ts.IMAGE_STATUS().crop ? foreColor : ''"
+    [style.backgroundColor]="
+      ds.isStatus(ItemStatus.image_crop) ? activeColor : ''
+    "
+    (click)="ds.startImageCrop()"
   >
     Crop
   </button>
@@ -59,12 +67,8 @@
   </mat-menu>
 </div>
 
-<div
-  *ngIf="
-    ts.status == ts.STATUS().image && ts.image_status == ts.IMAGE_STATUS().crop
-  "
->
-  <button mat-button>
+<div *ngIf="ds.isStatus(ItemStatus.image_crop)">
+  <button mat-button (click)="ds.endImageCrop(true)">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -78,7 +82,7 @@
     </svg>
     Done
   </button>
-  <button mat-button>
+  <button mat-button (click)="ds.endImageCrop(false)">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"

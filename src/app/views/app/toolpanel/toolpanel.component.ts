@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ToolbarService } from 'src/app/services/toolbar.service';
+import { ItemStatus, ItemType } from 'src/app/models/enums';
+import { DesignService } from 'src/app/services/design.service';
 
 @Component({
   selector: 'app-toolpanel',
@@ -7,7 +8,9 @@ import { ToolbarService } from 'src/app/services/toolbar.service';
   styleUrls: ['./toolpanel.component.scss'],
 })
 export class ToolpanelComponent implements OnInit {
-  constructor(public ts: ToolbarService) {}
+  constructor(public ds: DesignService) {}
 
+  ItemStatus = ItemStatus;
+  ItemType = ItemType;
   ngOnInit(): void {}
 }

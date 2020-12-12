@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Injector } from '@angular/core';
 import Moveable from 'moveable';
 import { Subject } from 'rxjs';
 import Selecto from 'selecto/declaration/SelectoManager';
-import { ItemType } from '../models/enums';
+import { ItemStatus, ItemType } from '../models/enums';
 import { ImageFilterObj } from '../models/image-filter';
 import { AssetImage, Design, Item } from '../models/models';
-import { ToolbarService } from './toolbar.service';
+import { MoveableService } from './moveable.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DesignService {
   theDesign: Design;
-  constructor(private ts: ToolbarService) {}
+  constructor(private injector: Injector) {}
 
   init() {
     this.theDesign = {
@@ -36,6 +36,8 @@ export class DesignService {
         },
       ],
     };
+
+    window.addEventListener('keydown', this.onKeyEvent.bind(this));
 
     return this.theDesign;
   }
@@ -105,7 +107,9 @@ export class DesignService {
     this.theDesign.pages.push(newPage);
   }
 
-  addItem(item: Item) {
+  addItemToCurrentPage(item: Item) {
+    item.pageId = this.thePageId;
+    item.itemId = this.theDesign.pages[this.thePageId].items.length;
     this.theDesign.pages[this.thePageId].items.push(item);
   }
 
@@ -128,8 +132,10 @@ export class DesignService {
     x = (W - w) / 2;
     y = (H - h) / 2;
 
-    this.addItem({
+    this.addItemToCurrentPage({
       type: ItemType.image,
+      pageId: this.thePageId,
+      itemId: 1,
       url: myfile.downloadURL,
       thumbnail: myfile.thumbnail,
       x,
@@ -159,8 +165,10 @@ export class DesignService {
     x = (W - w) / 2;
     y = (H - h) / 2;
 
-    this.addItem({
+    this.addItemToCurrentPage({
       type: ItemType.image,
+      pageId: this.thePageId,
+      itemId: 0,
       url: assetImage.downloadURL,
       thumbnail: assetImage.thumbnail,
       x,
@@ -185,8 +193,10 @@ export class DesignService {
     x = (W - w) / 2;
     y = (H - h) / 2;
 
-    this.addItem({
+    this.addItemToCurrentPage({
       type: ItemType.text,
+      pageId: this.thePageId,
+      itemId: 0,
       x,
       y,
       w,
@@ -199,48 +209,94 @@ export class DesignService {
    * Key events
    **********************************************/
 
-  addKeyEventListeners() {
-    window.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Delete' || e.key === 'Backspace') {
-        e.preventDefault();
+  onKeyEvent(e: KeyboardEvent) {
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      e.preventDefault();
 
-        this.deleteSelectedItems();
-        e.stopImmediatePropagation();
-        return false;
-      }
-    });
+      this.deleteSelectedItems();
+      e.stopImmediatePropagation();
+      return false;
+    }
   }
 
   deleteSelectedItems = () => {
     let items = this.theDesign.pages[this.thePageId].items;
 
-    this.theDesign.pages[this.thePageId].items = items.filter(
-      (item) => !item.selected
-    );
-    this.ts.status = this.ts.STATUS().none;
+    items = items.filter((item) => !item.selected);
+    items.forEach((item, i) => {
+      item.itemId = i;
+    });
+    this.theDesign.pages[this.thePageId].items = items;
+
+    const ms = this.injector.get(MoveableService);
+    ms.clearMoveable();
+
+    this.theItem = null;
+    this.setStatus(ItemStatus.none);
   };
 
   /*********************************************
-   * Action Broadcasting
+   * theItem
    **********************************************/
 
   theItem: Item;
-  onSelectItems() {
-    let items = this.theDesign.pages[this.thePageId].items.filter(
-      (item) => item.selected
-    );
+  private status: ItemStatus = ItemStatus.none;
 
-    if (items.length === 1) {
-      this.theItem = items[0];
-      this.updateFilterObj(this.theItem);
-      if (this.theItem.type === ItemType.image) {
-        this.ts.status = this.ts.STATUS().image;
-        this.ts.image_status = this.ts.IMAGE_STATUS().none;
-      }
-    } else {
-      this.theItem = null;
-      this.ts.status = this.ts.STATUS().none;
-    }
+  onSelectNothing() {
+    this.theItem = null;
+    this.setStatus(ItemStatus.none);
+  }
+
+  onSelectGroup(pageId: number) {
+    this.thePageId = pageId;
+
+    this.theItem = null;
+    this.setStatus(ItemStatus.none);
+  }
+
+  onSelectImageItem(pageId: number, item: Item) {
+    this.thePageId = pageId;
+
+    this.theItem = item;
+    this.setStatus(ItemStatus.image_selected);
+
+    this.updateFilterObj(this.theItem);
+  }
+
+  isStatus(status: ItemStatus): boolean {
+    return this.status === status;
+  }
+
+  isToolpanel() {
+    return (
+      this.isStatus(ItemStatus.image_filter) ||
+      this.isStatus(ItemStatus.image_preset)
+    );
+  }
+
+  setStatus(status: ItemStatus): void {
+    if (status === ItemStatus.image_crop) this.startImageCrop();
+    else if (
+      this.status === ItemStatus.image_crop &&
+      status === ItemStatus.none
+    )
+      this.endImageCrop(true);
+    else this.status = status;
+  }
+
+  /*********************************************
+   * Image Crop
+   **********************************************/
+  startImageCrop() {
+    if (!this.theItem || this.theItem.type !== ItemType.image) return;
+    this.status = ItemStatus.image_crop;
+
+    const ms = this.injector.get(MoveableService);
+    ms.startImageCrop();
+  }
+
+  endImageCrop(isSave: boolean) {
+    this.status = ItemStatus.image_selected;
   }
 
   /*********************************************
@@ -248,14 +304,14 @@ export class DesignService {
    **********************************************/
 
   flipX() {
-    if (this.theItem) {
+    if (this.theItem && this.theItem.type === ItemType.image) {
       if (this.theItem.flipX) this.theItem.flipX = false;
       else this.theItem.flipX = true;
     }
   }
 
   flipY() {
-    if (this.theItem) {
+    if (this.theItem && this.theItem.type === ItemType.image) {
       if (this.theItem.flipY) this.theItem.flipY = false;
       else this.theItem.flipY = true;
     }
@@ -322,12 +378,6 @@ export class DesignService {
       css: 'brightness(90%) contrast(95%) grayscale(50%)',
     },
   ];
-
-  /*********************************************
-   * Selecto Moveable
-   **********************************************/
-  selecto: Selecto;
-  moveable: Moveable;
 }
 
 interface Preset {

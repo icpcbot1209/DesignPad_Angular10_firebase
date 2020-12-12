@@ -2,6 +2,8 @@ import { ItemType } from './enums';
 
 export interface Item {
   type: ItemType;
+  pageId: number;
+  itemId: number;
   x: number;
   y: number;
   w: number;
