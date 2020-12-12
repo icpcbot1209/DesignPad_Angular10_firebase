@@ -364,11 +364,11 @@ export class DevprogressComponent implements OnInit {
         {
           title: ` As you can see above, the gap between the icons and the images loaded is uniformly spaced, the search bar comes with a close tag once you start typing.
                   Use a dark grey background (#293039) for the images right now its white. Alignment of images needs to be uniform`,
-          isDone: false,
+          isDone: true,
         },
         {
           title: `Give an auto suggest as seen in canva for the search bar`,
-          isDone: false,
+          isDone: true,
         },
         {
           title: `The top header as mentioned earlier in my previous email, reduce the height and make the banner color a gradient. https://uigradients.com/#Celestial (#34e89e -> #0f3443)`,
@@ -377,7 +377,7 @@ export class DevprogressComponent implements OnInit {
         { title: `Login with facebook is not working`, isDone: true },
         {
           title: `Drag drop of images into the canvas is not working, only clicking on the image is working.`,
-          isDone: false,
+          isDone: true,
         },
         { title: `Click once drag issue has to be fixed`, isDone: false },
         {

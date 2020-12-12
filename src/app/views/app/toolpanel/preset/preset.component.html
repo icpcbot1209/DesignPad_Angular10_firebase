@@ -14,7 +14,8 @@
     *ngFor="let preset of ds.presets"
     (click)="ds.setFilterCss(preset.css)"
   >
-    {{ preset.label }}<br />
+    <span>{{ preset.label }}</span
+    ><br />
 
     <img
       [src]="ds.theItem?.thumbnail"
