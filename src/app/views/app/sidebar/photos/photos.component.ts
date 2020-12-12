@@ -18,17 +18,18 @@ import { DesignService } from 'src/app/services/design.service';
 })
 export class PhotosComponent implements AfterViewInit {
   @ViewChild('gridContainer', { static: false }) gridContainer: ElementRef;
-  constructor(
-    public assetService: AssetService,
-    public designService: DesignService
-  ) {}
+  constructor(public assetService: AssetService, public ds: DesignService) {}
 
   ngAfterViewInit(): void {
     this.readImagesByTag('');
   }
 
   onImgClick(assetImage: AssetImage) {
-    this.designService.photos_click_image(assetImage);
+    this.ds.addImageItem(assetImage);
+  }
+
+  onStartDrag(event: DragEvent, assetImage: AssetImage) {
+    event.dataTransfer.setData('jsonAssetImage', JSON.stringify(assetImage));
   }
 
   onKeyUpSearch(event) {

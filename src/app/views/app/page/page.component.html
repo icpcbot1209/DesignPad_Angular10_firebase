@@ -8,8 +8,8 @@
     boxShadow: pageId == ds.thePageId ? '' : 'none'
   }"
   (mousedown)="onClickPage()"
-  tabindex="1"
-  (keydown)="ds.onKeyEvent($event)"
+  (dragover)="onDragOver($event)"
+  (drop)="onDrop($event)"
 >
   <div
     [ngStyle]="{
@@ -41,6 +41,7 @@
     <div
       [id]="'page-' + pageId"
       style="position: absolute; overflow: visible; pointer-events: all"
+      (dblclick)="ds.startImageCrop()"
     >
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <div

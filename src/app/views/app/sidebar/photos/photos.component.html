@@ -16,6 +16,7 @@
       [height]="heights[i]"
       width="auto"
       (click)="onImgClick(assetImage)"
+      (dragstart)="onStartDrag($event, assetImage)"
     />
   </div>
 </perfect-scrollbar>

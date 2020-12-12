@@ -44,6 +44,17 @@ export class PageComponent implements OnInit, AfterViewInit {
     this.setActivePage();
   }
 
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    let data = JSON.parse(event.dataTransfer.getData('jsonAssetImage'));
+    this.setActivePage();
+    this.ds.addImageItem(data);
+  }
+
   test() {
     alert('aa');
   }

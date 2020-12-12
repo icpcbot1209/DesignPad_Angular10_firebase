@@ -15,7 +15,7 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
   constructor(
     public myfilesService: MyfilesService,
     public authService: AuthService,
-    private designService: DesignService
+    private ds: DesignService
   ) {}
 
   auth$: Subscription;
@@ -64,7 +64,11 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  onImgClick(myfile: AssetImage) {
-    this.designService.uploads_click_image(myfile);
+  onImgClick(assetImage: AssetImage) {
+    this.ds.addImageItem(assetImage);
+  }
+
+  onStartDrag(event: DragEvent, assetImage: AssetImage) {
+    event.dataTransfer.setData('jsonAssetImage', JSON.stringify(assetImage));
   }
 }

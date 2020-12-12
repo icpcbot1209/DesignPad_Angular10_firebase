@@ -39,7 +39,7 @@ export const decideHeights = (
       if (wSum >= W) break;
     }
 
-    let h = Math.floor((maxH * W) / wSum) - 2 * padding;
+    let h = Math.floor((maxH * W) / wSum);
     if (wSum < W) h = maxH;
 
     for (let k = i; k <= j; k++) heights.push(h);

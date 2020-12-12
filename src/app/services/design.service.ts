@@ -114,43 +114,10 @@ export class DesignService {
   }
 
   /*********************************************
-   * Uploads sidebar
+   * Uploads & Photos sidebar
    **********************************************/
 
-  uploads_click_image(myfile: AssetImage) {
-    let { x: W, y: H } = this.theDesign?.category.size;
-    if (!H) return;
-
-    if (myfile.height <= 0 || myfile.width <= 0) return;
-    let ratio = myfile.width / myfile.height;
-
-    let w, h, x, y;
-    w = W * 0.8;
-    h = Math.min(w / ratio, H * 0.8);
-    w = h * ratio;
-
-    x = (W - w) / 2;
-    y = (H - h) / 2;
-
-    this.addItemToCurrentPage({
-      type: ItemType.image,
-      pageId: this.thePageId,
-      itemId: 1,
-      url: myfile.downloadURL,
-      thumbnail: myfile.thumbnail,
-      x,
-      y,
-      w,
-      h,
-      rotate: 0,
-    });
-  }
-
-  /*********************************************
-   * Photos sidebar
-   **********************************************/
-
-  photos_click_image(assetImage: AssetImage) {
+  addImageItem(assetImage: AssetImage) {
     let { x: W, y: H } = this.theDesign?.category.size;
     if (!H) return;
 
@@ -276,11 +243,7 @@ export class DesignService {
 
   setStatus(status: ItemStatus): void {
     if (status === ItemStatus.image_crop) this.startImageCrop();
-    else if (
-      this.status === ItemStatus.image_crop &&
-      status === ItemStatus.none
-    )
-      this.endImageCrop(true);
+    else if (this.status === ItemStatus.image_crop) this.endImageCrop(true);
     else this.status = status;
   }
 
@@ -297,6 +260,9 @@ export class DesignService {
 
   endImageCrop(isSave: boolean) {
     this.status = ItemStatus.image_selected;
+
+    const ms = this.injector.get(MoveableService);
+    ms.endImageCrop(isSave);
   }
 
   /*********************************************

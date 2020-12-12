@@ -14,7 +14,7 @@ export const environment = {
   menuHiddenBreakpoint: 768,
   themeColorStorageKey: 'vien-themecolor',
   isMultiColorActive: false,
-  defaultColor: 'light.blueyale',
+  defaultColor: 'dark.blueyale',
   isDarkSwitchActive: false,
   defaultDirection: 'ltr',
   themeRadiusStorageKey: 'vien-themeradius',
