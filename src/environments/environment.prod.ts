@@ -19,8 +19,8 @@ export const environment = {
   'light.blueyale', 'light.blueolympic', 'light.bluenavy', 'light.greenmoss', 'light.greenlime', 'light.yellowgranola', 'light.greysteel', 'light.orangecarrot', 'light.redruby', 'light.purplemonster'
   'dark.blueyale', 'dark.blueolympic', 'dark.bluenavy', 'dark.greenmoss', 'dark.greenlime', 'dark.yellowgranola', 'dark.greysteel', 'dark.orangecarrot', 'dark.redruby', 'dark.purplemonster'
   */
-  defaultColor: 'dark.blueyale',
-  isDarkSwitchActive: false,
+  defaultColor: 'light.blueyale',
+  isDarkSwitchActive: true,
   defaultDirection: 'ltr',
   themeRadiusStorageKey: 'vien-themeradius',
   isAuthGuardActive: true,

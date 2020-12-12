@@ -36,6 +36,9 @@ export class PhotosComponent implements AfterViewInit {
     if (event.keyCode == 13) {
       this.readImagesByTag(event.target.value);
     }
+    if (event.key == 'Delete') {
+      console.log('Delete');
+    }
   }
 
   isLoading = false;

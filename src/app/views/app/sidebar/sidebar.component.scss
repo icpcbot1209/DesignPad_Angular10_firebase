@@ -1,0 +1,27 @@
+.main-menu {
+  background-color: black;
+  color: white;
+
+  li {
+    a {
+      color: white;
+      border-bottom: none;
+      // border-radius: 0px 10px 10px 0px;
+      background-color: black;
+    }
+
+    &.active a {
+      color: white;
+      background-color: #293039;
+    }
+
+    &.active:after {
+      display: none;
+    }
+  }
+}
+
+.sub-menu {
+  background-color: #293039;
+  border-left: none;
+}

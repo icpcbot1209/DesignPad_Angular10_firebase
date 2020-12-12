@@ -37,6 +37,11 @@ export class DesignService {
       ],
     };
 
+    // window.location.hash = 'no-back-button';
+    // window.location.hash = 'Again-No-back-button'; //again because google chrome don't insert first hash into history
+    // window.onhashchange = function () {
+    //   window.location.hash = 'no-back-button';
+    // };
     window.addEventListener('keydown', this.onKeyEvent.bind(this));
 
     return this.theDesign;
@@ -178,8 +183,6 @@ export class DesignService {
 
   onKeyEvent(e: KeyboardEvent) {
     if (e.key === 'Delete' || e.key === 'Backspace') {
-      e.preventDefault();
-
       this.deleteSelectedItems();
       e.stopImmediatePropagation();
       return false;
