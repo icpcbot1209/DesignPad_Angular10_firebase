@@ -192,13 +192,13 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        // if (e.inputEvent.ctrlKey || e.inputEvent.metaKey) {
+        if (e.inputEvent.buttons === 0) return;
+
         let item = this.getItem(e.target);
         item.x = e.beforeTranslate[0];
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
-        // }
       })
       .on('dragGroupStart', (ev: OnDragGroupStart) => {
         ev.events.forEach((e) => {
@@ -305,13 +305,12 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        // if (e.inputEvent.ctrlKey || e.inputEvent.metaKey) {
+        if (e.inputEvent.buttons === 0) return;
         let item = this.getItem(e.target);
         item.x = e.beforeTranslate[0];
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
-        // }
       });
 
     /* resizable */
@@ -429,13 +428,13 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        // if (e.inputEvent.ctrlKey || e.inputEvent.metaKey) {
+        if (e.inputEvent.buttons === 0) return;
+
         let item = this.getItem(e.target);
         item.x = e.beforeTranslate[0];
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
-        // }
       });
 
     return moveable;

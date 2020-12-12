@@ -58,4 +58,10 @@ export class PhotosComponent implements AfterViewInit {
       this.isLoading = false;
     });
   }
+
+  tags = ['tennis', 'flower', 'football'];
+
+  test(event) {
+    console.log(event);
+  }
 }

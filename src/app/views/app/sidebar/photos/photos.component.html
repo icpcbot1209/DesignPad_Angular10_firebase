@@ -1,8 +1,11 @@
-<input
-  class="form-control search-box"
-  (keyup.enter)="onKeyUpSearch($event)"
-  placeholder="Search by tag"
-/>
+<ng-select
+  [items]="tags"
+  bindLabel="name"
+  [placeholder]="'Search'"
+  (change)="readImagesByTag($event)"
+  (clear)="readImagesByTag('')"
+>
+</ng-select>
 
 <perfect-scrollbar
   style="height: calc(100% - 50px)"

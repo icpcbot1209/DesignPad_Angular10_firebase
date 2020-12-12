@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { LayoutContainersModule } from 'src/app/containers/layout/layout.containers.module';
 import { UploaderModule } from '../1/uploader/uploader.module';
 import { TopnavComponent } from './topnav/topnav.component';
@@ -61,6 +62,7 @@ import { TextComponent } from './sidebar/text/text.component';
     LazyLoadImageModule,
     MaterialModule,
     NouisliderModule,
+    NgSelectModule,
   ],
 })
 export class AppModule {}
