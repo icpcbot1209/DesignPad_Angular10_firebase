@@ -114,6 +114,8 @@ export class MoveableService {
   clearMoveable() {
     if (this.moveable) {
       this.moveable.setState({ target: [] });
+      this.selecto.setSelectedTargets([]);
+
       this.moveable = null;
     }
   }
@@ -123,11 +125,6 @@ export class MoveableService {
 
     let thePageId = -1;
     targets.forEach((target) => {
-      target.setAttribute('tabindex', '0');
-      target.onkeydown = (ev: KeyboardEvent) => {
-        console.log(target.getAttribute('itemId'), ev);
-      };
-
       let item = this.getItem(target);
       if (thePageId === -1) thePageId = item.pageId;
       else if (thePageId > item.pageId) thePageId = item.pageId;
@@ -374,6 +371,7 @@ export class MoveableService {
 
     if (!isSave) {
       target.style.clip = this.tempClipStyle;
+      target.style.clipPath = this.tempClipStyle;
       item.clipStyle = this.tempClipStyle;
     } else {
     }

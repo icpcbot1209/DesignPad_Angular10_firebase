@@ -4,7 +4,10 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { QuillModule } from 'ngx-quill';
+
 import { LayoutContainersModule } from 'src/app/containers/layout/layout.containers.module';
+
 import { UploaderModule } from '../1/uploader/uploader.module';
 import { TopnavComponent } from './topnav/topnav.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -59,6 +62,7 @@ import { TextComponent } from './sidebar/text/text.component';
     LayoutContainersModule,
     UploaderModule,
     NgxMoveableModule,
+    QuillModule.forRoot(),
     LazyLoadImageModule,
     MaterialModule,
     NouisliderModule,

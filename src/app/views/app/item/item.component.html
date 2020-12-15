@@ -18,12 +18,5 @@
 </ng-container>
 
 <ng-container *ngIf="item.type == ItemType.text">
-  <div
-    contenteditable="true"
-    [ngStyle]="{
-      border: '1px solid red'
-    }"
-  >
-    {{ item.text }}
-  </div>
+  <quill-editor [theme]="'bubble'" [placeholder]="''"></quill-editor>
 </ng-container>
