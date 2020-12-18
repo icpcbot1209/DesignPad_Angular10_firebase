@@ -1,64 +1,29 @@
 <div style="z-index: 1000">Page {{ pageId + 1 }}: {{ page.title }}</div>
 <div
   class="card"
-  style="border-radius: 0%; overflow: visible"
-  [ngStyle]="{
-    width: ds.page_vw + 'px',
-    height: ds.page_vh + 'px',
-    boxShadow: pageId == ds.thePageId ? '' : 'none'
-  }"
-  (mousedown)="onClickPage()"
-  (dragover)="onDragOver($event)"
-  (drop)="onDrop($event)"
+  [ngStyle]="styleCard()"
 >
-  <div
-    [ngStyle]="{
-      transformOrigin: 'top left',
-      transform: 'scale(' + ds.zoomValue / 100 + ')'
-    }"
+  <div [ngStyle]="styleCardInside()"
+    (mousedown)="onClickPage()"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
   >
-    <div
-      style="position: absolute; overflow: hidden;"
-      [ngStyle]="{
-        width: ds.pageW() + 'px',
-        height: ds.pageH() + 'px'
-      }"
-    >
+
+    <div style="position: absolute; top:0; left:0; height: 100%; width: 100%;
+
+    ">
+
       <ng-container *ngFor="let item of page.items; let itemId = index">
-        <div
-          [ngStyle]="{
-            position: 'absolute',
-            transform: strTransform(item),
-            width: item.w + 'px',
-            height: item.h + 'px'
-          }"
-        >
-          <app-item [item]="item"></app-item>
-        </div>
+        <ng-container *ngIf="item.type == ItemType.image">
+          <img
+            [ngStyle]="styleItem(item)"
+            [lazyLoad]="item.url"
+            [defaultImage]="item.thumbnail"
+          />
+        </ng-container>
       </ng-container>
+
     </div>
 
-    <div
-      [id]="'page-' + pageId"
-      style="position: absolute; overflow: visible; pointer-events: all"
-      (dblclick)="ds.startImageCrop()"
-    >
-      <ng-container *ngFor="let item of page.items; let itemId = index">
-        <div
-          class="target"
-          [attr.pageId]="pageId"
-          [attr.itemId]="itemId"
-          [ngStyle]="{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: item.w + 'px',
-            height: item.h + 'px',
-            transform: strTransform(item),
-            border: item.selected ? '1px solid aqua' : '1px solid transparent'
-          }"
-        ></div>
-      </ng-container>
-    </div>
   </div>
 </div>
