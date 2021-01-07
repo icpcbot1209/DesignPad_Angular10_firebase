@@ -1,29 +1,33 @@
 <div style="z-index: 1000">Page {{ pageId + 1 }}: {{ page.title }}</div>
-<div
-  class="card"
-  [ngStyle]="styleCard()"
->
-  <div [ngStyle]="styleCardInside()"
-    (mousedown)="onClickPage()"
-    (dragover)="onDragOver($event)"
-    (drop)="onDrop($event)"
-  >
-
-    <div style="position: absolute; top:0; left:0; height: 100%; width: 100%;
-
-    ">
-
+<div class="card" [ngStyle]="styleCard()">
+  <div [ngStyle]="styleCardInside()" (mousedown)="onClickPage()" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+    <div [ngStyle]="styleLayer()" style="overflow: hidden">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <ng-container *ngIf="item.type == ItemType.image">
-          <img
-            [ngStyle]="styleItem(item)"
-            [lazyLoad]="item.url"
-            [defaultImage]="item.thumbnail"
-          />
+          <img [ngStyle]="styleItem(item)" [lazyLoad]="item.url" [defaultImage]="item.thumbnail" />
         </ng-container>
       </ng-container>
-
     </div>
 
+    <div [id]="'page-' + pageId" [ngStyle]="styleLayer()" style="overflow: visible; pointer-events: all">
+      <ng-container *ngFor="let item of page.items; let itemId = index">
+        <ng-container *ngIf="item.type == ItemType.image">
+          <div
+            class="target"
+            [ngStyle]="styleItemPosition(item)"
+            [attr.pageId]="pageId"
+            [attr.itemId]="itemId"
+            (dblclick)="ds.startImageCrop()"
+            (mousemove)="onMouseMoveItem($event, item)"
+          ></div>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <div [ngStyle]="styleLayer()" style="overflow: visible; pointer-events: none">
+      <ng-container *ngFor="let item of page.items; let itemId = index">
+        <div *ngIf="item.hovered" [ngStyle]="styleItemPosition(item)" style="border: 1px solid aqua"></div>
+      </ng-container>
+    </div>
   </div>
 </div>

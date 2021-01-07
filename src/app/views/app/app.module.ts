@@ -19,7 +19,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PhotosComponent } from './sidebar/photos/photos.component';
-import { ItemComponent } from './item/item.component';
 import { RemoveHostDirective } from './remove-host.directive';
 import { NgxMoveableModule } from 'ngx-moveable';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
@@ -40,7 +39,6 @@ import { TextComponent } from './sidebar/text/text.component';
     DesignPanelComponent,
     PageComponent,
     PhotosComponent,
-    ItemComponent,
     RemoveHostDirective,
     UserUploadsComponent,
     ToolbarComponent,

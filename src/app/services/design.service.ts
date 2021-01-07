@@ -148,6 +148,8 @@ export class DesignService {
       w,
       h,
       rotate: 0,
+      scaleX: 1,
+      scaleY: 1,
     });
   }
 
@@ -174,6 +176,8 @@ export class DesignService {
       w,
       h,
       rotate: 0,
+      scaleX: 1,
+      scaleY: 1,
     });
   }
 
@@ -274,15 +278,13 @@ export class DesignService {
 
   flipX() {
     if (this.theItem && this.theItem.type === ItemType.image) {
-      if (this.theItem.flipX) this.theItem.flipX = false;
-      else this.theItem.flipX = true;
+      this.theItem.scaleX *= -1;
     }
   }
 
   flipY() {
     if (this.theItem && this.theItem.type === ItemType.image) {
-      if (this.theItem.flipY) this.theItem.flipY = false;
-      else this.theItem.flipY = true;
+      this.theItem.scaleY *= -1;
     }
   }
 

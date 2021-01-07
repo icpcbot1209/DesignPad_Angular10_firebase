@@ -65,13 +65,17 @@ export class PageComponent implements OnInit, AfterViewInit {
     alert('aa');
   }
 
+  /******************
+   ***** Styles
+   ******************/
+
   styleCard(): CSS.Properties {
     return {
       borderRadius: '0%',
       overflow: 'visible',
       width: this.ds.page_vw + 'px',
       height: this.ds.page_vh + 'px',
-      boxShadow: this.pageId == this.ds.thePageId ? '' : 'none'
+      boxShadow: this.pageId == this.ds.thePageId ? '' : 'none',
     };
   }
 
@@ -80,35 +84,85 @@ export class PageComponent implements OnInit, AfterViewInit {
       transformOrigin: 'top left',
       transform: `scale(${this.ds.zoomValue / 100})`,
       width: this.ds.pageW() + 'px',
-      height: this.ds.pageH() + 'px'
+      height: this.ds.pageH() + 'px',
     };
   }
 
-
-  styleItem(item: Item)  : CSS.Properties {
-    if(item.type===ItemType.image) return {
+  styleLayer(): CSS.Properties {
+    return {
       position: 'absolute',
-      top: 0,
-      left: 0,
-      width: item.w + 'px',
-      height: item.h + 'px',
-      transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
-      WebkitTransform: `${item.flipX?'scaleX(-1)':''} + ${item.flipY?' scaleY(-1)':''}`,
-      border: 'none',
-      filter: item.filter,
-      WebkitFilter: item.filter,
-      clipPath: item.clipStyle,
-    };
-
-    if (item.type === ItemType.text) return {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: item.w + 'px',
-      height: 'auto',
-      transform: `translate(${item.x}px, ${item.y}px)`
+      top: '0',
+      left: '0',
+      height: '100%',
+      width: '100%',
     };
   }
 
+  styleItemPosition(item: Item): CSS.Properties {
+    if (item.type === ItemType.image)
+      return {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: item.w + 'px',
+        height: item.h + 'px',
+        transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
+      };
+
+    if (item.type === ItemType.text)
+      return {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: item.w + 'px',
+        height: 'auto',
+        transform: `translate(${item.x}px, ${item.y}px)`,
+      };
+  }
+
+  strTransform(item: Item) {
+    let str = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+    return str;
+  }
+
+  styleItem(item: Item): CSS.Properties {
+    if (item.type === ItemType.image)
+      return {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: item.w + 'px',
+        height: item.h + 'px',
+        transform: this.strTransform(item),
+        WebkitTransform: this.strTransform(item),
+        border: 'none',
+        filter: item.filter,
+        WebkitFilter: item.filter,
+        clipPath: item.clipStyle,
+      };
+
+    if (item.type === ItemType.text)
+      return {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: item.w + 'px',
+        height: 'auto',
+        transform: `translate(${item.x}px, ${item.y}px)`,
+      };
+  }
+
+
+  onMouseMoveItem(event: MouseEvent, item: Item) {
+    let pageEl: HTMLElement = document.querySelector(`#page-${item.pageId}`);
+    let rect: DOMRect = pageEl.getBoundingClientRect();
+    let isOverflow = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+
+    if (!isOverflow) {
+      item.hovered = true;
+    } else {
+      item.hovered = false;
+    }
+  }
 
 }
