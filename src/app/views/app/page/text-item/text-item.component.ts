@@ -4,6 +4,7 @@ import { ItemType } from "src/app/models/enums";
 import { MoveableService } from "src/app/services/moveable.service";
 
 import * as CSS from "csstype";
+
 import { OnSelectEnd } from "selecto";
 
 @Component({
@@ -31,26 +32,31 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    let ele: HTMLElement = document.querySelectorAll(".target")[this.item.itemId] as HTMLElement;
-    let arrEles = [];
-    arrEles.push(ele);
-    this.moveableService.getItem(ele).selected = true;
-    this.moveableService.selecto.setSelectedTargets(arrEles);
-    let func: OnSelectEnd = {
-      selected: arrEles,
-      afterAdded: null,
-      afterRemoved: null,
-      isDragStart: false,
-      isDouble: false,
-      added: arrEles,
-      removed: [],
-      rect: null,
-      inputEvent: null,
-      currentTarget: arrEles[0],
-    };
-    this.moveableService.selecto.emit("selectEnd", func);
-    let textInputElement = document.querySelector("#page-" + this.pageId) as HTMLElement;
-    // textInputElement.style.pointerEvents = "none";
+    document.querySelectorAll(".target").forEach((ele) => {
+      if (
+        ele.getAttribute("itemType") == "2" &&
+        Number(ele.getAttribute("itemId")) == this.itemId &&
+        Number(ele.getAttribute("pageId")) == this.pageId
+      ) {
+        this.moveableService.getItem(ele as HTMLElement).selected = true;
+        let arrEles = [];
+        arrEles.push(ele);
+        this.moveableService.selecto.setSelectedTargets(arrEles);
+        let func: OnSelectEnd = {
+          selected: arrEles,
+          afterAdded: null,
+          afterRemoved: null,
+          isDragStart: false,
+          isDouble: false,
+          added: arrEles,
+          removed: [],
+          rect: null,
+          inputEvent: null,
+          currentTarget: arrEles[0],
+        };
+        this.moveableService.selecto.emit("selectEnd", func);
+      }
+    });
   }
   styleItemPosition(item: Item): CSS.Properties {
     if (item.type === ItemType.image)

@@ -3,6 +3,7 @@
   [ngStyle]="styleItemPosition(item)"
   [attr.pageId]="pageId"
   [attr.itemId]="itemId"
+  [attr.itemType]="item.type"
   (mousedown)="onMouseDown()"
   (mousemove)="onMouseMoveItem($event, item)"
   (mouseup)="enableTextEdit($event)"

@@ -33,6 +33,7 @@
             [ngStyle]="styleItemPosition(item)"
             [attr.pageId]="pageId"
             [attr.itemId]="itemId"
+            [attr.itemType]="item.type"
             (dblclick)="ds.startImageCrop()"
             (mousemove)="onMouseMoveItem($event, item)"
           ></div>
