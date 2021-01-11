@@ -1,10 +1,26 @@
 <div style="z-index: 1000">Page {{ pageId + 1 }}: {{ page.title }}</div>
 <div class="card" [ngStyle]="styleCard()">
-  <div [ngStyle]="styleCardInside()" (mousedown)="onClickPage()" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+  <div
+    [ngStyle]="styleCardInside()"
+    (mousedown)="onClickPage()"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+  >
     <div [ngStyle]="styleLayer()" style="overflow: hidden">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <ng-container *ngIf="item.type == ItemType.image">
           <img [ngStyle]="styleItem(item)" [lazyLoad]="item.url" [defaultImage]="item.thumbnail" />
+        </ng-container>
+        <ng-container *ngIf="item.type == ItemType.text">
+          <quill-editor
+            [attr.pageId]="pageId"
+            [attr.itemId]="itemId"
+            (click)="stopPropagation($event)"
+            [ngStyle]="styleItem(item)"
+            [theme]="'bubble'"
+            [modules]="modulesBubble"
+            [placeholder]="''"
+          ></quill-editor>
         </ng-container>
       </ng-container>
     </div>
@@ -21,13 +37,16 @@
             (mousemove)="onMouseMoveItem($event, item)"
           ></div>
         </ng-container>
+        <ng-container *ngIf="item.type == ItemType.text">
+          <app-text-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-text-item>
+        </ng-container>
       </ng-container>
     </div>
 
-    <div [ngStyle]="styleLayer()" style="overflow: visible; pointer-events: none">
+    <!-- <div [ngStyle]="styleLayer()" style="overflow: visible; pointer-events: none">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <div *ngIf="item.hovered" [ngStyle]="styleItemPosition(item)" style="border: 1px solid aqua"></div>
       </ng-container>
-    </div>
+    </div> -->
   </div>
 </div>

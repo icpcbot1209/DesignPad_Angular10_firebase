@@ -1,14 +1,14 @@
-import { Inject, Injectable, Injector } from '@angular/core';
-import Moveable from 'moveable';
-import { Subject } from 'rxjs';
-import Selecto from 'selecto/declaration/SelectoManager';
-import { ItemStatus, ItemType } from '../models/enums';
-import { ImageFilterObj } from '../models/image-filter';
-import { AssetImage, Design, Item } from '../models/models';
-import { MoveableService } from './moveable.service';
+import { Inject, Injectable, Injector } from "@angular/core";
+import Moveable from "moveable";
+import { Subject } from "rxjs";
+import Selecto from "selecto/declaration/SelectoManager";
+import { ItemStatus, ItemType } from "../models/enums";
+import { ImageFilterObj } from "../models/image-filter";
+import { AssetImage, Design, Item } from "../models/models";
+import { MoveableService } from "./moveable.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DesignService {
   theDesign: Design;
@@ -16,22 +16,22 @@ export class DesignService {
 
   init() {
     this.theDesign = {
-      uid: '',
-      title: 'Hello World',
+      uid: "",
+      title: "Hello World",
       category: {
-        uid: '',
-        title: 'Hellos',
+        uid: "",
+        title: "Hellos",
         size: { x: 600, y: 500 },
         categoryType: {
-          uid: '',
-          title: 'Test',
+          uid: "",
+          title: "Test",
         },
-        thumbnail: '',
+        thumbnail: "",
       },
-      thumbnail: '',
+      thumbnail: "",
       pages: [
         {
-          title: '',
+          title: "",
           items: [],
         },
       ],
@@ -42,7 +42,7 @@ export class DesignService {
     // window.onhashchange = function () {
     //   window.location.hash = 'no-back-button';
     // };
-    window.addEventListener('keydown', this.onKeyEvent.bind(this));
+    window.addEventListener("keydown", this.onKeyEvent.bind(this));
 
     return this.theDesign;
   }
@@ -52,7 +52,7 @@ export class DesignService {
    **********************************************/
 
   zoomValue = 100;
-  zoomMethod = 'fit';
+  zoomMethod = "fit";
 
   page_vw = 500;
   page_vh = 500;
@@ -65,7 +65,7 @@ export class DesignService {
   }
 
   zoomFitInside(width: number, height: number) {
-    this.zoomMethod = 'fit';
+    this.zoomMethod = "fit";
     let { x: W, y: H } = this.theDesign?.category.size;
     if (!H) return;
     let r = W / H;
@@ -78,7 +78,7 @@ export class DesignService {
   }
 
   zoomFillInside(width: number, height: number) {
-    this.zoomMethod = 'fill';
+    this.zoomMethod = "fill";
     let { x: W, y: H } = this.theDesign?.category.size;
     if (!H) return;
     let r = W / H;
@@ -90,7 +90,7 @@ export class DesignService {
   }
 
   zoomCustomValue(value) {
-    this.zoomMethod = 'custom';
+    this.zoomMethod = "custom";
     this.zoomValue = value;
     let { x: W, y: H } = this.theDesign?.category.size;
     if (!H) return;
@@ -106,7 +106,7 @@ export class DesignService {
 
   addPage() {
     let newPage = {
-      title: '',
+      title: "",
       items: [],
     };
     this.theDesign.pages.push(newPage);
@@ -162,7 +162,7 @@ export class DesignService {
 
     let w, h, x, y;
     w = W * 0.8;
-    h = 100;
+    h = 46;
 
     x = (W - w) / 2;
     y = (H - h) / 2;
@@ -186,7 +186,7 @@ export class DesignService {
    **********************************************/
 
   onKeyEvent(e: KeyboardEvent) {
-    if (e.key === 'Delete' || e.key === 'Backspace') {
+    if (e.key === "Delete" || e.key === "Backspace") {
       this.deleteSelectedItems();
       e.stopImmediatePropagation();
       return false;
@@ -242,10 +242,7 @@ export class DesignService {
   }
 
   isToolpanel() {
-    return (
-      this.isStatus(ItemStatus.image_filter) ||
-      this.isStatus(ItemStatus.image_preset)
-    );
+    return this.isStatus(ItemStatus.image_filter) || this.isStatus(ItemStatus.image_preset);
   }
 
   setStatus(status: ItemStatus): void {
@@ -301,52 +298,52 @@ export class DesignService {
 
   presets: Preset[] = [
     {
-      label: '1977',
-      css: 'brightness(110%) contrast(110%) saturate(130%)',
+      label: "1977",
+      css: "brightness(110%) contrast(110%) saturate(130%)",
     },
     {
-      label: 'Aden',
-      css: 'brightness(120%) contrast(90%) hue-rotate(20deg) saturate(85%)',
+      label: "Aden",
+      css: "brightness(120%) contrast(90%) hue-rotate(20deg) saturate(85%)",
     },
     {
-      label: 'Brooklyn',
-      css: 'brightness(110%) contrast(90%)',
+      label: "Brooklyn",
+      css: "brightness(110%) contrast(90%)",
     },
     {
-      label: 'Earlybird',
-      css: 'contrast(90%) sepia(20%)',
+      label: "Earlybird",
+      css: "contrast(90%) sepia(20%)",
     },
     {
-      label: 'Gingham',
-      css: 'brightness(105%) hue-rotate(350deg)',
+      label: "Gingham",
+      css: "brightness(105%) hue-rotate(350deg)",
     },
     {
-      label: 'Hudson',
-      css: 'brightness(120%) contrast(90%) saturate(110%)',
+      label: "Hudson",
+      css: "brightness(120%) contrast(90%) saturate(110%)",
     },
     {
-      label: 'Inkwell',
-      css: 'brightness(110%) contrast(110%) grayscale(100%) sepia(30%)',
+      label: "Inkwell",
+      css: "brightness(110%) contrast(110%) grayscale(100%) sepia(30%)",
     },
     {
-      label: 'Lofi',
-      css: 'contrast(150%) saturate(110%)',
+      label: "Lofi",
+      css: "contrast(150%) saturate(110%)",
     },
     {
-      label: 'Reyes',
-      css: 'brightness(110%) contrast(85%) saturate(75%) sepia(22%)',
+      label: "Reyes",
+      css: "brightness(110%) contrast(85%) saturate(75%) sepia(22%)",
     },
     {
-      label: 'Toaster',
-      css: 'brightness(90%) contrast(150%)',
+      label: "Toaster",
+      css: "brightness(90%) contrast(150%)",
     },
     {
-      label: 'Moon',
-      css: 'brightness(110%) contrast(110%) grayscale(100%)',
+      label: "Moon",
+      css: "brightness(110%) contrast(110%) grayscale(100%)",
     },
     {
-      label: 'Willow',
-      css: 'brightness(90%) contrast(95%) grayscale(50%)',
+      label: "Willow",
+      css: "brightness(90%) contrast(95%) grayscale(50%)",
     },
   ];
 }

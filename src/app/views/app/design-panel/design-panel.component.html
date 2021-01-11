@@ -9,20 +9,11 @@
     <app-toolbar></app-toolbar>
   </div>
 
-  <div
-    style="position: absolute; bottom: 20px; right: 20px; z-index: 100"
-    dropdown
-    [dropup]="true"
-  >
+  <div style="position: absolute; bottom: 20px; right: 20px; z-index: 100" dropdown [dropup]="true">
     <button dropdownToggle type="button" class="btn btn-outline-primary">
       {{ ds.zoomValue + "%" }}
     </button>
-    <ul
-      *dropdownMenu
-      class="dropdown-menu dropdown-menu-right"
-      role="menu"
-      style="height: 430px"
-    >
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" style="height: 430px">
       <li
         role="menuitem"
         *ngFor="let option of zoomOptions"
@@ -32,18 +23,10 @@
         <a class="dropdown-item" href="javascript:;">{{ option.label }} </a>
       </li>
       <li class="divider dropdown-divider"></li>
-      <li
-        role="menuitem"
-        (click)="onSelectZoomOption('fit')"
-        style="text-align: center"
-      >
+      <li role="menuitem" (click)="onSelectZoomOption('fit')" style="text-align: center">
         <a class="dropdown-item" href="javascript:;">Fit</a>
       </li>
-      <li
-        role="menuitem"
-        (click)="onSelectZoomOption('fill')"
-        style="text-align: center"
-      >
+      <li role="menuitem" (click)="onSelectZoomOption('fill')" style="text-align: center">
         <a class="dropdown-item" href="javascript:;">Fill</a>
       </li>
     </ul>
@@ -52,20 +35,11 @@
   <div class="selecto-container" id="selecto-container">
     <div class="selecto-area" id="selecto-area">
       <div [ngStyle]="{ width: ds.page_vw + 'px' }">
-        <div
-          *ngFor="let page of ds.theDesign?.pages; let i = index"
-          style="margin: 50px 0"
-        >
+        <div *ngFor="let page of ds.theDesign?.pages; let i = index" style="margin: 50px 0">
           <app-page [page]="page" [pageId]="i"></app-page>
         </div>
 
-        <button
-          class="btn btn-primary"
-          style="width: 100%; margin-bottom: 50px"
-          (click)="addPage()"
-        >
-          Add Page
-        </button>
+        <button class="btn btn-primary" style="width: 100%; margin-bottom: 50px" (click)="addPage()">Add Page</button>
       </div>
     </div>
   </div>

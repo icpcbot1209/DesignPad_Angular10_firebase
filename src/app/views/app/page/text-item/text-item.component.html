@@ -1,0 +1,9 @@
+<div
+  class="target"
+  [ngStyle]="styleItemPosition(item)"
+  [attr.pageId]="pageId"
+  [attr.itemId]="itemId"
+  (mousedown)="onMouseDown()"
+  (mousemove)="onMouseMoveItem($event, item)"
+  (mouseup)="enableTextEdit($event)"
+></div>
