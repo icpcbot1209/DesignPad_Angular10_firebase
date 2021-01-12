@@ -4,7 +4,9 @@ import { DesignService } from "src/app/services/design.service";
 import { Item, Page } from "src/app/models/models";
 import { Colors } from "src/app/constants/colors.service";
 import { ItemType } from "src/app/models/enums";
+import { EditorChangeContent, EditorChangeSelection } from "ngx-quill";
 
+import { OnSelectEnd } from "selecto";
 import * as CSS from "csstype";
 
 @Component({
@@ -27,6 +29,43 @@ export class PageComponent implements OnInit, AfterViewInit {
       ["link"],
       ["clean"],
     ],
+    keyboard: {
+      bindings: {
+        enter: {
+          key: 13,
+          handler: (range, context) => {
+            let editorEleId =
+              "#textEditor-" + this.moveableService.selectedPageId + "-" + this.moveableService.selectedItemId;
+            let selectorEleId =
+              "#textSelector-" + this.moveableService.selectedPageId + "-" + this.moveableService.selectedItemId;
+            let editorEle: HTMLElement = document.querySelector(editorEleId) as HTMLElement;
+            let selectorEle: HTMLElement = document.querySelector(selectorEleId) as HTMLElement;
+            let fontSize = editorEle.style.fontSize;
+            console.log(fontSize);
+            // console.log(editorEle.offsetHeight.toString() + "px");
+            // console.log(selectorEle.style.height);
+            // selectorEle.style.height = editorEle.clientHeight.toString() + "px";
+            // console.log(selectorEle.style.height);
+            // let arrEles = [];
+            // arrEles.push(selectorEle);
+            // let func: OnSelectEnd = {
+            //   selected: arrEles,
+            //   afterAdded: null,
+            //   afterRemoved: null,
+            //   isDragStart: false,
+            //   isDouble: false,
+            //   added: arrEles,
+            //   removed: [],
+            //   rect: null,
+            //   inputEvent: null,
+            //   currentTarget: arrEles[0],
+            // };
+            // this.moveableService.selecto.emit("selectEnd", func);
+            return true;
+          },
+        },
+      },
+    },
   };
 
   constructor(public ds: DesignService, public moveableService: MoveableService) {}
@@ -116,7 +155,6 @@ export class PageComponent implements OnInit, AfterViewInit {
         top: 0,
         left: 0,
         width: item.w + "px",
-        // height: "auto",
         height: item.h + "px",
         transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
       };
@@ -149,7 +187,7 @@ export class PageComponent implements OnInit, AfterViewInit {
         top: 0,
         left: 0,
         width: item.w + "px",
-        height: item.h + "px",
+        // height: item.h + "px",
         // height: "auto",
         transform: this.strTransform(item),
         WebkitTransform: this.strTransform(item),
@@ -160,7 +198,11 @@ export class PageComponent implements OnInit, AfterViewInit {
   onMouseMoveItem(event: MouseEvent, item: Item) {
     let pageEl: HTMLElement = document.querySelector(`#page-${item.pageId}`);
     let rect: DOMRect = pageEl.getBoundingClientRect();
-    let isOverflow = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+    let isOverflow =
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom;
 
     if (!isOverflow) {
       item.hovered = true;

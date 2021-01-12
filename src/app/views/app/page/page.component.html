@@ -13,6 +13,7 @@
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.text">
           <quill-editor
+            [id]="'textEditor-' + pageId + '-' + itemId"
             [attr.pageId]="pageId"
             [attr.itemId]="itemId"
             (click)="stopPropagation($event)"

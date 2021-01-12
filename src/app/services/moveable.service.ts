@@ -474,6 +474,9 @@ export class MoveableService {
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
+        if (this.isMouseDown) {
+          this.isDrag = true;
+        }
       });
 
     return moveable;

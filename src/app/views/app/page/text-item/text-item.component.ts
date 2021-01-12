@@ -41,7 +41,7 @@ export class TextItemComponent implements OnInit, AfterViewInit {
         this.moveableService.getItem(ele as HTMLElement).selected = true;
         let arrEles = [];
         arrEles.push(ele);
-        this.moveableService.selecto.setSelectedTargets(arrEles);
+        // this.moveableService.selecto.setSelectedTargets(arrEles);
         let func: OnSelectEnd = {
           selected: arrEles,
           afterAdded: null,
@@ -57,6 +57,8 @@ export class TextItemComponent implements OnInit, AfterViewInit {
         this.moveableService.selecto.emit("selectEnd", func);
       }
     });
+
+    this.moveableService.isEditable = true;
   }
   styleItemPosition(item: Item): CSS.Properties {
     if (item.type === ItemType.image)
@@ -126,10 +128,6 @@ export class TextItemComponent implements OnInit, AfterViewInit {
       item.hovered = true;
     } else {
       item.hovered = false;
-    }
-
-    if (this.moveableService.isMouseDown) {
-      this.moveableService.isDrag = true;
     }
   }
 
