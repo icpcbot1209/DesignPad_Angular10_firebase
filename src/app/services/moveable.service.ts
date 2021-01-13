@@ -38,6 +38,8 @@ export class MoveableService {
   isMouseMove: boolean = false;
   isDrag: boolean = false;
 
+  isOnResize: boolean = false;
+
   constructor(private ds: DesignService) {}
 
   init() {
@@ -166,11 +168,6 @@ export class MoveableService {
       this.ds.onSelectNothing();
 
       this.isEditable = false;
-
-      // document.querySelector<HTMLElement>(
-      //   "#textEditor-" + this.selectedPageId + "-" + this.selectedItemId
-      // ).style.zIndex = "100";
-
       this.selectableTextEditor();
     }
   }
@@ -461,13 +458,16 @@ export class MoveableService {
       // target: elements[0],
       // If the container is null, the position is fixed. (default: parentElement(document.body))
       container: pageContainer,
-      target: target,
-      draggable: true,
-      throttleDrag: 0,
       origin: false,
+      target: target,
+      throttleDrag: 0,
+      draggable: true,
 
       resizable: true,
       renderDirections: ["nw", "ne", "se", "sw", "e", "w"],
+
+      rotatable: true,
+      rotationPosition: "bottom",
     });
 
     /* draggable */
@@ -488,34 +488,42 @@ export class MoveableService {
         }
       });
 
-    moveable.on("resize", ({ target, width, height }) => {
-      let item = this.getItem(target);
-      console.log(item);
-      item.w = width;
-      // item.h = height;
+    /* resize */
+    moveable
+      .on("resize", (e: OnResize) => {
+        let item = this.getItem(e.target);
+        item.w = e.width;
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        e.target.style.transform = this.strTransform(item);
 
-      // target.style.width = `${width}px`;
-      // target.style.height = `${height}px`;
-      // console.log(width, height);
-    });
+        this.isOnResize = true;
+      })
+      .on("resizeEnd", ({ target, isDrag }) => {
+        this.setSelectable(target.getAttribute("itemId"), target.getAttribute("pageId"));
+        this.selectableTextEditor();
 
-    // moveable
-    //   .on("resizeStart", (e: OnResizeStart) => {
-    //     let item = this.getItem(e.target);
-    //     e.setOrigin(["%", "%"]);
-    //     e.dragStart && e.dragStart.set([item.x, item.y]);
-    //   })
-    //   .on("resize", (e: OnResize) => {
-    //     let item = this.getItem(e.target);
-    //     item.x = e.drag.beforeTranslate[0];
-    //     item.y = e.drag.beforeTranslate[1];
-    //     item.w = e.width;
-    //     item.h = e.height;
+        this.isOnResize = false;
+      });
 
-    //     e.target.style.transform = this.strTransform(item);
-    //     e.target.style.width = `${e.width}px`;
-    //     e.target.style.height = `${e.height}px`;
-    //   });
+    /* rotate */
+    moveable
+      .on("rotateStart", (e: OnRotateStart) => {
+        let item = this.getItem(e.target);
+        e.set(item.rotate);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
+      })
+      .on("rotate", (e: OnRotate) => {
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.rotate = e.rotate;
+
+        e.target.style.transform = this.strTransform(item);
+      })
+      .on("rotateEnd", (e: OnRotate) => {
+        this.selectableTextEditor();
+      });
 
     return moveable;
   }
@@ -574,34 +582,27 @@ export class MoveableService {
   }
 
   setSelectable(item, page) {
-    document.querySelectorAll(".target").forEach((ele) => {
-      if (
-        ele.getAttribute("itemType") == "2" &&
-        ele.getAttribute("itemId") == item &&
-        ele.getAttribute("pageId") == page
-      ) {
-        this.getItem(ele as HTMLElement).selected = true;
-        let arrEles = [];
-        arrEles.push(ele);
-        this.selecto.setSelectedTargets(arrEles);
-        let func: OnSelectEnd = {
-          selected: arrEles,
-          afterAdded: null,
-          afterRemoved: null,
-          isDragStart: false,
-          isDouble: false,
-          added: arrEles,
-          removed: [],
-          rect: null,
-          inputEvent: null,
-          currentTarget: arrEles[0],
-        };
-        this.selecto.emit("selectEnd", func);
-      }
-    });
+    let ele = document.querySelector("#textSelector-" + item + "-" + page) as HTMLElement;
+    this.getItem(ele as HTMLElement).selected = true;
+    let arrEles = [];
+    arrEles.push(ele);
+    let func: OnSelectEnd = {
+      selected: arrEles,
+      afterAdded: null,
+      afterRemoved: null,
+      isDragStart: false,
+      isDouble: false,
+      added: arrEles,
+      removed: [],
+      rect: null,
+      inputEvent: null,
+      currentTarget: arrEles[0],
+    };
+    this.selecto.emit("selectEnd", func);
   }
 
   selectableTextEditor() {
+    /* reset textEditor layer on textEditor selector */
     document.querySelectorAll<HTMLElement>("quill-editor").forEach((ele) => {
       if (ele.style.zIndex !== "100") {
         ele.style.zIndex = "100";
