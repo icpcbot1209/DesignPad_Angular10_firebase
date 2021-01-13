@@ -12,17 +12,7 @@
           <img [ngStyle]="styleItem(item)" [lazyLoad]="item.url" [defaultImage]="item.thumbnail" />
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.text">
-          <quill-editor
-            [id]="'textEditor-' + pageId + '-' + itemId"
-            [attr.pageId]="pageId"
-            [attr.itemId]="itemId"
-            (click)="stopPropagation($event)"
-            [ngStyle]="styleItem(item)"
-            [theme]="'bubble'"
-            [modules]="modulesBubble"
-            [placeholder]="''"
-            (onBlur)="blur($event)"
-          ></quill-editor>
+          <app-edit-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-edit-item>
         </ng-container>
       </ng-container>
     </div>

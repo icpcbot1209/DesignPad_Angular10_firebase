@@ -29,43 +29,6 @@ export class PageComponent implements OnInit, AfterViewInit {
       ["link"],
       ["clean"],
     ],
-    keyboard: {
-      bindings: {
-        enter: {
-          key: 13,
-          handler: (range, context) => {
-            let editorEleId =
-              "#textEditor-" + this.moveableService.selectedPageId + "-" + this.moveableService.selectedItemId;
-            let selectorEleId =
-              "#textSelector-" + this.moveableService.selectedPageId + "-" + this.moveableService.selectedItemId;
-            let editorEle: HTMLElement = document.querySelector(editorEleId) as HTMLElement;
-            let selectorEle: HTMLElement = document.querySelector(selectorEleId) as HTMLElement;
-            let fontSize = editorEle.style.fontSize;
-            console.log(fontSize);
-            // console.log(editorEle.offsetHeight.toString() + "px");
-            // console.log(selectorEle.style.height);
-            // selectorEle.style.height = editorEle.clientHeight.toString() + "px";
-            // console.log(selectorEle.style.height);
-            // let arrEles = [];
-            // arrEles.push(selectorEle);
-            // let func: OnSelectEnd = {
-            //   selected: arrEles,
-            //   afterAdded: null,
-            //   afterRemoved: null,
-            //   isDragStart: false,
-            //   isDouble: false,
-            //   added: arrEles,
-            //   removed: [],
-            //   rect: null,
-            //   inputEvent: null,
-            //   currentTarget: arrEles[0],
-            // };
-            // this.moveableService.selecto.emit("selectEnd", func);
-            return true;
-          },
-        },
-      },
-    },
   };
 
   constructor(public ds: DesignService, public moveableService: MoveableService) {}
@@ -210,17 +173,5 @@ export class PageComponent implements OnInit, AfterViewInit {
     } else {
       item.hovered = false;
     }
-  }
-
-  stopPropagation(event) {
-    event.stopPropagation();
-  }
-
-  blur($event) {
-    document.querySelectorAll<HTMLElement>("quill-editor").forEach((ele) => {
-      if (ele.style.zIndex !== "100") {
-        ele.style.zIndex = "100";
-      }
-    });
   }
 }

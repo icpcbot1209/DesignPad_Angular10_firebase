@@ -464,6 +464,10 @@ export class MoveableService {
       target: target,
       draggable: true,
       throttleDrag: 0,
+      origin: false,
+
+      resizable: true,
+      renderDirections: ["nw", "ne", "se", "sw", "e", "w"],
     });
 
     /* draggable */
@@ -483,6 +487,35 @@ export class MoveableService {
           this.isDrag = true;
         }
       });
+
+    moveable.on("resize", ({ target, width, height }) => {
+      let item = this.getItem(target);
+      console.log(item);
+      item.w = width;
+      // item.h = height;
+
+      // target.style.width = `${width}px`;
+      // target.style.height = `${height}px`;
+      // console.log(width, height);
+    });
+
+    // moveable
+    //   .on("resizeStart", (e: OnResizeStart) => {
+    //     let item = this.getItem(e.target);
+    //     e.setOrigin(["%", "%"]);
+    //     e.dragStart && e.dragStart.set([item.x, item.y]);
+    //   })
+    //   .on("resize", (e: OnResize) => {
+    //     let item = this.getItem(e.target);
+    //     item.x = e.drag.beforeTranslate[0];
+    //     item.y = e.drag.beforeTranslate[1];
+    //     item.w = e.width;
+    //     item.h = e.height;
+
+    //     e.target.style.transform = this.strTransform(item);
+    //     e.target.style.width = `${e.width}px`;
+    //     e.target.style.height = `${e.height}px`;
+    //   });
 
     return moveable;
   }

@@ -161,7 +161,7 @@ export class DesignService {
     if (!H) return;
 
     let w, h, x, y;
-    w = W * 0.8;
+    w = W * 0.5;
     h = 46;
 
     x = (W - w) / 2;

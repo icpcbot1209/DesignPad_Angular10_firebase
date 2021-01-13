@@ -1,0 +1,12 @@
+<quill-editor
+  [id]="'textEditor-' + pageId + '-' + itemId"
+  [attr.pageId]="pageId"
+  [attr.itemId]="itemId"
+  (click)="stopPropagation($event)"
+  [ngStyle]="styleItem(item)"
+  [theme]="'bubble'"
+  [modules]="modulesBubble"
+  [placeholder]="''"
+  (onBlur)="blur($event)"
+  (onEditorChanged)="changedEditor($event)"
+></quill-editor>

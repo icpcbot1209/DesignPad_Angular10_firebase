@@ -16,7 +16,6 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   @Input() item: Item;
   @Input() itemId: number;
   @Input() pageId: number;
-  @ViewChild("textInput") textInput: ElementRef;
 
   modulesBubble = {
     toolbar: [

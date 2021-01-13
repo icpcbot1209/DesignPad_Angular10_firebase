@@ -31,6 +31,7 @@ import { FilterComponent } from "./toolpanel/filter/filter.component";
 import { PresetComponent } from "./toolpanel/preset/preset.component";
 import { TextComponent } from "./sidebar/text/text.component";
 import { TextItemComponent } from "./page/text-item/text-item.component";
+import { EditItemComponent } from './page/edit-item/edit-item.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { TextItemComponent } from "./page/text-item/text-item.component";
     PresetComponent,
     TextComponent,
     TextItemComponent,
+    EditItemComponent,
   ],
   imports: [
     CommonModule,
