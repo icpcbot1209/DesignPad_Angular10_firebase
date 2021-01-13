@@ -490,12 +490,18 @@ export class MoveableService {
 
     /* resize */
     moveable
+      .on("resizeStart", (e: OnResizeStart) => {
+        let item = this.getItem(e.target);
+        e.setOrigin(["%", "%"]);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
+      })
       .on("resize", (e: OnResize) => {
         let item = this.getItem(e.target);
         item.w = e.width;
         item.x = e.drag.beforeTranslate[0];
         item.y = e.drag.beforeTranslate[1];
         e.target.style.transform = this.strTransform(item);
+        e.target.style.width = `${e.width}px`;
 
         this.isOnResize = true;
       })

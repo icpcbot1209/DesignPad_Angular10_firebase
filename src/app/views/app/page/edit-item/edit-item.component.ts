@@ -52,10 +52,6 @@ export class EditItemComponent implements OnInit {
     });
 
     this.resizeObserver.observe(this.editorEle);
-
-    // this.addKeyEventListeners();
-
-    // this.moveableService.init();
   }
 
   ngOnDestroy() {
@@ -108,9 +104,5 @@ export class EditItemComponent implements OnInit {
         ele.style.zIndex = "100";
       }
     });
-  }
-
-  changedEditor(event) {
-    // this.moveableService.setSelectable(this.itemId, this.pageId);
   }
 }
