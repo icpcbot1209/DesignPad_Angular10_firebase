@@ -32,34 +32,10 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    document.querySelectorAll(".target").forEach((ele) => {
-      if (
-        ele.getAttribute("itemType") == "2" &&
-        Number(ele.getAttribute("itemId")) == this.itemId &&
-        Number(ele.getAttribute("pageId")) == this.pageId
-      ) {
-        this.moveableService.getItem(ele as HTMLElement).selected = true;
-        let arrEles = [];
-        arrEles.push(ele);
-        // this.moveableService.selecto.setSelectedTargets(arrEles);
-        let func: OnSelectEnd = {
-          selected: arrEles,
-          afterAdded: null,
-          afterRemoved: null,
-          isDragStart: false,
-          isDouble: false,
-          added: arrEles,
-          removed: [],
-          rect: null,
-          inputEvent: null,
-          currentTarget: arrEles[0],
-        };
-        this.moveableService.selecto.emit("selectEnd", func);
-      }
-    });
-
+    this.moveableService.setSelectable(this.itemId, this.pageId);
     this.moveableService.isEditable = true;
   }
+
   styleItemPosition(item: Item): CSS.Properties {
     if (item.type === ItemType.image)
       return {
@@ -74,6 +50,7 @@ export class TextItemComponent implements OnInit, AfterViewInit {
     if (item.type === ItemType.text)
       return {
         position: "absolute",
+        zIndex: 100,
         top: 0,
         left: 0,
         width: item.w + "px",

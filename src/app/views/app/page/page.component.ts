@@ -184,6 +184,7 @@ export class PageComponent implements OnInit, AfterViewInit {
     if (item.type === ItemType.text)
       return {
         position: "absolute",
+        zIndex: 100,
         top: 0,
         left: 0,
         width: item.w + "px",
@@ -213,5 +214,13 @@ export class PageComponent implements OnInit, AfterViewInit {
 
   stopPropagation(event) {
     event.stopPropagation();
+  }
+
+  blur($event) {
+    document.querySelectorAll<HTMLElement>("quill-editor").forEach((ele) => {
+      if (ele.style.zIndex !== "100") {
+        ele.style.zIndex = "100";
+      }
+    });
   }
 }

@@ -161,12 +161,17 @@ export class MoveableService {
         this.selectedItemId = targets[0].getAttribute("itemId");
         this.selectedPageId = targets[0].getAttribute("pageId");
         this.onChangeSelectedItem(targets[0]);
-        // console.log(targets[0]);
       }
     } else {
       this.ds.onSelectNothing();
 
       this.isEditable = false;
+
+      // document.querySelector<HTMLElement>(
+      //   "#textEditor-" + this.selectedPageId + "-" + this.selectedItemId
+      // ).style.zIndex = "100";
+
+      this.selectableTextEditor();
     }
   }
 
@@ -507,18 +512,14 @@ export class MoveableService {
   enableTextEdit(event: MouseEvent) {
     if (!this.isDrag) {
       if (this.isEditable) {
-        document.querySelectorAll(".ql-editor").forEach((ele) => {
+        document.querySelectorAll<HTMLElement>(".ql-editor").forEach((ele) => {
           if (
             ele.parentElement.parentElement.getAttribute("itemId") == this.selectedItemId &&
             ele.parentElement.parentElement.getAttribute("pageId") == this.selectedPageId
           ) {
-            let s = window.getSelection();
-            let r = document.createRange();
-            r.setStart(ele, ele.childElementCount);
-            r.setEnd(ele, ele.childElementCount);
-            s.removeAllRanges();
-            s.addRange(r);
-            this.isSelectedTarget = false;
+            this.setFocus(ele);
+            ele.parentElement.parentElement.style.zIndex = "1000";
+            // console.log(ele.parentElement.parentElement);
           }
         });
       }
@@ -527,5 +528,51 @@ export class MoveableService {
       this.isEditable = true;
     }
     this.isMouseDown = false;
+  }
+
+  setFocus(ele) {
+    let s = window.getSelection();
+    let r = document.createRange();
+    r.setStart(ele, ele.childElementCount);
+    r.setEnd(ele, ele.childElementCount);
+    s.removeAllRanges();
+    s.addRange(r);
+    this.isSelectedTarget = false;
+  }
+
+  setSelectable(item, page) {
+    document.querySelectorAll(".target").forEach((ele) => {
+      if (
+        ele.getAttribute("itemType") == "2" &&
+        ele.getAttribute("itemId") == item &&
+        ele.getAttribute("pageId") == page
+      ) {
+        this.getItem(ele as HTMLElement).selected = true;
+        let arrEles = [];
+        arrEles.push(ele);
+        this.selecto.setSelectedTargets(arrEles);
+        let func: OnSelectEnd = {
+          selected: arrEles,
+          afterAdded: null,
+          afterRemoved: null,
+          isDragStart: false,
+          isDouble: false,
+          added: arrEles,
+          removed: [],
+          rect: null,
+          inputEvent: null,
+          currentTarget: arrEles[0],
+        };
+        this.selecto.emit("selectEnd", func);
+      }
+    });
+  }
+
+  selectableTextEditor() {
+    document.querySelectorAll<HTMLElement>("quill-editor").forEach((ele) => {
+      if (ele.style.zIndex !== "100") {
+        ele.style.zIndex = "100";
+      }
+    });
   }
 }
