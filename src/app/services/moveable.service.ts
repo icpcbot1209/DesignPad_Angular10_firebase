@@ -496,12 +496,35 @@ export class MoveableService {
         e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on("resize", (e: OnResize) => {
+        // if (e.direction[0] !== 0 && e.direction[1] !== 0) {
+        let itemId = e.target.getAttribute("itemId");
+        let pageId = e.target.getAttribute("pageId");
+
         let item = this.getItem(e.target);
         item.w = e.width;
+        document.querySelector<HTMLElement>("#textEditor-" + pageId + "-" + itemId).style.height = `${e.height}px`;
         item.x = e.drag.beforeTranslate[0];
         item.y = e.drag.beforeTranslate[1];
         e.target.style.transform = this.strTransform(item);
         e.target.style.width = `${e.width}px`;
+        e.target.style.height = `${e.height}px`;
+
+        document
+          .querySelector("#textEditor-" + pageId + "-" + itemId)
+          .querySelectorAll<HTMLElement>("p")
+          .forEach((ele) => {
+            // ele.style.fontSize = "50px";
+          });
+        console.log("");
+        // } else {
+        //   let item = this.getItem(e.target);
+        //   item.w = e.width;
+        //   item.h = e.height;
+        //   item.x = e.drag.beforeTranslate[0];
+        //   item.y = e.drag.beforeTranslate[1];
+        //   e.target.style.transform = this.strTransform(item);
+        //   e.target.style.width = `${e.width}px`;
+        // }
 
         this.isOnResize = true;
       })
@@ -588,7 +611,7 @@ export class MoveableService {
   }
 
   setSelectable(item, page) {
-    let ele = document.querySelector("#textSelector-" + item + "-" + page) as HTMLElement;
+    let ele = document.querySelector("#textSelector-" + page + "-" + item) as HTMLElement;
     this.getItem(ele as HTMLElement).selected = true;
     let arrEles = [];
     arrEles.push(ele);

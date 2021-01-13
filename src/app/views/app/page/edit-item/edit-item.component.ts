@@ -44,6 +44,7 @@ export class EditItemComponent implements OnInit {
         let selectorEle = document.querySelector<HTMLElement>("#textSelector-" + this.pageId + "-" + this.itemId);
         selectorEle.style.width = width;
         selectorEle.style.height = height;
+        console.log(entries[0]);
 
         if (!this.moveableService.isOnResize) {
           this.moveableService.setSelectable(this.itemId, this.pageId);
@@ -104,5 +105,15 @@ export class EditItemComponent implements OnInit {
         ele.style.zIndex = "100";
       }
     });
+  }
+
+  changedEditor(event) {
+    let ele = document.querySelector<HTMLElement>(
+      "#textEditor-" + this.moveableService.selectedPageId + "-" + this.moveableService.selectedItemId
+    );
+    console.log(ele.style.height);
+    if (ele.style.height != "auto") {
+      ele.style.height = "auto";
+    }
   }
 }
