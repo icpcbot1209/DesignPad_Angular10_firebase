@@ -497,33 +497,46 @@ export class MoveableService {
       })
       .on("resize", (e: OnResize) => {
         // if (e.direction[0] !== 0 && e.direction[1] !== 0) {
-        let itemId = e.target.getAttribute("itemId");
-        let pageId = e.target.getAttribute("pageId");
+        //   let item = this.getItem(e.target);
+        //   let scaleX = e.width / item.w;
+        //   let scaleY = e.height / item.h;
+
+        //   if ()
+
+        // console.log(e.width/item.w);
+
+        // let itemId = e.target.getAttribute("itemId");
+        // let pageId = e.target.getAttribute("pageId");
+
+        // document.querySelector<HTMLElement>("#textEditor-" + pageId + "-" + itemId).style.height = `${e.height}px`;
+        // item.x = e.drag.beforeTranslate[0];
+        // item.y = e.drag.beforeTranslate[1];
+        // e.target.style.transform = this.strTransform(item);
+        // e.target.style.width = `${e.width}px`;
+        // e.target.style.height = `${e.height}px`;
+
+        // document
+        //   .querySelector("#textEditor-" + pageId + "-" + itemId)
+        //   .querySelectorAll<HTMLElement>("p")
+        //   .forEach((ele) => {
+        //     // ele.style.fontSize = "50px";
+        //   });
+
+        // } else {
 
         let item = this.getItem(e.target);
         item.w = e.width;
-        document.querySelector<HTMLElement>("#textEditor-" + pageId + "-" + itemId).style.height = `${e.height}px`;
+        item.h = e.height;
         item.x = e.drag.beforeTranslate[0];
         item.y = e.drag.beforeTranslate[1];
         e.target.style.transform = this.strTransform(item);
         e.target.style.width = `${e.width}px`;
-        e.target.style.height = `${e.height}px`;
+        let editorEle = document.querySelector<HTMLElement>(
+          "#textEditor-" + this.selectedPageId + "-" + this.selectedItemId
+        );
+        item = this.getItem(editorEle);
+        editorEle.style.width = item.w + "px";
 
-        document
-          .querySelector("#textEditor-" + pageId + "-" + itemId)
-          .querySelectorAll<HTMLElement>("p")
-          .forEach((ele) => {
-            // ele.style.fontSize = "50px";
-          });
-        console.log("");
-        // } else {
-        //   let item = this.getItem(e.target);
-        //   item.w = e.width;
-        //   item.h = e.height;
-        //   item.x = e.drag.beforeTranslate[0];
-        //   item.y = e.drag.beforeTranslate[1];
-        //   e.target.style.transform = this.strTransform(item);
-        //   e.target.style.width = `${e.width}px`;
         // }
 
         this.isOnResize = true;
@@ -531,6 +544,14 @@ export class MoveableService {
       .on("resizeEnd", ({ target, isDrag }) => {
         this.setSelectable(target.getAttribute("itemId"), target.getAttribute("pageId"));
         this.selectableTextEditor();
+        // let editorEle = document.querySelector<HTMLElement>(
+        //   "#textEditor-" + this.selectedPageId + "-" + this.selectedItemId
+        // );
+
+        // let item = this.getItem(editorEle);
+        // editorEle.style.width = item.w + "px";
+        // editorEle.style.height = item.h + "px";
+        // console.log(item.w, item.h);
 
         this.isOnResize = false;
       });

@@ -30,6 +30,7 @@ export class EditItemComponent implements OnInit {
 
   editorEle: HTMLElement;
   resizeObserver;
+  content: string = "Add a heading";
 
   constructor(public ds: DesignService, public moveableService: MoveableService, private zone: NgZone) {}
 
@@ -42,9 +43,9 @@ export class EditItemComponent implements OnInit {
         let width = JSON.stringify(entries[0].contentRect.width) + "px";
         let height = JSON.stringify(entries[0].contentRect.height) + "px";
         let selectorEle = document.querySelector<HTMLElement>("#textSelector-" + this.pageId + "-" + this.itemId);
+        let item = this.moveableService.getItem(selectorEle);
         selectorEle.style.width = width;
         selectorEle.style.height = height;
-        console.log(entries[0]);
 
         if (!this.moveableService.isOnResize) {
           this.moveableService.setSelectable(this.itemId, this.pageId);
@@ -86,7 +87,9 @@ export class EditItemComponent implements OnInit {
         zIndex: 100,
         top: 0,
         left: 0,
-        width: item.w + "px",
+        // height: item.h + "px",
+        // width: item.w + "px",
+        // width: this.moveableService.isOnResize ? item.w + "px" : "auto",
         // height: item.h + "px",
         // height: "auto",
         transform: this.strTransform(item),
