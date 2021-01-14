@@ -66,8 +66,8 @@ export class TextItemComponent implements OnInit, AfterViewInit {
         left: 0,
         width: item.w + "px",
         height: item.h + "px",
-        transform: this.strTransform(item),
-        WebkitTransform: this.strTransform(item),
+        transform: this.moveableService.strTransform(item),
+        WebkitTransform: this.moveableService.strTransform(item),
         border: "none",
         filter: item.filter,
         WebkitFilter: item.filter,
@@ -82,15 +82,12 @@ export class TextItemComponent implements OnInit, AfterViewInit {
         width: item.w + "px",
         height: item.h + "px",
         // height: "auto",
-        transform: this.strTransform(item),
-        WebkitTransform: this.strTransform(item),
+        transform: this.moveableService.strTransform(item),
+        WebkitTransform: this.moveableService.strTransform(item),
         // transform: `translate(${item.x}px, ${item.y}px)`,
       };
   }
-  strTransform(item: Item) {
-    let str = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-    return str;
-  }
+
   onMouseMoveItem(event: MouseEvent, item: Item) {
     let pageEl: HTMLElement = document.querySelector(`#page-${item.pageId}`);
     let rect: DOMRect = pageEl.getBoundingClientRect();

@@ -37,6 +37,7 @@ export class MoveableService {
   isMouseDown: boolean = false;
   isMouseMove: boolean = false;
   isDrag: boolean = false;
+  isScale: boolean = false;
 
   isOnResize: boolean = false;
 
@@ -494,50 +495,34 @@ export class MoveableService {
         let item = this.getItem(e.target);
         e.setOrigin(["%", "%"]);
         e.dragStart && e.dragStart.set([item.x, item.y]);
+        if (e.direction[0] !== 0 && e.direction[1] !== 0) {
+          this.isScale = true;
+        } else this.isScale = false;
       })
       .on("resize", (e: OnResize) => {
-        // if (e.direction[0] !== 0 && e.direction[1] !== 0) {
-        //   let item = this.getItem(e.target);
-        //   let scaleX = e.width / item.w;
-        //   let scaleY = e.height / item.h;
-
-        //   if ()
-
-        // console.log(e.width/item.w);
-
-        // let itemId = e.target.getAttribute("itemId");
-        // let pageId = e.target.getAttribute("pageId");
-
-        // document.querySelector<HTMLElement>("#textEditor-" + pageId + "-" + itemId).style.height = `${e.height}px`;
-        // item.x = e.drag.beforeTranslate[0];
-        // item.y = e.drag.beforeTranslate[1];
-        // e.target.style.transform = this.strTransform(item);
-        // e.target.style.width = `${e.width}px`;
-        // e.target.style.height = `${e.height}px`;
-
-        // document
-        //   .querySelector("#textEditor-" + pageId + "-" + itemId)
-        //   .querySelectorAll<HTMLElement>("p")
-        //   .forEach((ele) => {
-        //     // ele.style.fontSize = "50px";
-        //   });
-
-        // } else {
-
-        let item = this.getItem(e.target);
-        item.w = e.width;
-        item.h = e.height;
-        item.x = e.drag.beforeTranslate[0];
-        item.y = e.drag.beforeTranslate[1];
-        e.target.style.transform = this.strTransform(item);
-        e.target.style.width = `${e.width}px`;
-        let editorEle = document.querySelector<HTMLElement>(
-          "#textEditor-" + this.selectedPageId + "-" + this.selectedItemId
-        );
-        item = this.getItem(editorEle);
-        editorEle.style.width = item.w + "px";
-
-        // }
+        if (e.direction[0] !== 0 && e.direction[1] !== 0) {
+          // let item = this.getItem(e.target);
+          // let scaleX = e.width / item.w;
+          // console.log(scaleX);
+          // item.scaleX = scaleX;
+          // item.scaleY = scaleX;
+          // item.x = e.drag.beforeTranslate[0];
+          // item.y = e.drag.beforeTranslate[1];
+          // e.target.style.transform = this.strTransform(item);
+        } else {
+          let item = this.getItem(e.target);
+          item.w = e.width;
+          item.h = e.height;
+          item.x = e.drag.beforeTranslate[0];
+          item.y = e.drag.beforeTranslate[1];
+          e.target.style.transform = this.strTransform(item);
+          e.target.style.width = `${e.width}px`;
+          let editorEle = document.querySelector<HTMLElement>(
+            "#textEditor-" + this.selectedPageId + "-" + this.selectedItemId
+          );
+          item = this.getItem(editorEle);
+          editorEle.style.width = item.w + "px";
+        }
 
         this.isOnResize = true;
       })
@@ -589,7 +574,7 @@ export class MoveableService {
   }
 
   strTransform(item: Item): string {
-    return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`;
+    return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
   }
 
   onChangeSelectedItem(target) {

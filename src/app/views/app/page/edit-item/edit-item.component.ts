@@ -1,7 +1,6 @@
 import { Component, Input, NgZone, OnInit } from "@angular/core";
 import { Item, Page } from "src/app/models/models";
 import { ItemType } from "src/app/models/enums";
-import { fromEvent, Observable, Subscription } from "rxjs";
 import { MoveableService } from "src/app/services/moveable.service";
 
 import * as CSS from "csstype";
@@ -44,8 +43,17 @@ export class EditItemComponent implements OnInit {
         let height = JSON.stringify(entries[0].contentRect.height) + "px";
         let selectorEle = document.querySelector<HTMLElement>("#textSelector-" + this.pageId + "-" + this.itemId);
         let item = this.moveableService.getItem(selectorEle);
+        item.x = item.x - (entries[0].contentRect.width - parseInt(selectorEle.style.width)) / 2;
         selectorEle.style.width = width;
         selectorEle.style.height = height;
+        // item.w = entries[0].contentRect.width;
+        // item.h = entries[0].contentRect.height;
+
+        // console.log(parseInt(selectorEle.style.width));
+
+        // let editorEle = document.querySelector<HTMLElement>("#textEditor-" + this.pageId + "-" + this.itemId);
+        // item = this.moveableService.getItem(editorEle);
+        // item.x = item.x-(e.)
 
         if (!this.moveableService.isOnResize) {
           this.moveableService.setSelectable(this.itemId, this.pageId);
@@ -60,11 +68,6 @@ export class EditItemComponent implements OnInit {
     this.resizeObserver.unobserve(this.editorEle);
   }
 
-  strTransform(item: Item) {
-    let str = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-    return str;
-  }
-
   styleItem(item: Item): CSS.Properties {
     if (item.type === ItemType.image)
       return {
@@ -73,8 +76,8 @@ export class EditItemComponent implements OnInit {
         left: 0,
         width: item.w + "px",
         height: item.h + "px",
-        transform: this.strTransform(item),
-        WebkitTransform: this.strTransform(item),
+        transform: this.moveableService.strTransform(item),
+        WebkitTransform: this.moveableService.strTransform(item),
         border: "none",
         filter: item.filter,
         WebkitFilter: item.filter,
@@ -92,8 +95,8 @@ export class EditItemComponent implements OnInit {
         // width: this.moveableService.isOnResize ? item.w + "px" : "auto",
         // height: item.h + "px",
         // height: "auto",
-        transform: this.strTransform(item),
-        WebkitTransform: this.strTransform(item),
+        transform: this.moveableService.strTransform(item),
+        WebkitTransform: this.moveableService.strTransform(item),
         // transform: `translate(${item.x}px, ${item.y}px)`,
       };
   }

@@ -123,11 +123,6 @@ export class PageComponent implements OnInit, AfterViewInit {
       };
   }
 
-  strTransform(item: Item) {
-    let str = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-    return str;
-  }
-
   styleItem(item: Item): CSS.Properties {
     if (item.type === ItemType.image)
       return {
@@ -136,8 +131,8 @@ export class PageComponent implements OnInit, AfterViewInit {
         left: 0,
         width: item.w + "px",
         height: item.h + "px",
-        transform: this.strTransform(item),
-        WebkitTransform: this.strTransform(item),
+        transform: this.moveableService.strTransform(item),
+        WebkitTransform: this.moveableService.strTransform(item),
         border: "none",
         filter: item.filter,
         WebkitFilter: item.filter,
@@ -153,8 +148,8 @@ export class PageComponent implements OnInit, AfterViewInit {
         width: item.w + "px",
         // height: item.h + "px",
         // height: "auto",
-        transform: this.strTransform(item),
-        WebkitTransform: this.strTransform(item),
+        transform: this.moveableService.strTransform(item),
+        WebkitTransform: this.moveableService.strTransform(item),
         // transform: `translate(${item.x}px, ${item.y}px)`,
       };
   }
