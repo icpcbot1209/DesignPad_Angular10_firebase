@@ -18,7 +18,7 @@ export class TextToolbarComponent implements OnInit {
 
   options = [];
 
-  constructor(public moveableService: MoveableService, public ToolbarService: ToolbarService) {}
+  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService) {}
 
   ngOnInit(): void {
     let offset = 2;
@@ -48,7 +48,7 @@ export class TextToolbarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.ToolbarService.createTextEditor();
+    this.toolbarService.createTextEditor();
   }
 
   onBoldClick() {

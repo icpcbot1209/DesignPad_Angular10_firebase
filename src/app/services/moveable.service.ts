@@ -1,43 +1,43 @@
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
 
-import Moveable, { OnDragStart, OnDrag, OnDragGroupStart, OnDragGroup, OnRotate, OnResizeStart, OnResize, OnResizeGroupStart, OnResizeGroup, OnRotateStart, OnRotateGroupStart, OnRotateGroup, OnClip } from 'moveable'
-import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto'
-import { DesignService } from './design.service'
-import { Item } from '../models/models'
-import { ItemType } from '../models/enums'
+import Moveable, { OnDragStart, OnDrag, OnDragGroupStart, OnDragGroup, OnRotate, OnResizeStart, OnResize, OnResizeGroupStart, OnResizeGroup, OnRotateStart, OnRotateGroupStart, OnRotateGroup, OnClip } from 'moveable';
+import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
+import { DesignService } from './design.service';
+import { Item } from '../models/models';
+import { ItemType } from '../models/enums';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MoveableService {
-  selecto: Selecto
-  moveable: Moveable
-  disabledPointId: string = '#page-0'
-  isSelectedTarget: boolean
-  isEditable: boolean = true
-  pageId: number
-  previousTarget: HTMLElement
-  selectedPageId: string
-  selectedItemId: string
+  selecto: Selecto;
+  moveable: Moveable;
+  disabledPointId: string = '#page-0';
+  isSelectedTarget: boolean;
+  isEditable: boolean = true;
+  pageId: number;
+  previousTarget: HTMLElement;
+  selectedPageId: string;
+  selectedItemId: string;
 
-  isMouseDown: boolean = false
-  isMouseMove: boolean = false
-  isDrag: boolean = false
-  isScale: boolean = false
+  isMouseDown: boolean = false;
+  isMouseMove: boolean = false;
+  isDrag: boolean = false;
+  isScale: boolean = false;
 
-  isOnResize: boolean = false
+  isOnResize: boolean = false;
 
   constructor(private ds: DesignService) {}
 
   init() {
-    let container: HTMLElement = document.querySelector('#selecto-container')
-    let scroller: HTMLElement = document.querySelector('#selecto-area')
+    let container: HTMLElement = document.querySelector('#selecto-container');
+    let scroller: HTMLElement = document.querySelector('#selecto-area');
 
-    this.selecto = this.initSelecto(container, scroller)
+    this.selecto = this.initSelecto(container, scroller);
   }
 
   initSelecto(container: HTMLElement, scroller: HTMLElement) {
-    let targets: (HTMLElement | SVGElement)[] = []
+    let targets: (HTMLElement | SVGElement)[] = [];
 
     const selecto = new Selecto({
       // The container to add a selection element
@@ -64,101 +64,101 @@ export class MoveableService {
         throttleTime: 30,
         threshold: 0,
       },
-    })
+    });
 
     selecto.on('scroll', (e: OnScroll) => {
-      scroller.scrollBy(e.direction[0] * 10, e.direction[1] * 10)
-    })
+      scroller.scrollBy(e.direction[0] * 10, e.direction[1] * 10);
+    });
 
     selecto.on('select', (e: OnSelect) => {
       e.added.forEach((el) => {
-        let item = this.getItem(el)
+        let item = this.getItem(el);
         if (item) {
-          item.selected = true
+          item.selected = true;
         }
-      })
+      });
       e.removed.forEach((el) => {
-        let item = this.getItem(el)
+        let item = this.getItem(el);
         if (item) {
-          item.selected = false
+          item.selected = false;
         }
-      })
-    })
+      });
+    });
 
     selecto.on('selectEnd', (e: OnSelectEnd) => {
-      targets = e.selected
+      targets = e.selected;
 
-      this.onSelectTargets(targets)
+      this.onSelectTargets(targets);
 
       if (e.isDragStart) {
-        e.inputEvent.preventDefault()
+        e.inputEvent.preventDefault();
         setTimeout(() => {
-          this.moveable?.dragStart(e.inputEvent)
-        }, 10)
+          this.moveable?.dragStart(e.inputEvent);
+        }, 10);
       }
-    })
+    });
 
     selecto.on('dragStart', (e) => {
-      const target = e.inputEvent.target
+      const target = e.inputEvent.target;
       if ((this.moveable && this.moveable.isMoveableElement(target)) || targets.some((t) => t === target || t.contains(target))) {
-        e.stop()
+        e.stop();
       }
-    })
+    });
 
-    return selecto
+    return selecto;
   }
 
   clearMoveable() {
     if (this.moveable) {
-      this.moveable.setState({ target: [] })
-      this.selecto.setSelectedTargets([])
+      this.moveable.setState({ target: [] });
+      this.selecto.setSelectedTargets([]);
 
-      this.moveable = null
-      this.isSelectedTarget = false
+      this.moveable = null;
+      this.isSelectedTarget = false;
     }
   }
 
   onSelectTargets(targets: (HTMLElement | SVGElement)[]) {
-    this.clearMoveable()
+    this.clearMoveable();
 
-    let thePageId = -1
+    let thePageId = -1;
     targets.forEach((target) => {
-      let item = this.getItem(target)
-      if (thePageId === -1) thePageId = item.pageId
-      else if (thePageId > item.pageId) thePageId = item.pageId
-    })
+      let item = this.getItem(target);
+      if (thePageId === -1) thePageId = item.pageId;
+      else if (thePageId > item.pageId) thePageId = item.pageId;
+    });
 
     targets = targets.filter((target) => {
-      let item = this.getItem(target)
-      return item.pageId === thePageId
-    })
+      let item = this.getItem(target);
+      return item.pageId === thePageId;
+    });
 
     if (targets.length > 1) {
-      this.moveable = this.makeMoveableGroup(thePageId, targets)
-      this.ds.onSelectGroup(thePageId)
+      this.moveable = this.makeMoveableGroup(thePageId, targets);
+      this.ds.onSelectGroup(thePageId);
     } else if (targets.length === 1) {
-      let item = this.getItem(targets[0])
+      let item = this.getItem(targets[0]);
       if (item.type === ItemType.image) {
-        this.moveable = this.makeMoveableImage(thePageId, targets[0])
-        this.ds.onSelectImageItem(thePageId, item)
+        this.moveable = this.makeMoveableImage(thePageId, targets[0]);
+        this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
-        this.moveable = this.makeMoveableText(thePageId, targets[0])
-        this.ds.onSelectTextItem(thePageId, item)
-        this.isSelectedTarget = true
-        this.selectedItemId = targets[0].getAttribute('itemId')
-        this.selectedPageId = targets[0].getAttribute('pageId')
-        this.onChangeSelectedItem(targets[0])
+        this.moveable = this.makeMoveableText(thePageId, targets[0]);
+        this.ds.onSelectTextItem(thePageId, item);
+        this.isSelectedTarget = true;
+        this.selectedItemId = targets[0].getAttribute('itemId');
+        this.selectedPageId = targets[0].getAttribute('pageId');
+        this.onChangeSelectedItem(targets[0]);
       }
     } else {
-      this.ds.onSelectNothing()
+      this.ds.onSelectNothing();
 
-      this.isEditable = false
-      this.selectableTextEditor()
+      this.isEditable = false;
+      this.selectableTextEditor();
     }
   }
 
   makeMoveableGroup(pageId: number, targets: (HTMLElement | SVGElement)[]) {
-    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId)
+    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
 
     const moveable = new Moveable(pageContainer, {
       // target: elements[0],
@@ -184,94 +184,94 @@ export class MoveableService {
       throttleScale: 0,
       throttleRotate: 0,
       rotationPosition: 'bottom',
-    })
+    });
 
     /* draggable */
     moveable
       .on('dragStart', (e: OnDragStart) => {
-        let item = this.getItem(e.target)
-        e.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        if (e.inputEvent.buttons === 0) return
+        if (e.inputEvent.buttons === 0) return;
 
-        let item = this.getItem(e.target)
-        item.x = e.beforeTranslate[0]
-        item.y = e.beforeTranslate[1]
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
 
-        e.target.style.transform = this.strTransform(item)
+        e.target.style.transform = this.strTransform(item);
       })
       .on('dragGroupStart', (ev: OnDragGroupStart) => {
         ev.events.forEach((e) => {
-          moveable.emit('dragStart', e)
-        })
+          moveable.emit('dragStart', e);
+        });
       })
       .on('dragGroup', (ev: OnDragGroup) => {
         ev.events.forEach((e) => {
-          moveable.emit('drag', e)
-        })
-      })
+          moveable.emit('drag', e);
+        });
+      });
 
     /* resizable */
     moveable
       .on('resizeStart', (e: OnResizeStart) => {
-        let item = this.getItem(e.target)
-        e.setOrigin(['%', '%'])
-        e.dragStart && e.dragStart.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.setOrigin(['%', '%']);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on('resize', (e: OnResize) => {
-        let item = this.getItem(e.target)
-        item.x = e.drag.beforeTranslate[0]
-        item.y = e.drag.beforeTranslate[1]
-        item.w = e.width
-        item.h = e.height
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.w = e.width;
+        item.h = e.height;
 
-        e.target.style.transform = this.strTransform(item)
-        e.target.style.width = `${e.width}px`
-        e.target.style.height = `${e.height}px`
+        e.target.style.transform = this.strTransform(item);
+        e.target.style.width = `${e.width}px`;
+        e.target.style.height = `${e.height}px`;
       })
       .on('resizeGroupStart', (ev: OnResizeGroupStart) => {
         ev.events.forEach((e: OnResizeStart) => {
-          moveable.emit('resizeStart', e)
-        })
+          moveable.emit('resizeStart', e);
+        });
       })
       .on('resizeGroup', (ev: OnResizeGroup) => {
         ev.events.forEach((e: OnResize) => {
-          moveable.emit('resize', e)
-        })
-      })
+          moveable.emit('resize', e);
+        });
+      });
 
     /* rotatable */
     moveable
       .on('rotateStart', (e: OnRotateStart) => {
-        let item = this.getItem(e.target)
-        e.set(item.rotate)
-        e.dragStart && e.dragStart.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.set(item.rotate);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on('rotate', (e: OnRotate) => {
-        let item = this.getItem(e.target)
-        item.x = e.drag.beforeTranslate[0]
-        item.y = e.drag.beforeTranslate[1]
-        item.rotate = e.rotate
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.rotate = e.rotate;
 
-        e.target.style.transform = this.strTransform(item)
+        e.target.style.transform = this.strTransform(item);
       })
       .on('rotateGroupStart', (ev: OnRotateGroupStart) => {
         ev.events.forEach((e: OnRotateStart) => {
-          moveable.emit('rotateStart', e)
-        })
+          moveable.emit('rotateStart', e);
+        });
       })
       .on('rotateGroup', (ev: OnRotateGroup) => {
         ev.events.forEach((e: OnRotate) => {
-          moveable.emit('rotate', e)
-        })
-      })
+          moveable.emit('rotate', e);
+        });
+      });
 
-    return moveable
+    return moveable;
   }
 
   makeMoveableImage(pageId: number, target: HTMLElement | SVGElement) {
-    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId)
+    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
 
     const moveable = new Moveable(pageContainer, {
       // target: elements[0],
@@ -295,94 +295,94 @@ export class MoveableService {
       throttleScale: 0,
       throttleRotate: 0,
       rotationPosition: 'bottom',
-    })
+    });
 
     /* draggable */
     moveable
       .on('dragStart', (e: OnDragStart) => {
-        let item = this.getItem(e.target)
-        e.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        if (e.inputEvent.buttons === 0) return
-        let item = this.getItem(e.target)
-        item.x = e.beforeTranslate[0]
-        item.y = e.beforeTranslate[1]
+        if (e.inputEvent.buttons === 0) return;
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
 
-        e.target.style.transform = this.strTransform(item)
-      })
+        e.target.style.transform = this.strTransform(item);
+      });
 
     /* resizable */
     moveable
       .on('resizeStart', (e: OnResizeStart) => {
-        let item = this.getItem(e.target)
-        e.setOrigin(['%', '%'])
-        e.dragStart && e.dragStart.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.setOrigin(['%', '%']);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on('resize', (e: OnResize) => {
-        let item = this.getItem(e.target)
-        item.x = e.drag.beforeTranslate[0]
-        item.y = e.drag.beforeTranslate[1]
-        item.w = e.width
-        item.h = e.height
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.w = e.width;
+        item.h = e.height;
 
-        e.target.style.transform = this.strTransform(item)
-        e.target.style.width = `${e.width}px`
-        e.target.style.height = `${e.height}px`
-      })
+        e.target.style.transform = this.strTransform(item);
+        e.target.style.width = `${e.width}px`;
+        e.target.style.height = `${e.height}px`;
+      });
 
     /* rotatable */
     moveable
       .on('rotateStart', (e: OnRotateStart) => {
-        let item = this.getItem(e.target)
-        e.set(item.rotate)
-        e.dragStart && e.dragStart.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.set(item.rotate);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on('rotate', (e: OnRotate) => {
-        let item = this.getItem(e.target)
-        item.x = e.drag.beforeTranslate[0]
-        item.y = e.drag.beforeTranslate[1]
-        item.rotate = e.rotate
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.rotate = e.rotate;
 
-        e.target.style.transform = this.strTransform(item)
-      })
+        e.target.style.transform = this.strTransform(item);
+      });
 
-    return moveable
+    return moveable;
   }
 
-  tempClipStyle
+  tempClipStyle;
   startImageCrop() {
-    if (!this.moveable) return
+    if (!this.moveable) return;
 
-    let target = <HTMLElement | SVGElement>this.moveable.target
-    let item = this.getItem(target)
-    if (item.clipStyle) this.tempClipStyle = JSON.parse(JSON.stringify(item.clipStyle))
-    else this.tempClipStyle = ''
+    let target = <HTMLElement | SVGElement>this.moveable.target;
+    let item = this.getItem(target);
+    if (item.clipStyle) this.tempClipStyle = JSON.parse(JSON.stringify(item.clipStyle));
+    else this.tempClipStyle = '';
 
-    this.clearMoveable()
+    this.clearMoveable();
 
-    this.moveable = this.makeClipableImage(item.pageId, target)
+    this.moveable = this.makeClipableImage(item.pageId, target);
   }
 
   endImageCrop(isSave: boolean) {
-    if (!this.moveable) return
+    if (!this.moveable) return;
 
-    let target = <HTMLElement | SVGElement>this.moveable.target
-    let item = this.getItem(target)
+    let target = <HTMLElement | SVGElement>this.moveable.target;
+    let item = this.getItem(target);
 
     if (!isSave) {
-      target.style.clip = this.tempClipStyle
-      target.style.clipPath = this.tempClipStyle
-      item.clipStyle = this.tempClipStyle
+      target.style.clip = this.tempClipStyle;
+      target.style.clipPath = this.tempClipStyle;
+      item.clipStyle = this.tempClipStyle;
     } else {
     }
 
-    this.clearMoveable()
-    this.moveable = this.makeMoveableImage(item.pageId, target)
+    this.clearMoveable();
+    this.moveable = this.makeMoveableImage(item.pageId, target);
   }
 
   makeClipableImage(pageId: number, target: HTMLElement | SVGElement) {
-    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId)
+    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
 
     const moveable = new Moveable(pageContainer, {
       // If you want to use a group, set multiple targets(type: Array<HTMLElement | SVGElement>).
@@ -406,38 +406,38 @@ export class MoveableService {
       origin: true,
       padding: { left: 0, top: 0, right: 0, bottom: 0 },
       snapThreshold: 5,
-    })
+    });
 
     moveable.on('clip', (e: OnClip) => {
       if (e.clipType === 'rect') {
-        e.target.style.clip = e.clipStyle
+        e.target.style.clip = e.clipStyle;
       } else {
-        e.target.style.clipPath = e.clipStyle
+        e.target.style.clipPath = e.clipStyle;
       }
-      let item = this.getItem(e.target)
-      item.clipStyle = e.clipStyle
-    })
+      let item = this.getItem(e.target);
+      item.clipStyle = e.clipStyle;
+    });
 
     /* draggable */
     moveable
       .on('dragStart', (e: OnDragStart) => {
-        let item = this.getItem(e.target)
-        e.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        if (e.inputEvent.buttons === 0) return
+        if (e.inputEvent.buttons === 0) return;
 
-        let item = this.getItem(e.target)
-        item.x = e.beforeTranslate[0]
-        item.y = e.beforeTranslate[1]
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
 
-        e.target.style.transform = this.strTransform(item)
-      })
+        e.target.style.transform = this.strTransform(item);
+      });
 
-    return moveable
+    return moveable;
   }
   makeMoveableText(pageId: number, target: HTMLElement | SVGElement) {
-    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId)
+    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
 
     const moveable = new Moveable(pageContainer, {
       // target: elements[0],
@@ -453,35 +453,35 @@ export class MoveableService {
 
       rotatable: true,
       rotationPosition: 'bottom',
-    })
+    });
 
     /* draggable */
     moveable
       .on('dragStart', (e: OnDragStart) => {
-        let item = this.getItem(e.target)
-        e.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        if (e.inputEvent.buttons === 0) return
-        let item = this.getItem(e.target)
-        item.x = e.beforeTranslate[0]
-        item.y = e.beforeTranslate[1]
+        if (e.inputEvent.buttons === 0) return;
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
 
-        e.target.style.transform = this.strTransform(item)
+        e.target.style.transform = this.strTransform(item);
         if (this.isMouseDown) {
-          this.isDrag = true
+          this.isDrag = true;
         }
-      })
+      });
 
     /* resize */
     moveable
       .on('resizeStart', (e: OnResizeStart) => {
-        let item = this.getItem(e.target)
-        e.setOrigin(['%', '%'])
-        e.dragStart && e.dragStart.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.setOrigin(['%', '%']);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
         if (e.direction[0] !== 0 && e.direction[1] !== 0) {
-          this.isScale = true
-        } else this.isScale = false
+          this.isScale = true;
+        } else this.isScale = false;
       })
       .on('resize', (e: OnResize) => {
         if (e.direction[0] !== 0 && e.direction[1] !== 0) {
@@ -494,23 +494,23 @@ export class MoveableService {
           // item.y = e.drag.beforeTranslate[1];
           // e.target.style.transform = this.strTransform(item);
         } else {
-          let item = this.getItem(e.target)
-          item.w = e.width
-          item.h = e.height
-          item.x = e.drag.beforeTranslate[0]
-          item.y = e.drag.beforeTranslate[1]
-          e.target.style.transform = this.strTransform(item)
-          e.target.style.width = `${e.width}px`
-          let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
-          item = this.getItem(editorEle)
-          editorEle.style.width = item.w + 'px'
+          let item = this.getItem(e.target);
+          item.w = e.width;
+          item.h = e.height;
+          item.x = e.drag.beforeTranslate[0];
+          item.y = e.drag.beforeTranslate[1];
+          e.target.style.transform = this.strTransform(item);
+          e.target.style.width = `${e.width}px`;
+          let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
+          item = this.getItem(editorEle);
+          editorEle.style.width = item.w + 'px';
         }
 
-        this.isOnResize = true
+        this.isOnResize = true;
       })
       .on('resizeEnd', ({ target, isDrag }) => {
-        this.setSelectable(target.getAttribute('itemId'), target.getAttribute('pageId'))
-        this.selectableTextEditor()
+        this.setSelectable(target.getAttribute('itemId'), target.getAttribute('pageId'));
+        this.selectableTextEditor();
         // let editorEle = document.querySelector<HTMLElement>(
         //   "#textEditor-" + this.selectedPageId + "-" + this.selectedItemId
         // );
@@ -520,85 +520,85 @@ export class MoveableService {
         // editorEle.style.height = item.h + "px";
         // console.log(item.w, item.h);
 
-        this.isOnResize = false
-      })
+        this.isOnResize = false;
+      });
 
     /* rotate */
     moveable
       .on('rotateStart', (e: OnRotateStart) => {
-        let item = this.getItem(e.target)
-        e.set(item.rotate)
-        e.dragStart && e.dragStart.set([item.x, item.y])
+        let item = this.getItem(e.target);
+        e.set(item.rotate);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on('rotate', (e: OnRotate) => {
-        let item = this.getItem(e.target)
-        item.x = e.drag.beforeTranslate[0]
-        item.y = e.drag.beforeTranslate[1]
-        item.rotate = e.rotate
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.rotate = e.rotate;
 
-        e.target.style.transform = this.strTransform(item)
+        e.target.style.transform = this.strTransform(item);
       })
       .on('rotateEnd', (e: OnRotate) => {
-        this.selectableTextEditor()
-      })
+        this.selectableTextEditor();
+      });
 
-    return moveable
+    return moveable;
   }
 
   getItem(target: HTMLElement | SVGElement): Item {
-    const pageId = Number(target.getAttribute('pageId'))
-    const itemId = Number(target.getAttribute('itemId'))
+    const pageId = Number(target.getAttribute('pageId'));
+    const itemId = Number(target.getAttribute('itemId'));
     if (pageId < this.ds.theDesign.pages.length && itemId < this.ds.theDesign.pages[pageId].items.length) {
-      let item = this.ds.theDesign.pages[pageId].items[itemId]
-      return item
+      let item = this.ds.theDesign.pages[pageId].items[itemId];
+      return item;
     }
-    return null
+    return null;
   }
 
   strTransform(item: Item): string {
-    return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`
+    return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
   }
 
   onChangeSelectedItem(target) {
     if (this.previousTarget != undefined) {
       if (this.previousTarget != target) {
-        this.isEditable = false
+        this.isEditable = false;
       }
     }
-    this.previousTarget = target
+    this.previousTarget = target;
   }
   enableTextEdit(event: MouseEvent) {
     if (!this.isDrag) {
       if (this.isEditable) {
         document.querySelectorAll<HTMLElement>('.ql-editor').forEach((ele) => {
           if (ele.parentElement.getAttribute('itemId') == this.selectedItemId && ele.parentElement.getAttribute('pageId') == this.selectedPageId) {
-            this.setFocus(ele)
-            ele.parentElement.parentElement.style.zIndex = '1000'
+            this.setFocus(ele);
+            ele.parentElement.style.zIndex = '1000';
           }
-        })
+        });
       }
-    } else this.isDrag = false
+    } else this.isDrag = false;
     if (this.isSelectedTarget) {
-      this.isEditable = true
+      this.isEditable = true;
     }
-    this.isMouseDown = false
+    this.isMouseDown = false;
   }
 
   setFocus(ele) {
-    let s = window.getSelection()
-    let r = document.createRange()
-    r.setStart(ele, ele.childElementCount)
-    r.setEnd(ele, ele.childElementCount)
-    s.removeAllRanges()
-    s.addRange(r)
-    this.isSelectedTarget = false
+    let s = window.getSelection();
+    let r = document.createRange();
+    r.setStart(ele, ele.childElementCount);
+    r.setEnd(ele, ele.childElementCount);
+    s.removeAllRanges();
+    s.addRange(r);
+    this.isSelectedTarget = false;
   }
 
   setSelectable(item, page) {
-    let ele = document.querySelector('#textSelector-' + page + '-' + item) as HTMLElement
-    this.getItem(ele as HTMLElement).selected = true
-    let arrEles = []
-    arrEles.push(ele)
+    let ele = document.querySelector('#textSelector-' + page + '-' + item) as HTMLElement;
+    this.getItem(ele as HTMLElement).selected = true;
+    let arrEles = [];
+    arrEles.push(ele);
     let func: OnSelectEnd = {
       selected: arrEles,
       afterAdded: null,
@@ -610,16 +610,20 @@ export class MoveableService {
       rect: null,
       inputEvent: null,
       currentTarget: arrEles[0],
-    }
-    this.selecto.emit('selectEnd', func)
+    };
+    this.selecto.emit('selectEnd', func);
+
+    setTimeout(() => {
+      // this.ToolbarService.createTextEditor();
+    }, 2000);
   }
 
   selectableTextEditor() {
     /* reset textEditor layer on textEditor selector */
-    document.querySelectorAll<HTMLElement>('quill-editor').forEach((ele) => {
-      if (ele.style.zIndex !== '100') {
-        ele.style.zIndex = '100'
+    document.querySelectorAll<HTMLElement>('.ql-editor').forEach((ele) => {
+      if (ele.parentElement.style.zIndex !== '100') {
+        ele.parentElement.style.zIndex = '100';
       }
-    })
+    });
   }
 }

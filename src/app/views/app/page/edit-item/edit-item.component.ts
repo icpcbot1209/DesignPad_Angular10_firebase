@@ -97,6 +97,7 @@ import { DesignService } from 'src/app/services/design.service';
 
 import * as CSS from 'csstype';
 
+declare var Quill;
 declare var ResizeObserver;
 
 @Component({
@@ -138,6 +139,7 @@ export class EditItemComponent implements OnInit {
 
         if (!this.moveableService.isOnResize) {
           this.moveableService.setSelectable(this.itemId, this.pageId);
+          console.log('select');
         }
       });
     });
