@@ -1,0 +1,58 @@
+.vl {
+  border-left: 1px solid rgba(57, 76, 96, 0.15);
+  height: 30px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.mat-button {
+  padding: 0;
+  min-width: 35px;
+}
+
+/* font size dropdown meun*/
+#fontSettingContainer {
+  border: 1px solid rgba(57, 76, 96, 0.15);
+  border-top-color: rgba(57, 76, 96, 0.15);
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-right-color: rgba(57, 76, 96, 0.15);
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-bottom-color: rgba(57, 76, 96, 0.15);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-left-color: rgba(57, 76, 96, 0.15);
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-image-source: initial;
+  border-image-slice: initial;
+  border-image-width: initial;
+  border-image-outset: initial;
+  border-image-repeat: initial;
+  background-clip: padding-box;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+#setFontSize {
+  background-color: #f8f8f8;
+  border: none;
+  width: 40px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.ql-toolbar.ql-snow {
+  border: none;
+}
+
+///////////////////////////

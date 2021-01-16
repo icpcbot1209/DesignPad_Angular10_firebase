@@ -1,13 +1,5 @@
-<quill-editor
-  [(ngModel)]="content"
-  [id]="'textEditor-' + pageId + '-' + itemId"
-  [attr.pageId]="pageId"
-  [attr.itemId]="itemId"
-  (click)="stopPropagation($event)"
-  [ngStyle]="styleItem(item)"
-  [theme]="'bubble'"
-  [modules]="modulesBubble"
-  [placeholder]="''"
-  (onBlur)="blur($event)"
-  (onEditorChanged)="changedEditor($event)"
-></quill-editor>
+<!-- <div id="editor"></div> -->
+
+<div [id]="'textEditor-' + pageId + '-' + itemId" [ngStyle]="styleItem(item)" (click)="stopPropagation($event)" [attr.pageId]="pageId" [attr.itemId]="itemId">
+  <p>Add a heading</p>
+</div>

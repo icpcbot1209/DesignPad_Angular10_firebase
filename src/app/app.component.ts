@@ -3,20 +3,16 @@ import { LangService } from './shared/lang.service';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { AuthService } from './shared/auth.service';
+// import { ToolbarService } from './services/toolbar.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
 })
-
 @Injectable()
 export class AppComponent implements OnInit, AfterViewInit {
   isMultiColorActive = environment.isMultiColorActive;
-  constructor(
-    private authService: AuthService,
-    private langService: LangService,
-    private renderer: Renderer2,
-  ) {
+  constructor(private authService: AuthService, private langService: LangService, private renderer: Renderer2 /* public ToolbarService: ToolbarService */) {
     this.authService.init();
   }
 
@@ -31,5 +27,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.renderer.addClass(document.body, 'default-transition');
     }, 1500);
+    // setTimeout(() => {
+    //   this.ToolbarService.createTextEditor();
+    // }, 5000);
   }
 }
