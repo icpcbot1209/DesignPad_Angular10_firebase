@@ -1,5 +1,11 @@
 <!-- <div id="editor"></div> -->
 
-<div [id]="'textEditor-' + pageId + '-' + itemId" [ngStyle]="styleItem(item)" (click)="stopPropagation($event)" [attr.pageId]="pageId" [attr.itemId]="itemId">
+<div
+  [id]="'textEditor-' + pageId + '-' + itemId"
+  [ngStyle]="styleItem(item)"
+  (click)="stopPropagation($event)"
+  [attr.pageId]="pageId"
+  [attr.itemId]="itemId"
+>
   <p>Add a heading</p>
 </div>

@@ -3,6 +3,7 @@ import { Item, Page } from 'src/app/models/models';
 import { ItemType } from 'src/app/models/enums';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
+import { DesignService } from 'src/app/services/design.service';
 
 import * as CSS from 'csstype';
 
@@ -16,12 +17,13 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   @Input() itemId: number;
   @Input() pageId: number;
 
-  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService) {}
+  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ds: DesignService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.ds.onSelectNothing();
+  }
 
   ngAfterViewInit(): void {
-    this.moveableService.setSelectable(this.itemId, this.pageId);
     this.moveableService.isEditable = true;
   }
 
@@ -43,7 +45,6 @@ export class TextItemComponent implements OnInit, AfterViewInit {
         top: 0,
         left: 0,
         width: item.w + 'px',
-        // height: "auto",
         height: item.h + 'px',
         transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
       };

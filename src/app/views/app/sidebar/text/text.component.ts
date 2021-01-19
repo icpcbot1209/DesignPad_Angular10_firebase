@@ -1,13 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { DesignService } from "src/app/services/design.service";
+import { MoveableService } from 'src/app/services/moveable.service';
+import { Component, OnInit } from '@angular/core';
+import { ItemStatus } from 'src/app/models/enums';
+import { DesignService } from 'src/app/services/design.service';
 
 @Component({
-  selector: "sidebar-text",
-  templateUrl: "./text.component.html",
-  styleUrls: ["./text.component.scss"],
+  selector: 'sidebar-text',
+  templateUrl: './text.component.html',
+  styleUrls: ['./text.component.scss'],
 })
 export class TextComponent implements OnInit {
-  constructor(public ds: DesignService) {}
+  constructor(public ds: DesignService, public moveableService: MoveableService) {}
 
   ngOnInit(): void {}
 
@@ -22,4 +24,5 @@ export class TextComponent implements OnInit {
     // console.log(this.textEditor.nativeElement);
     // this.moveableService.makeMoveableText(item.pageId, ele);
   }
+  hover() {}
 }

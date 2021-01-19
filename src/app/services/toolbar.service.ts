@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { MoveableService } from './moveable.service';
 
 declare var Quill;
 
@@ -7,10 +6,10 @@ declare var Quill;
   providedIn: 'root',
 })
 export class ToolbarService {
-  constructor(public MoveableService: MoveableService) {}
+  constructor() {}
 
-  createTextEditor() {
-    var quill = new Quill('#textEditor-' + this.MoveableService.selectedPageId + '-' + this.MoveableService.selectedItemId, {
+  createTextEditor(selectedPageId, selectedItemId) {
+    new Quill('#textEditor-' + selectedPageId + '-' + selectedItemId, {
       modules: {
         toolbar: '#toolbar',
       },

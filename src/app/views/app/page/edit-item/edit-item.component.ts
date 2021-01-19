@@ -93,6 +93,7 @@ import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Item, Page } from 'src/app/models/models';
 import { ItemType } from 'src/app/models/enums';
 import { MoveableService } from 'src/app/services/moveable.service';
+import { ToolbarService } from 'src/app/services/toolbar.service';
 import { DesignService } from 'src/app/services/design.service';
 
 import * as CSS from 'csstype';
@@ -115,7 +116,10 @@ export class EditItemComponent implements OnInit {
 
   constructor(public moveableService: MoveableService, private zone: NgZone) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.moveableService.selectedPageId = this.pageId.toString();
+    this.moveableService.selectedItemId = this.itemId.toString();
+  }
 
   ngAfterViewInit(): void {
     this.editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.pageId + '-' + this.itemId);
@@ -128,6 +132,7 @@ export class EditItemComponent implements OnInit {
         item.x = item.x - (entries[0].contentRect.width - parseInt(selectorEle.style.width)) / 2;
         selectorEle.style.width = width;
         selectorEle.style.height = height;
+        selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
         // item.w = entries[0].contentRect.width;
         // item.h = entries[0].contentRect.height;
 
@@ -139,12 +144,14 @@ export class EditItemComponent implements OnInit {
 
         if (!this.moveableService.isOnResize) {
           this.moveableService.setSelectable(this.itemId, this.pageId);
-          console.log('select');
         }
       });
     });
 
     this.resizeObserver.observe(this.editorEle);
+
+    // document.querySelector<HTMLInputElement>('#fontSizeInput').value = this['item']['fontSize'];
+    // console.log(this['item']['fontSize']);
   }
 
   ngOnDestroy() {
@@ -181,6 +188,7 @@ export class EditItemComponent implements OnInit {
         height: 'auto',
         transform: this.moveableService.strTransform(item),
         WebkitTransform: this.moveableService.strTransform(item),
+        fontSize: '24px',
         // transform: `translate(${item.x}px, ${item.y}px)`,
       };
   }

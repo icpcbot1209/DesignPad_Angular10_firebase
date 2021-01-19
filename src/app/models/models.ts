@@ -18,6 +18,7 @@ export interface Item {
   thumbnail?: string;
   filter?: string;
   text?: string;
+  fontSize?: string;
   font?: string;
 }
 

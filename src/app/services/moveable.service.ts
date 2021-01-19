@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import Moveable, { OnDragStart, OnDrag, OnDragGroupStart, OnDragGroup, OnRotate, OnResizeStart, OnResize, OnResizeGroupStart, OnResizeGroup, OnRotateStart, OnRotateGroupStart, OnRotateGroup, OnClip } from 'moveable';
 import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
+import { ToolbarService } from './toolbar.service';
 import { DesignService } from './design.service';
 import { Item } from '../models/models';
 import { ItemType } from '../models/enums';
@@ -27,7 +28,7 @@ export class MoveableService {
 
   isOnResize: boolean = false;
 
-  constructor(private ds: DesignService) {}
+  constructor(private ds: DesignService, private toolbarService: ToolbarService) {}
 
   init() {
     let container: HTMLElement = document.querySelector('#selecto-container');
@@ -143,7 +144,7 @@ export class MoveableService {
         this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
         this.moveable = this.makeMoveableText(thePageId, targets[0]);
-        this.ds.onSelectTextItem(thePageId, item);
+        this.ds.onSelectTextItem();
         this.isSelectedTarget = true;
         this.selectedItemId = targets[0].getAttribute('itemId');
         this.selectedPageId = targets[0].getAttribute('pageId');
@@ -613,9 +614,9 @@ export class MoveableService {
     };
     this.selecto.emit('selectEnd', func);
 
-    setTimeout(() => {
-      // this.ToolbarService.createTextEditor();
-    }, 2000);
+    if (document.querySelector('#toolbar')) {
+      // this.toolbarService.createTextEditor(this.selectedPageId, this.selectedItemId);
+    }
   }
 
   selectableTextEditor() {
