@@ -1,6 +1,20 @@
 import { Injectable } from '@angular/core';
 
-import Moveable, { OnDragStart, OnDrag, OnDragGroupStart, OnDragGroup, OnRotate, OnResizeStart, OnResize, OnResizeGroupStart, OnResizeGroup, OnRotateStart, OnRotateGroupStart, OnRotateGroup, OnClip } from 'moveable';
+import Moveable, {
+  OnDragStart,
+  OnDrag,
+  OnDragGroupStart,
+  OnDragGroup,
+  OnRotate,
+  OnResizeStart,
+  OnResize,
+  OnResizeGroupStart,
+  OnResizeGroup,
+  OnRotateStart,
+  OnRotateGroupStart,
+  OnRotateGroup,
+  OnClip,
+} from 'moveable';
 import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
 import { ToolbarService } from './toolbar.service';
 import { DesignService } from './design.service';
@@ -149,6 +163,8 @@ export class MoveableService {
         this.selectedItemId = targets[0].getAttribute('itemId');
         this.selectedPageId = targets[0].getAttribute('pageId');
         this.onChangeSelectedItem(targets[0]);
+        this.selectableTextEditor();
+        this.resetTextToolbar();
       }
     } else {
       this.ds.onSelectNothing();
@@ -626,5 +642,11 @@ export class MoveableService {
         ele.parentElement.style.zIndex = '100';
       }
     });
+  }
+
+  resetTextToolbar() {
+    let ele = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
+    let item = this.getItem(ele);
+    this.toolbarService.resetting(item);
   }
 }
