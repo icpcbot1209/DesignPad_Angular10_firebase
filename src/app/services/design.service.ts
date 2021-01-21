@@ -250,7 +250,7 @@ export class DesignService {
   }
 
   isToolpanel() {
-    return this.isStatus(ItemStatus.image_filter) || this.isStatus(ItemStatus.image_preset);
+    return this.isStatus(ItemStatus.image_filter) || this.isStatus(ItemStatus.image_preset) || this.isStatus(ItemStatus.text_font_list);
   }
 
   setStatus(status: ItemStatus): void {

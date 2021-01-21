@@ -1,8 +1,10 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ToolbarService } from 'src/app/services/toolbar.service';
 import { MoveableService } from 'src/app/services/moveable.service';
+import { DesignService } from 'src/app/services/design.service';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { ItemStatus, ItemType } from 'src/app/models/enums';
 
 @Component({
   selector: 'app-text-toolbar',
@@ -12,13 +14,18 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 export class TextToolbarComponent implements OnInit {
   @ViewChild('fontSizeInput', { read: MatAutocompleteTrigger })
   fontSizeInput: MatAutocompleteTrigger;
+
+  ItemStatus = ItemStatus;
+
+  fontControl = new FormControl();
   myControl = new FormControl();
 
   fontSizes = [];
   currentFontSize: string;
-  ele: HTMLInputElement;
+  sizeEle: HTMLInputElement;
+  fontEle: HTMLInputElement;
 
-  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService) {}
+  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ds: DesignService) {}
 
   ngOnInit(): void {
     let offset = 2;
@@ -70,30 +77,33 @@ export class TextToolbarComponent implements OnInit {
       selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
     }
 
-    this.ele = document.querySelector<HTMLInputElement>('#fontSizeInput');
+    this.sizeEle = document.querySelector<HTMLInputElement>('#fontSizeInput');
+    this.fontEle = document.querySelector<HTMLInputElement>('#fontInput');
 
     let ele = document.querySelector<HTMLElement>('#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId);
     item = this.moveableService.getItem(ele);
+
     setTimeout(() => {
-      this.ele.value = item.fontSize.substr(0, item.fontSize.length - 2);
+      this.fontEle.value = 'Google Font';
+      this.sizeEle.value = item.fontSize.substr(0, item.fontSize.length - 2);
+      this.fontControl.disable();
     });
-    console.log(item.fontSize);
   }
 
   catchEnterKey(event) {
     if (event.charCode == 13) {
       this.fontSizeInput.closePanel();
-      this.setFontSize(this.ele.value);
+      this.setFontSize(this.sizeEle.value);
     }
   }
 
   showPanel() {
-    this.ele.select();
+    this.sizeEle.select();
     this.fontSizeInput.openPanel();
   }
 
   optionSelected() {
-    this.setFontSize(this.ele.value);
+    this.setFontSize(this.sizeEle.value);
   }
 
   setFontSize(fontSize: string) {
@@ -101,5 +111,9 @@ export class TextToolbarComponent implements OnInit {
     let item = this.moveableService.getItem(ele);
     item.fontSize = fontSize + 'px';
     ele.style.fontSize = item.fontSize;
+  }
+
+  showFontList() {
+    this.ds.setStatus(this.ItemStatus.text_font_list);
   }
 }

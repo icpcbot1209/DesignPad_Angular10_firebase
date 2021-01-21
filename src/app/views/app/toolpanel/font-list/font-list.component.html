@@ -1,0 +1,15 @@
+<ng-select id="searchFontInput" style="margin: 10px 5px" bindLabel="name" [placeholder]="'Search'" [isOpen]="false"> </ng-select>
+
+<perfect-scrollbar
+  #perfectScrollbar
+  id="fontList"
+  style="height: calc(100% - 70px); cursor: pointer"
+  [config]="{ suppressScrollX: true, wheelPropagation: false }"
+>
+  <ng-container *ngFor="let font of fonts?.items; let i = index">
+    <div class="fontItem" [ngStyle]="{ fontFamily: font.family }">
+      <span>{{ font.family }}</span>
+      <mat-icon style="display: none">done</mat-icon>
+    </div>
+  </ng-container>
+</perfect-scrollbar>

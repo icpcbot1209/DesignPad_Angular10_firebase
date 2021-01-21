@@ -7,6 +7,8 @@ declare var Quill;
   providedIn: 'root',
 })
 export class ToolbarService {
+  url = 'https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBipcG_GYuR_AN_TP6SxzppJz9sWZxIJSQ';
+
   constructor() {}
 
   createTextEditor(selectedPageId, selectedItemId) {

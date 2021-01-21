@@ -1,26 +1,11 @@
 <div class="menu" (click)="menuClicked($event)">
   <div class="main-menu">
-    <perfect-scrollbar
-      class="scroll"
-      [config]="{ suppressScrollX: true, wheelPropagation: false }"
-    >
+    <perfect-scrollbar class="scroll" [config]="{ suppressScrollX: true, wheelPropagation: false }">
       <ul class="list-unstyled">
-        <li
-          *ngFor="let item of menuItems; let i = index"
-          [ngClass]="{ active: !ds.isToolpanel() && i == theId }"
-        >
-          <a
-            href="javascript:;"
-            (click)="menuItemClicked($event, item, i)"
-            style="font-size: smaller"
-          >
+        <li *ngFor="let item of menuItems; let i = index" [ngClass]="{ active: !ds.isToolpanel() && i == theId }">
+          <a href="javascript:;" (click)="menuItemClicked($event, item, i)" style="font-size: smaller">
             <i *ngIf="item.label == 'Text'">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
                   fill-rule="evenodd"
@@ -28,23 +13,18 @@
                 ></path>
               </svg>
             </i>
-            <i
-              *ngIf="item.label != 'Text'"
-              [ngClass]="item.icon"
-              style="font-size: x-large"
-            ></i>
+            <i *ngIf="item.label != 'Text'" [ngClass]="item.icon" style="font-size: x-large"></i>
             {{ item.label }}</a
           >
         </li>
       </ul>
     </perfect-scrollbar>
   </div>
-  <div class="sub-menu" style="padding: 10px 20px">
+  <div id="sub-menu" class="sub-menu" style="padding: 10px 20px">
     <div
       [ngStyle]="{
         height: '100%',
-        display:
-          !ds.isToolpanel() && theItem.label == 'Uploads' ? 'block' : 'none'
+        display: !ds.isToolpanel() && theItem.label == 'Uploads' ? 'block' : 'none'
       }"
     >
       <user-uploads></user-uploads>
@@ -52,8 +32,7 @@
     <div
       [ngStyle]="{
         height: '100%',
-        display:
-          !ds.isToolpanel() && theItem.label == 'Photos' ? 'block' : 'none'
+        display: !ds.isToolpanel() && theItem.label == 'Photos' ? 'block' : 'none'
       }"
     >
       <app-sidebar-photos></app-sidebar-photos>

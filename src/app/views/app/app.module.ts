@@ -34,6 +34,8 @@ import { EditItemComponent } from './page/edit-item/edit-item.component';
 import { ImageToolbarComponent } from './toolbar/image-toolbar/image-toolbar.component';
 import { TextToolbarComponent } from './toolbar/text-toolbar/text-toolbar.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { FontListComponent } from './toolpanel/font-list/font-list.component';
+import { FontItemComponent } from './toolpanel/font-list/font-item/font-item.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,8 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
     EditItemComponent,
     ImageToolbarComponent,
     TextToolbarComponent,
+    FontListComponent,
+    FontItemComponent,
   ],
   imports: [
     CommonModule,

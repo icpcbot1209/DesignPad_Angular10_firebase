@@ -1,13 +1,19 @@
 <div style="display: flex; align-items: center">
-  <form class="example-form">
+  <form class="example-form" style="padding-right: 10px; max-width: 190px; cursor: pointer" (click)="showFontList()">
     <mat-form-field class="example-full-width">
-      <mat-label>Font Size</mat-label>
+      <mat-label>Font</mat-label>
+      <input #font id="fontInput" type="text" aria-label="Number" matInput [formControl]="fontControl" style="cursor: pointer" />
+    </mat-form-field>
+  </form>
+
+  <form class="example-form" style="width: 60px">
+    <mat-form-field class="example-full-width">
+      <mat-label>Size</mat-label>
       <input
         #fontSizeInput
         id="fontSizeInput"
         type="number"
         aria-label="Number"
-        placeholder="Font Size"
         matInput
         [formControl]="myControl"
         [matAutocomplete]="auto"

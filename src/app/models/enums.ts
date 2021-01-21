@@ -12,4 +12,5 @@ export enum ItemStatus {
   image_crop,
   text_selected,
   text_edit,
+  text_font_list,
 }

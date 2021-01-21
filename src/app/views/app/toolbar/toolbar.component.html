@@ -1,6 +1,6 @@
 <ng-container *ngIf="ds.isStatus(ItemStatus.image_selected)">
-    <app-image-toolbar></app-image-toolbar>
+  <app-image-toolbar></app-image-toolbar>
 </ng-container>
-<ng-container *ngIf="ds.isStatus(ItemStatus.text_selected)">
-    <app-text-toolbar></app-text-toolbar>
+<ng-container *ngIf="ds.isStatus(ItemStatus.text_selected) || ds.isStatus(ItemStatus.text_font_list)">
+  <app-text-toolbar></app-text-toolbar>
 </ng-container>
