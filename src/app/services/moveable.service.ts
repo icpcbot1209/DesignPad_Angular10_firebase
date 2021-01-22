@@ -504,7 +504,8 @@ export class MoveableService {
         } else this.isScale = false;
       })
       .on('resize', (e: OnResize) => {
-        if (e.direction[0] !== 0 && e.direction[1] !== 0) {
+        if (this.isScale) {
+          console.log('scale');
           // let item = this.getItem(e.target);
           // let scaleX = e.width / item.w;
           // console.log(scaleX);
@@ -514,6 +515,7 @@ export class MoveableService {
           // item.y = e.drag.beforeTranslate[1];
           // e.target.style.transform = this.strTransform(item);
         } else {
+          console.log('resize');
           let item = this.getItem(e.target);
           item.w = e.width;
           item.h = e.height;

@@ -11,6 +11,8 @@ export class FontListComponent implements OnInit {
   @ViewChild('scrollTop') scrollTop: ElementRef;
   @ViewChild('perfectScroll') perfectScroll: ElementRef;
 
+  @Input() isPagingMode: boolean;
+
   selector = '.scrollPanel';
   array = [];
   sum = 30;
@@ -21,6 +23,7 @@ export class FontListComponent implements OnInit {
   fonts;
   textPart: string = '';
   index: number;
+  previousSelectedFontItemIndex: number = null;
   previousSelectedFontItemFamily: string = 'Alata';
 
   constructor(public toolbarService: ToolbarService, public moveableService: MoveableService) {}
@@ -50,6 +53,7 @@ export class FontListComponent implements OnInit {
     let ele = (document.querySelector<HTMLElement>(
       '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
     ).style.fontFamily = fontFamily);
+    document.querySelector<HTMLInputElement>('#fontInput').value = fontFamily;
     this.previousSelectedFontItemFamily = fontFamily;
   }
 
