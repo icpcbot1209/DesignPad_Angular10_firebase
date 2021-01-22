@@ -23,7 +23,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.langService.init();
-    let url = this.ToolbarService.url;
   }
 
   ngAfterViewInit(): void {
@@ -33,8 +32,5 @@ export class AppComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.renderer.addClass(document.body, 'default-transition');
     }, 1500);
-    // setTimeout(() => {
-    //   this.ToolbarService.createTextEditor();
-    // }, 5000);
   }
 }

@@ -198,6 +198,7 @@ export class DesignService {
     let items = this.theDesign.pages[this.thePageId].items;
 
     items = items.filter((item) => !item.selected);
+    console.log(items);
     items.forEach((item, i) => {
       item.itemId = i;
     });
@@ -242,7 +243,10 @@ export class DesignService {
     // this.thePageId = pageId;
 
     // this.theItem = item;
-    this.status = ItemStatus.text_selected;
+    if (this.status != ItemStatus.text_font_list) {
+      this.status = ItemStatus.text_selected;
+      document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
+    }
   }
 
   isStatus(status: ItemStatus): boolean {

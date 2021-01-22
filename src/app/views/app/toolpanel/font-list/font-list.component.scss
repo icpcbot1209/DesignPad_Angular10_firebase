@@ -11,8 +11,14 @@
   padding-left: 10px;
   padding-right: 10px;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .fontItem:hover {
   background-color: #ddd;
+}
+
+.search-results {
+  max-height: 630px;
+  overflow: auto;
 }

@@ -86,16 +86,19 @@ export class MoveableService {
     });
 
     selecto.on('select', (e: OnSelect) => {
+      console.log(e);
       e.added.forEach((el) => {
         let item = this.getItem(el);
         if (item) {
           item.selected = true;
         }
+        console.log('select');
       });
       e.removed.forEach((el) => {
         let item = this.getItem(el);
         if (item) {
           item.selected = false;
+          console.log('no selected');
         }
       });
     });

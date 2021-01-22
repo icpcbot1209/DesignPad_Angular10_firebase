@@ -36,6 +36,7 @@ import { TextToolbarComponent } from './toolbar/text-toolbar/text-toolbar.compon
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { FontListComponent } from './toolpanel/font-list/font-list.component';
 import { FontItemComponent } from './toolpanel/font-list/font-item/font-item.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { FontItemComponent } from './toolpanel/font-list/font-item/font-item.com
     NouisliderModule,
     NgSelectModule,
     SelectDropDownModule,
+    InfiniteScrollModule,
   ],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core'; // Google Font Key is AIzaSyBipcG_GYuR_AN_TP6SxzppJz9sWZxIJSQ
 import { ToolbarService } from '../../../../services/toolbar.service';
-import { PAGE_LOAD_SIZE, PageChangeModel } from './font-list.model';
+import { MoveableService } from 'src/app/services/moveable.service';
 
 @Component({
   selector: 'toolpanel-font-list',
@@ -8,15 +8,22 @@ import { PAGE_LOAD_SIZE, PageChangeModel } from './font-list.model';
   styleUrls: ['./font-list.component.scss'],
 })
 export class FontListComponent implements OnInit {
-  @ViewChild('perfectScrollbar') perfectScrollbar;
+  @ViewChild('scrollTop') scrollTop: ElementRef;
+  @ViewChild('perfectScroll') perfectScroll: ElementRef;
 
-  @Input() isPagingMode: boolean;
-  @Output() eventReachEnd = new EventEmitter<PageChangeModel>();
-  @Output() eventSearchUser = new EventEmitter<PageChangeModel>();
-
+  selector = '.scrollPanel';
+  array = [];
+  sum = 30;
+  scrollDistance = 3;
+  scrollUpDistance = 2;
+  throttle = 300;
+  direction = '';
   fonts;
+  textPart: string = '';
+  index: number;
+  previousSelectedFontItemFamily: string = 'Alata';
 
-  constructor(public toolbarService: ToolbarService) {}
+  constructor(public toolbarService: ToolbarService, public moveableService: MoveableService) {}
 
   ngOnInit(): void {
     let url = this.toolbarService.url;
@@ -25,19 +32,7 @@ export class FontListComponent implements OnInit {
       .then((res) => res.json())
       .then((out) => {
         this.fonts = out;
-        // for (let i = 0; i < this.fonts.length; i++) {
-        //   let fontFamily = this.fonts.items[i].family;
-        //   let fontUrl = `https://fonts.googleapis.com/css?family=${fontFamily.replace(' ', '+')}`;
-        //   let pos = fontFamily.indexOf(':');
-        //   if (pos > 0) {
-        //     fontFamily = fontFamily.substring(0, pos);
-        //   }
-        //   let link = document.createElement('link');
-        //   link.id = 'myfontlink';
-        //   link.setAttribute('rel', 'stylesheet');
-        //   link.setAttribute('href', fontUrl);
-        //   document.head.appendChild(link);
-        // }
+        this.appendItems(0, this.sum);
       })
       .catch((err) => console.error(err));
   }
@@ -47,62 +42,87 @@ export class FontListComponent implements OnInit {
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
   }
 
-  checkList() {
-    console.log('hello world');
+  ngOnDestroy(): void {
+    document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
   }
 
-  linkFontUrl() {
-    for (let i = 0; i < this.fonts.length; i++) {
-      let fontFamily = this.fonts.items[i].family;
-      let fontUrl = `https://fonts.googleapis.com/css?family=${fontFamily.replace(' ', '+')}`;
-      let pos = fontFamily.indexOf(':');
-      if (pos > 0) {
-        fontFamily = fontFamily.substring(0, pos);
+  checkList(index: number, fontFamily: string) {
+    let ele = (document.querySelector<HTMLElement>(
+      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    ).style.fontFamily = fontFamily);
+    this.previousSelectedFontItemFamily = fontFamily;
+  }
+
+  onScrollDown(ev) {
+    // add another 20 items
+    const start = this.sum;
+    this.sum += 20;
+    this.appendItems(start, this.sum);
+
+    this.direction = 'down';
+  }
+
+  appendItems(startIndex, endIndex) {
+    this.addItems(startIndex, endIndex, 'push');
+  }
+
+  addItems(startIndex, endIndex, _method) {
+    if (this.textPart != '') {
+      for (let i = 0; i < this.sum; ++i) {
+        if (this.index >= this.fonts.items.length) return;
+        while (this.fonts.items[this.index].family.toLowerCase().indexOf(this.textPart.toLowerCase()) != 0) {
+          this.index++;
+          if (this.index >= this.fonts.items.length) return;
+        }
+        this.array[_method](this.fonts.items[this.index]);
+        this.index++;
       }
-      let link = document.createElement('link');
-      link.id = 'myfontlink';
-      link.setAttribute('rel', 'stylesheet');
-      link.setAttribute('href', fontUrl);
-      document.head.appendChild(link);
+    } else {
+      for (let i = startIndex; i < this.sum; ++i) {
+        if (i >= this.fonts.items.length) return;
+        this.array[_method](this.fonts.items[i]);
+      }
     }
   }
 
-  setFontFamily(start, end) {
-    for (let i = start; i < end; i++) {
-      let fontFamily = this.fonts.items[i].family;
-      let fontUrl;
+  onUp(ev) {
+    // console.log('scrolled up!', ev);
+    // const start = this.sum;
+    // this.sum += 30;
+    // this.prependItems(start, this.sum);
+    // this.direction = 'up';
+  }
 
-      fontUrl = `https://fonts.googleapis.com/css?family=${fontFamily.replace(' ', '+')}`;
-      let pos = fontFamily.indexOf(':');
-      if (pos > 0) {
-        fontFamily = fontFamily.substring(0, pos);
-      }
-      let link = document.createElement('link');
-      link.id = 'myfontlink';
-      link.setAttribute('rel', 'stylesheet');
-      link.setAttribute('href', fontUrl);
-      document.head.appendChild(link);
+  prependItems(startIndex, endIndex) {
+    this.addItems(startIndex, endIndex, 'unshift');
+  }
 
-      let div = document.createElement('div');
-      div.className = 'fontItem';
-      div.setAttribute('style', `display: flex; justify-content: space-between; padding: 6px; font-family: ${fontFamily}`);
-      div.onmouseover = () => {
-        div.style.backgroundColor = '#ddd';
-      };
-      div.onmouseout = () => {
-        div.style.backgroundColor = 'white';
-      };
-      div.onclick = this.checkList;
-      let p = document.createElement('span');
-      p.setAttribute('style', 'margin-top: auto; margin-bottom: auto');
-      p.innerHTML = this.fonts.items[i].family;
-      let span = document.createElement('span');
-      span.setAttribute('class', 'material-icons');
-      span.setAttribute('style', 'display: none');
-      span.textContent = 'done';
-      div.append(p);
-      div.append(span);
-      document.querySelector<HTMLElement>('#fontList').firstChild.firstChild.appendChild(div);
+  onSearch($event) {
+    this.textPart = $event['term'];
+    if (this.textPart != '') {
+      this.index = 0;
+      this.array = [];
+      this.sum = 30;
+      this.addItems(0, 30, 'push');
+      this.setScrollTop();
+    } else {
+      this.array = [];
+      this.addItems(0, 30, 'push');
     }
+  }
+
+  onClear() {
+    this.textPart = '';
+    this.sum = 30;
+    this.array = [];
+    this.addItems(0, 30, 'push');
+    this.setScrollTop();
+  }
+
+  setScrollTop() {
+    let div: HTMLElement = this.scrollTop.nativeElement;
+    div.scrollIntoView();
+    div = this.perfectScroll.nativeElement;
+    div.scrollIntoView();
   }
 }
