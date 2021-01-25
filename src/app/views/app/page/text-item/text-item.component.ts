@@ -46,7 +46,8 @@ export class TextItemComponent implements OnInit, AfterViewInit {
         left: 0,
         width: item.w + 'px',
         height: item.h + 'px',
-        transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
+        transform: this.moveableService.strTransform(item),
+        WebkitTransform: this.moveableService.strTransform(item),
       };
   }
   styleItem(item: Item): CSS.Properties {

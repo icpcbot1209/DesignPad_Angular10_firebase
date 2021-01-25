@@ -14,6 +14,9 @@ import Moveable, {
   OnRotateGroupStart,
   OnRotateGroup,
   OnClip,
+  OnScaleStart,
+  OnScale,
+  OnScaleEnd,
 } from 'moveable';
 import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
 import { ToolbarService } from './toolbar.service';
@@ -34,6 +37,7 @@ export class MoveableService {
   previousTarget: HTMLElement;
   selectedPageId: string;
   selectedItemId: string;
+  itemScale: number;
 
   isMouseDown: boolean = false;
   isMouseMove: boolean = false;
@@ -469,6 +473,7 @@ export class MoveableService {
       draggable: true,
 
       resizable: true,
+      scalable: false,
       renderDirections: ['nw', 'ne', 'se', 'sw', 'e', 'w'],
 
       rotatable: true,
@@ -505,15 +510,33 @@ export class MoveableService {
       })
       .on('resize', (e: OnResize) => {
         if (this.isScale) {
-          console.log('scale');
-          // let item = this.getItem(e.target);
+          let item = this.getItem(e.target);
+
+          let scale = Math.round((e.width / item.w) * 100000) / 100000;
+          item.w = e.width;
+          item.h = item.h * scale;
+          // item.scaleX = scale;
+          // item.scaleY = scale;
+          item.x = e.drag.beforeTranslate[0];
+          item.y = e.drag.beforeTranslate[1];
+          item.fontSize = (parseFloat(item.fontSize) * scale).toString() + 'px';
+
+          e.target.style.width = item.w + 'px';
+          e.target.style.height = item.h + 'px';
+          e.target.style.transform = this.strTransform(item);
+          let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
+          editorEle.style.width = item.w + 'px';
+          // editorEle.style.height = item.h + 'px';
+          // editorEle.style.transform = this.strTransform(item);
+          editorEle.style.fontSize = item.fontSize;
+
+          // console.log('scale');
           // let scaleX = e.width / item.w;
           // console.log(scaleX);
           // item.scaleX = scaleX;
           // item.scaleY = scaleX;
           // item.x = e.drag.beforeTranslate[0];
           // item.y = e.drag.beforeTranslate[1];
-          // e.target.style.transform = this.strTransform(item);
         } else {
           console.log('resize');
           let item = this.getItem(e.target);
@@ -530,6 +553,7 @@ export class MoveableService {
 
         this.isOnResize = true;
       })
+
       .on('resizeEnd', ({ target, isDrag }) => {
         this.setSelectable(target.getAttribute('itemId'), target.getAttribute('pageId'));
         this.selectableTextEditor();
@@ -543,6 +567,58 @@ export class MoveableService {
         // console.log(item.w, item.h);
 
         this.isOnResize = false;
+      });
+
+    moveable
+      .on('scaleStart', (e: OnScaleStart) => {
+        let item = this.getItem(e.target);
+        this.itemScale = 1;
+      })
+      .on('scale', (e: OnScale) => {
+        // console.log(e.scale[0], e.scale[1]);
+        let item = this.getItem(e.target);
+        let scale = e.scale[0];
+
+        console.log(item.x, item.y);
+        // item.w += e.offsetWidth;
+        // item.h += e.offsetHeight;
+        item.w = item.w * scale;
+        item.h = item.h * scale;
+        // item.w = item.w * scale;
+        // item.h = item.h * scale;
+        // item.x = e.drag.beforeTranslate[0];
+        // item.y = e.drag.beforeTranslate[1];
+
+        // item.fontSize = (parseFloat(item.fontSize) * scale).toString();
+
+        // e.target.style.width = (item.w * scale).toString() + 'px';
+        // e.target.style.height = (item.h * scale).toString() + 'px';
+        // e.target.style.width = item.w + 'px';
+        // e.target.style.height = item.h + 'px';
+        // item.scaleX += scale - this.itemScale;
+        // item.scaleY += scale - this.itemScale;
+        e.target.style.transform = this.strTransform(item);
+        // e.target.style.transform = e.transform;
+        let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
+        // editorEle.style.transform = e.transform;
+        editorEle.style.width = item.w + 'px';
+        editorEle.style.height = item.h + 'px';
+        editorEle.style.transform = this.strTransform(item);
+        // editorEle.style.width = (item.w * scale).toString() + 'px';
+        // editorEle.style.height = (item.h * scale).toString() + 'px';
+        editorEle.style.width = item.w + 'px';
+        editorEle.style.height = item.h + 'px';
+        // target!.style.transform = e.transform;
+        this.itemScale = scale;
+        console.log('continue');
+      })
+      .on('scaleEnd', (e: OnScaleEnd) => {
+        // let item = this.getItem(e.target);
+        // let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
+        // item.w = parseFloat(editorEle.style.width);
+        // item.h = parseFloat(editorEle.style.height);
+
+        console.log('end');
       });
 
     /* rotate */
