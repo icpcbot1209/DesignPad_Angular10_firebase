@@ -13,4 +13,5 @@ export enum ItemStatus {
   text_selected,
   text_edit,
   text_font_list,
+  text_effect,
 }

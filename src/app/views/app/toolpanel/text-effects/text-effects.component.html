@@ -1,0 +1,153 @@
+<div>
+  <div class="d-flex justify-content-around mt-1">
+    <div id="selector-none" class="effectSelector d-flex flex-column" (click)="setTextEffect('none')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/none.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">None</span>
+    </div>
+    <div id="selector-shadow" class="effectSelector d-flex flex-column" (click)="setTextEffect('shadow')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/shadow.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Shadow</span>
+    </div>
+    <div id="selector-lift" class="effectSelector d-flex flex-column" (click)="setTextEffect('lift')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/lift.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Lift</span>
+    </div>
+  </div>
+
+  <!-- Shadow -->
+  <div id="shadow" class="effectContent" style="padding: 10px; display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
+        <input type="number" [(ngModel)]="offset" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="100" [min]="0" [step]="step" [(ngModel)]="offset" (input)="onInputOffsetChange($event)"> </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
+        <input type="number" [(ngModel)]="angle" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="180" [min]="-180" [step]="step" [(ngModel)]="angle" (input)="onInputDirectionChange($event)">
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Blur</span>
+        <input type="number" [(ngModel)]="blur" />
+      </div>
+      <mat-slider class="shadowSlider" [min]="0" [max]="100" [step]="step" [(ngModel)]="blur" (input)="onInputBlurChange($event)"> </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Transparency</span>
+        <input type="number" [(ngModel)]="opacity" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="100" [min]="0" [step]="step" [(ngModel)]="opacity" (input)="onInputOpacityChange($event)"> </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input type="color" [(ngModel)]="shadowColor" (change)="onInputColorChange('shadow')" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Lift -->
+  <div class="effectContent" id="lift" style="display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
+        <input type="number" [(ngModel)]="intensity" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="100" [min]="0" [step]="step" [(ngModel)]="intensity" (input)="onInputLiftChange($event)"> </mat-slider>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-around mt-1">
+    <div id="selector-hallow" class="effectSelector d-flex flex-column" (click)="setTextEffect('hallow')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/hollow.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Hollow</span>
+    </div>
+    <div id="selector-splice" class="effectSelector d-flex flex-column" (click)="setTextEffect('splice')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/splice.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Splice</span>
+    </div>
+    <div id="selector-echo" class="effectSelector d-flex flex-column">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/echo.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Echo</span>
+    </div>
+  </div>
+
+  <!-- Hollow -->
+  <div class="effectContent" id="hallow" style="padding: 10px; display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Thickness</span>
+        <input type="number" [(ngModel)]="thickness" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="100" [min]="0" [step]="step" [(ngModel)]="thickness" (input)="onInputThicknessChange($event)">
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input type="color" [(ngModel)]="outlineColor" (change)="onInputColorChange('hollow')" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Splice -->
+  <div class="effectContent" id="splice" style="padding: 10px; display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
+        <input type="number" [(ngModel)]="offset" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="100" [min]="0" [step]="step" [(ngModel)]="offset" (input)="onInputOffsetChange($event)"> </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
+        <input type="number" [(ngModel)]="angle" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="180" [min]="-180" [step]="step" [(ngModel)]="angle" (input)="onInputDirectionChange($event)">
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Thickness</span>
+        <input type="number" [(ngModel)]="thickness" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="100" [min]="0" [step]="step" [(ngModel)]="thickness" (input)="onInputThicknessChange($event)">
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input type="color" [(ngModel)]="shadowColor" (change)="onInputColorChange('shadow')" [value]="shadowColor" />
+      </div>
+    </div>
+    <div class="d-flex justify-content-between" style="padding: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Outline Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input type="color" [(ngModel)]="outlineColor" (change)="onInputColorChange('hollow')" [value]="outlineColor" />
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-around mt-1">
+    <div id="selector-glitch" class="effectSelector d-flex flex-column">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/glitch.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Glitch</span>
+    </div>
+    <div id="selector-neon" class="effectSelector d-flex flex-column">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/neon.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Neon</span>
+    </div>
+    <div id="selector-curve" class="effectSelector d-flex flex-column">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/curve.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Curve</span>
+    </div>
+  </div>
+</div>

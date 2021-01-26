@@ -46,6 +46,7 @@
     "ng-lazyload-image": "^9.1.0",
     "ng2-nouislider": "^1.8.2",
     "ngx-bootstrap": "^5.6.1",
+    "ngx-color-picker": "^11.0.0",
     "ngx-contextmenu": "^5.4.0",
     "ngx-dropzone-wrapper": "^9.0.0",
     "ngx-ellipsis": "^2.3.1",

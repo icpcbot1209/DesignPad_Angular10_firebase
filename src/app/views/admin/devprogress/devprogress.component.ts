@@ -71,8 +71,7 @@ export class DevprogressComponent implements OnInit {
       description: 'Milestone 2',
       items: [
         {
-          title:
-            'Admin upload image files (these files will appear in the photos category for user site)',
+          title: 'Admin upload image files (these files will appear in the photos category for user site)',
           hours: 1,
           note: '',
           date: null,
@@ -86,8 +85,7 @@ export class DevprogressComponent implements OnInit {
           isDone: true,
         },
         {
-          title:
-            'Main edit panel: User can create place image on edit-template panel and edit it',
+          title: 'Main edit panel: User can create place image on edit-template panel and edit it',
           hours: 1,
           note: '',
           date: null,
@@ -125,35 +123,35 @@ export class DevprogressComponent implements OnInit {
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Scale & setting width by dragging',
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Font Sizing',
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Bold Italic Underlined Uppercase',
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Text alignment & liststyling',
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Letter spacing & Line height Panel',
@@ -167,14 +165,14 @@ export class DevprogressComponent implements OnInit {
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Color panel: default colors',
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Effect panel: Shadow, Lift',
@@ -195,22 +193,28 @@ export class DevprogressComponent implements OnInit {
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Font: Google font picker with preview',
           hours: 2,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Font: Apply font by clicking',
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
+      ],
+    },
+    {
+      totalHours: 100,
+      description: 'Milestone 4, 5, 6',
+      items: [
         {
           title: 'Download as PNG, JPG',
           hours: 1,
@@ -239,12 +243,6 @@ export class DevprogressComponent implements OnInit {
           date: null,
           isDone: false,
         },
-      ],
-    },
-    {
-      totalHours: 100,
-      description: 'Milestone 4, 5, 6',
-      items: [
         {
           title: 'Browse SVG elements',
           hours: null,
@@ -324,8 +322,7 @@ export class DevprogressComponent implements OnInit {
       description: 'Dec 1 bug list',
       bugs: [
         {
-          title:
-            'Give a delete option once an image has been moved to the canvas.',
+          title: 'Give a delete option once an image has been moved to the canvas.',
           isDone: true,
         },
         {
@@ -342,8 +339,7 @@ export class DevprogressComponent implements OnInit {
           isDone: true,
         },
         {
-          title:
-            'I am not able to add images to a new page "page 2" that i created using "Add page".',
+          title: 'I am not able to add images to a new page "page 2" that i created using "Add page".',
           isDone: true,
         },
         {
@@ -352,8 +348,7 @@ export class DevprogressComponent implements OnInit {
           isDone: true,
         },
         {
-          title:
-            'There is a gap in the images list, can we implement pinterest kind of CSS for the images list.',
+          title: 'There is a gap in the images list, can we implement pinterest kind of CSS for the images list.',
           isDone: true,
         },
       ],

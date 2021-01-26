@@ -1,7 +1,4 @@
-import { Inject, Injectable, Injector } from '@angular/core';
-import Moveable from 'moveable';
-import { Subject } from 'rxjs';
-import Selecto from 'selecto/declaration/SelectoManager';
+import { Injectable, Injector } from '@angular/core';
 import { ItemStatus, ItemType } from '../models/enums';
 import { ImageFilterObj } from '../models/image-filter';
 import { AssetImage, Design, Item } from '../models/models';
@@ -243,7 +240,7 @@ export class DesignService {
     // this.thePageId = pageId;
 
     // this.theItem = item;
-    if (this.status != ItemStatus.text_font_list) {
+    if (this.status != ItemStatus.text_font_list && this.status != ItemStatus.text_effect) {
       this.status = ItemStatus.text_selected;
       document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
     }
@@ -254,7 +251,12 @@ export class DesignService {
   }
 
   isToolpanel() {
-    return this.isStatus(ItemStatus.image_filter) || this.isStatus(ItemStatus.image_preset) || this.isStatus(ItemStatus.text_font_list);
+    return (
+      this.isStatus(ItemStatus.image_filter) ||
+      this.isStatus(ItemStatus.image_preset) ||
+      this.isStatus(ItemStatus.text_font_list) ||
+      this.isStatus(ItemStatus.text_effect)
+    );
   }
 
   setStatus(status: ItemStatus): void {

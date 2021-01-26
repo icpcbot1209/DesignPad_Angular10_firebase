@@ -2,7 +2,7 @@
   <form class="example-form" style="padding-right: 10px; max-width: 190px; cursor: pointer" (click)="showFontList()">
     <mat-form-field class="example-full-width">
       <mat-label>Font</mat-label>
-      <input #font id="fontInput" type="text" aria-label="Number" matInput [formControl]="fontControl" style="cursor: pointer" />
+      <input #font id="fontInput" type="text" aria-label="Number" matInput [formControl]="fontControl" style="cursor: pointer" disabled />
     </mat-form-field>
   </form>
 
@@ -36,13 +36,13 @@
       <button class="ql-strike"></button>
     </span>
     <span class="ql-formats">
-      <select class="ql-color"></select>
-      <select class="ql-background"></select>
+      <select class="ql-color" style="top: -2px"></select>
+      <select class="ql-background" style="top: -2px"></select>
     </span>
     <span class="ql-formats">
       <button class="ql-list" value="ordered"></button>
       <button class="ql-list" value="bullet"></button>
-      <select class="ql-align">
+      <select class="ql-align" style="top: -3px">
         <option selected></option>
         <option value="center"></option>
         <option value="right"></option>
@@ -50,4 +50,6 @@
       </select>
     </span>
   </div>
+
+  <div id="text-effect" (click)="showTextEffects()">Effects</div>
 </div>

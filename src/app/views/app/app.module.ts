@@ -37,7 +37,9 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { FontListComponent } from './toolpanel/font-list/font-list.component';
 import { FontItemComponent } from './toolpanel/font-list/font-item/font-item.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
+import { TextEffectsComponent } from './toolpanel/text-effects/text-effects.component';
+import { MatSliderModule } from '@angular/material/slider';
+import { ColorPickerModule } from 'ngx-color-picker';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +61,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     TextToolbarComponent,
     FontListComponent,
     FontItemComponent,
+    TextEffectsComponent,
   ],
   imports: [
     CommonModule,
@@ -79,6 +82,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     NgSelectModule,
     SelectDropDownModule,
     InfiniteScrollModule,
+    MatSliderModule,
+    ColorPickerModule,
   ],
 })
 export class AppModule {}

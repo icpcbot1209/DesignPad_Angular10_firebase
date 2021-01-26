@@ -9,7 +9,7 @@
 >
 </ng-select>
 
-<div class="scrollPanel">
+<div class="scrollPanel" style="height: 93%">
   <div
     #perfectScroll
     class="search-results"
@@ -21,6 +21,7 @@
     (scrolled)="onScrollDown($event)"
     (scrolledUp)="onUp($event)"
     *ngIf="array"
+    style="height: 100%"
   >
     <div #scrollTop></div>
     <ng-container *ngFor="let font of array; let i = index">

@@ -90,19 +90,16 @@ export class MoveableService {
     });
 
     selecto.on('select', (e: OnSelect) => {
-      console.log(e);
       e.added.forEach((el) => {
         let item = this.getItem(el);
         if (item) {
           item.selected = true;
         }
-        console.log('select');
       });
       e.removed.forEach((el) => {
         let item = this.getItem(el);
         if (item) {
           item.selected = false;
-          console.log('no selected');
         }
       });
     });
@@ -515,8 +512,6 @@ export class MoveableService {
           let scale = Math.round((e.width / item.w) * 100000) / 100000;
           item.w = e.width;
           item.h = item.h * scale;
-          // item.scaleX = scale;
-          // item.scaleY = scale;
           item.x = e.drag.beforeTranslate[0];
           item.y = e.drag.beforeTranslate[1];
           item.fontSize = (parseFloat(item.fontSize) * scale).toString() + 'px';
@@ -526,19 +521,8 @@ export class MoveableService {
           e.target.style.transform = this.strTransform(item);
           let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
           editorEle.style.width = item.w + 'px';
-          // editorEle.style.height = item.h + 'px';
-          // editorEle.style.transform = this.strTransform(item);
           editorEle.style.fontSize = item.fontSize;
-
-          // console.log('scale');
-          // let scaleX = e.width / item.w;
-          // console.log(scaleX);
-          // item.scaleX = scaleX;
-          // item.scaleY = scaleX;
-          // item.x = e.drag.beforeTranslate[0];
-          // item.y = e.drag.beforeTranslate[1];
         } else {
-          console.log('resize');
           let item = this.getItem(e.target);
           item.w = e.width;
           item.h = e.height;
@@ -557,68 +541,7 @@ export class MoveableService {
       .on('resizeEnd', ({ target, isDrag }) => {
         this.setSelectable(target.getAttribute('itemId'), target.getAttribute('pageId'));
         this.selectableTextEditor();
-        // let editorEle = document.querySelector<HTMLElement>(
-        //   "#textEditor-" + this.selectedPageId + "-" + this.selectedItemId
-        // );
-
-        // let item = this.getItem(editorEle);
-        // editorEle.style.width = item.w + "px";
-        // editorEle.style.height = item.h + "px";
-        // console.log(item.w, item.h);
-
         this.isOnResize = false;
-      });
-
-    moveable
-      .on('scaleStart', (e: OnScaleStart) => {
-        let item = this.getItem(e.target);
-        this.itemScale = 1;
-      })
-      .on('scale', (e: OnScale) => {
-        // console.log(e.scale[0], e.scale[1]);
-        let item = this.getItem(e.target);
-        let scale = e.scale[0];
-
-        console.log(item.x, item.y);
-        // item.w += e.offsetWidth;
-        // item.h += e.offsetHeight;
-        item.w = item.w * scale;
-        item.h = item.h * scale;
-        // item.w = item.w * scale;
-        // item.h = item.h * scale;
-        // item.x = e.drag.beforeTranslate[0];
-        // item.y = e.drag.beforeTranslate[1];
-
-        // item.fontSize = (parseFloat(item.fontSize) * scale).toString();
-
-        // e.target.style.width = (item.w * scale).toString() + 'px';
-        // e.target.style.height = (item.h * scale).toString() + 'px';
-        // e.target.style.width = item.w + 'px';
-        // e.target.style.height = item.h + 'px';
-        // item.scaleX += scale - this.itemScale;
-        // item.scaleY += scale - this.itemScale;
-        e.target.style.transform = this.strTransform(item);
-        // e.target.style.transform = e.transform;
-        let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
-        // editorEle.style.transform = e.transform;
-        editorEle.style.width = item.w + 'px';
-        editorEle.style.height = item.h + 'px';
-        editorEle.style.transform = this.strTransform(item);
-        // editorEle.style.width = (item.w * scale).toString() + 'px';
-        // editorEle.style.height = (item.h * scale).toString() + 'px';
-        editorEle.style.width = item.w + 'px';
-        editorEle.style.height = item.h + 'px';
-        // target!.style.transform = e.transform;
-        this.itemScale = scale;
-        console.log('continue');
-      })
-      .on('scaleEnd', (e: OnScaleEnd) => {
-        // let item = this.getItem(e.target);
-        // let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
-        // item.w = parseFloat(editorEle.style.width);
-        // item.h = parseFloat(editorEle.style.height);
-
-        console.log('end');
       });
 
     /* rotate */

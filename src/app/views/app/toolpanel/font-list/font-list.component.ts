@@ -42,7 +42,6 @@ export class FontListComponent implements OnInit {
 
   ngAfterViewInit(): void {
     document.querySelector('#searchFontInput').querySelector<HTMLElement>('span').style.display = 'none';
-    document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
   }
 
   ngOnDestroy(): void {
