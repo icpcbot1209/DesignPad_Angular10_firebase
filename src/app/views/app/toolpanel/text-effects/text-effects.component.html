@@ -48,7 +48,7 @@
     <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (change)="onInputColorChange('shadow')" />
+        <input type="color" [(ngModel)]="shadowColor" (change)="onInputShadowColorChange()" />
       </div>
     </div>
   </div>
@@ -73,7 +73,7 @@
       <img class="text-effect-items" src="../../../../../assets/img/text-effects/splice.jpg" draggable="false" />
       <span class="mt-1" style="text-align: center">Splice</span>
     </div>
-    <div id="selector-echo" class="effectSelector d-flex flex-column">
+    <div id="selector-echo" class="effectSelector d-flex flex-column" (click)="setTextEffect('echo')">
       <img class="text-effect-items" src="../../../../../assets/img/text-effects/echo.jpg" draggable="false" />
       <span class="mt-1" style="text-align: center">Echo</span>
     </div>
@@ -92,7 +92,7 @@
     <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="outlineColor" (change)="onInputColorChange('hollow')" />
+        <input type="color" [(ngModel)]="outlineColor" (change)="onInputHollowColorChange()" />
       </div>
     </div>
   </div>
@@ -125,13 +125,39 @@
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (change)="onInputColorChange('shadow')" [value]="shadowColor" />
+        <input type="color" [(ngModel)]="shadowColor" (change)="onInputShadowColorChange()" [value]="shadowColor" />
       </div>
     </div>
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Outline Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="outlineColor" (change)="onInputColorChange('hollow')" [value]="outlineColor" />
+        <input type="color" [(ngModel)]="outlineColor" (change)="onInputHollowColorChange()" [value]="outlineColor" />
+      </div>
+    </div>
+  </div>
+
+  <!-- echo -->
+  <div class="effectContent" id="echo" style="padding: 10px; display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
+        <input type="number" [(ngModel)]="offset" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="100" [min]="0" [step]="step" [(ngModel)]="offset" (input)="onInputMultiOffsetChange($event)">
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
+        <input type="number" [(ngModel)]="angle" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="180" [min]="-180" [step]="step" [(ngModel)]="angle" (input)="onInputMultiDirectionChange($event)">
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input type="color" [(ngModel)]="shadowColor" (change)="onInputMultiShadowColorChange()" [value]="shadowColor" />
       </div>
     </div>
   </div>

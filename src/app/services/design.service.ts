@@ -195,7 +195,6 @@ export class DesignService {
     let items = this.theDesign.pages[this.thePageId].items;
 
     items = items.filter((item) => !item.selected);
-    console.log(items);
     items.forEach((item, i) => {
       item.itemId = i;
     });

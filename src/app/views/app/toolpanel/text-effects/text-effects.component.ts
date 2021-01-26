@@ -72,6 +72,7 @@ export class TextEffectsComponent implements OnInit {
       this.setEffectSelector('#selector-shadow');
     }
     if (method == 'lift') {
+      this.shadowColor = '#808080';
       this.setShadowEffect();
       document.querySelector<HTMLElement>('#lift').style.display = 'block';
       this.setEffectSelector('#selector-lift');
@@ -81,7 +82,7 @@ export class TextEffectsComponent implements OnInit {
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
       );
       this.editorEle.style.color = 'white';
-      this.outlineColor = 'black';
+      this.outlineColor = '#000000';
 
       this.setHollowEffect();
       document.querySelector<HTMLElement>('#hallow').style.display = 'block';
@@ -92,7 +93,10 @@ export class TextEffectsComponent implements OnInit {
       this.offset = 50;
       this.angle = -45;
       this.shadowColor = '#808080';
-      this.outlineColor = 'black';
+      this.outlineColor = '#000000';
+
+      this.onInputShadowColorChange();
+      this.onInputHollowColorChange();
 
       document.querySelector<HTMLElement>('#splice').style.display = 'block';
       this.setEffectSelector('#selector-splice');
@@ -103,6 +107,19 @@ export class TextEffectsComponent implements OnInit {
       this.editorEle.style.color = 'white';
       this.setShadowEffect();
       this.setHollowEffect();
+    }
+    if (method == 'echo') {
+      this.editorEle = document.querySelector<HTMLElement>(
+        '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+      );
+      this.shadowColor = '#000000';
+      this.offset = 50;
+      this.angle = -45;
+      this.blurSize = 0;
+
+      this.setMultiShadowEffect();
+      document.querySelector<HTMLElement>('#echo').style.display = 'block';
+      this.setEffectSelector('#selector-echo');
     }
   }
 
@@ -149,31 +166,34 @@ export class TextEffectsComponent implements OnInit {
     this.setShadowEffect();
   }
 
-  onInputColorChange(effect) {
-    let result;
+  onInputShadowColorChange() {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.shadowColor);
 
-    if (effect == 'shadow') {
-      result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.shadowColor);
-      this.shadowR = parseInt(result[1], 16);
-      this.shadowG = parseInt(result[2], 16);
-      this.shadowB = parseInt(result[3], 16);
-    }
-    if (effect == 'hollow') {
-      result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.outlineColor);
+    this.shadowR = parseInt(result[1], 16);
+    this.shadowG = parseInt(result[2], 16);
+    this.shadowB = parseInt(result[3], 16);
 
-      this.outlineR = parseInt(result[1], 16);
-      this.outlineG = parseInt(result[2], 16);
-      this.outlineB = parseInt(result[3], 16);
-    }
+    this.setShadowEffect();
+  }
 
-    if (effect == 'shadow') {
-      this.setShadowEffect();
-      console.log('shadow');
-    }
-    if ((effect = 'hollow')) {
-      this.setHollowEffect();
-      console.log('hollow');
-    }
+  onInputHollowColorChange() {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.outlineColor);
+
+    this.outlineR = parseInt(result[1], 16);
+    this.outlineG = parseInt(result[2], 16);
+    this.outlineB = parseInt(result[3], 16);
+
+    this.setHollowEffect();
+  }
+
+  onInputMultiShadowColorChange() {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.shadowColor);
+
+    this.shadowR = parseInt(result[1], 16);
+    this.shadowG = parseInt(result[2], 16);
+    this.shadowB = parseInt(result[3], 16);
+
+    this.setMultiShadowEffect();
   }
 
   onInputOpacityChange(event) {
@@ -209,5 +229,63 @@ export class TextEffectsComponent implements OnInit {
     this.thickness = event.value;
 
     this.setHollowEffect();
+  }
+
+  setMultiShadowEffect() {
+    this.editorEle = document.querySelector<HTMLElement>(
+      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    );
+    this.fontSize = this.editorEle.style.fontSize;
+
+    this.offsetX = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionX).toString() + 'px';
+    this.offsetY = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionY).toString() + 'px';
+    let offset2X = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionX * 2).toString() + 'px';
+    let offset2Y = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionY * 2).toString() + 'px';
+    this.blurSize = (parseFloat(this.fontSize) / (100 / this.blur) / 6).toString() + 'px';
+
+    this.editorEle.style.textShadow =
+      'rgba(' +
+      this.shadowR +
+      ', ' +
+      this.shadowG +
+      ', ' +
+      this.shadowB +
+      ', ' +
+      0.5 +
+      ') ' +
+      this.offsetX +
+      ' ' +
+      this.offsetY +
+      ' ' +
+      this.blurSize +
+      ', ' +
+      'rgba(' +
+      this.shadowR +
+      ', ' +
+      this.shadowG +
+      ', ' +
+      this.shadowB +
+      ', ' +
+      0.3 +
+      ') ' +
+      offset2X +
+      ' ' +
+      offset2Y +
+      ' ' +
+      this.blurSize;
+  }
+
+  onInputMultiOffsetChange(event) {
+    this.offset = event.value;
+
+    this.setMultiShadowEffect();
+  }
+
+  onInputMultiDirectionChange(event) {
+    this.angle = event.value;
+    this.directionX = Math.sin((this.angle * Math.PI) / 180);
+    this.directionY = Math.cos((this.angle * Math.PI) / 180);
+
+    this.setMultiShadowEffect();
   }
 }
