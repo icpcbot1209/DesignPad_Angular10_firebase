@@ -1,5 +1,6 @@
 <div
   class="target"
+  style="display: flex; justify-content: center; align-items: center"
   [id]="'textSelector-' + pageId + '-' + itemId"
   [ngStyle]="styleItemPosition(item)"
   [attr.pageId]="pageId"
@@ -8,4 +9,6 @@
   (mousedown)="onMouseDown()"
   (mousemove)="onMouseMoveItem($event, item)"
   (mouseup)="enableTextEdit($event)"
-></div>
+>
+  <div [id]="'curveText-' + pageId + '-' + itemId"></div>
+</div>

@@ -39,6 +39,7 @@
     "angular-svg-round-progressbar": "^3.0.1",
     "angular2-hotkeys": "^2.2.0",
     "angular2-notifications": "^9.0.0",
+    "arc-text": "^1.0.1",
     "chart.js": "^2.9.3",
     "csstype": "^3.0.5",
     "firebase": "^7.15.5",

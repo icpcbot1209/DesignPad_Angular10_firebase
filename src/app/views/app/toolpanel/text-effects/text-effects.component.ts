@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MoveableService } from 'src/app/services/moveable.service';
+import { ToolbarService } from 'src/app/services/toolbar.service';
 
 @Component({
   selector: 'toolpanel-text-effects',
@@ -42,8 +43,9 @@ export class TextEffectsComponent implements OnInit {
   glitchColorB = 'rgb(255, 0, 255)';
 
   neonValue;
+  curveValue;
 
-  constructor(public moveableService: MoveableService) {}
+  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService) {}
 
   ngOnInit(): void {}
 
@@ -159,6 +161,12 @@ export class TextEffectsComponent implements OnInit {
       this.setNeonEffect();
       document.querySelector<HTMLElement>('#neon').style.display = 'block';
       this.setEffectSelector('#selector-neon');
+    }
+    if (method == 'curve') {
+      this.setCurveEffect();
+
+      // document.querySelector<HTMLElement>('#curve').style.display = 'block';
+      this.setEffectSelector('#selector-curve');
     }
   }
 
@@ -479,4 +487,31 @@ export class TextEffectsComponent implements OnInit {
 
     this.setNeonEffect();
   }
+
+  // curve
+
+  setCurveEffect() {
+    // console.log(this.moveableService.selectedPageId, this.moveableService.selectedItemId);
+    // let quill = this.toolbarService.textEditItems[this.moveableService.selectedPageId][this.moveableService.selectedItemId];
+
+    // let editorEle = document.querySelector<HTMLElement>(
+    //   '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    // );
+    // let curveText = document.querySelector<HTMLElement>(
+    //   '#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    // );
+
+    // // curveText.innerHTML = quill.getText();
+    // curveText.innerHTML = quill.container.innerHTML;
+    // curveText.style.fontSize = editorEle.style.fontSize;
+    // curveText.style.fontFamily = editorEle.style.fontFamily;
+    // curveText.style.opacity = '1';
+
+    // editorEle.setAttribute('Curve', 'true');
+    // editorEle.style.opacity = '0';
+
+    this.toolbarService.setCurveEffect(this.moveableService.selectedPageId, this.moveableService.selectedItemId);
+  }
+
+  onInputCurveChange(event) {}
 }

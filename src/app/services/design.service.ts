@@ -217,6 +217,8 @@ export class DesignService {
   onSelectNothing() {
     this.theItem = null;
     this.setStatus(ItemStatus.none);
+
+    console.log('nothing');
   }
 
   onSelectGroup(pageId: number) {

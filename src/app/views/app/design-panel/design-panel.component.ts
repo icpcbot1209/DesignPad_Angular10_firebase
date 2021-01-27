@@ -1,15 +1,16 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { DesignService } from "src/app/services/design.service";
-import { Colors } from "src/app/constants/colors.service";
-import { BsDropdownConfig } from "ngx-bootstrap/dropdown";
-import { MoveableService } from "src/app/services/moveable.service";
+import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { DesignService } from 'src/app/services/design.service';
+import { Colors } from 'src/app/constants/colors.service';
+import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
+import { MoveableService } from 'src/app/services/moveable.service';
+import { ToolbarService } from 'src/app/services/toolbar.service';
 
 declare var ResizeObserver;
 
 @Component({
-  selector: "app-design-panel",
-  templateUrl: "./design-panel.component.html",
-  styleUrls: ["./design-panel.component.scss"],
+  selector: 'app-design-panel',
+  templateUrl: './design-panel.component.html',
+  styleUrls: ['./design-panel.component.scss'],
   providers: [
     {
       provide: BsDropdownConfig,
@@ -18,12 +19,12 @@ declare var ResizeObserver;
   ],
 })
 export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
-  constructor(public ds: DesignService, private moveableService: MoveableService, private zone: NgZone) {}
+  constructor(public ds: DesignService, private moveableService: MoveableService, private zone: NgZone, public toolbarService: ToolbarService) {}
 
   foreColor = Colors.getColors().separatorColor;
 
-  @ViewChild("host") host: ElementRef;
-  @ViewChild("moveableContainer") moveableContainer: ElementRef;
+  @ViewChild('host') host: ElementRef;
+  @ViewChild('moveableContainer') moveableContainer: ElementRef;
 
   resizeObserver;
 
@@ -37,9 +38,9 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         let width = entries[0].contentRect.width;
         let height = entries[0].contentRect.height;
 
-        if (this.ds.zoomMethod === "fit") {
+        if (this.ds.zoomMethod === 'fit') {
           this.ds.zoomFitInside(width, height);
-        } else if (this.ds.zoomMethod === "fill") {
+        } else if (this.ds.zoomMethod === 'fill') {
           this.ds.zoomFillInside(width, height);
         }
       });
@@ -57,25 +58,25 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   zoomOptions = [
-    { value: 300, label: "300%" },
-    { value: 200, label: "200%" },
-    { value: 125, label: "125%" },
-    { value: 100, label: "100%" },
-    { value: 75, label: "75%" },
-    { value: 50, label: "50%" },
-    { value: 25, label: "25%" },
-    { value: 10, label: "10%" },
+    { value: 300, label: '300%' },
+    { value: 200, label: '200%' },
+    { value: 125, label: '125%' },
+    { value: 100, label: '100%' },
+    { value: 75, label: '75%' },
+    { value: 50, label: '50%' },
+    { value: 25, label: '25%' },
+    { value: 10, label: '10%' },
   ];
 
   onSelectZoomOption(method: string, value?: number) {
-    if (method === "custom") {
+    if (method === 'custom') {
       this.ds.zoomCustomValue(value);
-    } else if (method === "fit") {
+    } else if (method === 'fit') {
       let width = this.host.nativeElement.clientWidth;
       let height = this.host.nativeElement.clientHeight;
 
       this.ds.zoomFitInside(width, height);
-    } else if (method === "fill") {
+    } else if (method === 'fill') {
       let width = this.host.nativeElement.clientWidth;
       let height = this.host.nativeElement.clientHeight;
 
@@ -85,5 +86,7 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addPage() {
     this.ds.addPage();
+
+    this.toolbarService.textEditItems.push([]);
   }
 }

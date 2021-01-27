@@ -171,7 +171,7 @@
       <img class="text-effect-items" src="../../../../../assets/img/text-effects/neon.jpg" draggable="false" />
       <span class="mt-1" style="text-align: center">Neon</span>
     </div>
-    <div id="selector-curve" class="effectSelector d-flex flex-column">
+    <div id="selector-curve" class="effectSelector d-flex flex-column" (click)="setTextEffect('curve')">
       <img class="text-effect-items" src="../../../../../assets/img/text-effects/curve.jpg" draggable="false" />
       <span class="mt-1" style="text-align: center">Curve</span>
     </div>
@@ -234,4 +234,14 @@
   </div>
 
   <!-- Curve -->
+  <div class="effectContent" id="neon" style="display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
+        <input type="number" [(ngModel)]="curveValue" />
+      </div>
+      <mat-slider class="shadowSlider" [max]="100" [min]="-100" [step]="step" [(ngModel)]="curveValue" (input)="onInputCurveChange($event)">
+      </mat-slider>
+    </div>
+  </div>
 </div>
