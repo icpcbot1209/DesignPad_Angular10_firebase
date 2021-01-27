@@ -38,6 +38,11 @@ export class TextEffectsComponent implements OnInit {
 
   thickness = 50;
 
+  glitchColorA = 'rgb(0, 255, 255)';
+  glitchColorB = 'rgb(255, 0, 255)';
+
+  neonValue;
+
   constructor(public moveableService: MoveableService) {}
 
   ngOnInit(): void {}
@@ -121,6 +126,40 @@ export class TextEffectsComponent implements OnInit {
       document.querySelector<HTMLElement>('#echo').style.display = 'block';
       this.setEffectSelector('#selector-echo');
     }
+    if (method == 'glitch') {
+      this.editorEle = document.querySelector<HTMLElement>(
+        '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+      );
+      this.shadowColor = '#000000';
+      this.offset = 30;
+      this.blurSize = 0;
+      this.angle = 90;
+      this.directionX = Math.sin((this.angle * Math.PI) / 180);
+      this.directionY = Math.cos((this.angle * Math.PI) / 180);
+
+      this.setGlitchEffect();
+      document.querySelector<HTMLElement>('#glitch').style.display = 'block';
+      this.setEffectSelector('#selector-glitch');
+    }
+    if (method == 'neon') {
+      this.editorEle = document.querySelector<HTMLElement>(
+        '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+      );
+      this.shadowColor = '#000000';
+      this.blurSize = 50;
+      this.neonValue = 50;
+
+      this.editorEle = document.querySelector<HTMLElement>(
+        '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+      );
+      this.editorEle.style.color = 'rgb(0, 0, 0)';
+
+      this.onInputShadowColorChange();
+
+      this.setNeonEffect();
+      document.querySelector<HTMLElement>('#neon').style.display = 'block';
+      this.setEffectSelector('#selector-neon');
+    }
   }
 
   setEffectSelector(id) {
@@ -186,16 +225,6 @@ export class TextEffectsComponent implements OnInit {
     this.setHollowEffect();
   }
 
-  onInputMultiShadowColorChange() {
-    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.shadowColor);
-
-    this.shadowR = parseInt(result[1], 16);
-    this.shadowG = parseInt(result[2], 16);
-    this.shadowB = parseInt(result[3], 16);
-
-    this.setMultiShadowEffect();
-  }
-
   onInputOpacityChange(event) {
     this.opacity = event.value;
 
@@ -209,6 +238,7 @@ export class TextEffectsComponent implements OnInit {
     this.setShadowEffect();
   }
 
+  // Splic
   setHollowEffect() {
     this.editorEle = document.querySelector<HTMLElement>(
       '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
@@ -231,6 +261,7 @@ export class TextEffectsComponent implements OnInit {
     this.setHollowEffect();
   }
 
+  // Echo
   setMultiShadowEffect() {
     this.editorEle = document.querySelector<HTMLElement>(
       '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
@@ -287,5 +318,165 @@ export class TextEffectsComponent implements OnInit {
     this.directionY = Math.cos((this.angle * Math.PI) / 180);
 
     this.setMultiShadowEffect();
+  }
+
+  onInputMultiShadowColorChange() {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.shadowColor);
+
+    this.shadowR = parseInt(result[1], 16);
+    this.shadowG = parseInt(result[2], 16);
+    this.shadowB = parseInt(result[3], 16);
+
+    this.setMultiShadowEffect();
+  }
+
+  // Glitch
+  setGlitchEffect() {
+    this.editorEle = document.querySelector<HTMLElement>(
+      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    );
+    this.fontSize = this.editorEle.style.fontSize;
+
+    this.offsetX = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionX).toString() + 'px';
+    this.offsetY = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionY).toString() + 'px';
+    let offset2X = (((-1 * parseFloat(this.fontSize)) / (100 / this.offset) / 6) * this.directionX).toString() + 'px';
+    let offset2Y = (((-1 * parseFloat(this.fontSize)) / (100 / this.offset) / 6) * this.directionY).toString() + 'px';
+    this.blurSize = (parseFloat(this.fontSize) / (100 / this.blur) / 6).toString() + 'px';
+
+    this.editorEle.style.textShadow =
+      this.glitchColorA +
+      ' ' +
+      this.offsetX +
+      ' ' +
+      this.offsetY +
+      ' ' +
+      this.blurSize +
+      ', ' +
+      this.glitchColorB +
+      ' ' +
+      offset2X +
+      ' ' +
+      offset2Y +
+      ' ' +
+      this.blurSize;
+  }
+
+  onInputGlitchOffsetChange(event) {
+    this.offset = event.value;
+
+    this.setGlitchEffect();
+  }
+
+  onInputGlitchDirectionChange(event) {
+    this.angle = event.value;
+    this.directionX = Math.sin((this.angle * Math.PI) / 180);
+    this.directionY = Math.cos((this.angle * Math.PI) / 180);
+
+    this.setGlitchEffect();
+  }
+
+  onInputGlitchChange_A() {
+    this.glitchColorA = 'rgb(0, 255, 255)';
+    this.glitchColorB = 'rgb(255, 0, 255)';
+
+    this.setGlitchEffect();
+  }
+
+  onInputGlitchChange_B() {
+    this.glitchColorA = 'rgb(0, 255, 255)';
+    this.glitchColorB = 'rgb(255, 0, 0)';
+
+    this.setGlitchEffect();
+  }
+
+  // Neon
+
+  setNeonEffect() {
+    this.editorEle = document.querySelector<HTMLElement>(
+      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    );
+    this.fontSize = this.editorEle.style.fontSize;
+
+    this.offsetX = 1;
+    this.offsetY = 1;
+    this.blurSize = (parseFloat(this.fontSize) / (100 / this.blur) / 6).toString() + 'px';
+    let blur = parseFloat(this.fontSize) / 100 / 6;
+
+    let op = 1;
+
+    let R = this.shadowR + ((255 - this.shadowR) * (this.neonValue - 1)) / 100;
+    let G = this.shadowG + ((255 - this.shadowG) * (this.neonValue - 1)) / 100;
+    let B = this.shadowB + ((255 - this.shadowB) * (this.neonValue - 1)) / 100;
+    console.log(R, G, B);
+
+    this.editorEle.style.textShadow =
+      'rgba(' +
+      this.shadowR +
+      ', ' +
+      this.shadowG +
+      ', ' +
+      this.shadowB +
+      ', ' +
+      op +
+      ') ' +
+      this.offsetX +
+      'px' +
+      ' ' +
+      this.offsetY +
+      'px' +
+      ' ' +
+      blur * 10 * 6 +
+      'px, ' +
+      'rgba(' +
+      this.shadowR +
+      ', ' +
+      this.shadowG +
+      ', ' +
+      this.shadowB +
+      ', ' +
+      op +
+      ') ' +
+      this.offsetX +
+      'px' +
+      ' ' +
+      this.offsetY +
+      'px' +
+      ' ' +
+      blur * 10 * 8 +
+      'px, ' +
+      'rgba(' +
+      this.shadowR +
+      ', ' +
+      this.shadowG +
+      ', ' +
+      this.shadowB +
+      ', ' +
+      op +
+      ') ' +
+      this.offsetX +
+      'px' +
+      ' ' +
+      this.offsetY +
+      'px' +
+      ' ' +
+      blur * 10 * 12 +
+      'px';
+
+    this.editorEle.style.color = 'rgb(' + R + ', ' + G + ', ' + B + ')';
+  }
+
+  onInputNeonChange(event) {
+    this.neonValue = event.value;
+    this.setNeonEffect();
+  }
+
+  onInputNeonColorChange() {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.shadowColor);
+
+    this.shadowR = parseInt(result[1], 16);
+    this.shadowG = parseInt(result[2], 16);
+    this.shadowB = parseInt(result[3], 16);
+
+    this.setNeonEffect();
   }
 }
