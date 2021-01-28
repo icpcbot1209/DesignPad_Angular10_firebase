@@ -38,6 +38,7 @@ export class MoveableService {
   selectedPageId: string;
   selectedItemId: string;
   itemScale: number;
+  selectedSelecto = [];
 
   isMouseDown: boolean = false;
   isMouseMove: boolean = false;
@@ -89,33 +90,43 @@ export class MoveableService {
       scroller.scrollBy(e.direction[0] * 10, e.direction[1] * 10);
     });
 
-    selecto.on('select', (e: OnSelect) => {
-      e.added.forEach((el) => {
-        let item = this.getItem(el);
-        if (item) {
-          item.selected = true;
+    selecto
+      .on('selectStart', () => {
+        for (let i = 0; i < this.selectedSelecto.length; i++) {
+          this.selectedSelecto[i].selected = false;
+        }
+
+        this.selectedSelecto = [];
+      })
+      .on('select', (e: OnSelect) => {
+        e.added.forEach((el) => {
+          let item = this.getItem(el);
+
+          this.selectedSelecto.push(item);
+
+          if (item) {
+            item.selected = true;
+          }
+        });
+        e.removed.forEach((el) => {
+          let item = this.getItem(el);
+          if (item) {
+            item.selected = false;
+          }
+        });
+      })
+      .on('selectEnd', (e: OnSelectEnd) => {
+        targets = e.selected;
+
+        this.onSelectTargets(targets);
+
+        if (e.isDragStart) {
+          e.inputEvent.preventDefault();
+          setTimeout(() => {
+            this.moveable?.dragStart(e.inputEvent);
+          }, 10);
         }
       });
-      e.removed.forEach((el) => {
-        let item = this.getItem(el);
-        if (item) {
-          item.selected = false;
-        }
-      });
-    });
-
-    selecto.on('selectEnd', (e: OnSelectEnd) => {
-      targets = e.selected;
-
-      this.onSelectTargets(targets);
-
-      if (e.isDragStart) {
-        e.inputEvent.preventDefault();
-        setTimeout(() => {
-          this.moveable?.dragStart(e.inputEvent);
-        }, 10);
-      }
-    });
 
     selecto.on('dragStart', (e) => {
       const target = e.inputEvent.target;
@@ -176,7 +187,10 @@ export class MoveableService {
       this.isEditable = false;
       this.selectableTextEditor();
 
-      if (document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') == 'true') {
+      if (
+        document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId) &&
+        document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') == 'true'
+      ) {
         document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '0';
         document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '1';
 
