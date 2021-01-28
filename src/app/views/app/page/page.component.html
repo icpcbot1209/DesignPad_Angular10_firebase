@@ -15,7 +15,15 @@
     <div [id]="'page-' + pageId" [ngStyle]="styleLayer()" style="overflow: visible; pointer-events: all">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <ng-container *ngIf="item.type == ItemType.image">
-          <div class="target" [ngStyle]="styleItemPosition(item)" [attr.pageId]="pageId" [attr.itemId]="itemId" [attr.itemType]="item.type" (dblclick)="ds.startImageCrop()" (mousemove)="onMouseMoveItem($event, item)"></div>
+          <div
+            class="target"
+            [ngStyle]="styleItemPosition(item)"
+            [attr.pageId]="pageId"
+            [attr.itemId]="itemId"
+            [attr.itemType]="item.type"
+            (dblclick)="ds.startImageCrop()"
+            (mousemove)="onMouseMoveItem($event, item)"
+          ></div>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.text">
           <app-text-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-text-item>

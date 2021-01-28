@@ -67,3 +67,53 @@ input[type='number'] {
 #text-effect:hover {
   color: #06c;
 }
+
+#lineHeightContent {
+  position: fixed;
+  top: 120px;
+  padding: 25px;
+  border-radius: 4px;
+  z-index: 1000;
+  background-color: white;
+
+  box-shadow: 0 0 0 1px rgb(64 87 109 / 7%), 0 2px 12px rgb(53 71 90 / 20%);
+}
+
+:host ::ng-deep .lineHeightContent .mat-slider-thumb {
+  background-color: rgba(109, 47, 165);
+}
+
+:host ::ng-deep .lineHeightContent .mat-slider-thumb-label {
+  background-color: rgba(109, 47, 165);
+}
+
+:host ::ng-deep .lineHeightContent .mat-slider-track-fill {
+  background-color: rgba(109, 47, 165);
+}
+
+.lineHeightInput {
+  width: 37px;
+  height: 24px;
+  font-size: 12px;
+  padding: 4px 6px;
+  border: 1px solid rgba(118, 118, 118, 0.3);
+  border-radius: 4px;
+  text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.columnStyle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}

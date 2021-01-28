@@ -13,6 +13,9 @@ export class ToolbarService {
   textEditItems = [];
   isCreateQuill: boolean = false;
 
+  angel;
+  direction;
+
   constructor() {
     this.textEditItems.push([]);
   }
@@ -34,8 +37,6 @@ export class ToolbarService {
         this.isCreateQuill = false;
       }
     }
-
-    console.log(this.textEditItems[selectedPageId].length, 'asdfasf');
   }
 
   resetting(item: Item) {
@@ -47,20 +48,17 @@ export class ToolbarService {
 
   setCurveEffect(selectedPageId, selectedItemId) {
     let quill = this.textEditItems[selectedPageId][selectedItemId];
-    // let quill = new Quill('#textEditor-' + selectedPageId + '-' + selectedItemId, {
-    //   modules: {
-    //     toolbar: '#toolbar',
-    //   },
-    //   theme: 'snow',
-    // });
 
     console.log(quill);
 
     let editorEle = document.querySelector<HTMLElement>('#textEditor-' + selectedPageId + '-' + selectedItemId);
     let curveText = document.querySelector<HTMLElement>('#curveText-' + selectedPageId + '-' + selectedItemId);
 
-    console.log(quill);
-    console.log(selectedPageId, selectedItemId);
+    let ele = editorEle.children[0].children.length;
+    for (let i = 0; i < editorEle.children[0].children.length; i++) {
+      let cln = editorEle.children[0].children[i].cloneNode(true);
+      curveText.appendChild(cln);
+    }
 
     curveText.innerHTML = quill.container.innerHTML;
     curveText.style.fontSize = editorEle.style.fontSize;
@@ -70,6 +68,9 @@ export class ToolbarService {
     editorEle.style.opacity = '0';
 
     let arcText = new ArcText(curveText);
-    arcText.arc(150);
+
+    console.log(this.angel);
+    arcText.arc(this.angel);
+    arcText.direction(this.direction);
   }
 }

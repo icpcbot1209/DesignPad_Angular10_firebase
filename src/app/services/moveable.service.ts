@@ -176,14 +176,11 @@ export class MoveableService {
       this.isEditable = false;
       this.selectableTextEditor();
 
-      console.log(document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve'));
-
       if (document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') == 'true') {
         document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '0';
         document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '1';
 
         this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId);
-        console.log('c');
       }
     }
   }
@@ -604,8 +601,6 @@ export class MoveableService {
         document.querySelectorAll<HTMLElement>('.ql-editor').forEach((ele) => {
           if (ele.parentElement.getAttribute('itemId') == this.selectedItemId && ele.parentElement.getAttribute('pageId') == this.selectedPageId) {
             this.setFocus(ele);
-            console.log(this.selectedPageId, this.selectedItemId);
-            console.log(document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve'));
             ele.parentElement.style.zIndex = '1000';
 
             if (
@@ -614,8 +609,6 @@ export class MoveableService {
             ) {
               document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '1';
               document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '0.4';
-
-              console.log('b');
             }
           }
         });

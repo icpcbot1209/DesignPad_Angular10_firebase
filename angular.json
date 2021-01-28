@@ -162,7 +162,7 @@
                 "inject": false
               }
             ],
-            "scripts": ["./node_modules/quill/dist/quill.min.js", "./node_modules/arc-text/dist/lib/arc-text.js"]
+            "scripts": ["./node_modules/quill/dist/quill.min.js"]
           },
           "configurations": {
             "production": {

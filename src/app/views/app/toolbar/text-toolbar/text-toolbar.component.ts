@@ -25,6 +25,10 @@ export class TextToolbarComponent implements OnInit {
   sizeEle: HTMLInputElement;
   fontEle: HTMLInputElement;
 
+  letter;
+  lineHeight;
+  isShowLineHeight: boolean = false;
+
   constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ds: DesignService) {}
 
   ngOnInit(): void {
@@ -121,5 +125,34 @@ export class TextToolbarComponent implements OnInit {
   showTextEffects() {
     this.ds.setStatus(this.ItemStatus.text_effect);
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
+  }
+
+  // set Line Height and Letter space
+  setLineHeight() {
+    this.lineHeight = 1.97;
+    this.letter = -21;
+
+    this.isShowLineHeight = this.isShowLineHeight ? false : true;
+  }
+
+  onLetterChange(event) {
+    this.letter = event.value;
+
+    this.enableLineHeight();
+  }
+  onLineHeightChange(event) {
+    this.lineHeight = event.value;
+
+    this.enableLineHeight();
+  }
+
+  enableLineHeight() {
+    let editorEle = document.querySelector<HTMLElement>(
+      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    );
+    let qlEditor = <HTMLElement>editorEle.firstChild;
+
+    qlEditor.style.lineHeight = this.lineHeight;
+    qlEditor.style.letterSpacing = this.letter / 1000 + 'em';
   }
 }

@@ -163,9 +163,12 @@ export class TextEffectsComponent implements OnInit {
       this.setEffectSelector('#selector-neon');
     }
     if (method == 'curve') {
+      this.curveValue = 50;
+      this.toolbarService.direction = 1;
+      this.toolbarService.angel = this.curveValue * 3;
       this.setCurveEffect();
 
-      // document.querySelector<HTMLElement>('#curve').style.display = 'block';
+      document.querySelector<HTMLElement>('#curve').style.display = 'block';
       this.setEffectSelector('#selector-curve');
     }
   }
@@ -491,27 +494,21 @@ export class TextEffectsComponent implements OnInit {
   // curve
 
   setCurveEffect() {
-    // console.log(this.moveableService.selectedPageId, this.moveableService.selectedItemId);
-    // let quill = this.toolbarService.textEditItems[this.moveableService.selectedPageId][this.moveableService.selectedItemId];
-
-    // let editorEle = document.querySelector<HTMLElement>(
-    //   '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
-    // );
-    // let curveText = document.querySelector<HTMLElement>(
-    //   '#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
-    // );
-
-    // // curveText.innerHTML = quill.getText();
-    // curveText.innerHTML = quill.container.innerHTML;
-    // curveText.style.fontSize = editorEle.style.fontSize;
-    // curveText.style.fontFamily = editorEle.style.fontFamily;
-    // curveText.style.opacity = '1';
-
-    // editorEle.setAttribute('Curve', 'true');
-    // editorEle.style.opacity = '0';
-
     this.toolbarService.setCurveEffect(this.moveableService.selectedPageId, this.moveableService.selectedItemId);
   }
 
-  onInputCurveChange(event) {}
+  onInputCurveChange(event) {
+    this.curveValue = event.value;
+
+    if (this.curveValue < 0) {
+      this.toolbarService.direction = -1;
+    } else this.toolbarService.direction = 1;
+    if (this.curveValue == 0) {
+      this.toolbarService.angel = 20000;
+    } else {
+      this.toolbarService.angel = (5000 / this.curveValue) * this.toolbarService.direction;
+    }
+
+    this.setCurveEffect();
+  }
 }
