@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Item } from '../models/models';
+import { DesignService } from 'src/app/services/design.service';
 import ArcText from 'arc-text';
 
 declare var Quill;
@@ -16,7 +17,7 @@ export class ToolbarService {
   angel;
   direction;
 
-  constructor() {
+  constructor(public ds: DesignService) {
     this.textEditItems.push([]);
   }
 
@@ -27,6 +28,14 @@ export class ToolbarService {
       },
       theme: 'snow',
     });
+    quill.on('selection-change', (range, range2) => {
+      if (range && range2 === null) {
+        this.ds.isOnInput = true;
+      }
+    });
+    // .on('text-change', function () {
+    //   console.log('Text change!');
+    // });
 
     if (this.isCreateQuill) {
       if (this.textEditItems[selectedPageId].length > selectedItemId) {
@@ -48,8 +57,6 @@ export class ToolbarService {
 
   setCurveEffect(selectedPageId, selectedItemId) {
     let quill = this.textEditItems[selectedPageId][selectedItemId];
-
-    console.log(quill);
 
     let editorEle = document.querySelector<HTMLElement>('#textEditor-' + selectedPageId + '-' + selectedItemId);
     let curveText = document.querySelector<HTMLElement>('#curveText-' + selectedPageId + '-' + selectedItemId);

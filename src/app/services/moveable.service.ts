@@ -185,6 +185,7 @@ export class MoveableService {
       this.ds.onSelectNothing();
 
       this.isEditable = false;
+      this.ds.isOnInput = false;
       this.selectableTextEditor();
 
       if (
@@ -605,6 +606,7 @@ export class MoveableService {
     if (this.previousTarget != undefined) {
       if (this.previousTarget != target) {
         this.isEditable = false;
+        this.ds.isOnInput = false;
       }
     }
     this.previousTarget = target;

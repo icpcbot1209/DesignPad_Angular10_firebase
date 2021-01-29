@@ -182,9 +182,10 @@ export class DesignService {
   /*********************************************
    * Key events
    **********************************************/
+  isOnInput: boolean = false;
 
   onKeyEvent(e: KeyboardEvent) {
-    if (e.key === 'Delete' || e.key === 'Backspace') {
+    if (!this.isOnInput && (e.key === 'Delete' || e.key === 'Backspace')) {
       this.deleteSelectedItems();
       e.stopImmediatePropagation();
       return false;
@@ -193,9 +194,6 @@ export class DesignService {
 
   deleteSelectedItems = () => {
     let items = this.theDesign.pages[this.thePageId].items;
-    for (let i = 0; i < items.length; i++) {
-      console.log(items[i].selected);
-    }
 
     items = items.filter((item) => !item.selected);
     items.forEach((item, i) => {
