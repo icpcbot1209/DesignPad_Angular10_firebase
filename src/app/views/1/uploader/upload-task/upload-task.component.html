@@ -9,26 +9,8 @@
   </div>
 
   <div *ngIf="upload.snapshot | async as snap">
-    <button
-      (click)="upload.task.pause()"
-      class="btn btn-warning btn-xs"
-      [disabled]="!isActive(snap)"
-    >
-      Pause
-    </button>
-    <button
-      (click)="upload.task.cancel()"
-      class="btn btn-danger btn-xs"
-      [disabled]="!isActive(snap)"
-    >
-      Cancel
-    </button>
-    <button
-      (click)="upload.task.resume()"
-      class="btn btn-secondary btn-xs"
-      [disabled]="!(snap?.state === 'paused')"
-    >
-      Resume
-    </button>
+    <button (click)="upload.task.pause()" class="btn btn-warning btn-xs" [disabled]="!isActive(snap)">Pause</button>
+    <button (click)="upload.task.cancel()" class="btn btn-danger btn-xs" [disabled]="!isActive(snap)">Cancel</button>
+    <button (click)="upload.task.resume()" class="btn btn-secondary btn-xs" [disabled]="!(snap?.state === 'paused')">Resume</button>
   </div>
 </div>

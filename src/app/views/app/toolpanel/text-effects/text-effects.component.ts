@@ -38,6 +38,7 @@ export class TextEffectsComponent implements OnInit {
   intensity = 50;
 
   thickness = 50;
+  previousFontColor = null;
 
   glitchColorA = 'rgb(0, 255, 255)';
   glitchColorB = 'rgb(255, 0, 255)';
@@ -50,7 +51,7 @@ export class TextEffectsComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.setEffectSelector('#selector-none');
+    // this.setEffectSelector('#selector-none');
   }
   ngOnDestroy(): void {
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
@@ -70,6 +71,7 @@ export class TextEffectsComponent implements OnInit {
     });
     if (method == 'none') {
       document.querySelector<HTMLElement>('#selector-none').style.borderColor = 'rgb(109, 47, 165)';
+      this.defaultEffect();
       this.setEffectSelector('#selector-none');
     }
     if (method == 'shadow') {
@@ -111,6 +113,7 @@ export class TextEffectsComponent implements OnInit {
       this.editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
       );
+      this.previousFontColor = this.editorEle.style.color;
       this.editorEle.style.color = 'white';
       this.setShadowEffect();
       this.setHollowEffect();
@@ -171,6 +174,27 @@ export class TextEffectsComponent implements OnInit {
       document.querySelector<HTMLElement>('#curve').style.display = 'block';
       this.setEffectSelector('#selector-curve');
     }
+  }
+
+  defaultEffect() {
+    this.editorEle = document.querySelector<HTMLElement>(
+      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    );
+
+    this.editorEle.style.textShadow = 'rgba(0, 0, 0, 0) 0px 0px 0px';
+    this.editorEle.style.webkitTextStroke = '0px rgb(0, 0, 0)';
+    if (!this.previousFontColor) {
+      this.editorEle.style.color = this.previousFontColor;
+      this.previousFontColor = null;
+    }
+    this.editorEle.setAttribute('Curve', 'false');
+
+    document.querySelector<HTMLElement>(
+      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    ).style.opacity = '1';
+    document.querySelector<HTMLElement>(
+      '#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    ).style.opacity = '0';
   }
 
   setEffectSelector(id) {
@@ -249,7 +273,7 @@ export class TextEffectsComponent implements OnInit {
     this.setShadowEffect();
   }
 
-  // Splic
+  // Hollow
   setHollowEffect() {
     this.editorEle = document.querySelector<HTMLElement>(
       '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
@@ -418,7 +442,6 @@ export class TextEffectsComponent implements OnInit {
     let R = this.shadowR + ((255 - this.shadowR) * (this.neonValue - 1)) / 100;
     let G = this.shadowG + ((255 - this.shadowG) * (this.neonValue - 1)) / 100;
     let B = this.shadowB + ((255 - this.shadowB) * (this.neonValue - 1)) / 100;
-    console.log(R, G, B);
 
     this.editorEle.style.textShadow =
       'rgba(' +

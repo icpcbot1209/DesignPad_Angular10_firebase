@@ -33,9 +33,6 @@ export class ToolbarService {
         this.ds.isOnInput = true;
       }
     });
-    // .on('text-change', function () {
-    //   console.log('Text change!');
-    // });
 
     if (this.isCreateQuill) {
       if (this.textEditItems[selectedPageId].length > selectedItemId) {
@@ -56,18 +53,20 @@ export class ToolbarService {
   }
 
   setCurveEffect(selectedPageId, selectedItemId) {
-    let quill = this.textEditItems[selectedPageId][selectedItemId];
+    // let quill = this.textEditItems[selectedPageId][selectedItemId];
 
     let editorEle = document.querySelector<HTMLElement>('#textEditor-' + selectedPageId + '-' + selectedItemId);
     let curveText = document.querySelector<HTMLElement>('#curveText-' + selectedPageId + '-' + selectedItemId);
 
-    let ele = editorEle.children[0].children.length;
-    for (let i = 0; i < editorEle.children[0].children.length; i++) {
-      let cln = editorEle.children[0].children[i].cloneNode(true);
-      curveText.appendChild(cln);
-    }
+    // let ele = editorEle.children[0].children.length;
+    // for (let i = 0; i < editorEle.children[0].children.length; i++) {
+    //   let cln = editorEle.children[0].children[i].cloneNode(true);
+    //   curveText.appendChild(cln);
+    // }
 
-    curveText.innerHTML = quill.container.innerHTML;
+    // curveText.innerHTML = quill.container.innerHTML;
+    // console.log(curveText);
+    curveText.innerHTML = editorEle.children[0].children[0].innerHTML;
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
     curveText.style.opacity = '1';
@@ -76,8 +75,45 @@ export class ToolbarService {
 
     let arcText = new ArcText(curveText);
 
-    console.log(this.angel);
     arcText.arc(this.angel);
     arcText.direction(this.direction);
+
+    this.setEffectToCurve(editorEle, curveText);
+  }
+
+  setEffectToCurve(editorEle, curveText) {
+    if (editorEle.children[0].children[0].children.length > 0) {
+      let text = editorEle.children[0].children[0].innerHTML;
+      let ele = [];
+      let index = 0;
+      let length = 0;
+      let fromIndex = 0;
+
+      for (let i = 0; i < editorEle.children[0].children[0].children.length; i++) {
+        ele.push(editorEle.children[0].children[0].children[i]);
+      }
+
+      for (let j = 0; j < ele.length; j++) {
+        index = index + length + text.indexOf(ele[j].outerHTML, fromIndex) - fromIndex;
+        console.log(ele[j].outerHTML);
+        length = ele[j].innerHTML.length;
+        console.log(text.indexOf(ele[j].outerHTML, fromIndex), fromIndex);
+        console.log(index, length);
+
+        for (let i = index; i < index + length; i++) {
+          let textEle = curveText.children[0].children[i] as HTMLElement;
+          textEle.style.color = ele[j].style.color;
+        }
+
+        if (ele[j].outerHTML.indexOf('<strong') >= 0 && ele[j].outerHTML.indexOf('</strong>') >= 0) {
+          for (let i = index; i < index + length; i++) {
+            let textEle = curveText.children[0].children[i] as HTMLElement;
+            textEle.style.fontWeight = 'bold';
+          }
+        }
+
+        fromIndex = text.indexOf(ele[j].outerHTML, fromIndex) + ele[j].outerHTML.length;
+      }
+    }
   }
 }
