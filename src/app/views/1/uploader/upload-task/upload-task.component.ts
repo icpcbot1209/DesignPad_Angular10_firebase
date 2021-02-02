@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ImageUpload } from 'src/app/models/image-upload';
+import { MusicUpload } from 'src/app/models/music-upload';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
@@ -10,33 +11,27 @@ import { AuthService } from 'src/app/shared/auth.service';
   styleUrls: ['./upload-task.component.scss'],
 })
 export class UploadTaskComponent implements OnInit {
-  constructor(
-    private authService: AuthService,
-    private storage: AngularFireStorage,
-    private db: AngularFirestore
-  ) {}
+  constructor(private authService: AuthService, private storage: AngularFireStorage, private db: AngularFirestore) {}
 
   @Input() file: File;
   @Input() taskType: string;
 
-  upload: ImageUpload = new ImageUpload(
-    this.authService,
-    this.storage,
-    this.db
-  );
+  upload: ImageUpload = new ImageUpload(this.authService, this.storage, this.db);
+  musicUpload: MusicUpload = new MusicUpload(this.authService, this.storage, this.db);
 
   async ngOnInit() {
-    if (this.taskType == 'user_uploads')
-      this.upload.uploadImage(this.file, false);
-    else if (this.taskType == 'admin_uploads')
-      this.upload.uploadImage(this.file, true);
+    if (this.file.type == 'image/jpeg') {
+      if (this.taskType == 'user_uploads') this.upload.uploadImage(this.file, false);
+      else if (this.taskType == 'admin_uploads') this.upload.uploadImage(this.file, true);
+    }
+    if (this.file.type == 'audio/mpeg') {
+      if (this.taskType == 'user_uploads') this.musicUpload.uploadMusic(this.file, false);
+      else if (this.taskType == 'admin_uploads') this.musicUpload.uploadMusic(this.file, true);
+    }
   }
 
   isActive(snapshot) {
-    return (
-      snapshot.state === 'running' &&
-      snapshot.bytesTransferred < snapshot.totalBytes
-    );
+    return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
   }
 }
 

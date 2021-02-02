@@ -10,11 +10,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  tabs: TabData[] = [
-    { title: 'Photo' },
-    { title: 'Text', disabled: true },
-    { title: 'Template', disabled: false },
-  ];
+  tabs: TabData[] = [{ title: 'Photo' }, { title: 'Music' }, { title: 'Text', disabled: true }, { title: 'Template', disabled: false }];
   theTabId: number = 0;
 }
 

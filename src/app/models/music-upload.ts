@@ -5,10 +5,10 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../shared/auth.service';
 
-import { AssetImage } from './models';
+import { AssetMusic } from './models';
 import { Injectable } from '@angular/core';
 
-export class ImageUpload {
+export class MusicUpload {
   constructor(private authService: AuthService, private storage: AngularFireStorage, private db: AngularFirestore) {}
 
   task: AngularFireUploadTask;
@@ -32,50 +32,15 @@ export class ImageUpload {
     });
   }
 
-  makeThumbnail(original: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      let thumbnail: string;
-      let img = new Image();
-      const max = 100;
-      img.onload = () => {
-        this.width = img.width;
-        this.height = img.height;
-
-        if (img.height > max) {
-          var oc = document.createElement('canvas'),
-            octx = oc.getContext('2d');
-          oc.height = img.height;
-          oc.width = img.width;
-          octx.drawImage(img, 0, 0);
-          oc.width = (img.width / img.height) * max;
-          oc.height = max;
-          octx.drawImage(oc, 0, 0, oc.width, oc.height);
-          octx.drawImage(img, 0, 0, oc.width, oc.height);
-          thumbnail = oc.toDataURL();
-        } else {
-          try {
-            thumbnail = oc.toDataURL();
-          } catch (error) {
-            return;
-          }
-        }
-
-        resolve(thumbnail);
-      };
-      img.src = original;
-    });
-  }
-
-  async uploadImage(file: File, isAdmin: boolean) {
+  async uploadMusic(file: File, isAdmin: boolean) {
     this.orignal = await this.fileToDataURL(file);
-    this.thumbnail = await this.makeThumbnail(this.orignal);
 
     let userId = this.authService.user.uid;
     if (isAdmin) userId = 'admin';
 
     // The storage path
-    let path = `user_files/${userId}/image/${Date.now()}_${file.name}`;
-    if (isAdmin) path = `assets/image/${Date.now()}_${file.name}`;
+    let path = `user_files/${userId}/musics/${Date.now()}_${file.name}`;
+    if (isAdmin) path = `assets/musics/${Date.now()}_${file.name}`;
 
     // Reference to storage bucket
     const ref = this.storage.ref(path);
@@ -91,16 +56,14 @@ export class ImageUpload {
       // The file's download URL
       finalize(async () => {
         this.downloadURL = await ref.getDownloadURL().toPromise();
-        let collectionName = isAdmin ? 'Images' : 'UserFiles';
+        let collectionName = isAdmin ? 'Musics' : 'UserFiles';
 
-        this.db.collection<AssetImage>(collectionName).add({
+        this.db.collection<AssetMusic>(collectionName).add({
           downloadURL: this.downloadURL,
           path,
-          thumbnail: this.thumbnail,
-          width: this.width,
-          height: this.height,
           timestamp: Date.now(),
           userId,
+          thumbnail: '',
           tags: [file.name],
         });
       })

@@ -2,20 +2,19 @@
   <h1>Design Pad Admin</h1>
   <ul class="nav nav-pills">
     <li class="nav-item" *ngFor="let tab of tabs; let i = index">
-      <a
-        class="nav-link c-pointer"
-        [ngClass]="{ active: theTabId == i, disabled: tab.disabled }"
-        (click)="theTabId = i"
-        >{{ tab.title }}</a
-      >
+      <a class="nav-link c-pointer" [ngClass]="{ active: theTabId == i, disabled: tab.disabled }" (click)="theTabId = i">{{ tab.title }}</a>
     </li>
   </ul>
 </div>
 
-<div
-  class="container-fluid"
-  style="margin-top: 20px; height: calc(100vh - 200px)"
-  [ngStyle]="{ display: theTabId == 0 ? 'block' : 'none' }"
->
-  <app-photos></app-photos>
+<div *ngIf="theTabId == 0">
+  <!-- [ngStyle]="{ display: theTabId == 0 ? 'block' : 'none' }" -->
+  <div class="container-fluid" style="margin-top: 20px; height: calc(100vh - 200px)">
+    <app-photos></app-photos>
+  </div>
+</div>
+<div *ngIf="theTabId == 1">
+  <div class="container-fluid" style="margin-top: 20px; height: calc(100vh - 200px)">
+    <app-musics></app-musics>
+  </div>
 </div>

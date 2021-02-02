@@ -158,7 +158,7 @@ export class DevprogressComponent implements OnInit {
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Color panel: Color picker for custom colors',
@@ -179,14 +179,14 @@ export class DevprogressComponent implements OnInit {
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Effect panel: other 6',
           hours: 1,
           note: '',
           date: null,
-          isDone: false,
+          isDone: true,
         },
         {
           title: 'Text: Color panel: Color picker for custom colors',
@@ -213,7 +213,7 @@ export class DevprogressComponent implements OnInit {
     },
     {
       totalHours: 100,
-      description: 'Milestone 4, 5, 6',
+      description: 'Milestone 4',
       items: [
         {
           title: 'Download as PNG, JPG',
@@ -229,6 +229,33 @@ export class DevprogressComponent implements OnInit {
           date: null,
           isDone: false,
         },
+        {
+          title: 'Download as SVG',
+          hours: null,
+          note: '',
+          date: null,
+          isDone: false,
+        },
+        {
+          title: 'Music browse and edit',
+          hours: null,
+          note: '',
+          date: null,
+          isDone: false,
+        },
+        {
+          title: 'Undo and Redo',
+          hours: null,
+          note: '',
+          date: null,
+          isDone: false,
+        },
+      ],
+    },
+    {
+      totalHours: 100,
+      description: 'Milestone 5, 6',
+      items: [
         {
           title: 'My Template: Browse with Preview',
           hours: 1,
@@ -252,13 +279,6 @@ export class DevprogressComponent implements OnInit {
         },
         {
           title: 'main/Edit SVG elements',
-          hours: null,
-          note: '',
-          date: null,
-          isDone: false,
-        },
-        {
-          title: 'Download as SVG',
           hours: null,
           note: '',
           date: null,

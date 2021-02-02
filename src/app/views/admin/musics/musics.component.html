@@ -11,7 +11,7 @@
         Upload from device <br />
         Drag & Drop multiple files
       </button>
-      <input #fileInput style="display: none" type="file" accept="image/png, image/jpeg" multiple (change)="onDrop($event.target.files)" />
+      <input #fileInput style="display: none" type="file" accept="audio/*" multiple (change)="onDrop($event.target.files)" />
     </div>
 
     <perfect-scrollbar [config]="{ suppressScrollX: true }" style="height: calc(100vh - 500px)">
@@ -56,21 +56,28 @@
             <th class="text-center">Timestamp</th>
           </tr>
 
-          <tr *ngFor="let assetImage of assetImages; let i = index">
+          <tr *ngFor="let assetMusic of assetMusics; let i = index">
             <td>
               <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
                 <input
                   type="checkbox"
                   class="custom-control-input"
                   [id]="'customCheck' + i"
-                  [checked]="isSelected(assetImage)"
-                  (change)="onSelect(assetImage)"
+                  [checked]="isSelected(assetMusic)"
+                  (change)="onSelect(assetMusic)"
                 />
                 <label class="custom-control-label" [for]="'customCheck' + i"></label>
               </label>
             </td>
             <td class="text-center">
-              <img [src]="assetImage.thumbnail" height="100px" width="auto" style="margin: 5px; cursor: pointer" />
+              <img
+                [src]="assetMusic.thumbnail != '' ? assetMusic.thumbnail : '../../../../../../assets/img/icons/music.png'"
+                height="50px"
+                width="50px"
+                style="margin: 5px; cursor: pointer"
+                (click)="musicThumbnailInput.click()"
+              />
+              <input #musicThumbnailInput style="display: none" type="file" multiple (change)="updateThumbnail($event.target.files, assetMusic)" />
             </td>
 
             <td>
@@ -78,19 +85,19 @@
                 <ng-select
                   [items]="[]"
                   [addTag]="addTagFn"
-                  (add)="onAddRemoveTag(assetImage)"
-                  (remove)="onAddRemoveTag(assetImage)"
+                  (add)="onAddRemoveTag(assetMusic)"
+                  (remove)="onAddRemoveTag(assetMusic)"
                   [hideSelected]="true"
                   multiple="true"
                   bindLabel="name"
-                  [(ngModel)]="assetImage.tags"
+                  [(ngModel)]="assetMusic.tags"
                 >
                 </ng-select>
               </div>
             </td>
 
             <td class="text-center">
-              <span>{{ assetImage.timestamp | date: 'yyyy/MM/dd HH:mm:ss' }}</span>
+              <span>{{ assetMusic.timestamp | date: 'yyyy/MM/dd HH:mm:ss' }}</span>
             </td>
           </tr>
         </table>
