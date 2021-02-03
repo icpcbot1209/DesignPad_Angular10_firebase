@@ -40,6 +40,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TextEffectsComponent } from './toolpanel/text-effects/text-effects.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { MusicsComponent } from './sidebar/musics/musics.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,6 +63,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     FontListComponent,
     FontItemComponent,
     TextEffectsComponent,
+    MusicsComponent,
   ],
   imports: [
     CommonModule,

@@ -14,8 +14,8 @@
               </svg>
             </i>
             <i *ngIf="item.label != 'Text'" [ngClass]="item.icon" style="font-size: x-large"></i>
-            {{ item.label }}</a
-          >
+            {{ item.label }}
+          </a>
         </li>
       </ul>
     </perfect-scrollbar>
@@ -46,7 +46,14 @@
     >
       <sidebar-text></sidebar-text>
     </div>
-
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display: !ds.isToolpanel() && theItem.label == 'Music' ? 'block' : 'none'
+      }"
+    >
+      <sidebar-music></sidebar-music>
+    </div>
     <div
       [ngStyle]="{
         height: '100%',
