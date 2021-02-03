@@ -57,6 +57,14 @@
     <div
       [ngStyle]="{
         height: '100%',
+        display: !ds.isToolpanel() && theItem.label == 'Elements' ? 'block' : 'none'
+      }"
+    >
+      <sidebar-elements></sidebar-elements>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
         display: ds.isToolpanel() ? 'block' : 'none'
       }"
     >

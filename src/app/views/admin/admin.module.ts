@@ -14,15 +14,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DevprogressComponent } from './devprogress/devprogress.component';
 import { MaterialModule } from 'src/app/material.module';
 import { MusicsComponent } from './musics/musics.component';
+import { ElementsComponent } from './elements/elements.component';
 
 @NgModule({
-  declarations: [
-    AdminAuthComponent,
-    DashboardComponent,
-    PhotosComponent,
-    DevprogressComponent,
-    MusicsComponent,
-  ],
+  declarations: [AdminAuthComponent, DashboardComponent, PhotosComponent, DevprogressComponent, MusicsComponent, ElementsComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

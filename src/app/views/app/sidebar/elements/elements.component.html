@@ -1,0 +1,27 @@
+<div style="height: 100%">
+  <ng-select id="searchFontInput" style="margin: 10px 5px" bindLabel="name" [placeholder]="'Search'" [isOpen]="false"> </ng-select>
+
+  <div
+    #perfectScroll
+    class="search-results"
+    infinite-scroll
+    [infiniteScrollDistance]="scrollDistance"
+    [infiniteScrollUpDistance]="scrollUpDistance"
+    [infiniteScrollThrottle]="throttle"
+    (scrolled)="onScrollDown($event)"
+    [scrollWindow]="false"
+    *ngIf="array"
+    style="height: 92%; overflow: auto"
+  >
+    <div *ngIf="array != []" style="display: flex; justify-content: space-between; flex-flow: row wrap">
+      <ng-container *ngFor="let music of array; let index = i">
+        <div
+          style="width: 100px; height: 100px; margin-bottom: 13px; display: flex; justify-content: center; align-items: center; cursor: pointer"
+          (click)="AddSVG()"
+        >
+          <img [src]="music.thumbnail" alt="" />
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

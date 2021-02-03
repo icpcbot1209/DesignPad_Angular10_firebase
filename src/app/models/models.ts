@@ -60,6 +60,16 @@ export interface AssetImage {
   tags: string[];
 }
 
+export interface AssetElement {
+  uid?: string;
+  downloadURL: string;
+  path: string;
+  thumbnail: string;
+  timestamp: number;
+  userId: string;
+  tags: string[];
+}
+
 export interface AssetMusic {
   uid?: string;
   downloadURL: string;

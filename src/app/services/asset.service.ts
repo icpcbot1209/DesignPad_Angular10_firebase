@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AssetImage } from '../models/models';
 import { AssetMusic } from '../models/models';
+import { AssetElement } from '../models/models';
 import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({ providedIn: 'root' })
@@ -26,6 +27,14 @@ export class AssetService {
         .snapshotChanges();
   }
 
+  readElementByTag(tag: string) {
+    if (tag === '') return this.db.collection<AssetMusic>('Elements').snapshotChanges();
+    else
+      return this.db
+        .collection<AssetImage>('Elements', (ref) => ref.where('tags', 'array-contains', tag))
+        .snapshotChanges();
+  }
+
   updateImageTags(assetImage: AssetImage) {
     this.db.collection<AssetImage>('Images').doc(assetImage.uid).update({
       tags: assetImage.tags,
@@ -36,6 +45,13 @@ export class AssetService {
   updateMusicTags(assetMusic: AssetMusic) {
     this.db.collection<AssetMusic>('Musics').doc(assetMusic.uid).update({
       tags: assetMusic.tags,
+      timestamp: Date.now(),
+    });
+  }
+
+  updateElementTags(assetElement: AssetElement) {
+    this.db.collection<AssetElement>('Elements').doc(assetElement.uid).update({
+      tags: assetElement.tags,
       timestamp: Date.now(),
     });
   }
@@ -51,6 +67,13 @@ export class AssetService {
     arr.forEach((asset) => {
       this.storage.ref(asset.path).delete();
       this.db.collection<AssetImage>('Musics').doc(asset.uid).delete();
+    });
+  }
+
+  removeElements(arr: AssetElement[]) {
+    arr.forEach((asset) => {
+      this.storage.ref(asset.path).delete();
+      this.db.collection<AssetImage>('Elements').doc(asset.uid).delete();
     });
   }
 

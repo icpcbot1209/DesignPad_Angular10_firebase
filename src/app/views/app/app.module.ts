@@ -41,6 +41,7 @@ import { TextEffectsComponent } from './toolpanel/text-effects/text-effects.comp
 import { MatSliderModule } from '@angular/material/slider';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MusicsComponent } from './sidebar/musics/musics.component';
+import { ElementsComponent } from './sidebar/elements/elements.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,6 +65,7 @@ import { MusicsComponent } from './sidebar/musics/musics.component';
     FontItemComponent,
     TextEffectsComponent,
     MusicsComponent,
+    ElementsComponent,
   ],
   imports: [
     CommonModule,

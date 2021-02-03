@@ -20,11 +20,5 @@ export class TextComponent implements OnInit {
     this.ds.sidebar_text_add();
 
     this.toolbarService.isCreateQuill = true;
-    // let ele = document.querySelectorAll(".target");
-    // console.log(ele);
-    // console.log(item.itemId);[item.itemId] as HTMLElement
-    // console.log(this.textEditor.nativeElement);
-    // this.moveableService.makeMoveableText(item.pageId, ele);
   }
-  hover() {}
 }

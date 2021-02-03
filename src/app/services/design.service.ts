@@ -180,6 +180,34 @@ export class DesignService {
   }
 
   /*********************************************
+   * Element sidebar
+   **********************************************/
+  sidebar_element_add() {
+    let { x: W, y: H } = this.theDesign?.category.size;
+    if (!H) return;
+
+    let w, h, x, y;
+    w = 175.109;
+    h = 34;
+
+    x = (W - w) / 2;
+    y = (H - h) / 2;
+
+    this.addItemToCurrentPage({
+      type: ItemType.text,
+      pageId: this.thePageId,
+      itemId: 0,
+      x,
+      y,
+      w,
+      h,
+      rotate: 0,
+      scaleX: 1,
+      scaleY: 1,
+    });
+  }
+
+  /*********************************************
    * Key events
    **********************************************/
   isOnInput: boolean = false;
