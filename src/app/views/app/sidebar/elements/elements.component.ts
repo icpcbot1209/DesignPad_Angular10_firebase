@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AssetElement } from 'src/app/models/models';
+import { DesignService } from 'src/app/services/design.service';
 import { AssetService } from 'src/app/services/asset.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { AssetService } from 'src/app/services/asset.service';
 export class ElementsComponent implements OnInit {
   selector = '.scrollPanel';
   array = [];
-  sum = 10;
+  sum = 30;
   scrollDistance = 2;
   scrollUpDistance = 2;
   throttle = 300;
@@ -25,7 +26,7 @@ export class ElementsComponent implements OnInit {
   assetElements: AssetElement[] = [];
   heights: number[] = [];
 
-  constructor(public assetService: AssetService) {}
+  constructor(public assetService: AssetService, public ds: DesignService) {}
 
   ngOnInit(): void {}
 
@@ -51,7 +52,7 @@ export class ElementsComponent implements OnInit {
   onScrollDown(ev) {
     // add another 20 items
     const start = this.sum;
-    this.sum += 10;
+    this.sum += 30;
     this.appendItems(start, this.sum);
 
     this.direction = 'down';
@@ -66,9 +67,16 @@ export class ElementsComponent implements OnInit {
       for (let i = startIndex; i < endIndex; ++i) {
         if (i >= this.assetElements.length) return;
         this.array[_method](this.assetElements[i]);
+        // this.url[i] = this.getSafeUrl(this.assetElements[i].downloadURL);
+        // this.url[_method](this.assetElements[i].downloadURL);
+        // this.url = this.getSafeUrl(this.assetElements[i].downloadURL);
       }
     }
   }
 
-  AddSVG() {}
+  AddSVG(event, item) {
+    if (event.type == 'click') {
+      this.ds.sidebar_element_add(item);
+    }
+  }
 }

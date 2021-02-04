@@ -182,19 +182,26 @@ export class DesignService {
   /*********************************************
    * Element sidebar
    **********************************************/
-  sidebar_element_add() {
+  sidebar_element_add(item) {
     let { x: W, y: H } = this.theDesign?.category.size;
     if (!H) return;
 
     let w, h, x, y;
-    w = 175.109;
-    h = 34;
+    if (item.width > 100 || item.height > 100) {
+      if (item.width > item.height) {
+        w = 150;
+        h = (item.height / item.width) * 150;
+      } else {
+        w = (item.width / item.height) * 150;
+        h = 150;
+      }
+    }
 
     x = (W - w) / 2;
     y = (H - h) / 2;
 
     this.addItemToCurrentPage({
-      type: ItemType.text,
+      type: ItemType.element,
       pageId: this.thePageId,
       itemId: 0,
       x,
@@ -204,6 +211,7 @@ export class DesignService {
       rotate: 0,
       scaleX: 1,
       scaleY: 1,
+      url: item.downloadURL,
     });
   }
 
@@ -272,6 +280,12 @@ export class DesignService {
       this.status = ItemStatus.text_selected;
       document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
     }
+  }
+
+  onSelectElementItem(pageId: number, item: Item) {
+    this.thePageId = pageId;
+    this.theItem = item;
+    this.setStatus(ItemStatus.element_selected);
   }
 
   isStatus(status: ItemStatus): boolean {

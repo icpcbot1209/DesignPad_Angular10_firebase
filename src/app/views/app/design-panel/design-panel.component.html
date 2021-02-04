@@ -3,7 +3,9 @@
     [style]="{
       height: '50px',
       padding: '5px 20px',
-      borderBottom: '1px solid ' + foreColor
+      borderBottom: '1px solid ' + foreColor,
+      display: 'flex',
+      alignItems: 'center'
     }"
   >
     <app-toolbar></app-toolbar>
@@ -11,15 +13,10 @@
 
   <div style="position: absolute; bottom: 20px; right: 20px; z-index: 100" dropdown [dropup]="true">
     <button dropdownToggle type="button" class="btn btn-outline-primary">
-      {{ ds.zoomValue + "%" }}
+      {{ ds.zoomValue + '%' }}
     </button>
     <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" style="height: 430px">
-      <li
-        role="menuitem"
-        *ngFor="let option of zoomOptions"
-        (click)="onSelectZoomOption('custom', option.value)"
-        style="text-align: center"
-      >
+      <li role="menuitem" *ngFor="let option of zoomOptions" (click)="onSelectZoomOption('custom', option.value)" style="text-align: center">
         <a class="dropdown-item" href="javascript:;">{{ option.label }} </a>
       </li>
       <li class="divider dropdown-divider"></li>

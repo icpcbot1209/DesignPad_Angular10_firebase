@@ -14,12 +14,12 @@
     style="height: 92%; overflow: auto"
   >
     <div *ngIf="array != []" style="display: flex; justify-content: space-between; flex-flow: row wrap">
-      <ng-container *ngFor="let music of array; let index = i">
+      <ng-container *ngFor="let item of array; let index = i">
         <div
           style="width: 100px; height: 100px; margin-bottom: 13px; display: flex; justify-content: center; align-items: center; cursor: pointer"
-          (click)="AddSVG()"
+          (click)="AddSVG(item)"
         >
-          <img [src]="music.thumbnail" alt="" />
+          <img [src]="!item.imageData ? item.thumbnail : item.imageData" alt="" (click)="AddSVG($event, item)" />
         </div>
       </ng-container>
     </div>

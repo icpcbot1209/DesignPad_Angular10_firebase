@@ -2,6 +2,7 @@ export enum ItemType {
   none,
   image,
   text,
+  element,
 }
 
 export enum ItemStatus {
@@ -14,4 +15,5 @@ export enum ItemStatus {
   text_edit,
   text_font_list,
   text_effect,
+  element_selected,
 }

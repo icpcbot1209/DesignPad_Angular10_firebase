@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../shared/auth.service';
 
-import { AssetImage } from './models';
+import { AssetElement } from './models';
 import { Injectable } from '@angular/core';
 
 export class ElementUpload {
@@ -91,6 +91,7 @@ export class ElementUpload {
     // Progress monitoring
     this.percentage = this.task.percentageChanges();
 
+    console.log(ref);
     this.snapshot = this.task.snapshotChanges().pipe(
       // tap(console.log),
       // The file's download URL
@@ -98,7 +99,7 @@ export class ElementUpload {
         this.downloadURL = await ref.getDownloadURL().toPromise();
         let collectionName = isAdmin ? 'Elements' : 'UserFiles';
 
-        this.db.collection<AssetImage>(collectionName).add({
+        this.db.collection<AssetElement>(collectionName).add({
           downloadURL: this.downloadURL,
           path,
           thumbnail: this.thumbnail,

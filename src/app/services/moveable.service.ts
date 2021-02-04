@@ -180,6 +180,9 @@ export class MoveableService {
         this.onChangeSelectedItem(targets[0]);
         this.selectableTextEditor();
         this.resetTextToolbar();
+      } else if (item.type === ItemType.element) {
+        this.moveable = this.makeMoveableElement(thePageId, targets[0]);
+        this.ds.onSelectElementItem(thePageId, item);
       }
     } else {
       this.ds.onSelectNothing();
@@ -683,5 +686,86 @@ export class MoveableService {
     let ele = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
     let item = this.getItem(ele);
     this.toolbarService.resetting(item);
+  }
+
+  // moveable Element
+  makeMoveableElement(pageId: number, target: HTMLElement | SVGElement) {
+    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
+
+    const moveable = new Moveable(pageContainer, {
+      // target: elements[0],
+      // If the container is null, the position is fixed. (default: parentElement(document.body))
+      container: pageContainer,
+      target: target,
+      draggable: true,
+      resizable: true,
+      rotatable: true,
+      originDraggable: true,
+      originRelative: true,
+
+      snapThreshold: 5,
+      // scalable: true,
+      origin: true,
+      keepRatio: true,
+      // Resize, Scale Events at edges.
+      edge: false,
+      throttleDrag: 0,
+      throttleResize: 0,
+      throttleScale: 0,
+      throttleRotate: 0,
+      rotationPosition: 'bottom',
+    });
+
+    /* draggable */
+    moveable
+      .on('dragStart', (e: OnDragStart) => {
+        let item = this.getItem(e.target);
+        e.set([item.x, item.y]);
+      })
+      .on('drag', (e: OnDrag) => {
+        if (e.inputEvent.buttons === 0) return;
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
+
+        e.target.style.transform = this.strTransform(item);
+      });
+
+    /* resizable */
+    moveable
+      .on('resizeStart', (e: OnResizeStart) => {
+        let item = this.getItem(e.target);
+        e.setOrigin(['%', '%']);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
+      })
+      .on('resize', (e: OnResize) => {
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.w = e.width;
+        item.h = e.height;
+
+        e.target.style.transform = this.strTransform(item);
+        e.target.style.width = `${e.width}px`;
+        e.target.style.height = `${e.height}px`;
+      });
+
+    /* rotatable */
+    moveable
+      .on('rotateStart', (e: OnRotateStart) => {
+        let item = this.getItem(e.target);
+        e.set(item.rotate);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
+      })
+      .on('rotate', (e: OnRotate) => {
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.rotate = e.rotate;
+
+        e.target.style.transform = this.strTransform(item);
+      });
+
+    return moveable;
   }
 }

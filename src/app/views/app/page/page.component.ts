@@ -4,6 +4,7 @@ import { DesignService } from 'src/app/services/design.service';
 import { Item, Page } from 'src/app/models/models';
 import { Colors } from 'src/app/constants/colors.service';
 import { ItemType } from 'src/app/models/enums';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { OnSelectEnd } from 'selecto';
 import * as CSS from 'csstype';
@@ -22,10 +23,15 @@ export class PageComponent implements OnInit, AfterViewInit {
   ItemType = ItemType;
 
   modulesBubble = {
-    toolbar: [['bold', 'italic', 'underline', 'strike', 'blockquote'], [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }], ['link'], ['clean']],
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+      ['link'],
+      ['clean'],
+    ],
   };
 
-  constructor(public ds: DesignService, public moveableService: MoveableService) {}
+  constructor(public ds: DesignService, public moveableService: MoveableService, public sanitizer: DomSanitizer) {}
 
   colors = Colors;
 
@@ -115,6 +121,16 @@ export class PageComponent implements OnInit, AfterViewInit {
         height: item.h + 'px',
         transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
       };
+
+    if (item.type === ItemType.element)
+      return {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: item.w + 'px',
+        height: item.h + 'px',
+        transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
+      };
   }
 
   styleItem(item: Item): CSS.Properties {
@@ -140,11 +156,19 @@ export class PageComponent implements OnInit, AfterViewInit {
         top: 0,
         left: 0,
         width: item.w + 'px',
-        // height: item.h + "px",
-        // height: "auto",
         transform: this.moveableService.strTransform(item),
         WebkitTransform: this.moveableService.strTransform(item),
-        // transform: `translate(${item.x}px, ${item.y}px)`,
+      };
+
+    if (item.type === ItemType.element)
+      return {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: item.w + 'px',
+        height: item.h + 'px',
+        transform: this.moveableService.strTransform(item),
+        WebkitTransform: this.moveableService.strTransform(item),
       };
   }
 
@@ -158,5 +182,9 @@ export class PageComponent implements OnInit, AfterViewInit {
     } else {
       item.hovered = false;
     }
+  }
+
+  getSafeUrl(url) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }

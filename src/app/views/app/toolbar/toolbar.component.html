@@ -4,3 +4,6 @@
 <ng-container *ngIf="ds.isStatus(ItemStatus.text_selected) || ds.isStatus(ItemStatus.text_font_list) || ds.isStatus(ItemStatus.text_effect)">
   <app-text-toolbar></app-text-toolbar>
 </ng-container>
+<ng-container *ngIf="ds.isStatus(ItemStatus.element_selected)" style="display: flex; align-items: center">
+  <app-element-toolbar></app-element-toolbar>
+</ng-container>
