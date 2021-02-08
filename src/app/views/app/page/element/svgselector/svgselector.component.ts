@@ -19,7 +19,7 @@ export class SVGSelectorComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    // this.moveableService.setSelectable(this.item.pageId, this.item.itemId, 'SVGSelector-');
+    this.moveableService.setSelectable(this.item.pageId, this.item.itemId, '#SVGSelector-');
   }
 
   styleItemPosition(item: Item): CSS.Properties {

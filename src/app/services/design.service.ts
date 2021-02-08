@@ -113,7 +113,7 @@ export class DesignService {
     item.pageId = this.thePageId;
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
 
-    if (item.url) {
+    if (item.url && item.type == ItemType.element) {
       this.getSVGElement(item);
     }
     this.theDesign.pages[this.thePageId].items.push(item);
