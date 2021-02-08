@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AssetElement } from 'src/app/models/models';
 import { DesignService } from 'src/app/services/design.service';
 import { AssetService } from 'src/app/services/asset.service';
+import { MoveableService } from 'src/app/services/moveable.service';
 
 @Component({
   selector: 'sidebar-elements',
@@ -26,7 +27,7 @@ export class ElementsComponent implements OnInit {
   assetElements: AssetElement[] = [];
   heights: number[] = [];
 
-  constructor(public assetService: AssetService, public ds: DesignService) {}
+  constructor(public assetService: AssetService, public ds: DesignService, public moveableService: MoveableService) {}
 
   ngOnInit(): void {}
 
@@ -67,9 +68,6 @@ export class ElementsComponent implements OnInit {
       for (let i = startIndex; i < endIndex; ++i) {
         if (i >= this.assetElements.length) return;
         this.array[_method](this.assetElements[i]);
-        // this.url[i] = this.getSafeUrl(this.assetElements[i].downloadURL);
-        // this.url[_method](this.assetElements[i].downloadURL);
-        // this.url = this.getSafeUrl(this.assetElements[i].downloadURL);
       }
     }
   }

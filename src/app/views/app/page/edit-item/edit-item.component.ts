@@ -42,17 +42,9 @@ export class EditItemComponent implements OnInit {
         selectorEle.style.width = width;
         selectorEle.style.height = height;
         selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
-        // item.w = entries[0].contentRect.width;
-        // item.h = entries[0].contentRect.height;
-
-        // console.log(parseInt(selectorEle.style.width));
-
-        // let editorEle = document.querySelector<HTMLElement>("#textEditor-" + this.pageId + "-" + this.itemId);
-        // item = this.moveableService.getItem(editorEle);
-        // item.x = item.x-(e.)
 
         if (!this.moveableService.isOnResize) {
-          this.moveableService.setSelectable(this.itemId, this.pageId);
+          this.moveableService.setSelectable(this.itemId, this.pageId, '#textSelector-');
         }
       });
     });

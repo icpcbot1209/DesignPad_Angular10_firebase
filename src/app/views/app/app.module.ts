@@ -44,6 +44,8 @@ import { MusicsComponent } from './sidebar/musics/musics.component';
 import { ElementsComponent } from './sidebar/elements/elements.component';
 import { ElementToolbarComponent } from './toolbar/element-toolbar/element-toolbar.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SVGElementComponent } from './page/element/svgelement/svgelement.component';
+import { SVGSelectorComponent } from './page/element/svgselector/svgselector.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,6 +71,8 @@ import { HttpClientModule } from '@angular/common/http';
     MusicsComponent,
     ElementsComponent,
     ElementToolbarComponent,
+    SVGElementComponent,
+    SVGSelectorComponent,
   ],
   imports: [
     CommonModule,

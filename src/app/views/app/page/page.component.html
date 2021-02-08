@@ -10,7 +10,7 @@
           <app-edit-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-edit-item>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.element">
-          <div [id]="'SVGElement-' + pageId + '-' + itemId" [ngStyle]="styleItem(item)"></div>
+          <app-svgelement [item]="item"></app-svgelement>
         </ng-container>
       </ng-container>
     </div>
@@ -32,15 +32,7 @@
           <app-text-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-text-item>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.element">
-          <div
-            class="target"
-            [ngStyle]="styleItemPosition(item)"
-            [attr.pageId]="pageId"
-            [attr.itemId]="itemId"
-            [attr.itemType]="item.type"
-            (dblclick)="ds.startImageCrop()"
-            (mousemove)="onMouseMoveItem($event, item)"
-          ></div>
+          <app-svgselector [item]="item"></app-svgselector>
         </ng-container>
       </ng-container>
     </div>

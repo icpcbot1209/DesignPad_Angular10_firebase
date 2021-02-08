@@ -566,7 +566,7 @@ export class MoveableService {
       })
 
       .on('resizeEnd', ({ target, isDrag }) => {
-        this.setSelectable(target.getAttribute('itemId'), target.getAttribute('pageId'));
+        this.setSelectable(target.getAttribute('itemId'), target.getAttribute('pageId'), '#textSelector-');
         this.selectableTextEditor();
         this.isOnResize = false;
       });
@@ -651,8 +651,8 @@ export class MoveableService {
     this.isSelectedTarget = false;
   }
 
-  setSelectable(item, page) {
-    let ele = document.querySelector('#textSelector-' + page + '-' + item) as HTMLElement;
+  setSelectable(item, page, selector) {
+    let ele = document.querySelector(selector + page + '-' + item) as HTMLElement;
     this.getItem(ele as HTMLElement).selected = true;
     let arrEles = [];
     arrEles.push(ele);
@@ -669,10 +669,6 @@ export class MoveableService {
       currentTarget: arrEles[0],
     };
     this.selecto.emit('selectEnd', func);
-
-    if (document.querySelector('#toolbar')) {
-      // this.toolbarService.createTextEditor(this.selectedPageId, this.selectedItemId);
-    }
   }
 
   selectableTextEditor() {

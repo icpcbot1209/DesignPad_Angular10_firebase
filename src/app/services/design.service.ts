@@ -230,14 +230,13 @@ export class DesignService {
       fr.onload = (result) => {
         let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId);
         let str = result.target['result'].toString();
-        let htmlCollect = svgEle.querySelectorAll('svg');
 
         svgEle.innerHTML = str;
 
+        let htmlCollect = svgEle.querySelectorAll('svg');
         if (parseFloat(htmlCollect[0].getAttribute('width')) && parseFloat(htmlCollect[0].getAttribute('height'))) {
           let width = htmlCollect[0].clientWidth;
           let height = htmlCollect[0].clientHeight;
-          console.log(width, height);
 
           htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
           let w, h;
