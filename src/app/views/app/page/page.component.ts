@@ -8,6 +8,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { OnSelectEnd } from 'selecto';
 import * as CSS from 'csstype';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-page',
@@ -31,7 +32,7 @@ export class PageComponent implements OnInit, AfterViewInit {
     ],
   };
 
-  constructor(public ds: DesignService, public moveableService: MoveableService, public sanitizer: DomSanitizer) {}
+  constructor(public ds: DesignService, public moveableService: MoveableService, public sanitizer: DomSanitizer, private http: HttpClient) {}
 
   colors = Colors;
 

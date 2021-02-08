@@ -10,7 +10,7 @@
           <app-edit-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-edit-item>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.element">
-          <object type="image/svg+xml" [ngStyle]="styleItem(item)" [data]="getSafeUrl(item.url)"></object>
+          <div [id]="'SVGElement-' + pageId + '-' + itemId" [ngStyle]="styleItem(item)"></div>
         </ng-container>
       </ng-container>
     </div>

@@ -43,6 +43,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { MusicsComponent } from './sidebar/musics/musics.component';
 import { ElementsComponent } from './sidebar/elements/elements.component';
 import { ElementToolbarComponent } from './toolbar/element-toolbar/element-toolbar.component';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -90,6 +91,7 @@ import { ElementToolbarComponent } from './toolbar/element-toolbar/element-toolb
     InfiniteScrollModule,
     MatSliderModule,
     ColorPickerModule,
+    HttpClientModule,
   ],
 })
 export class AppModule {}

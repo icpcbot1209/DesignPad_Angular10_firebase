@@ -183,6 +183,8 @@ export class MoveableService {
       } else if (item.type === ItemType.element) {
         this.moveable = this.makeMoveableElement(thePageId, targets[0]);
         this.ds.onSelectElementItem(thePageId, item);
+        this.selectedItemId = targets[0].getAttribute('itemId');
+        this.selectedPageId = targets[0].getAttribute('pageId');
       }
     } else {
       this.ds.onSelectNothing();

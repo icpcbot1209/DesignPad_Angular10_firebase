@@ -112,6 +112,10 @@ export class DesignService {
   addItemToCurrentPage(item: Item) {
     item.pageId = this.thePageId;
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
+
+    if (item.url) {
+      this.getSVGElement(item);
+    }
     this.theDesign.pages[this.thePageId].items.push(item);
   }
 
@@ -215,6 +219,63 @@ export class DesignService {
     });
   }
 
+  getSVGElement(item) {
+    // This can be downloaded directly:
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = (event) => {
+      var blob = xhr.response;
+
+      var fr = new FileReader();
+      fr.onload = (result) => {
+        let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId);
+        let str = result.target['result'].toString();
+        let svgStr = '<svg>' + str.slice(str.indexOf('<g'), str.indexOf('</g>')) + '</svg>';
+
+        svgEle.innerHTML = str;
+
+        let htmlCollect = svgEle.querySelectorAll('svg');
+        // let width = parseFloat(htmlCollect[0].getAttribute('width'));
+        // let height = parseFloat(htmlCollect[0].getAttribute('height'));
+        let width = htmlCollect[0].clientWidth;
+        let height = htmlCollect[0].clientHeight;
+        console.log(width, height);
+
+        htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
+        let w, h;
+        if (width > height) {
+          w = 150;
+          h = (height / width) * 150;
+        } else {
+          h = 150;
+          w = (width / height) * 150;
+        }
+        htmlCollect[0].setAttribute('width', w);
+        htmlCollect[0].setAttribute('height', h);
+
+        // if (width && height) {
+        //   htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
+
+        //   let w, h;
+        //   if (width > height) {
+        //     w = 150;
+        //     h = (height / width) * 150;
+        //   } else {
+        //     h = 150;
+        //     w = (width / height) * 150;
+        //   }
+        //   htmlCollect[0].setAttribute('width', w);
+        //   htmlCollect[0].setAttribute('height', h);
+
+        //   console.log(htmlCollect[0].getAttribute('width'), htmlCollect[0].getAttribute('height'));
+        // }
+      };
+
+      fr.readAsText(blob);
+    };
+    xhr.open('GET', item.url);
+    xhr.send();
+  }
   /*********************************************
    * Key events
    **********************************************/

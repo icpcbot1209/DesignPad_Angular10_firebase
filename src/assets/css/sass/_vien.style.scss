@@ -6486,6 +6486,8 @@ rating span {
   padding: 0;
   height: auto;
   text-align: center;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 // .ql-container.ql-bubble {

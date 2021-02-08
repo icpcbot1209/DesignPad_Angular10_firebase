@@ -20,6 +20,7 @@ export interface Item {
   text?: string;
   fontSize?: string;
   font?: string;
+  SVGElement?: HTMLElement;
 }
 
 export interface Page {
