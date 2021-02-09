@@ -181,10 +181,10 @@ export class MoveableService {
         this.selectableTextEditor();
         this.resetTextToolbar();
       } else if (item.type === ItemType.element) {
-        this.moveable = this.makeMoveableElement(thePageId, targets[0]);
-        this.ds.onSelectElementItem(thePageId, item);
         this.selectedItemId = targets[0].getAttribute('itemId');
         this.selectedPageId = targets[0].getAttribute('pageId');
+        this.moveable = this.makeMoveableElement(thePageId, targets[0]);
+        this.ds.onSelectElementItem(thePageId, item);
       }
     } else {
       this.ds.onSelectNothing();

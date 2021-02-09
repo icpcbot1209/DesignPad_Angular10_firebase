@@ -113,9 +113,9 @@ export class DesignService {
     item.pageId = this.thePageId;
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
 
-    if (item.url && item.type == ItemType.element) {
-      this.getSVGElement(item);
-    }
+    // if (item.url && item.type == ItemType.element) {
+    // this.getSVGElement(item);
+    // }
     this.theDesign.pages[this.thePageId].items.push(item);
   }
 
@@ -219,44 +219,44 @@ export class DesignService {
     });
   }
 
-  getSVGElement(item) {
-    // This can be downloaded directly:
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = (event) => {
-      var blob = xhr.response;
+  // getSVGElement(item) {
+  //   // This can be downloaded directly:
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.responseType = 'blob';
+  //   xhr.onload = (event) => {
+  //     var blob = xhr.response;
 
-      var fr = new FileReader();
-      fr.onload = (result) => {
-        let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId);
-        let str = result.target['result'].toString();
+  //     var fr = new FileReader();
+  //     fr.onload = (result) => {
+  //       let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId);
+  //       let str = result.target['result'].toString();
 
-        svgEle.innerHTML = str;
+  //       svgEle.innerHTML = str;
 
-        let htmlCollect = svgEle.querySelectorAll('svg');
-        if (parseFloat(htmlCollect[0].getAttribute('width')) && parseFloat(htmlCollect[0].getAttribute('height'))) {
-          let width = htmlCollect[0].clientWidth;
-          let height = htmlCollect[0].clientHeight;
+  //       let htmlCollect = svgEle.querySelectorAll('svg');
+  //       if (parseFloat(htmlCollect[0].getAttribute('width')) && parseFloat(htmlCollect[0].getAttribute('height'))) {
+  //         let width = htmlCollect[0].clientWidth;
+  //         let height = htmlCollect[0].clientHeight;
 
-          htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
-          let w, h;
-          if (width > height) {
-            w = 150;
-            h = (height / width) * 150;
-          } else {
-            h = 150;
-            w = (width / height) * 150;
-          }
-          htmlCollect[0].setAttribute('width', w);
-          htmlCollect[0].setAttribute('height', h);
-        }
-      };
+  //         htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
+  //         let w, h;
+  //         if (width > height) {
+  //           w = 150;
+  //           h = (height / width) * 150;
+  //         } else {
+  //           h = 150;
+  //           w = (width / height) * 150;
+  //         }
+  //         htmlCollect[0].setAttribute('width', w);
+  //         htmlCollect[0].setAttribute('height', h);
+  //       }
+  //     };
 
-      fr.readAsText(blob);
-    };
-    xhr.open('GET', item.url);
-    xhr.send();
-  }
+  //     fr.readAsText(blob);
+  //   };
+  //   xhr.open('GET', item.url);
+  //   xhr.send();
+  // }
   /*********************************************
    * Key events
    **********************************************/
@@ -444,6 +444,9 @@ export class DesignService {
       css: 'brightness(90%) contrast(95%) grayscale(50%)',
     },
   ];
+
+  //SVG element
+  setSVGColorCollection() {}
 }
 
 interface Preset {
