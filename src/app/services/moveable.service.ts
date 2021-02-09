@@ -22,7 +22,7 @@ import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
 import { ToolbarService } from './toolbar.service';
 import { DesignService } from './design.service';
 import { Item } from '../models/models';
-import { ItemType } from '../models/enums';
+import { ItemStatus, ItemType } from '../models/enums';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +38,6 @@ export class MoveableService {
   selectedPageId: string;
   selectedItemId: string;
   itemScale: number;
-  selectedSelecto = [];
 
   isMouseDown: boolean = false;
   isMouseMove: boolean = false;
@@ -92,17 +91,14 @@ export class MoveableService {
 
     selecto
       .on('selectStart', () => {
-        for (let i = 0; i < this.selectedSelecto.length; i++) {
-          this.selectedSelecto[i].selected = false;
+        let items = this.ds.theDesign.pages[this.selectedPageId].items;
+        for (let i = 0; i < items.length; i++) {
+          items[i].selected = false;
         }
-
-        this.selectedSelecto = [];
       })
       .on('select', (e: OnSelect) => {
         e.added.forEach((el) => {
           let item = this.getItem(el);
-
-          this.selectedSelecto.push(item);
 
           if (item) {
             item.selected = true;
@@ -185,6 +181,7 @@ export class MoveableService {
         this.selectedPageId = targets[0].getAttribute('pageId');
         this.moveable = this.makeMoveableElement(thePageId, targets[0]);
         this.ds.onSelectElementItem(thePageId, item);
+        // this.getSVGElement(item);
       }
     } else {
       this.ds.onSelectNothing();
@@ -673,6 +670,8 @@ export class MoveableService {
       currentTarget: arrEles[0],
     };
     this.selecto.emit('selectEnd', func);
+    this.selectedItemId = item;
+    this.selectedPageId = page;
   }
 
   selectableTextEditor() {

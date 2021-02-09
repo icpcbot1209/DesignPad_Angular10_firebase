@@ -204,19 +204,35 @@ export class DesignService {
     x = (W - w) / 2;
     y = (H - h) / 2;
 
-    this.addItemToCurrentPage({
-      type: ItemType.element,
-      pageId: this.thePageId,
-      itemId: 0,
-      x,
-      y,
-      w,
-      h,
-      rotate: 0,
-      scaleX: 1,
-      scaleY: 1,
-      url: item.downloadURL,
-    });
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = (event) => {
+      var blob = xhr.response;
+
+      var fr = new FileReader();
+      fr.onload = (result) => {
+        let str = result.target['result'].toString();
+
+        this.addItemToCurrentPage({
+          type: ItemType.element,
+          pageId: this.thePageId,
+          itemId: 0,
+          x,
+          y,
+          w,
+          h,
+          rotate: 0,
+          scaleX: 1,
+          scaleY: 1,
+          url: item.downloadURL,
+          SVGElement: str,
+          color: [],
+        });
+      };
+      fr.readAsText(blob);
+    };
+    xhr.open('GET', item.downloadURL);
+    xhr.send();
   }
   /*********************************************
    * Key events
@@ -405,22 +421,6 @@ export class DesignService {
       css: 'brightness(90%) contrast(95%) grayscale(50%)',
     },
   ];
-
-  //SVG element
-  colorCollections = [];
-
-  setSVGColorCollection(item) {
-    let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId);
-    document.querySelectorAll('path').forEach((pathEle) => {
-      let color = pathEle.getAttribute('fill');
-      if (color && color != 'none' && color.indexOf('#') == 0) {
-        this.colorCollections.push(color);
-        console.log(color);
-      }
-    });
-
-    // console.log(this.colorCollections.indexOf('#fff'));
-  }
 }
 
 interface Preset {
