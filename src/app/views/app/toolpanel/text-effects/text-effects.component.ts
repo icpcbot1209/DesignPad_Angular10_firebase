@@ -195,6 +195,9 @@ export class TextEffectsComponent implements OnInit {
     document.querySelector<HTMLElement>(
       '#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
     ).style.opacity = '0';
+    document
+      .querySelector<HTMLElement>('#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId)
+      .setAttribute('style', '-webkit-opacity: 0');
   }
 
   setEffectSelector(id) {

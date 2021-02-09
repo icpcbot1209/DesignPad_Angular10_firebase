@@ -68,7 +68,7 @@ export class SVGSelectorComponent implements OnInit {
 
         this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#SVGSelector-');
 
-        this.ds.setSVGColorCollection();
+        this.ds.setSVGColorCollection(item);
       };
 
       fr.readAsText(blob);

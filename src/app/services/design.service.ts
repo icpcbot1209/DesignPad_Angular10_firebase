@@ -218,45 +218,6 @@ export class DesignService {
       url: item.downloadURL,
     });
   }
-
-  // getSVGElement(item) {
-  //   // This can be downloaded directly:
-  //   var xhr = new XMLHttpRequest();
-  //   xhr.responseType = 'blob';
-  //   xhr.onload = (event) => {
-  //     var blob = xhr.response;
-
-  //     var fr = new FileReader();
-  //     fr.onload = (result) => {
-  //       let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId);
-  //       let str = result.target['result'].toString();
-
-  //       svgEle.innerHTML = str;
-
-  //       let htmlCollect = svgEle.querySelectorAll('svg');
-  //       if (parseFloat(htmlCollect[0].getAttribute('width')) && parseFloat(htmlCollect[0].getAttribute('height'))) {
-  //         let width = htmlCollect[0].clientWidth;
-  //         let height = htmlCollect[0].clientHeight;
-
-  //         htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
-  //         let w, h;
-  //         if (width > height) {
-  //           w = 150;
-  //           h = (height / width) * 150;
-  //         } else {
-  //           h = 150;
-  //           w = (width / height) * 150;
-  //         }
-  //         htmlCollect[0].setAttribute('width', w);
-  //         htmlCollect[0].setAttribute('height', h);
-  //       }
-  //     };
-
-  //     fr.readAsText(blob);
-  //   };
-  //   xhr.open('GET', item.url);
-  //   xhr.send();
-  // }
   /*********************************************
    * Key events
    **********************************************/
@@ -446,7 +407,20 @@ export class DesignService {
   ];
 
   //SVG element
-  setSVGColorCollection() {}
+  colorCollections = [];
+
+  setSVGColorCollection(item) {
+    let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId);
+    document.querySelectorAll('path').forEach((pathEle) => {
+      let color = pathEle.getAttribute('fill');
+      if (color && color != 'none' && color.indexOf('#') == 0) {
+        this.colorCollections.push(color);
+        console.log(color);
+      }
+    });
+
+    // console.log(this.colorCollections.indexOf('#fff'));
+  }
 }
 
 interface Preset {

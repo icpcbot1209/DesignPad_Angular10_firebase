@@ -200,6 +200,10 @@ export class MoveableService {
         document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '0';
         document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '1';
 
+        document
+          .querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId)
+          .setAttribute('style', '-webkit-opacity: 0');
+
         this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId);
       }
     }
@@ -625,8 +629,8 @@ export class MoveableService {
             ele.parentElement.style.zIndex = '1000';
 
             if (
-              document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') != null ||
-              document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') != 'true'
+              document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') != null &&
+              document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') == 'true'
             ) {
               document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '1';
               document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '0.4';
