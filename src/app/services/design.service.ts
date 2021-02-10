@@ -330,7 +330,7 @@ export class DesignService {
    * Image Crop
    **********************************************/
   startImageCrop() {
-    if (!this.theItem || this.theItem.type !== ItemType.image) return;
+    if (!this.theItem || !(this.theItem.type == ItemType.image || this.theItem.type == ItemType.element)) return;
     this.status = ItemStatus.image_crop;
 
     const ms = this.injector.get(MoveableService);
@@ -349,13 +349,13 @@ export class DesignService {
    **********************************************/
 
   flipX() {
-    if (this.theItem && this.theItem.type === ItemType.image) {
+    if (this.theItem && (this.theItem.type === ItemType.image || this.theItem.type === ItemType.element)) {
       this.theItem.scaleX *= -1;
     }
   }
 
   flipY() {
-    if (this.theItem && this.theItem.type === ItemType.image) {
+    if (this.theItem && (this.theItem.type === ItemType.image || this.theItem.type === ItemType.element)) {
       this.theItem.scaleY *= -1;
     }
   }

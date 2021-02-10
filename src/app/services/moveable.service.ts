@@ -410,7 +410,9 @@ export class MoveableService {
 
     this.clearMoveable();
 
-    this.moveable = this.makeClipableImage(item.pageId, target);
+    if (item.type == ItemType.element) {
+      this.moveable = this.makeClipableElement(item.pageId, target);
+    } else this.moveable = this.makeClipableImage(item.pageId, target);
   }
 
   endImageCrop(isSave: boolean) {
@@ -485,6 +487,63 @@ export class MoveableService {
 
     return moveable;
   }
+
+  makeClipableElement(pageId: number, target: HTMLElement | SVGElement) {
+    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
+
+    const moveable = new Moveable(pageContainer, {
+      // If you want to use a group, set multiple targets(type: Array<HTMLElement | SVGElement>).
+      target: target,
+      container: pageContainer,
+      clippable: true,
+      clipRelative: true,
+      clipArea: false,
+      dragArea: true,
+      dragWithClip: true,
+      defaultClipPath: 'inset',
+      clipTargetBounds: true,
+      clipVerticalGuidelines: [],
+      clipHorizontalGuidelines: [],
+
+      draggable: true,
+      throttleDrag: 0,
+      startDragRotate: 0,
+      throttleDragRotate: 0,
+      zoom: 1,
+      origin: true,
+      padding: { left: 0, top: 0, right: 0, bottom: 0 },
+      snapThreshold: 5,
+    });
+
+    moveable.on('clip', (e: OnClip) => {
+      if (e.clipType === 'rect') {
+        e.target.style.clip = e.clipStyle;
+      } else {
+        e.target.style.clipPath = e.clipStyle;
+      }
+      let item = this.getItem(e.target);
+      item.clipStyle = e.clipStyle;
+    });
+
+    /* draggable */
+    moveable
+      .on('dragStart', (e: OnDragStart) => {
+        let item = this.getItem(e.target);
+        e.set([item.x, item.y]);
+      })
+      .on('drag', (e: OnDrag) => {
+        if (e.inputEvent.buttons === 0) return;
+
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
+
+        e.target.style.transform = this.strTransform(item);
+      });
+
+    return moveable;
+  }
+
   makeMoveableText(pageId: number, target: HTMLElement | SVGElement) {
     let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
 
@@ -749,6 +808,10 @@ export class MoveableService {
         e.target.style.transform = this.strTransform(item);
         e.target.style.width = `${e.width}px`;
         e.target.style.height = `${e.height}px`;
+
+        let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId).querySelector('svg');
+        svgEle.setAttribute('width', item.w.toString());
+        svgEle.setAttribute('height', item.h.toString());
       });
 
     /* rotatable */

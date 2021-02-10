@@ -47,6 +47,9 @@ export class SVGElementComponent implements OnInit {
       height: item.h + 'px',
       transform: this.moveableService.strTransform(item),
       WebkitTransform: this.moveableService.strTransform(item),
+      filter: item.filter,
+      WebkitFilter: item.filter,
+      clipPath: item.clipStyle,
     };
   }
 
