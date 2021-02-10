@@ -56,42 +56,74 @@ export class SVGElementComponent implements OnInit {
   setSVGColorCollection() {
     let svgEle = document.querySelector('#SVGElement-' + this.item.pageId + '-' + this.item.itemId);
     let index = 0;
-    svgEle.querySelectorAll('path').forEach((pathEle) => {
-      let color;
-      if (pathEle.style.fill) {
-        color = pathEle.style.fill;
-      } else {
-        color = pathEle.getAttribute('fill');
-      }
-      if (color == 'none') {
-        color = '#ffffff';
-      }
-      if (color == undefined && color == null) {
-        color = '#000000';
-      }
-      if (color.indexOf('rgb(') == 0) {
-        color = this.RGBToHex(color);
-      }
-      if (color.length == 4 && color.indexOf('#') == 0) {
-        color = '#' + color.substr(1) + color.substr(1);
-      }
-      if (color.indexOf('url') < 0 && color.indexOf('current') != 0) {
-        if (this.sameColorFilter(color)) {
-          this.item.color.push(color);
-          if (!this.item.colorAndIndex[color]) {
-            this.item.colorAndIndex[color] = [];
-          }
-          this.item.colorAndIndex[color].push(index);
-        }
-      }
+    let tags = ['path', 'circle', 'rect', 'polygon', 'ellipse', 'text'];
 
-      index++;
-    });
+    for (let i = 0; i < tags.length; i++) {
+      svgEle.querySelectorAll(tags[i]).forEach((ele) => {
+        let color;
+        let pathEle = ele as SVGPathElement;
+        if (pathEle.style.fill) {
+          color = pathEle.style.fill;
+        } else {
+          color = pathEle.getAttribute('fill');
+        }
+        if (color == 'none') {
+          color = '#ffffff';
+        }
+        if (color == undefined && color == null) {
+          color = '#000000';
+        }
+        if (color.indexOf('rgb(') == 0) {
+          color = this.RGBToHex(color);
+        }
+        if (color.length == 4 && color.indexOf('#') == 0) {
+          color = '#' + color.substr(1) + color.substr(1);
+        }
+        if (color.indexOf('url') < 0 && color.indexOf('current') != 0) {
+          if (this.sameColorFilter(color)) {
+            this.item.color.push(color);
+            if (!this.item.colorAndIndex[color]) {
+              this.item.colorAndIndex[color] = [];
+            }
+            const tagIndex = this.selectTagName(tags[i]);
+            this.item.colorAndIndex[color].push(tagIndex);
+            this.item.colorAndIndex[color].push(index);
+          }
+        }
+        index++;
+      });
+    }
+
     if (this.item.color.length > 6) {
       this.item.color = [];
       this.item.colorAndIndex = {};
     }
-    console.log(this.item.color);
+  }
+
+  selectTagName(name) {
+    let tagName;
+    switch (name) {
+      case 'path':
+        tagName = -1;
+        break;
+      case 'circle':
+        tagName = -2;
+        break;
+      case 'rect':
+        tagName = -3;
+        break;
+      case 'polygon':
+        tagName = -4;
+        break;
+      case 'ellipse':
+        tagName = -5;
+        break;
+      case 'text':
+        tagName = -6;
+        break;
+    }
+
+    return tagName;
   }
 
   sameColorFilter(color) {

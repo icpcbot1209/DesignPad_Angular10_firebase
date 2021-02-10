@@ -6,15 +6,8 @@
     "
   >
     <div style="margin-left: 4px; margin-right: 4px; width: 30px; height: 30px; border-radius: 4px; overflow: hidden; border: 1px solid #b3b3b3">
-      <input type="color" [value]="color" (change)="changeElementColor($event, i)" />
+      <input type="color" [value]="color" (input)="changeElementColor($event, i)" (change)="setColorToSvg($event, i)" />
     </div>
-    <!-- <div style="margin-left: 4px; margin-right: 4px; width: 30px; height: 30px; border-radius: 4px; overflow: hidden; border: 1px solid #b3b3b3">
-      <input
-        type="color"
-        [(ngModel)]="this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId]['color'][i]"
-        (change)="changeElementColor($event)"
-      />
-    </div> -->
   </ng-container>
 
   <button mat-button [style.backgroundColor]="ds.isStatus(ItemStatus.image_crop) ? activeColor : ''" (click)="ds.startImageCrop()">Crop</button>

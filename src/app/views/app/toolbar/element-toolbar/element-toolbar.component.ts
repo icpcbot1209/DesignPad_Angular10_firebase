@@ -13,21 +13,83 @@ export class ElementToolbarComponent implements OnInit {
   ItemStatus = ItemStatus;
   activeColor = Colors.getColors().separatorColor;
 
-  color = {};
+  color;
+  colorAndIndex;
 
   constructor(public moveableService: MoveableService, public ds: DesignService) {}
 
   ngOnInit(): void {
-    // if (!this.color['a']) {
-    //   this.color['a'] = [];
-    // }
-    // this.color['a'].push('1');
-    // this.color['a'].push('2');
-    // console.log(this.color);
+    this.color = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId]['color'];
+    this.colorAndIndex = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId]['colorAndIndex'];
   }
 
   changeElementColor(event, index) {
-    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId]['color'][index] = event.target.value;
-    console.log(event.target.value);
+    this.setColor(this.color[index], event.target.value);
+  }
+
+  setColor(previousColor, color) {
+    let tagName;
+    let svgEle = document.querySelector('#SVGElement-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId);
+
+    for (let i = 0; i < this.colorAndIndex[previousColor].length; i = i + 2) {
+      tagName = this.selectTagName(this.colorAndIndex[previousColor][i]);
+
+      // let pathEles = svgEle.querySelectorAll(tagName);
+      // let index = 0;
+
+      // if (this.colorAndIndex.length != 0) {
+      //   for (let i = 0; i < pathEles.length; i++) {
+      // if (this.colorAndIndex[previousColor][index] == i) {
+      let innerTag = svgEle.querySelectorAll(tagName)[this.colorAndIndex[previousColor][i + 1]];
+      if (innerTag.style.fill) {
+        innerTag.style.fill = color;
+      } else {
+        innerTag.setAttribute('fill', color);
+      }
+
+      // index++;
+      // if (index >= this.colorAndIndex[previousColor].length) {
+      //   return;
+      // }
+      // }
+      //   }
+      // }
+    }
+  }
+
+  selectTagName(index) {
+    let tagName;
+    switch (index) {
+      case -1:
+        tagName = 'path';
+        break;
+      case -2:
+        tagName = 'circle';
+        break;
+      case -3:
+        tagName = 'rect';
+        break;
+      case -4:
+        tagName = 'polygon';
+        break;
+      case -5:
+        tagName = 'ellipse';
+        break;
+      case -6:
+        tagName = 'text';
+        break;
+    }
+
+    return tagName;
+  }
+
+  setColorToSvg(event, index) {
+    this.renameKey(this.colorAndIndex, this.color[index], event.target.value);
+    this.color[index] = event.target.value;
+  }
+
+  renameKey(obj, oldKey, newKey) {
+    obj[newKey] = obj[oldKey];
+    delete obj[oldKey];
   }
 }

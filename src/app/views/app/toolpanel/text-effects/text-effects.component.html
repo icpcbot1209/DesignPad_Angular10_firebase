@@ -48,7 +48,7 @@
     <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (change)="onInputShadowColorChange()" />
+        <input type="color" [(ngModel)]="shadowColor" (input)="onInputShadowColorChange()" />
       </div>
     </div>
   </div>
