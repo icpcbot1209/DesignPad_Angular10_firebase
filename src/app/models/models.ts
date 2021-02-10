@@ -22,6 +22,7 @@ export interface Item {
   font?: string;
   SVGElement?: string;
   color?: [];
+  colorAndIndex?: {};
 }
 
 export interface Page {

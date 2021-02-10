@@ -227,6 +227,7 @@ export class DesignService {
           url: item.downloadURL,
           SVGElement: str,
           color: [],
+          colorAndIndex: {},
         });
       };
       fr.readAsText(blob);

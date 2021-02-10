@@ -55,6 +55,7 @@ export class SVGElementComponent implements OnInit {
 
   setSVGColorCollection() {
     let svgEle = document.querySelector('#SVGElement-' + this.item.pageId + '-' + this.item.itemId);
+    let index = 0;
     svgEle.querySelectorAll('path').forEach((pathEle) => {
       let color;
       if (pathEle.style.fill) {
@@ -62,32 +63,40 @@ export class SVGElementComponent implements OnInit {
       } else {
         color = pathEle.getAttribute('fill');
       }
-      if (color && color != 'none') {
-        if (color.indexOf('rgb(') == 0) {
-          color = this.RGBToHex(color);
-        }
-        if (color.length == 4 && color.indexOf('#') == 0) {
-          color = '#' + color.substr(1) + color.substr(1);
-        }
-        if (color.indexOf('url') < 0 && color.indexOf('current') != 0) {
-          if (this.sameColorFilter(color)) {
-            this.item.color.push(color);
+      if (color == 'none') {
+        color = '#ffffff';
+      }
+      if (color == undefined && color == null) {
+        color = '#000000';
+      }
+      if (color.indexOf('rgb(') == 0) {
+        color = this.RGBToHex(color);
+      }
+      if (color.length == 4 && color.indexOf('#') == 0) {
+        color = '#' + color.substr(1) + color.substr(1);
+      }
+      if (color.indexOf('url') < 0 && color.indexOf('current') != 0) {
+        if (this.sameColorFilter(color)) {
+          this.item.color.push(color);
+          if (!this.item.colorAndIndex[color]) {
+            this.item.colorAndIndex[color] = [];
           }
+          this.item.colorAndIndex[color].push(index);
         }
       }
+
+      index++;
     });
-    if (this.item.color.length == 0) {
-      this.item.color.push('#000000');
-    }
     if (this.item.color.length > 6) {
       this.item.color = [];
+      this.item.colorAndIndex = {};
     }
+    console.log(this.item.color);
   }
 
   sameColorFilter(color) {
     for (let i = 0; i < this.item.color.length; i++) {
       if (this.item.color[i] == color) {
-        // console.log('*----*:' + color);
         return false;
       }
     }

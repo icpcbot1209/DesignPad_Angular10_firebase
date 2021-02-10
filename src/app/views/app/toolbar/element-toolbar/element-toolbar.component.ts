@@ -13,11 +13,21 @@ export class ElementToolbarComponent implements OnInit {
   ItemStatus = ItemStatus;
   activeColor = Colors.getColors().separatorColor;
 
+  color = {};
+
   constructor(public moveableService: MoveableService, public ds: DesignService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // if (!this.color['a']) {
+    //   this.color['a'] = [];
+    // }
+    // this.color['a'].push('1');
+    // this.color['a'].push('2');
+    // console.log(this.color);
+  }
 
-  changeElementColor(event) {
-    console.log(event.value);
+  changeElementColor(event, index) {
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId]['color'][index] = event.target.value;
+    console.log(event.target.value);
   }
 }
