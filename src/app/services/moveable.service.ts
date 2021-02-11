@@ -91,9 +91,11 @@ export class MoveableService {
 
     selecto
       .on('selectStart', () => {
-        let items = this.ds.theDesign.pages[this.selectedPageId].items;
-        for (let i = 0; i < items.length; i++) {
-          items[i].selected = false;
+        if (this.selectedPageId) {
+          let items = this.ds.theDesign.pages[this.selectedPageId].items;
+          for (let i = 0; i < items.length; i++) {
+            items[i].selected = false;
+          }
         }
       })
       .on('select', (e: OnSelect) => {

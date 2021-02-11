@@ -4,7 +4,7 @@
     <div [ngStyle]="styleLayer()" style="overflow: hidden">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <ng-container *ngIf="item.type == ItemType.image">
-          <img [ngStyle]="styleItem(item)" [lazyLoad]="item.url" [defaultImage]="item.thumbnail" />
+          <img [id]="'imageElement-' + pageId + '-' + itemId" [ngStyle]="styleItem(item)" [lazyLoad]="item.url" [defaultImage]="item.thumbnail" />
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.text">
           <app-edit-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-edit-item>

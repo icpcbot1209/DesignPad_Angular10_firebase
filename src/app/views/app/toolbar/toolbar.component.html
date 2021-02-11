@@ -7,3 +7,9 @@
 <ng-container *ngIf="ds.isStatus(ItemStatus.element_selected)" style="display: flex; align-items: center">
   <app-element-toolbar></app-element-toolbar>
 </ng-container>
+<ng-container *ngIf="ds.isStatus(ItemStatus.none)">
+  <button mat-button style="display: flex; margin-left: auto" (click)="downloadToPdf()">
+    <mat-icon>download</mat-icon>
+    Download
+  </button>
+</ng-container>

@@ -43,6 +43,8 @@
     "chart.js": "^2.9.3",
     "csstype": "^3.0.5",
     "firebase": "^7.15.5",
+    "html2canvas": "^1.0.0-rc.7",
+    "jspdf": "^2.3.0",
     "moveable": "^0.21.1",
     "ng-lazyload-image": "^9.1.0",
     "ng2-nouislider": "^1.8.2",

@@ -23,14 +23,16 @@ export class SVGElementComponent implements OnInit {
     svgEle.innerHTML = this.item.SVGElement;
 
     let htmlCollect = svgEle.querySelectorAll('svg');
-    if (parseFloat(htmlCollect[0].getAttribute('width')) && parseFloat(htmlCollect[0].getAttribute('height'))) {
+
+    if (htmlCollect[0].getAttribute('viewBox')) {
+      htmlCollect[0].setAttribute('viewBox', htmlCollect[0].getAttribute('viewBox'));
+    } else {
       let width = htmlCollect[0].clientWidth;
       let height = htmlCollect[0].clientHeight;
-
       htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
-      htmlCollect[0].setAttribute('width', this.item.w);
-      htmlCollect[0].setAttribute('height', this.item.h);
     }
+    htmlCollect[0].setAttribute('width', this.item.w);
+    htmlCollect[0].setAttribute('height', this.item.h);
 
     this.moveableService.selectedItemId = this.item.itemId;
     this.moveableService.selectedPageId = this.item.pageId;
