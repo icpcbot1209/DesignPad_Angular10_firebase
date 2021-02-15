@@ -22,30 +22,63 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {}
 
   downloadToPdf() {
-    let doc = new jsPDF('l', 'px', [534, 445]);
-    let imgEle = document.querySelector(
-      '#imageElement-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
-    ) as HTMLElement;
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
 
-    console.log(imgEle);
-    // html2canvas(imgEle).then((canvas) => {
-    //   var imgData = canvas.toDataURL('image/png');
-    //   console.log(imgData)
+    document.querySelectorAll('.ql-editor').forEach((ele) => {
+      let element = ele as HTMLElement;
+      console.log(ele.parentElement.children[2]);
+      if (ele.parentElement.children[2]) {
+        ele.parentElement.children[2].remove();
+      }
+    });
 
-    //   var pageHeight = 295;
-    //   var imgWidth = (canvas.width * 50) / 210;
-    //   var imgHeight = (canvas.height * imgWidth) / canvas.width;
-    //   var heightLeft = imgHeight;
-    //   var position = 15;
+    let ele = document.querySelectorAll('.card')[0] as HTMLElement;
 
-    //   doc.addImage(imgData, 'jpg', 0, position, imgWidth, imgHeight);
-    //   heightLeft -= pageHeight;
-    // });
+    let width = ele.clientWidth;
+    let height = ele.clientHeight;
+    let htmlContent: string = '';
 
-    // doc.html(document.body.querySelectorAll('.card')[0].children[0] as HTMLElement, {
-    //   callback: function (doc) {
-    //     doc.save('asdf.pdf');
-    //   },
-    // });
+    document.querySelectorAll('.card').forEach((ele) => {
+      let htmlStr = ele.outerHTML;
+      if (htmlStr.indexOf('<div class="ql-editor"')) {
+        htmlStr =
+          document.querySelector('head').outerHTML +
+          htmlStr.slice(0, htmlStr.indexOf('<div class="ql-editor"')) +
+          htmlStr.slice(htmlStr.indexOf('<p>'), htmlStr.length); //htmlContent.indexOf('</div>', htmlContent.indexOf('<p>'))
+      }
+
+      htmlContent += htmlStr;
+    });
+    formData.append('text', htmlContent);
+    formData.append('page_width', width + 'px');
+    formData.append('page_height', height + 'px');
+    formData.append('no_margins', 'True');
+    formData.append('content_area_x', '-8px');
+    formData.append('content_area_y', '-8px');
+
+    xhr.responseType = 'blob';
+    xhr.onload = (event) => {
+      var blob = xhr.response;
+
+      var fr = new FileReader();
+      fr.onload = (result) => {
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(blob);
+          return;
+        }
+        const url = window.URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = 'result.pdf';
+        link.click();
+      };
+      fr.readAsText(blob);
+    };
+
+    xhr.open('POST', 'https://api.pdfcrowd.com/convert/20.10/');
+    xhr.setRequestHeader('Authorization', 'Basic ' + btoa('adwitglobal' + ':' + '7b61297e35af1139edd33821adadd19e'));
+
+    xhr.send(formData);
   }
 }
