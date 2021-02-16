@@ -53,19 +53,9 @@ export class ToolbarService {
   }
 
   setCurveEffect(selectedPageId, selectedItemId) {
-    // let quill = this.textEditItems[selectedPageId][selectedItemId];
-
     let editorEle = document.querySelector<HTMLElement>('#textEditor-' + selectedPageId + '-' + selectedItemId);
     let curveText = document.querySelector<HTMLElement>('#curveText-' + selectedPageId + '-' + selectedItemId);
 
-    // let ele = editorEle.children[0].children.length;
-    // for (let i = 0; i < editorEle.children[0].children.length; i++) {
-    //   let cln = editorEle.children[0].children[i].cloneNode(true);
-    //   curveText.appendChild(cln);
-    // }
-
-    // curveText.innerHTML = quill.container.innerHTML;
-    // console.log(curveText);
     curveText.innerHTML = editorEle.children[0].children[0].innerHTML;
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;

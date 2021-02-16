@@ -50,9 +50,6 @@ export class EditItemComponent implements OnInit {
     });
 
     this.resizeObserver.observe(this.editorEle);
-
-    // document.querySelector<HTMLInputElement>('#fontSizeInput').value = this['item']['fontSize'];
-    // console.log(this['item']['fontSize']);
   }
 
   ngOnDestroy() {

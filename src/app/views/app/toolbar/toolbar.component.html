@@ -8,8 +8,26 @@
   <app-element-toolbar></app-element-toolbar>
 </ng-container>
 <ng-container *ngIf="ds.isStatus(ItemStatus.none)">
-  <button mat-button style="display: flex; margin-left: auto" (click)="downloadToPdf()">
+  <button mat-button style="display: flex; margin-left: auto" (click)="showDownloadContent()">
     <mat-icon>download</mat-icon>
     Download
   </button>
+  <div id="downloadContent" [ngStyle]="{ display: this.moveableService.isShowDownload ? 'block' : 'none' }">
+    <div style="display: flex; flex-direction: column">
+      <label style="font-size: 12px; font-weight: 500">File type</label>
+      <ng-select
+        style="width: 280px"
+        appearance="outline"
+        [searchable]="false"
+        [clearable]="false"
+        [items]="fileTypeItems"
+        [(ngModel)]="selectedFileType"
+        (change)="changeFileType($event)"
+      >
+      </ng-select>
+      <button class="btn btn-secondary" style="width: 100%; border-radius: 4px; font-weight: 500; margin-top: 10px" (click)="downloadToPdf()">
+        Download
+      </button>
+    </div>
+  </div>
 </ng-container>

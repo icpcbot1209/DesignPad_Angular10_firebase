@@ -180,6 +180,8 @@ export class DesignService {
       scaleX: 1,
       scaleY: 1,
       fontSize: '24px',
+      lineHeight: '1.35',
+      letterSpacing: '-21',
     });
   }
 

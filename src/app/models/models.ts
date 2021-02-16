@@ -23,6 +23,8 @@ export interface Item {
   SVGElement?: string;
   color?: [];
   colorAndIndex?: {};
+  lineHeight?: string;
+  letterSpacing?: string;
 }
 
 export interface Page {

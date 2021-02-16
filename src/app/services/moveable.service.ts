@@ -46,6 +46,9 @@ export class MoveableService {
 
   isOnResize: boolean = false;
 
+  isShowDownload: boolean = false;
+  selectFisShowDownload: boolean;
+
   constructor(private ds: DesignService, private toolbarService: ToolbarService) {}
 
   init() {
@@ -183,13 +186,13 @@ export class MoveableService {
         this.selectedPageId = targets[0].getAttribute('pageId');
         this.moveable = this.makeMoveableElement(thePageId, targets[0]);
         this.ds.onSelectElementItem(thePageId, item);
-        // this.getSVGElement(item);
       }
     } else {
       this.ds.onSelectNothing();
 
       this.isEditable = false;
       this.ds.isOnInput = false;
+      this.isShowDownload = false;
       this.selectableTextEditor();
 
       if (

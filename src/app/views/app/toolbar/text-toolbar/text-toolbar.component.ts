@@ -92,6 +92,12 @@ export class TextToolbarComponent implements OnInit {
       this.sizeEle.value = item.fontSize.substr(0, item.fontSize.length - 2);
       this.fontControl.disable();
     });
+
+    let qlEditor = document
+      .querySelector('#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId)
+      .querySelector('.ql-editor') as HTMLElement;
+    qlEditor.style.lineHeight = item.lineHeight + 'em';
+    qlEditor.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
   }
 
   catchEnterKey(event) {
@@ -129,8 +135,10 @@ export class TextToolbarComponent implements OnInit {
 
   // set Line Height and Letter space
   setLineHeight() {
-    this.lineHeight = 1.97;
-    this.letter = -21;
+    let item = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId];
+
+    this.lineHeight = Number.parseFloat(item.lineHeight);
+    this.letter = Number.parseFloat(item.letterSpacing);
 
     this.isShowLineHeight = this.isShowLineHeight ? false : true;
   }
@@ -152,7 +160,12 @@ export class TextToolbarComponent implements OnInit {
     );
     let qlEditor = <HTMLElement>editorEle.firstChild;
 
-    qlEditor.style.lineHeight = this.lineHeight;
+    qlEditor.style.lineHeight = this.lineHeight + 'em';
     qlEditor.style.letterSpacing = this.letter / 1000 + 'em';
+
+    let item = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId];
+
+    item.lineHeight = this.lineHeight.toString();
+    item.letterSpacing = this.letter.toString();
   }
 }
