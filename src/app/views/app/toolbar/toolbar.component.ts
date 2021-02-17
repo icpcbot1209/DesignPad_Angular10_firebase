@@ -43,18 +43,28 @@ export class ToolbarComponent implements OnInit {
     let index = 0;
 
     document.querySelectorAll('.card').forEach((ele) => {
-      let htmlStr = ele.children[0].children[0].outerHTML;
-      if (htmlStr.indexOf('<div class="ql-editor"')) {
-        let offset = 500 * index;
+      let parent = ele.children[0].children[0].children[0] as HTMLElement;
+      let htmlStr = parent.outerHTML;
+      let offset = 500 * index;
+
+      if (htmlStr.indexOf('<div class="ql-editor"') != -1) {
         htmlStr =
           `<div style="width: 600px; height: 500px; position: absolute; top: ${offset}px">` +
-          htmlStr.slice(0, htmlStr.indexOf('<div class="ql-editor"')) +
-          htmlStr.slice(htmlStr.indexOf('<p>'), htmlStr.length) +
-          '</div>';
-
-        index++;
+          htmlStr.slice(0, htmlStr.indexOf('>')) +
+          `><div style="transform: ${parent.querySelector('.ql-editor').parentElement.style.transform}; font-family: ${
+            parent.querySelector('.ql-editor').parentElement.style.fontFamily
+          }; font-size: ${parent.querySelector('.ql-editor').parentElement.style.fontSize}; text-shadow: ${
+            parent.querySelector('.ql-editor').parentElement.style.textShadow
+          }; -webkit-text-stroke: ${parent.querySelector('.ql-editor').parentElement.style.webkitTextStroke}; color: ${
+            parent.querySelector('.ql-editor').parentElement.style.color
+          };">` +
+          parent.querySelector('.ql-editor').outerHTML +
+          '</div></div></div>';
+      } else {
+        htmlStr = `<div style="width: 600px; height: 500px; position: absolute; top: ${offset}px">` + htmlStr + '</div>';
       }
 
+      index++;
       htmlContent += htmlStr;
     });
 
