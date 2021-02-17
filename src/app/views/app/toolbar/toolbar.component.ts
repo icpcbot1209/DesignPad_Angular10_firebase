@@ -27,27 +27,58 @@ export class ToolbarComponent implements OnInit {
     let xhr = new XMLHttpRequest();
     let formData = new FormData();
 
-    let ele = document.querySelectorAll('.card')[0] as HTMLElement;
+    let ele = document.querySelectorAll('.card')[0].firstChild as HTMLElement;
 
     let width = ele.clientWidth;
     let height = ele.clientHeight;
+    console.log(width, height);
+
+    document.querySelectorAll('.ql-editor').forEach((ele) => {
+      if (ele.parentElement.children[2]) {
+        ele.parentElement.children[2].remove();
+      }
+    });
+
+    let htmlContent = document.querySelector('head').outerHTML + '<body style="margin: 0; padding: 0;>';
+    let index = 0;
+
+    document.querySelectorAll('.card').forEach((ele) => {
+      let htmlStr = ele.children[0].children[0].outerHTML;
+      if (htmlStr.indexOf('<div class="ql-editor"')) {
+        let offset = 500 * index;
+        htmlStr =
+          `<div style="width: 600px; height: 500px; position: absolute; top: ${offset}px">` +
+          htmlStr.slice(0, htmlStr.indexOf('<div class="ql-editor"')) +
+          htmlStr.slice(htmlStr.indexOf('<p>'), htmlStr.length) +
+          '</div>';
+
+        index++;
+      }
+
+      htmlContent += htmlStr;
+    });
+
+    htmlContent += '</body>';
+
+    formData.append('text', htmlContent);
+
     if (this.selectedFileType == 'JPG') {
-      let htmlContent = [];
+      // let htmlContent = [];
 
-      document.querySelectorAll('.card').forEach(() => {
-        let htmlStr = ele.outerHTML;
-        if (htmlStr.indexOf('<div class="ql-editor"')) {
-          htmlStr =
-            document.querySelector('head').outerHTML +
-            htmlStr.slice(0, htmlStr.indexOf('<div class="ql-editor"')) +
-            htmlStr.slice(htmlStr.indexOf('<p>'), htmlStr.length);
-        }
+      // document.querySelectorAll('.card').forEach(() => {
+      //   let htmlStr = ele.outerHTML;
+      //   if (htmlStr.indexOf('<div class="ql-editor"')) {
+      //     htmlStr =
+      //       document.querySelector('head').outerHTML +
+      //       htmlStr.slice(0, htmlStr.indexOf('<div class="ql-editor"')) +
+      //       htmlStr.slice(htmlStr.indexOf('<p>'), htmlStr.length);
+      //   }
 
-        console.log(htmlStr);
-        htmlContent.push(htmlStr);
-      });
+      //   console.log(htmlStr);
+      //   htmlContent.push(htmlStr);
+      // });
 
-      formData.append('text', htmlContent[0]);
+      // formData.append('text', htmlContent[0]);
       formData.append('screenshot_width', width.toString());
       formData.append('screenshot_height', height.toString());
       formData.append('output_format', 'jpg');
@@ -75,35 +106,10 @@ export class ToolbarComponent implements OnInit {
       xhr.setRequestHeader('Authorization', 'Basic ' + btoa('adwitglobal' + ':' + '7b61297e35af1139edd33821adadd19e'));
 
       xhr.send(formData);
-    } // if else download pdf
-    else {
-      document.querySelectorAll('.ql-editor').forEach((ele) => {
-        let element = ele as HTMLElement;
-        console.log(ele.parentElement.children[2]);
-        if (ele.parentElement.children[2]) {
-          ele.parentElement.children[2].remove();
-        }
-      });
-
-      let htmlContent: string = '';
-
-      document.querySelectorAll('.card').forEach((ele) => {
-        let htmlStr = ele.outerHTML;
-        if (htmlStr.indexOf('<div class="ql-editor"')) {
-          htmlStr =
-            document.querySelector('head').outerHTML +
-            htmlStr.slice(0, htmlStr.indexOf('<div class="ql-editor"')) +
-            htmlStr.slice(htmlStr.indexOf('<p>'), htmlStr.length);
-        }
-
-        htmlContent += htmlStr;
-      });
-      formData.append('text', htmlContent);
+    } else {
       formData.append('page_width', width + 'px');
       formData.append('page_height', height + 'px');
       formData.append('no_margins', 'True');
-      formData.append('content_area_x', '-8px');
-      formData.append('content_area_y', '-8px');
 
       xhr.responseType = 'blob';
       xhr.onload = (event) => {
