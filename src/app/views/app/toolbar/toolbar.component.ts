@@ -31,7 +31,6 @@ export class ToolbarComponent implements OnInit {
 
     let width = ele.clientWidth;
     let height = ele.clientHeight;
-    console.log(width, height);
 
     document.querySelectorAll('.ql-editor').forEach((ele) => {
       if (ele.parentElement.children[2]) {
@@ -43,27 +42,25 @@ export class ToolbarComponent implements OnInit {
     let index = 0;
 
     document.querySelectorAll('.card').forEach((ele) => {
-      let parent = ele.children[0].children[0].children[0] as HTMLElement;
-      let htmlStr = parent.outerHTML;
-      let offset = 500 * index;
+      ele.querySelectorAll('p').forEach((el) => {
+        el.style.margin = '0';
+      });
+      // ele.querySelectorAll('span').forEach((el) => {
+      //   el.style.background = 'red';
 
-      if (htmlStr.indexOf('<div class="ql-editor"') != -1) {
-        htmlStr =
-          `<div style="width: 600px; height: 500px; position: absolute; top: ${offset}px">` +
-          htmlStr.slice(0, htmlStr.indexOf('>')) +
-          `><div style="transform: ${parent.querySelector('.ql-editor').parentElement.style.transform}; font-family: ${
-            parent.querySelector('.ql-editor').parentElement.style.fontFamily
-          }; font-size: ${parent.querySelector('.ql-editor').parentElement.style.fontSize}; text-shadow: ${
-            parent.querySelector('.ql-editor').parentElement.style.textShadow
-          }; -webkit-text-stroke: ${parent.querySelector('.ql-editor').parentElement.style.webkitTextStroke}; color: ${
-            parent.querySelector('.ql-editor').parentElement.style.color
-          };">` +
-          parent.querySelector('.ql-editor').outerHTML +
-          '</div></div></div>';
-      } else {
-        htmlStr = `<div style="width: 600px; height: 500px; position: absolute; top: ${offset}px">` + htmlStr + '</div>';
-      }
+      //   let qlEditor = ele.querySelector('.ql-editor') as HTMLElement;
+      //   el.style.lineHeight = qlEditor.style.lineHeight;
+      // });
 
+      let htmlStr = ele.children[0].children[0].outerHTML;
+
+      htmlStr =
+        `<div style="width: 600px; height: 500px; position: absolute; top: ${500 * index}px">` +
+        htmlStr +
+        // ele.querySelector('#curveText-0-0').parentElement.outerHTML +
+        '</div>';
+
+      console.log(htmlStr);
       index++;
       htmlContent += htmlStr;
     });
@@ -114,6 +111,7 @@ export class ToolbarComponent implements OnInit {
 
       xhr.open('POST', 'https://api.pdfcrowd.com/convert/20.10/');
       xhr.setRequestHeader('Authorization', 'Basic ' + btoa('adwitglobal' + ':' + '7b61297e35af1139edd33821adadd19e'));
+      // xhr.setRequestHeader('Authorization', 'Basic ' + btoa('demo' + ':' + 'ce544b6ea52a5621fb9d55f8b542d14d'));
 
       xhr.send(formData);
     } else {
