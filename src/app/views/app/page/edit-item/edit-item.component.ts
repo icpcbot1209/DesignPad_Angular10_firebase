@@ -68,12 +68,17 @@ export class EditItemComponent implements OnInit {
       };
 
     if (item.type === ItemType.text) {
+      let width = document.querySelector('#textEditor-' + item.pageId + '-' + item.itemId).clientWidth;
+      // if (!document.querySelector('#curveText-' + item.pageId + '-' + item.itemId).children) {
+      //   width = (document.querySelector('#textEditor-' + item.pageId + '-' + item.itemId) as HTMLElement).clientWidth;
+      // } else width = item.w + 'px';
+      // width = item.w + 'px';
       return {
         position: 'absolute',
         zIndex: 100,
         top: 0,
         left: 0,
-        width: item.w + 'px',
+        width: width + 'px',
         height: item.h + 'px',
         transform: this.moveableService.strTransform(item),
         WebkitTransform: this.moveableService.strTransform(item),
