@@ -69,10 +69,7 @@ export class EditItemComponent implements OnInit {
 
     if (item.type === ItemType.text) {
       let width = document.querySelector('#textEditor-' + item.pageId + '-' + item.itemId).clientWidth;
-      // if (!document.querySelector('#curveText-' + item.pageId + '-' + item.itemId).children) {
-      //   width = (document.querySelector('#textEditor-' + item.pageId + '-' + item.itemId) as HTMLElement).clientWidth;
-      // } else width = item.w + 'px';
-      // width = item.w + 'px';
+
       return {
         position: 'absolute',
         zIndex: 100,
