@@ -15,7 +15,7 @@
       </ng-container>
     </div>
 
-    <div [id]="'page-' + pageId" [ngStyle]="styleLayer()" style="overflow: visible; pointer-events: all">
+    <div [id]="'page-' + pageId" [ngStyle]="styleLayer()" style="overflow: disable; pointer-events: all">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <ng-container *ngIf="item.type == ItemType.image">
           <div

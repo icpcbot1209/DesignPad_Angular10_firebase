@@ -56,6 +56,30 @@ export class EditItemComponent implements OnInit {
     this.resizeObserver.unobserve(this.editorEle);
   }
 
+  styleItemPosition(item: Item): CSS.Properties {
+    if (item.type === ItemType.image)
+      return {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: item.w + 'px',
+        height: item.h + 'px',
+        transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
+      };
+
+    if (item.type === ItemType.text) {
+      return {
+        position: 'absolute',
+        zIndex: 100,
+        top: 0,
+        left: 0,
+        width: item.w + 'px',
+        height: item.h + 'px',
+        transform: this.moveableService.strTransform(item),
+        WebkitTransform: this.moveableService.strTransform(item),
+      };
+    }
+  }
   styleItem(item: Item): CSS.Properties {
     if (item.type === ItemType.image)
       return {

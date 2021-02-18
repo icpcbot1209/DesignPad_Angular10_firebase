@@ -69,6 +69,11 @@ export class ToolbarService {
     arcText.direction(this.direction);
 
     this.setEffectToCurve(editorEle, curveText);
+
+    curveText.querySelectorAll('span').forEach((ele) => {
+      let qlEditor = editorEle.children[0] as HTMLElement;
+      ele.style.lineHeight = qlEditor.style.lineHeight;
+    });
   }
 
   setEffectToCurve(editorEle, curveText) {
@@ -85,10 +90,7 @@ export class ToolbarService {
 
       for (let j = 0; j < ele.length; j++) {
         index = index + length + text.indexOf(ele[j].outerHTML, fromIndex) - fromIndex;
-        console.log(ele[j].outerHTML);
         length = ele[j].innerHTML.length;
-        console.log(text.indexOf(ele[j].outerHTML, fromIndex), fromIndex);
-        console.log(index, length);
 
         for (let i = index; i < index + length; i++) {
           let textEle = curveText.children[0].children[i] as HTMLElement;
