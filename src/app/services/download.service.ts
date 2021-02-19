@@ -4,11 +4,13 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class DownloadService {
+  onDownloading: boolean;
+
   constructor() {}
 
   download(selectedFileType) {
     if (selectedFileType == 'PDF') this.downloadAsPdf();
-    else this.downloadAsJpg();
+    else this.downloadAsImg();
   }
 
   downloadAsPdf() {
@@ -16,6 +18,7 @@ export class DownloadService {
     let formData = new FormData();
     let width = 600;
     let height = 500;
+    this.onDownloading = true;
 
     document.querySelectorAll('.ql-editor').forEach((ele) => {
       if (ele.parentElement.children[2]) {
@@ -63,6 +66,8 @@ export class DownloadService {
         link.href = url;
         link.download = 'result.pdf';
         link.click();
+
+        this.onDownloading = false;
       };
       fr.readAsText(blob);
     };
@@ -72,7 +77,7 @@ export class DownloadService {
     xhr.send(formData);
   }
 
-  downloadAsJpg() {
+  downloadAsImg() {
     document.querySelectorAll('.ql-editor').forEach((ele) => {
       if (ele.parentElement.children[2]) {
         ele.parentElement.children[2].remove();
