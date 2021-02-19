@@ -59,12 +59,11 @@ export class TextToolbarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.toolbarService.createTextEditor(this.moveableService.selectedPageId, this.moveableService.selectedItemId);
-
     let selectorEle = document.querySelector<HTMLElement>(
       '#textSelector-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
     );
     let item = this.moveableService.getItem(selectorEle);
+    this.toolbarService.createTextEditor(this.moveableService.selectedPageId, this.moveableService.selectedItemId, item);
     if (item.x == undefined || item.y == undefined) {
       let editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId

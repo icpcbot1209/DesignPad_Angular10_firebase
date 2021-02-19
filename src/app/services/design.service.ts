@@ -3,13 +3,14 @@ import { ItemStatus, ItemType } from '../models/enums';
 import { ImageFilterObj } from '../models/image-filter';
 import { AssetImage, Design, Item } from '../models/models';
 import { MoveableService } from './moveable.service';
+import { Undo_redoService } from 'src/app/services/undo_redo.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DesignService {
   theDesign: Design;
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector, public ur: Undo_redoService) {}
 
   init() {
     this.theDesign = {
@@ -33,6 +34,8 @@ export class DesignService {
         },
       ],
     };
+
+    this.ur.init(this.theDesign);
 
     // window.location.hash = 'no-back-button';
     // window.location.hash = 'Again-No-back-button'; //again because google chrome don't insert first hash into history
@@ -117,6 +120,7 @@ export class DesignService {
     // this.getSVGElement(item);
     // }
     this.theDesign.pages[this.thePageId].items.push(item);
+    this.ur.save(this.theDesign);
   }
 
   /*********************************************
@@ -247,6 +251,14 @@ export class DesignService {
       this.deleteSelectedItems();
       e.stopImmediatePropagation();
       return false;
+    }
+
+    if (!this.isOnInput && e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+      this.theDesign = this.ur.undo();
+    }
+
+    if (!this.isOnInput && e.key === 'y' && (e.ctrlKey || e.metaKey)) {
+      this.theDesign = this.ur.redo();
     }
   }
 

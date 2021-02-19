@@ -25,6 +25,7 @@ export interface Item {
   colorAndIndex?: {};
   lineHeight?: string;
   letterSpacing?: string;
+  quillData?;
 }
 
 export interface Page {

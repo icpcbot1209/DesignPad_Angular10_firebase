@@ -21,7 +21,7 @@ export class ToolbarService {
     this.textEditItems.push([]);
   }
 
-  createTextEditor(selectedPageId, selectedItemId) {
+  createTextEditor(selectedPageId, selectedItemId, item) {
     let quill = new Quill('#textEditor-' + selectedPageId + '-' + selectedItemId, {
       modules: {
         toolbar: '#toolbar',
@@ -33,6 +33,9 @@ export class ToolbarService {
         this.ds.isOnInput = true;
       }
     });
+
+    (document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId).querySelector('.ql-editor') as HTMLElement).style.overflow =
+      'hidden';
 
     if (this.isCreateQuill) {
       if (this.textEditItems[selectedPageId].length > selectedItemId) {

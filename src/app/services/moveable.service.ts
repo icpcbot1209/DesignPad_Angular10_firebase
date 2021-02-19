@@ -23,6 +23,7 @@ import { ToolbarService } from './toolbar.service';
 import { DesignService } from './design.service';
 import { Item } from '../models/models';
 import { ItemStatus, ItemType } from '../models/enums';
+import { Undo_redoService } from 'src/app/services/undo_redo.service';
 
 @Injectable({
   providedIn: 'root',
@@ -49,7 +50,7 @@ export class MoveableService {
   isShowDownload: boolean = false;
   selectFisShowDownload: boolean;
 
-  constructor(private ds: DesignService, private toolbarService: ToolbarService) {}
+  constructor(private ds: DesignService, private toolbarService: ToolbarService, private ur: Undo_redoService) {}
 
   init() {
     let container: HTMLElement = document.querySelector('#selecto-container');
@@ -585,6 +586,9 @@ export class MoveableService {
         if (this.isMouseDown) {
           this.isDrag = true;
         }
+      })
+      .on('dragEnd', (e) => {
+        this.ur.save(this.ds.theDesign);
       });
 
     /* resize */
