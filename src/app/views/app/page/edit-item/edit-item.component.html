@@ -6,7 +6,9 @@
   [attr.pageId]="pageId"
   [attr.itemId]="itemId"
 >
-  <p>Add a heading</p>
+  <div class="ql-editor">
+    <p>Add a heading</p>
+  </div>
 </div>
 <div style="display: flex; justify-content: center; align-items: center" [ngStyle]="styleItemPosition(item)">
   <div [id]="'curveText-' + pageId + '-' + itemId"></div>

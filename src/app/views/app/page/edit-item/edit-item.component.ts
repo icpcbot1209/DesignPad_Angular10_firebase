@@ -1,9 +1,7 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
-import { Item, Page } from 'src/app/models/models';
+import { Item } from 'src/app/models/models';
 import { ItemType } from 'src/app/models/enums';
 import { MoveableService } from 'src/app/services/moveable.service';
-import { ToolbarService } from 'src/app/services/toolbar.service';
-import { DesignService } from 'src/app/services/design.service';
 
 import * as CSS from 'csstype';
 
@@ -32,22 +30,7 @@ export class EditItemComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.pageId + '-' + this.itemId);
-    this.resizeObserver = new ResizeObserver((entries) => {
-      this.zone.run(() => {
-        let width = JSON.stringify(entries[0].contentRect.width) + 'px';
-        let height = JSON.stringify(entries[0].contentRect.height) + 'px';
-        let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + this.pageId + '-' + this.itemId);
-        let item = this.moveableService.getItem(selectorEle);
-        item.x = item.x - (entries[0].contentRect.width - parseInt(selectorEle.style.width)) / 2;
-        selectorEle.style.width = width;
-        selectorEle.style.height = height;
-        selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
-
-        if (!this.moveableService.isOnResize) {
-          this.moveableService.setSelectable(this.itemId, this.pageId, '#textSelector-');
-        }
-      });
-    });
+    this.resizeObserver = this.moveableService.resizeObserver(this.moveableService.selectedPageId, this.moveableService.selectedItemId);
 
     this.resizeObserver.observe(this.editorEle);
   }

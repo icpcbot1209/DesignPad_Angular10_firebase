@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 
 import Moveable, {
   OnDragStart,
@@ -25,6 +25,8 @@ import { Item } from '../models/models';
 import { ItemStatus, ItemType } from '../models/enums';
 import { Undo_redoService } from 'src/app/services/undo_redo.service';
 
+declare var ResizeObserver;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -50,7 +52,7 @@ export class MoveableService {
   isShowDownload: boolean = false;
   selectFisShowDownload: boolean;
 
-  constructor(private ds: DesignService, private toolbarService: ToolbarService, private ur: Undo_redoService) {}
+  constructor(private ds: DesignService, private toolbarService: ToolbarService, private ur: Undo_redoService, private zone: NgZone) {}
 
   init() {
     let container: HTMLElement = document.querySelector('#selecto-container');
@@ -840,5 +842,24 @@ export class MoveableService {
       });
 
     return moveable;
+  }
+
+  resizeObserver(pageId, itemId) {
+    return new ResizeObserver((entries) => {
+      this.zone.run(() => {
+        let width = JSON.stringify(entries[0].contentRect.width) + 'px';
+        let height = JSON.stringify(entries[0].contentRect.height) + 'px';
+        let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
+        let item = this.getItem(selectorEle);
+        item.x = item.x - (entries[0].contentRect.width - parseInt(selectorEle.style.width)) / 2;
+        selectorEle.style.width = width;
+        selectorEle.style.height = height;
+        selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
+
+        if (!this.isOnResize) {
+          this.setSelectable(pageId, itemId, '#textSelector-');
+        }
+      });
+    });
   }
 }

@@ -23,6 +23,5 @@ export class Undo_redoService {
 
   save(data) {
     saveTheData(data);
-    console.log(theData);
   }
 }
