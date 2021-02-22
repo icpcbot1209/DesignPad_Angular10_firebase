@@ -247,7 +247,7 @@ export class DesignService {
     xhr.open('GET', item.downloadURL);
     xhr.send();
   }
-  /*********************************************
+  /***********************************************
    * Key events
    **********************************************/
   isOnInput: boolean = false;
@@ -261,12 +261,14 @@ export class DesignService {
     }
 
     if (!this.isOnInput && e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+      this.ur.isUndoRedo = true;
       this.theDesign = this.ur.undo();
       this.isResizeObserver = true;
     }
 
     if (!this.isOnInput && e.key === 'y' && (e.ctrlKey || e.metaKey)) {
       this.theDesign = this.ur.redo();
+      this.isResizeObserver = true;
     }
   }
 

@@ -183,14 +183,20 @@ export class MoveableService {
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);
         this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
-        this.moveable = this.makeMoveableText(thePageId, targets[0]);
-        this.ds.onSelectTextItem();
-        this.isSelectedTarget = true;
-        this.selectedItemId = targets[0].getAttribute('itemId');
-        this.selectedPageId = targets[0].getAttribute('pageId');
-        this.onChangeSelectedItem(targets[0]);
-        this.selectableTextEditor();
-        this.resetTextToolbar();
+        console.log(this.ur.isUndoRedo);
+        if (!this.ur.isUndoRedo) {
+          this.moveable = this.makeMoveableText(thePageId, targets[0]);
+          this.ds.onSelectTextItem();
+          this.isSelectedTarget = true;
+          this.selectedItemId = targets[0].getAttribute('itemId');
+          this.selectedPageId = targets[0].getAttribute('pageId');
+          this.onChangeSelectedItem(targets[0]);
+          this.selectableTextEditor();
+          this.resetTextToolbar();
+        } else {
+          // this.ur.isUndoRedo = false;
+          // console.log('isUndoRedo:' + this.ur.isUndoRedo);
+        }
 
         if (this.isResizeObserver) {
           this.resizeObserver(this.selectedPageId, this.selectedItemId).observe(

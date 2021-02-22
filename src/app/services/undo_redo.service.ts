@@ -7,6 +7,8 @@ import { initTheData, saveTheData, undoTheData, redoTheData, theData } from '../
 export class Undo_redoService {
   constructor() {}
 
+  isUndoRedo: boolean = false;
+
   init(data) {
     initTheData(data);
   }
