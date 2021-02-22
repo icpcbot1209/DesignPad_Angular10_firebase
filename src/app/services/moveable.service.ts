@@ -38,8 +38,8 @@ export class MoveableService {
   isEditable: boolean = true;
   pageId: number;
   previousTarget: HTMLElement;
-  selectedPageId: string;
-  selectedItemId: string;
+  selectedPageId: string = '0';
+  selectedItemId: string = '0';
   itemScale: number;
 
   isMouseDown: boolean = false;
@@ -152,6 +152,7 @@ export class MoveableService {
     }
   }
 
+  isResizeObserver: boolean = true;
   onSelectTargets(targets: (HTMLElement | SVGElement)[]) {
     this.clearMoveable();
 
@@ -176,6 +177,7 @@ export class MoveableService {
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);
         this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
+        console.log('aaa');
         this.moveable = this.makeMoveableText(thePageId, targets[0]);
         this.ds.onSelectTextItem();
         this.isSelectedTarget = true;
@@ -184,6 +186,12 @@ export class MoveableService {
         this.onChangeSelectedItem(targets[0]);
         this.selectableTextEditor();
         this.resetTextToolbar();
+
+        if (this.isResizeObserver) {
+          this.resizeObserver(this.selectedPageId, this.selectedItemId).observe(
+            document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
+          );
+        }
       } else if (item.type === ItemType.element) {
         this.selectedItemId = targets[0].getAttribute('itemId');
         this.selectedPageId = targets[0].getAttribute('pageId');
@@ -192,7 +200,11 @@ export class MoveableService {
       }
     } else {
       this.ds.onSelectNothing();
+      this.resizeObserver(this.selectedPageId, this.selectedItemId).unobserve(
+        document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
+      );
 
+      this.isResizeObserver = false;
       this.isEditable = false;
       this.ds.isOnInput = false;
       this.isShowDownload = false;
@@ -665,29 +677,36 @@ export class MoveableService {
   }
 
   getItem(target: HTMLElement | SVGElement): Item {
-    const pageId = Number(target.getAttribute('pageId'));
-    const itemId = Number(target.getAttribute('itemId'));
-    if (pageId < this.ds.theDesign.pages.length && itemId < this.ds.theDesign.pages[pageId].items.length) {
-      let item = this.ds.theDesign.pages[pageId].items[itemId];
-      return item;
+    if (target) {
+      const pageId = Number(target.getAttribute('pageId'));
+      const itemId = Number(target.getAttribute('itemId'));
+      if (pageId < this.ds.theDesign.pages.length && itemId < this.ds.theDesign.pages[pageId].items.length) {
+        let item = this.ds.theDesign.pages[pageId].items[itemId];
+        return item;
+      }
+      return null;
     }
-    return null;
   }
 
   strTransform(item: Item): string {
     return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
   }
 
+  isCreateTextItem: boolean = false;
   onChangeSelectedItem(target) {
     if (this.previousTarget != undefined) {
       if (this.previousTarget != target) {
-        this.isEditable = false;
+        if (!this.isCreateTextItem) {
+          this.isEditable = false;
+        }
         this.ds.isOnInput = false;
       }
     }
     this.previousTarget = target;
   }
   enableTextEdit(event: MouseEvent) {
+    console.log(this.isDrag, this.isEditable);
+
     if (!this.isDrag) {
       if (this.isEditable) {
         document.querySelectorAll<HTMLElement>('.ql-editor').forEach((ele) => {
@@ -742,6 +761,7 @@ export class MoveableService {
     this.selecto.emit('selectEnd', func);
     this.selectedItemId = item;
     this.selectedPageId = page;
+    this.isResizeObserver = true;
   }
 
   selectableTextEditor() {
@@ -851,13 +871,17 @@ export class MoveableService {
         let height = JSON.stringify(entries[0].contentRect.height) + 'px';
         let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
         let item = this.getItem(selectorEle);
-        item.x = item.x - (entries[0].contentRect.width - parseInt(selectorEle.style.width)) / 2;
-        selectorEle.style.width = width;
-        selectorEle.style.height = height;
-        selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
+        if (item) {
+          item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
+          selectorEle.style.width = width;
+          selectorEle.style.height = height;
+          console.log(width, height, selectorEle.style.width, selectorEle.style.height);
+          selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
 
-        if (!this.isOnResize) {
-          this.setSelectable(pageId, itemId, '#textSelector-');
+          if (!this.isOnResize) {
+            this.setSelectable(pageId, itemId, '#textSelector-');
+            this.isResizeObserver = false;
+          }
         }
       });
     });

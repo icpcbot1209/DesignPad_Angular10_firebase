@@ -187,6 +187,8 @@ export class DesignService {
       lineHeight: '1.35',
       letterSpacing: '-21',
     });
+    const ms = this.injector.get(MoveableService);
+    ms.isCreateTextItem = true;
   }
 
   /*********************************************
@@ -245,6 +247,7 @@ export class DesignService {
    * Key events
    **********************************************/
   isOnInput: boolean = false;
+  isResizeObserver: boolean = false;
 
   onKeyEvent(e: KeyboardEvent) {
     if (!this.isOnInput && (e.key === 'Delete' || e.key === 'Backspace')) {
@@ -255,6 +258,7 @@ export class DesignService {
 
     if (!this.isOnInput && e.key === 'z' && (e.ctrlKey || e.metaKey)) {
       this.theDesign = this.ur.undo();
+      this.isResizeObserver = true;
     }
 
     if (!this.isOnInput && e.key === 'y' && (e.ctrlKey || e.metaKey)) {

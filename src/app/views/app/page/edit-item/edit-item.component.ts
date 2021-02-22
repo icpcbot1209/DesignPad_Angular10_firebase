@@ -28,15 +28,11 @@ export class EditItemComponent implements OnInit {
     this.moveableService.selectedItemId = this.itemId.toString();
   }
 
-  ngAfterViewInit(): void {
-    this.editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.pageId + '-' + this.itemId);
-    this.resizeObserver = this.moveableService.resizeObserver(this.moveableService.selectedPageId, this.moveableService.selectedItemId);
-
-    this.resizeObserver.observe(this.editorEle);
-  }
-
   ngOnDestroy() {
-    this.resizeObserver.unobserve(this.editorEle);
+    this.moveableService.isResizeObserver = true;
+    // this.resizeObserver(this.moveableService.selectedPageId, this.moveableService.selectedItemId).unobserve(
+    //   document.querySelector<HTMLElement>('#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId)
+    // );
   }
 
   styleItemPosition(item: Item): CSS.Properties {
