@@ -1,12 +1,9 @@
-import { Component, Input, NgZone, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Item } from 'src/app/models/models';
 import { ItemType } from 'src/app/models/enums';
 import { MoveableService } from 'src/app/services/moveable.service';
 
 import * as CSS from 'csstype';
-
-declare var Quill;
-declare var ResizeObserver;
 
 @Component({
   selector: 'app-edit-item',
@@ -17,6 +14,7 @@ export class EditItemComponent implements OnInit {
   @Input() item: Item;
   @Input() itemId: number;
   @Input() pageId: number;
+  @ViewChild('quillEditor') quillEditor: ElementRef;
 
   editorEle: HTMLElement;
   resizeObserver;
@@ -28,11 +26,12 @@ export class EditItemComponent implements OnInit {
     this.moveableService.selectedItemId = this.itemId.toString();
   }
 
+  ngAfterViewInit(): void {
+    this.quillEditor.nativeElement.innerHTML = this.item.quillData;
+  }
+
   ngOnDestroy() {
     this.moveableService.isResizeObserver = true;
-    // this.resizeObserver(this.moveableService.selectedPageId, this.moveableService.selectedItemId).unobserve(
-    //   document.querySelector<HTMLElement>('#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId)
-    // );
   }
 
   styleItemPosition(item: Item): CSS.Properties {

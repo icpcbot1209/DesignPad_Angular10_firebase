@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Item } from '../models/models';
 import { DesignService } from 'src/app/services/design.service';
+import { Undo_redoService } from 'src/app/services/undo_redo.service';
 import ArcText from 'arc-text';
 
 declare var Quill;
@@ -16,8 +17,9 @@ export class ToolbarService {
 
   angel;
   direction;
+  quillData;
 
-  constructor(public ds: DesignService) {
+  constructor(public ds: DesignService, private injector: Injector) {
     this.textEditItems.push([]);
   }
 
@@ -32,6 +34,16 @@ export class ToolbarService {
       if (range && range2 === null) {
         this.ds.isOnInput = true;
       }
+    });
+
+    const ds = this.injector.get(DesignService);
+    const ur = this.injector.get(Undo_redoService);
+
+    quill.on('text-change', function (delta, oldDelta, source) {
+      this.quillData = document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId).querySelector('.ql-editor');
+      ds.theDesign.pages[selectedPageId].items[selectedItemId].quillData = this.quillData.outerHTML;
+      console.log('text change');
+      ur.save(ds.theDesign);
     });
 
     (document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId).querySelector('.ql-editor') as HTMLElement).style.overflow =

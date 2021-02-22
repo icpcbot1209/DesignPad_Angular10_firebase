@@ -1,15 +1,12 @@
 <div
+  #quillEditor
   style="font-family: 'Alata'"
   [id]="'textEditor-' + pageId + '-' + itemId"
   [ngStyle]="styleItem(item)"
   (click)="stopPropagation($event)"
   [attr.pageId]="pageId"
   [attr.itemId]="itemId"
->
-  <div class="ql-editor">
-    <p>Add a heading</p>
-  </div>
-</div>
+></div>
 <div style="display: flex; justify-content: center; align-items: center" [ngStyle]="styleItemPosition(item)">
   <div [id]="'curveText-' + pageId + '-' + itemId"></div>
 </div>

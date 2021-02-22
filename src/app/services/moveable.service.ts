@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, Injector } from '@angular/core';
 
 import Moveable, {
   OnDragStart,
@@ -52,7 +52,13 @@ export class MoveableService {
   isShowDownload: boolean = false;
   selectFisShowDownload: boolean;
 
-  constructor(private ds: DesignService, private toolbarService: ToolbarService, private ur: Undo_redoService, private zone: NgZone) {}
+  constructor(
+    private ds: DesignService,
+    private toolbarService: ToolbarService,
+    private ur: Undo_redoService,
+    private zone: NgZone,
+    private injector: Injector
+  ) {}
 
   init() {
     let container: HTMLElement = document.querySelector('#selecto-container');
@@ -177,7 +183,6 @@ export class MoveableService {
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);
         this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
-        console.log('aaa');
         this.moveable = this.makeMoveableText(thePageId, targets[0]);
         this.ds.onSelectTextItem();
         this.isSelectedTarget = true;
@@ -585,6 +590,7 @@ export class MoveableService {
     });
 
     /* draggable */
+    let isSaveOnDrag: boolean = false;
     moveable
       .on('dragStart', (e: OnDragStart) => {
         let item = this.getItem(e.target);
@@ -600,9 +606,15 @@ export class MoveableService {
         if (this.isMouseDown) {
           this.isDrag = true;
         }
+
+        isSaveOnDrag = true;
       })
       .on('dragEnd', (e) => {
-        this.ur.save(this.ds.theDesign);
+        if (isSaveOnDrag) {
+          console.log('drag end');
+          this.ur.save(this.ds.theDesign);
+        }
+        isSaveOnDrag = false;
       });
 
     /* resize */
@@ -705,8 +717,6 @@ export class MoveableService {
     this.previousTarget = target;
   }
   enableTextEdit(event: MouseEvent) {
-    console.log(this.isDrag, this.isEditable);
-
     if (!this.isDrag) {
       if (this.isEditable) {
         document.querySelectorAll<HTMLElement>('.ql-editor').forEach((ele) => {
@@ -875,11 +885,10 @@ export class MoveableService {
           item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
           selectorEle.style.width = width;
           selectorEle.style.height = height;
-          console.log(width, height, selectorEle.style.width, selectorEle.style.height);
           selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
 
           if (!this.isOnResize) {
-            this.setSelectable(pageId, itemId, '#textSelector-');
+            this.setSelectable(itemId, pageId, '#textSelector-');
             this.isResizeObserver = false;
           }
         }

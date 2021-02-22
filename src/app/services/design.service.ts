@@ -9,8 +9,8 @@ import { Undo_redoService } from 'src/app/services/undo_redo.service';
   providedIn: 'root',
 })
 export class DesignService {
-  theDesign: Design;
   constructor(private injector: Injector, public ur: Undo_redoService) {}
+  theDesign: Design;
 
   init() {
     this.theDesign = {
@@ -120,6 +120,7 @@ export class DesignService {
     // this.getSVGElement(item);
     // }
     this.theDesign.pages[this.thePageId].items.push(item);
+    console.log('add item');
     this.ur.save(this.theDesign);
   }
 
@@ -172,6 +173,10 @@ export class DesignService {
     x = (W - w) / 2;
     y = (H - h) / 2;
 
+    const ms = this.injector.get(MoveableService);
+    ms.isCreateTextItem = true;
+    ms.isResizeObserver = true;
+
     this.addItemToCurrentPage({
       type: ItemType.text,
       pageId: this.thePageId,
@@ -186,9 +191,8 @@ export class DesignService {
       fontSize: '24px',
       lineHeight: '1.35',
       letterSpacing: '-21',
+      quillData: '<div class="ql-editor"><p>Add a heading</p></div>',
     });
-    const ms = this.injector.get(MoveableService);
-    ms.isCreateTextItem = true;
   }
 
   /*********************************************
