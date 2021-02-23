@@ -367,6 +367,7 @@ export class DesignService {
   startImageCrop() {
     if (!this.theItem || !(this.theItem.type == ItemType.image || this.theItem.type == ItemType.element)) return;
     this.status = ItemStatus.image_crop;
+    console.log(this.status);
 
     const ms = this.injector.get(MoveableService);
     ms.startImageCrop();
@@ -386,12 +387,14 @@ export class DesignService {
   flipX() {
     if (this.theItem && (this.theItem.type === ItemType.image || this.theItem.type === ItemType.element)) {
       this.theItem.scaleX *= -1;
+      this.ur.saveTheData(this.theDesign);
     }
   }
 
   flipY() {
     if (this.theItem && (this.theItem.type === ItemType.image || this.theItem.type === ItemType.element)) {
       this.theItem.scaleY *= -1;
+      this.ur.saveTheData(this.theDesign);
     }
   }
 

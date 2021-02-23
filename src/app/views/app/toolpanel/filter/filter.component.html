@@ -21,13 +21,10 @@
       [step]="1"
       [(ngModel)]="ds.filterObj.brightness"
       (input)="onChangeObj()"
+      [formControl]="brightness"
     />
 
-    <input
-      class="form-control"
-      [(ngModel)]="ds.filterObj.brightness"
-      (change)="onChangeObj()"
-    />
+    <input class="form-control" [(ngModel)]="ds.filterObj.brightness" (change)="onChangeObj()" />
 
     <label>Contrast</label>
 
@@ -39,13 +36,10 @@
       [step]="1"
       [(ngModel)]="ds.filterObj.contrast"
       (input)="onChangeObj()"
+      [formControl]="contrast"
     />
 
-    <input
-      class="form-control"
-      [(ngModel)]="ds.filterObj.contrast"
-      (change)="onChangeObj()"
-    />
+    <input class="form-control" [(ngModel)]="ds.filterObj.contrast" (change)="onChangeObj()" />
 
     <label>Saturate</label>
 
@@ -57,13 +51,10 @@
       [step]="1"
       [(ngModel)]="ds.filterObj.saturate"
       (input)="onChangeObj()"
+      [formControl]="saturate"
     />
 
-    <input
-      class="form-control"
-      [(ngModel)]="ds.filterObj.saturate"
-      (change)="onChangeObj()"
-    />
+    <input class="form-control" [(ngModel)]="ds.filterObj.saturate" (change)="onChangeObj()" />
 
     <label>Sepia</label>
 
@@ -75,13 +66,10 @@
       [step]="1"
       [(ngModel)]="ds.filterObj.sepia"
       (input)="onChangeObj()"
+      [formControl]="sepia"
     />
 
-    <input
-      class="form-control"
-      [(ngModel)]="ds.filterObj.sepia"
-      (change)="onChangeObj()"
-    />
+    <input class="form-control" [(ngModel)]="ds.filterObj.sepia" (change)="onChangeObj()" />
 
     <label>Grayscale</label>
 
@@ -93,13 +81,10 @@
       [step]="1"
       [(ngModel)]="ds.filterObj.grayscale"
       (input)="onChangeObj()"
+      [formControl]="grayscale"
     />
 
-    <input
-      class="form-control"
-      [(ngModel)]="ds.filterObj.grayscale"
-      (change)="onChangeObj()"
-    />
+    <input class="form-control" [(ngModel)]="ds.filterObj.grayscale" (change)="onChangeObj()" />
 
     <label>Blur</label>
 
@@ -111,13 +96,10 @@
       [step]="1"
       [(ngModel)]="ds.filterObj.blur"
       (input)="onChangeObj()"
+      [formControl]="blur"
     />
 
-    <input
-      class="form-control"
-      [(ngModel)]="ds.filterObj.blur"
-      (change)="onChangeObj()"
-    />
+    <input class="form-control" [(ngModel)]="ds.filterObj.blur" (change)="onChangeObj()" />
 
     <label>Invert</label>
 
@@ -129,12 +111,9 @@
       [step]="1"
       [(ngModel)]="ds.filterObj.invert"
       (input)="onChangeObj()"
+      [formControl]="invert"
     />
 
-    <input
-      class="form-control"
-      [(ngModel)]="ds.filterObj.invert"
-      (change)="onChangeObj()"
-    />
+    <input class="form-control" [(ngModel)]="ds.filterObj.invert" (change)="onChangeObj()" />
   </div>
 </perfect-scrollbar>

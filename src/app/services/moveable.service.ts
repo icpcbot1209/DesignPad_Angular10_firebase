@@ -212,10 +212,19 @@ export class MoveableService {
         this.ds.onSelectElementItem(thePageId, item);
       }
     } else {
+      if (this.ds.status == 4) {
+        this.ur.saveTheData(this.ds.theDesign);
+      }
       this.ds.onSelectNothing();
-      this.resizeObserver(this.selectedPageId, this.selectedItemId).unobserve(
-        document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
-      );
+      if (
+        this.ds.theDesign.pages[this.selectedPageId].items.length &&
+        this.ds.theDesign.pages[this.selectedPageId].items[this.selectedItemId].type &&
+        this.ds.theDesign.pages[this.selectedPageId].items[this.selectedItemId].type == ItemType.text
+      ) {
+        this.resizeObserver(this.selectedPageId, this.selectedItemId).unobserve(
+          document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
+        );
+      }
 
       this.isResizeObserver = false;
       this.isEditable = false;
@@ -650,7 +659,6 @@ export class MoveableService {
       })
       .on('dragEnd', (e) => {
         if (isSaveOnDrag) {
-          console.log('drag end');
           this.ur.saveTheData(this.ds.theDesign);
         }
         isSaveOnDrag = false;
@@ -926,7 +934,6 @@ export class MoveableService {
   resizeObserver(pageId, itemId) {
     return new ResizeObserver((entries) => {
       this.zone.run(() => {
-        console.log(this.isCreateTextItem);
         if (!this.ur.isUndoRedo) {
           console.log('resizeObserver:' + pageId + itemId);
           let width = JSON.stringify(entries[0].contentRect.width) + 'px';

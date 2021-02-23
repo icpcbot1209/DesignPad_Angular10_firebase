@@ -9,19 +9,10 @@
     align-items: center;
   "
 >
-  <button
-    mat-button
-    *ngFor="let preset of ds.presets"
-    (click)="ds.setFilterCss(preset.css)"
-  >
+  <button mat-button *ngFor="let preset of ds.presets" (click)="setPresets(preset)">
     <span>{{ preset.label }}</span
     ><br />
 
-    <img
-      [src]="ds.theItem?.thumbnail"
-      [style.filter]="preset.css"
-      width="100%"
-      height="auto"
-    />
+    <img [src]="ds.theItem?.thumbnail" [style.filter]="preset.css" width="100%" height="auto" />
   </button>
 </div>
