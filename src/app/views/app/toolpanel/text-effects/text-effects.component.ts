@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
+import { DesignService } from 'src/app/services/design.service';
 
 @Component({
   selector: 'toolpanel-text-effects',
@@ -46,7 +48,7 @@ export class TextEffectsComponent implements OnInit {
   neonValue;
   curveValue;
 
-  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService) {}
+  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ur: UndoRedoService, public ds: DesignService) {}
 
   ngOnInit(): void {}
 
@@ -55,6 +57,8 @@ export class TextEffectsComponent implements OnInit {
   }
   ngOnDestroy(): void {
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
+    console.log('text effect');
+    this.ur.saveTheData(this.ds.theDesign);
   }
 
   setTextEffect(method: string) {
@@ -73,20 +77,26 @@ export class TextEffectsComponent implements OnInit {
       document.querySelector<HTMLElement>('#selector-none').style.borderColor = 'rgb(109, 47, 165)';
       this.defaultEffect();
       this.setEffectSelector('#selector-none');
+      this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'shadow') {
+      this.defaultEffect();
       this.shadowColor = '#808080';
       this.setShadowEffect();
       document.querySelector<HTMLElement>('#shadow').style.display = 'block';
       this.setEffectSelector('#selector-shadow');
+      this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'lift') {
+      this.defaultEffect();
       this.shadowColor = '#808080';
       this.setShadowEffect();
       document.querySelector<HTMLElement>('#lift').style.display = 'block';
       this.setEffectSelector('#selector-lift');
+      this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'hallow') {
+      this.defaultEffect();
       this.editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
       );
@@ -96,8 +106,10 @@ export class TextEffectsComponent implements OnInit {
       this.setHollowEffect();
       document.querySelector<HTMLElement>('#hallow').style.display = 'block';
       this.setEffectSelector('#selector-hallow');
+      this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'splice') {
+      this.defaultEffect();
       this.thickness = 50;
       this.offset = 50;
       this.angle = -45;
@@ -117,8 +129,10 @@ export class TextEffectsComponent implements OnInit {
       this.editorEle.style.color = 'white';
       this.setShadowEffect();
       this.setHollowEffect();
+      this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'echo') {
+      this.defaultEffect();
       this.editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
       );
@@ -130,8 +144,10 @@ export class TextEffectsComponent implements OnInit {
       this.setMultiShadowEffect();
       document.querySelector<HTMLElement>('#echo').style.display = 'block';
       this.setEffectSelector('#selector-echo');
+      this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'glitch') {
+      this.defaultEffect();
       this.editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
       );
@@ -145,8 +161,10 @@ export class TextEffectsComponent implements OnInit {
       this.setGlitchEffect();
       document.querySelector<HTMLElement>('#glitch').style.display = 'block';
       this.setEffectSelector('#selector-glitch');
+      this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'neon') {
+      this.defaultEffect();
       this.editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
       );
@@ -164,8 +182,10 @@ export class TextEffectsComponent implements OnInit {
       this.setNeonEffect();
       document.querySelector<HTMLElement>('#neon').style.display = 'block';
       this.setEffectSelector('#selector-neon');
+      this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'curve') {
+      this.defaultEffect();
       this.curveValue = 50;
       this.toolbarService.direction = 1;
       this.toolbarService.angel = this.curveValue * 3;
@@ -173,6 +193,15 @@ export class TextEffectsComponent implements OnInit {
 
       document.querySelector<HTMLElement>('#curve').style.display = 'block';
       this.setEffectSelector('#selector-curve');
+
+      let curveText;
+      setTimeout(() => {
+        curveText = document.querySelector('#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId).innerHTML;
+        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textOpacity = '0';
+        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].curveOpacity = '1';
+        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].curveText = curveText;
+        this.ur.saveTheData(this.ds.theDesign);
+      });
     }
   }
 
@@ -198,6 +227,8 @@ export class TextEffectsComponent implements OnInit {
     document
       .querySelector<HTMLElement>('#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId)
       .setAttribute('style', '-webkit-opacity: 0');
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textOpacity = '1';
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].curveOpacity = '0';
   }
 
   setEffectSelector(id) {
@@ -217,8 +248,10 @@ export class TextEffectsComponent implements OnInit {
 
     let op = this.opacity / 100;
 
-    this.editorEle.style.textShadow =
+    let textShadow =
       'rgba(' + this.shadowR + ', ' + this.shadowG + ', ' + this.shadowB + ', ' + op + ') ' + this.offsetX + ' ' + this.offsetY + ' ' + this.blurSize;
+    this.editorEle.style.textShadow = textShadow;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textShadow = textShadow;
   }
 
   // shadow
@@ -282,7 +315,7 @@ export class TextEffectsComponent implements OnInit {
       '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
     );
     this.fontSize = this.editorEle.style.fontSize;
-    this.editorEle.style.webkitTextStroke =
+    let textStroke =
       ((parseFloat(this.fontSize) * this.thickness) / 100 / 14.54).toString() +
       'px rgb(' +
       this.outlineR +
@@ -291,6 +324,8 @@ export class TextEffectsComponent implements OnInit {
       ', ' +
       this.outlineB +
       ')';
+    this.editorEle.style.webkitTextStroke = textStroke;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textStroke = textStroke;
   }
 
   onInputThicknessChange(event) {
@@ -312,7 +347,7 @@ export class TextEffectsComponent implements OnInit {
     let offset2Y = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionY * 2).toString() + 'px';
     this.blurSize = (parseFloat(this.fontSize) / (100 / this.blur) / 6).toString() + 'px';
 
-    this.editorEle.style.textShadow =
+    let textShadow =
       'rgba(' +
       this.shadowR +
       ', ' +
@@ -342,6 +377,8 @@ export class TextEffectsComponent implements OnInit {
       offset2Y +
       ' ' +
       this.blurSize;
+    this.editorEle.style.textShadow = textShadow;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textShadow = textShadow;
   }
 
   onInputMultiOffsetChange(event) {
@@ -381,7 +418,7 @@ export class TextEffectsComponent implements OnInit {
     let offset2Y = (((-1 * parseFloat(this.fontSize)) / (100 / this.offset) / 6) * this.directionY).toString() + 'px';
     this.blurSize = (parseFloat(this.fontSize) / (100 / this.blur) / 6).toString() + 'px';
 
-    this.editorEle.style.textShadow =
+    let textShadow =
       this.glitchColorA +
       ' ' +
       this.offsetX +
@@ -397,6 +434,9 @@ export class TextEffectsComponent implements OnInit {
       offset2Y +
       ' ' +
       this.blurSize;
+
+    this.editorEle.style.textShadow = textShadow;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textShadow = textShadow;
   }
 
   onInputGlitchOffsetChange(event) {
@@ -446,7 +486,7 @@ export class TextEffectsComponent implements OnInit {
     let G = this.shadowG + ((255 - this.shadowG) * (this.neonValue - 1)) / 100;
     let B = this.shadowB + ((255 - this.shadowB) * (this.neonValue - 1)) / 100;
 
-    this.editorEle.style.textShadow =
+    let textShadow =
       'rgba(' +
       this.shadowR +
       ', ' +
@@ -500,6 +540,8 @@ export class TextEffectsComponent implements OnInit {
       'px';
 
     this.editorEle.style.color = 'rgb(' + R + ', ' + G + ', ' + B + ')';
+    this.editorEle.style.textShadow = textShadow;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textShadow = textShadow;
   }
 
   onInputNeonChange(event) {

@@ -15,6 +15,7 @@ export class EditItemComponent implements OnInit {
   @Input() itemId: number;
   @Input() pageId: number;
   @ViewChild('quillEditor') quillEditor: ElementRef;
+  @ViewChild('curveText') curveText: ElementRef;
 
   editorEle: HTMLElement;
   resizeObserver;
@@ -28,6 +29,7 @@ export class EditItemComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.quillEditor.nativeElement.innerHTML = this.item.quillData;
+    if (this.item.curveText != '') this.curveText.nativeElement.innerHTML = this.item.curveText;
   }
 
   ngOnDestroy() {
@@ -87,8 +89,18 @@ export class EditItemComponent implements OnInit {
         transform: this.moveableService.strTransform(item),
         WebkitTransform: this.moveableService.strTransform(item),
         fontSize: '24px',
-        // transform: `translate(${item.x}px, ${item.y}px)`,
+        fontFamily: item.fontFamily,
+        textShadow: item.textShadow,
+        WebkitTextStroke: item.textShadow,
+        opacity: item.textOpacity,
       };
+  }
+  styleCurveItem(item: Item): CSS.Properties {
+    return {
+      fontFamily: item.fontFamily,
+      fontSize: item.fontSize,
+      opacity: item.curveOpacity,
+    };
   }
   stopPropagation(event) {
     event.stopPropagation();

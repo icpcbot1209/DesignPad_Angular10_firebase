@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Item } from '../models/models';
 import { DesignService } from 'src/app/services/design.service';
-import { Undo_redoService } from 'src/app/services/undo_redo.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import ArcText from 'arc-text';
 
 declare var Quill;
@@ -37,13 +37,13 @@ export class ToolbarService {
     });
 
     const ds = this.injector.get(DesignService);
-    const ur = this.injector.get(Undo_redoService);
+    const ur = this.injector.get(UndoRedoService);
 
     quill.on('text-change', function (delta, oldDelta, source) {
       this.quillData = document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId).querySelector('.ql-editor');
       ds.theDesign.pages[selectedPageId].items[selectedItemId].quillData = this.quillData.outerHTML;
       console.log('text change');
-      ur.save(ds.theDesign);
+      ur.saveTheData(ds.theDesign);
     });
 
     (document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId).querySelector('.ql-editor') as HTMLElement).style.overflow =

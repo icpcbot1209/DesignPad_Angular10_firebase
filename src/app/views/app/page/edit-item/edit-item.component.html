@@ -1,6 +1,5 @@
 <div
   #quillEditor
-  style="font-family: 'Alata'"
   [id]="'textEditor-' + pageId + '-' + itemId"
   [ngStyle]="styleItem(item)"
   (click)="stopPropagation($event)"
@@ -8,5 +7,5 @@
   [attr.itemId]="itemId"
 ></div>
 <div style="display: flex; justify-content: center; align-items: center" [ngStyle]="styleItemPosition(item)">
-  <div [id]="'curveText-' + pageId + '-' + itemId"></div>
+  <div #curveText [id]="'curveText-' + pageId + '-' + itemId" [ngStyle]="styleCurveItem(item)"></div>
 </div>

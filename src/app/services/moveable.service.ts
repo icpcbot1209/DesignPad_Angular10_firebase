@@ -17,13 +17,15 @@ import Moveable, {
   OnScaleStart,
   OnScale,
   OnScaleEnd,
+  OnResizeEnd,
+  OnRotateEnd,
 } from 'moveable';
 import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
 import { ToolbarService } from './toolbar.service';
 import { DesignService } from './design.service';
 import { Item } from '../models/models';
 import { ItemStatus, ItemType } from '../models/enums';
-import { Undo_redoService } from 'src/app/services/undo_redo.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
 
 declare var ResizeObserver;
 
@@ -55,7 +57,7 @@ export class MoveableService {
   constructor(
     private ds: DesignService,
     private toolbarService: ToolbarService,
-    private ur: Undo_redoService,
+    private ur: UndoRedoService,
     private zone: NgZone,
     private injector: Injector
   ) {}
@@ -108,9 +110,13 @@ export class MoveableService {
           for (let i = 0; i < items.length; i++) {
             items[i].selected = false;
           }
+          this.isCreateTextItem = false;
         }
       })
       .on('select', (e: OnSelect) => {
+        if (this.ur.isUndoRedo) {
+          this.ur.isUndoRedo = false;
+        }
         e.added.forEach((el) => {
           let item = this.getItem(el);
 
@@ -183,7 +189,6 @@ export class MoveableService {
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);
         this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
-        console.log(this.ur.isUndoRedo);
         if (!this.ur.isUndoRedo) {
           this.moveable = this.makeMoveableText(thePageId, targets[0]);
           this.ds.onSelectTextItem();
@@ -193,9 +198,6 @@ export class MoveableService {
           this.onChangeSelectedItem(targets[0]);
           this.selectableTextEditor();
           this.resetTextToolbar();
-        } else {
-          // this.ur.isUndoRedo = false;
-          // console.log('isUndoRedo:' + this.ur.isUndoRedo);
         }
 
         if (this.isResizeObserver) {
@@ -281,6 +283,9 @@ export class MoveableService {
 
         e.target.style.transform = this.strTransform(item);
       })
+      .on('dragEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
+      })
       .on('dragGroupStart', (ev: OnDragGroupStart) => {
         ev.events.forEach((e) => {
           moveable.emit('dragStart', e);
@@ -290,6 +295,9 @@ export class MoveableService {
         ev.events.forEach((e) => {
           moveable.emit('drag', e);
         });
+      })
+      .on('dragGroupEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     /* resizable */
@@ -310,6 +318,9 @@ export class MoveableService {
         e.target.style.width = `${e.width}px`;
         e.target.style.height = `${e.height}px`;
       })
+      .on('resizeEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
+      })
       .on('resizeGroupStart', (ev: OnResizeGroupStart) => {
         ev.events.forEach((e: OnResizeStart) => {
           moveable.emit('resizeStart', e);
@@ -319,6 +330,9 @@ export class MoveableService {
         ev.events.forEach((e: OnResize) => {
           moveable.emit('resize', e);
         });
+      })
+      .on('resizeGroupEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     /* rotatable */
@@ -336,6 +350,9 @@ export class MoveableService {
 
         e.target.style.transform = this.strTransform(item);
       })
+      .on('rotateEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
+      })
       .on('rotateGroupStart', (ev: OnRotateGroupStart) => {
         ev.events.forEach((e: OnRotateStart) => {
           moveable.emit('rotateStart', e);
@@ -345,6 +362,9 @@ export class MoveableService {
         ev.events.forEach((e: OnRotate) => {
           moveable.emit('rotate', e);
         });
+      })
+      .on('rotateGroupEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     return moveable;
@@ -390,6 +410,9 @@ export class MoveableService {
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
+      })
+      .on('dragEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     /* resizable */
@@ -409,6 +432,9 @@ export class MoveableService {
         e.target.style.transform = this.strTransform(item);
         e.target.style.width = `${e.width}px`;
         e.target.style.height = `${e.height}px`;
+      })
+      .on('resizeEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     /* rotatable */
@@ -425,6 +451,9 @@ export class MoveableService {
         item.rotate = e.rotate;
 
         e.target.style.transform = this.strTransform(item);
+      })
+      .on('rotateEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     return moveable;
@@ -599,6 +628,10 @@ export class MoveableService {
     let isSaveOnDrag: boolean = false;
     moveable
       .on('dragStart', (e: OnDragStart) => {
+        // if (this.ds.isStatus(ItemStatus.text_effect)) {
+        //   console.log('font_list-item_drag');
+        //   this.ur.saveTheData(this.ds.theDesign);
+        // }
         let item = this.getItem(e.target);
         e.set([item.x, item.y]);
       })
@@ -618,7 +651,7 @@ export class MoveableService {
       .on('dragEnd', (e) => {
         if (isSaveOnDrag) {
           console.log('drag end');
-          this.ur.save(this.ds.theDesign);
+          this.ur.saveTheData(this.ds.theDesign);
         }
         isSaveOnDrag = false;
       });
@@ -665,11 +698,11 @@ export class MoveableService {
 
         this.isOnResize = true;
       })
-
       .on('resizeEnd', ({ target, isDrag }) => {
         this.setSelectable(target.getAttribute('itemId'), target.getAttribute('pageId'), '#textSelector-');
         this.selectableTextEditor();
         this.isOnResize = false;
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     /* rotate */
@@ -687,8 +720,9 @@ export class MoveableService {
 
         e.target.style.transform = this.strTransform(item);
       })
-      .on('rotateEnd', (e: OnRotate) => {
+      .on('rotateEnd', (e: OnRotateEnd) => {
         this.selectableTextEditor();
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     return moveable;
@@ -836,6 +870,9 @@ export class MoveableService {
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
+      })
+      .on('dragEnd', (e) => {
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     /* resizable */
@@ -859,6 +896,9 @@ export class MoveableService {
         let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId).querySelector('svg');
         svgEle.setAttribute('width', item.w.toString());
         svgEle.setAttribute('height', item.h.toString());
+      })
+      .on('resizeEnd', (e: OnResizeEnd) => {
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     /* rotatable */
@@ -875,6 +915,9 @@ export class MoveableService {
         item.rotate = e.rotate;
 
         e.target.style.transform = this.strTransform(item);
+      })
+      .on('rotateEnd', (e: OnRotateEnd) => {
+        this.ur.saveTheData(this.ds.theDesign);
       });
 
     return moveable;
@@ -883,19 +926,22 @@ export class MoveableService {
   resizeObserver(pageId, itemId) {
     return new ResizeObserver((entries) => {
       this.zone.run(() => {
-        let width = JSON.stringify(entries[0].contentRect.width) + 'px';
-        let height = JSON.stringify(entries[0].contentRect.height) + 'px';
-        let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
-        let item = this.getItem(selectorEle);
-        if (item) {
-          item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
-          selectorEle.style.width = width;
-          selectorEle.style.height = height;
-          selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
-
-          if (!this.isOnResize) {
-            this.setSelectable(itemId, pageId, '#textSelector-');
-            this.isResizeObserver = false;
+        console.log(this.isCreateTextItem);
+        if (!this.ur.isUndoRedo) {
+          console.log('resizeObserver:' + pageId + itemId);
+          let width = JSON.stringify(entries[0].contentRect.width) + 'px';
+          let height = JSON.stringify(entries[0].contentRect.height) + 'px';
+          let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
+          let item = this.getItem(selectorEle);
+          if (item) {
+            item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
+            selectorEle.style.width = width;
+            selectorEle.style.height = height;
+            selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
+            if (!this.isOnResize) {
+              this.setSelectable(itemId, pageId, '#textSelector-');
+              this.isResizeObserver = false;
+            }
           }
         }
       });

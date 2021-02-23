@@ -3,13 +3,13 @@ import { ItemStatus, ItemType } from '../models/enums';
 import { ImageFilterObj } from '../models/image-filter';
 import { AssetImage, Design, Item } from '../models/models';
 import { MoveableService } from './moveable.service';
-import { Undo_redoService } from 'src/app/services/undo_redo.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DesignService {
-  constructor(private injector: Injector, public ur: Undo_redoService) {}
+  constructor(private injector: Injector, public ur: UndoRedoService) {}
   theDesign: Design;
 
   init() {
@@ -35,7 +35,7 @@ export class DesignService {
       ],
     };
 
-    this.ur.init(this.theDesign);
+    this.ur.initTheData(this.theDesign);
 
     // window.location.hash = 'no-back-button';
     // window.location.hash = 'Again-No-back-button'; //again because google chrome don't insert first hash into history
@@ -121,7 +121,7 @@ export class DesignService {
     // }
     this.theDesign.pages[this.thePageId].items.push(item);
     console.log('add item');
-    this.ur.save(this.theDesign);
+    this.ur.saveTheData(this.theDesign);
   }
 
   /*********************************************
@@ -167,7 +167,7 @@ export class DesignService {
     if (!H) return;
 
     let w, h, x, y;
-    w = 175.109;
+    w = 156.562;
     h = 34;
 
     x = (W - w) / 2;
@@ -176,6 +176,8 @@ export class DesignService {
     const ms = this.injector.get(MoveableService);
     ms.isCreateTextItem = true;
     ms.isResizeObserver = true;
+    ms.isOnResize = false;
+    this.ur.isUndoRedo = false;
 
     this.addItemToCurrentPage({
       type: ItemType.text,
@@ -189,9 +191,15 @@ export class DesignService {
       scaleX: 1,
       scaleY: 1,
       fontSize: '24px',
+      fontFamily: 'Alata',
       lineHeight: '1.35',
       letterSpacing: '-21',
-      quillData: '<div class="ql-editor"><p>Add a heading</p></div>',
+      quillData: '<div class="ql-editor" style="line-height: 1.35em; letter-spacing: -0.021em;"><p>Add a heading</p></div>',
+      textShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px',
+      textStroke: '0px rgb(0, 0, 0)',
+      curveText: '',
+      textOpacity: '1',
+      curveOpacity: '0',
     });
   }
 
@@ -261,13 +269,15 @@ export class DesignService {
     }
 
     if (!this.isOnInput && e.key === 'z' && (e.ctrlKey || e.metaKey)) {
-      this.ur.isUndoRedo = true;
-      this.theDesign = this.ur.undo();
-      this.isResizeObserver = true;
+      if (!this.isStatus(ItemStatus.text_effect)) {
+        this.ur.isUndoRedo = true;
+        this.theDesign = this.ur.undoTheData();
+        this.isResizeObserver = true;
+      }
     }
 
     if (!this.isOnInput && e.key === 'y' && (e.ctrlKey || e.metaKey)) {
-      this.theDesign = this.ur.redo();
+      this.theDesign = this.ur.redoTheData();
       this.isResizeObserver = true;
     }
   }

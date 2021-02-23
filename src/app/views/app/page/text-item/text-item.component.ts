@@ -4,7 +4,7 @@ import { ItemType } from 'src/app/models/enums';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
 import { DesignService } from 'src/app/services/design.service';
-import { Undo_redoService } from 'src/app/services/undo_redo.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
 
 import * as CSS from 'csstype';
 
@@ -18,12 +18,7 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   @Input() itemId: number;
   @Input() pageId: number;
 
-  constructor(
-    public moveableService: MoveableService,
-    public toolbarService: ToolbarService,
-    public ds: DesignService,
-    public ur: Undo_redoService
-  ) {}
+  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ds: DesignService, public ur: UndoRedoService) {}
 
   ngOnInit(): void {
     this.ds.onSelectNothing();
@@ -31,8 +26,8 @@ export class TextItemComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.moveableService.isEditable = true;
+    console.log(this.moveableService.isOnResize);
     if (!this.moveableService.isOnResize) {
-      console.log('selectable');
       this.moveableService.setSelectable(this.moveableService.selectedItemId, this.moveableService.selectedPageId, '#textSelector-');
     }
   }
@@ -107,10 +102,6 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   }
 
   onMouseDown() {
-    if (this.ur.isUndoRedo) {
-      this.ur.isUndoRedo = false;
-      this.moveableService.setSelectable(this.itemId, this.pageId, '#textSelector-');
-    }
     this.moveableService.isMouseDown = true;
   }
 }

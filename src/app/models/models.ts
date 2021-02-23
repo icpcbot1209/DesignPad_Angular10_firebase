@@ -19,13 +19,18 @@ export interface Item {
   filter?: string;
   text?: string;
   fontSize?: string;
-  font?: string;
+  fontFamily?: string;
   SVGElement?: string;
   color?: [];
   colorAndIndex?: {};
   lineHeight?: string;
   letterSpacing?: string;
   quillData?;
+  textShadow?;
+  textStroke?;
+  curveText?;
+  textOpacity?;
+  curveOpacity?;
 }
 
 export interface Page {

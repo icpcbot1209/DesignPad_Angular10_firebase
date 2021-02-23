@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core'; // Google Font Key is AIzaSyBipcG_GYuR_AN_TP6SxzppJz9sWZxIJSQ
 import { ToolbarService } from '../../../../services/toolbar.service';
 import { MoveableService } from 'src/app/services/moveable.service';
+import { DesignService } from 'src/app/services/design.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
 
 @Component({
   selector: 'toolpanel-font-list',
@@ -26,7 +28,7 @@ export class FontListComponent implements OnInit {
   previousSelectedFontItemIndex: number = null;
   previousSelectedFontItemFamily: string = 'Alata';
 
-  constructor(public toolbarService: ToolbarService, public moveableService: MoveableService) {}
+  constructor(public toolbarService: ToolbarService, public moveableService: MoveableService, public ds: DesignService, public ur: UndoRedoService) {}
 
   ngOnInit(): void {
     let url = this.toolbarService.url;
@@ -54,6 +56,8 @@ export class FontListComponent implements OnInit {
     ).style.fontFamily = fontFamily);
     document.querySelector<HTMLInputElement>('#fontInput').value = fontFamily;
     this.previousSelectedFontItemFamily = fontFamily;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].fontFamily = fontFamily;
+    this.ur.saveTheData(this.ds.theDesign);
   }
 
   onScrollDown(ev) {
