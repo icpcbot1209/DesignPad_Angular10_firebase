@@ -83,7 +83,7 @@
     <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (input)="onInputShadowColorChange()" />
+        <input type="color" [(ngModel)]="shadowColor" (change)="saveTheData()" (input)="onInputShadowColorChange()" />
       </div>
     </div>
   </div>
@@ -144,7 +144,7 @@
     <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="outlineColor" (input)="onInputHollowColorChange()" />
+        <input type="color" [(ngModel)]="outlineColor" (change)="saveTheData()" (input)="onInputHollowColorChange()" />
       </div>
     </div>
   </div>
@@ -202,13 +202,13 @@
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (input)="onInputShadowColorChange()" [value]="shadowColor" />
+        <input type="color" [(ngModel)]="shadowColor" (change)="saveTheData()" (input)="onInputShadowColorChange()" [value]="shadowColor" />
       </div>
     </div>
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Outline Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="outlineColor" (input)="onInputHollowColorChange()" [value]="outlineColor" />
+        <input type="color" [(ngModel)]="outlineColor" (change)="saveTheData()" (input)="onInputHollowColorChange()" [value]="outlineColor" />
       </div>
     </div>
   </div>
@@ -250,7 +250,7 @@
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (input)="onInputMultiShadowColorChange()" [value]="shadowColor" />
+        <input type="color" [(ngModel)]="shadowColor" (change)="saveTheData()" (input)="onInputMultiShadowColorChange()" [value]="shadowColor" />
       </div>
     </div>
   </div>
@@ -346,7 +346,7 @@
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (input)="onInputNeonColorChange()" [value]="shadowColor" />
+        <input type="color" [(ngModel)]="shadowColor" (change)="saveTheData()" (input)="onInputNeonColorChange()" [value]="shadowColor" />
       </div>
     </div>
   </div>

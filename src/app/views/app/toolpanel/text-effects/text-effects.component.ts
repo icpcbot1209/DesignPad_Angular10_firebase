@@ -203,7 +203,7 @@ export class TextEffectsComponent implements OnInit {
       document.querySelector<HTMLElement>('#selector-none').style.borderColor = 'rgb(109, 47, 165)';
       this.defaultEffect();
       this.setEffectSelector('#selector-none');
-      this.ur.saveTheData(this.ds.theDesign);
+      this.saveTheData();
     }
     if (method == 'shadow') {
       this.isShadow = true;
@@ -212,7 +212,7 @@ export class TextEffectsComponent implements OnInit {
       this.setShadowEffect();
       document.querySelector<HTMLElement>('#shadow').style.display = 'block';
       this.setEffectSelector('#selector-shadow');
-      this.ur.saveTheData(this.ds.theDesign);
+      this.saveTheData();
     }
     if (method == 'lift') {
       this.isLift = true;
@@ -221,7 +221,7 @@ export class TextEffectsComponent implements OnInit {
       this.setShadowEffect();
       document.querySelector<HTMLElement>('#lift').style.display = 'block';
       this.setEffectSelector('#selector-lift');
-      this.ur.saveTheData(this.ds.theDesign);
+      this.saveTheData();
     }
     if (method == 'hallow') {
       this.isHollow = true;
@@ -235,7 +235,7 @@ export class TextEffectsComponent implements OnInit {
       this.setHollowEffect();
       document.querySelector<HTMLElement>('#hallow').style.display = 'block';
       this.setEffectSelector('#selector-hallow');
-      this.ur.saveTheData(this.ds.theDesign);
+      this.saveTheData();
     }
     if (method == 'splice') {
       this.isSplice = true;
@@ -259,7 +259,7 @@ export class TextEffectsComponent implements OnInit {
       this.editorEle.style.color = 'white';
       this.setShadowEffect();
       this.setHollowEffect();
-      this.ur.saveTheData(this.ds.theDesign);
+      this.saveTheData();
     }
     if (method == 'echo') {
       this.isEcho = true;
@@ -275,7 +275,7 @@ export class TextEffectsComponent implements OnInit {
       this.setMultiShadowEffect();
       document.querySelector<HTMLElement>('#echo').style.display = 'block';
       this.setEffectSelector('#selector-echo');
-      this.ur.saveTheData(this.ds.theDesign);
+      this.saveTheData();
     }
     if (method == 'glitch') {
       this.isGlitch = true;
@@ -293,7 +293,7 @@ export class TextEffectsComponent implements OnInit {
       this.setGlitchEffect();
       document.querySelector<HTMLElement>('#glitch').style.display = 'block';
       this.setEffectSelector('#selector-glitch');
-      this.ur.saveTheData(this.ds.theDesign);
+      this.saveTheData();
     }
     if (method == 'neon') {
       this.isNeon = true;
@@ -315,7 +315,7 @@ export class TextEffectsComponent implements OnInit {
       this.setNeonEffect();
       document.querySelector<HTMLElement>('#neon').style.display = 'block';
       this.setEffectSelector('#selector-neon');
-      this.ur.saveTheData(this.ds.theDesign);
+      this.saveTheData();
     }
     if (method == 'curve') {
       this.isCurve = true;
@@ -334,7 +334,7 @@ export class TextEffectsComponent implements OnInit {
         this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textOpacity = '0';
         this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].curveOpacity = '1';
         this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].curveText = curveText;
-        this.ur.saveTheData(this.ds.theDesign);
+        this.saveTheData();
       });
     }
   }
