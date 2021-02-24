@@ -26,7 +26,6 @@ export class TextItemComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.moveableService.isEditable = true;
-    console.log(this.moveableService.isOnResize);
     if (!this.moveableService.isOnResize) {
       this.moveableService.setSelectable(this.moveableService.selectedItemId, this.moveableService.selectedPageId, '#textSelector-');
     }

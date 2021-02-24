@@ -78,7 +78,7 @@ import { SVGSelectorComponent } from './page/element/svgselector/svgselector.com
     CommonModule,
     CollapseModule,
     FormsModule,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
@@ -96,6 +96,7 @@ import { SVGSelectorComponent } from './page/element/svgselector/svgselector.com
     MatSliderModule,
     ColorPickerModule,
     HttpClientModule,
+    ReactiveFormsModule.withConfig({ warnOnNgModelWithFormControl: 'never' }),
   ],
 })
 export class AppModule {}

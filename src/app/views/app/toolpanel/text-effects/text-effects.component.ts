@@ -3,6 +3,8 @@ import { MoveableService } from 'src/app/services/moveable.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
 import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import { DesignService } from 'src/app/services/design.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, combineLatest } from 'rxjs/operators';
 
 @Component({
   selector: 'toolpanel-text-effects',
@@ -18,6 +20,9 @@ export class TextEffectsComponent implements OnInit {
   /* Shadow */
 
   offset = 50;
+  spliceOffset = 50;
+  echoOffset = 50;
+  glitchOffset = 30;
   offsetX;
   offsetY;
   blurSize;
@@ -48,16 +53,137 @@ export class TextEffectsComponent implements OnInit {
   neonValue;
   curveValue;
 
-  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ur: UndoRedoService, public ds: DesignService) {}
+  shadowFormGroup: FormGroup;
+  shadowOffsetControl: FormControl = new FormControl();
+  shadowDirectionControl: FormControl = new FormControl();
+  shadowBlurControl: FormControl = new FormControl();
+  shadowTransparencyControl: FormControl = new FormControl();
+
+  liftIntensityControl: FormControl = new FormControl();
+
+  hollowThicknessControl: FormControl = new FormControl();
+
+  spliceOffsetControl: FormControl = new FormControl();
+  spliceDirectionControl: FormControl = new FormControl();
+  spliceThicknessControl: FormControl = new FormControl();
+
+  echoOffsetControl: FormControl = new FormControl();
+  echoDirectionControl: FormControl = new FormControl();
+
+  glitchOffsetControl: FormControl = new FormControl();
+  glitchDirectionControl: FormControl = new FormControl();
+
+  neonIntensityControl: FormControl = new FormControl();
+
+  curveIntensityControl: FormControl = new FormControl();
+
+  isShadow: boolean = false;
+  isLift: boolean = false;
+  isHollow: boolean = false;
+  isSplice: boolean = false;
+  isEcho: boolean = false;
+  isGlitch: boolean = false;
+  isNeon: boolean = false;
+  isCurve: boolean = false;
+
+  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ur: UndoRedoService, public ds: DesignService) {
+    this.shadowOffsetControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isShadow) {
+        this.saveTheData();
+      }
+    });
+    this.shadowDirectionControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isShadow) {
+        this.saveTheData();
+      }
+    });
+    this.shadowBlurControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isShadow) {
+        this.saveTheData();
+      }
+    });
+    this.shadowTransparencyControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isShadow) {
+        this.saveTheData();
+      }
+    });
+    this.liftIntensityControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isLift) {
+        this.saveTheData();
+      }
+    });
+    this.hollowThicknessControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isHollow) {
+        this.saveTheData();
+      }
+    });
+    this.spliceOffsetControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isSplice) {
+        this.saveTheData();
+      }
+    });
+    this.spliceDirectionControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isSplice) {
+        this.saveTheData();
+      }
+    });
+    this.spliceThicknessControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isSplice) {
+        this.saveTheData();
+      }
+    });
+    this.echoOffsetControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isEcho) {
+        this.saveTheData();
+      }
+    });
+    this.echoDirectionControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isEcho) {
+        this.saveTheData();
+      }
+    });
+    this.glitchOffsetControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isGlitch) {
+        this.saveTheData();
+      }
+    });
+    this.glitchDirectionControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isGlitch) {
+        this.saveTheData();
+      }
+    });
+    this.neonIntensityControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isNeon) {
+        this.saveTheData();
+      }
+    });
+    this.curveIntensityControl.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      if (this.isCurve) {
+        this.saveTheData();
+      }
+    });
+  }
 
   ngOnInit(): void {}
 
-  ngAfterViewInit(): void {
-    // this.setEffectSelector('#selector-none');
-  }
+  ngAfterViewInit(): void {}
   ngOnDestroy(): void {
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
-    console.log('text effect');
+    // console.log('text effect');
+    // this.ur.saveTheData(this.ds.theDesign);
+
+    // this.isShadow = false;
+    // this.isLift = false;
+    // this.isHollow = false;
+    // this.isSplice = false;
+    // this.isEcho = false;
+    // this.isGlitch = false;
+    // this.isNeon = false;
+    // this.isCurve = false;
+  }
+
+  saveTheData() {
+    console.log('save the text-effect');
     this.ur.saveTheData(this.ds.theDesign);
   }
 
@@ -80,6 +206,7 @@ export class TextEffectsComponent implements OnInit {
       this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'shadow') {
+      this.isShadow = true;
       this.defaultEffect();
       this.shadowColor = '#808080';
       this.setShadowEffect();
@@ -88,6 +215,7 @@ export class TextEffectsComponent implements OnInit {
       this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'lift') {
+      this.isLift = true;
       this.defaultEffect();
       this.shadowColor = '#808080';
       this.setShadowEffect();
@@ -96,6 +224,7 @@ export class TextEffectsComponent implements OnInit {
       this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'hallow') {
+      this.isHollow = true;
       this.defaultEffect();
       this.editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
@@ -109,6 +238,7 @@ export class TextEffectsComponent implements OnInit {
       this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'splice') {
+      this.isSplice = true;
       this.defaultEffect();
       this.thickness = 50;
       this.offset = 50;
@@ -132,6 +262,7 @@ export class TextEffectsComponent implements OnInit {
       this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'echo') {
+      this.isEcho = true;
       this.defaultEffect();
       this.editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
@@ -147,6 +278,7 @@ export class TextEffectsComponent implements OnInit {
       this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'glitch') {
+      this.isGlitch = true;
       this.defaultEffect();
       this.editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
@@ -164,6 +296,7 @@ export class TextEffectsComponent implements OnInit {
       this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'neon') {
+      this.isNeon = true;
       this.defaultEffect();
       this.editorEle = document.querySelector<HTMLElement>(
         '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
@@ -185,6 +318,7 @@ export class TextEffectsComponent implements OnInit {
       this.ur.saveTheData(this.ds.theDesign);
     }
     if (method == 'curve') {
+      this.isCurve = true;
       this.defaultEffect();
       this.curveValue = 50;
       this.toolbarService.direction = 1;
@@ -254,12 +388,36 @@ export class TextEffectsComponent implements OnInit {
     this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textShadow = textShadow;
   }
 
+  setSpliceShadowEffect() {
+    this.editorEle = document.querySelector<HTMLElement>(
+      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    );
+    this.fontSize = this.editorEle.style.fontSize;
+
+    this.offsetX = ((parseFloat(this.fontSize) / (100 / this.spliceOffset) / 6) * this.directionX).toString() + 'px';
+    this.offsetY = ((parseFloat(this.fontSize) / (100 / this.spliceOffset) / 6) * this.directionY).toString() + 'px';
+    this.blurSize = (parseFloat(this.fontSize) / (100 / this.blur) / 6).toString() + 'px';
+
+    let op = this.opacity / 100;
+
+    let textShadow =
+      'rgba(' + this.shadowR + ', ' + this.shadowG + ', ' + this.shadowB + ', ' + op + ') ' + this.offsetX + ' ' + this.offsetY + ' ' + this.blurSize;
+    this.editorEle.style.textShadow = textShadow;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textShadow = textShadow;
+  }
+
   // shadow
 
   onInputOffsetChange(event) {
     this.offset = event.value;
 
     this.setShadowEffect();
+  }
+
+  onSpliceOffsetChange(event) {
+    this.spliceOffset = event.value;
+
+    this.setSpliceShadowEffect();
   }
 
   onInputBlurChange(event) {
@@ -341,10 +499,10 @@ export class TextEffectsComponent implements OnInit {
     );
     this.fontSize = this.editorEle.style.fontSize;
 
-    this.offsetX = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionX).toString() + 'px';
-    this.offsetY = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionY).toString() + 'px';
-    let offset2X = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionX * 2).toString() + 'px';
-    let offset2Y = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionY * 2).toString() + 'px';
+    this.offsetX = ((parseFloat(this.fontSize) / (100 / this.echoOffset) / 6) * this.directionX).toString() + 'px';
+    this.offsetY = ((parseFloat(this.fontSize) / (100 / this.echoOffset) / 6) * this.directionY).toString() + 'px';
+    let offset2X = ((parseFloat(this.fontSize) / (100 / this.echoOffset) / 6) * this.directionX * 2).toString() + 'px';
+    let offset2Y = ((parseFloat(this.fontSize) / (100 / this.echoOffset) / 6) * this.directionY * 2).toString() + 'px';
     this.blurSize = (parseFloat(this.fontSize) / (100 / this.blur) / 6).toString() + 'px';
 
     let textShadow =
@@ -382,7 +540,7 @@ export class TextEffectsComponent implements OnInit {
   }
 
   onInputMultiOffsetChange(event) {
-    this.offset = event.value;
+    this.echoOffset = event.value;
 
     this.setMultiShadowEffect();
   }
@@ -412,10 +570,10 @@ export class TextEffectsComponent implements OnInit {
     );
     this.fontSize = this.editorEle.style.fontSize;
 
-    this.offsetX = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionX).toString() + 'px';
-    this.offsetY = ((parseFloat(this.fontSize) / (100 / this.offset) / 6) * this.directionY).toString() + 'px';
-    let offset2X = (((-1 * parseFloat(this.fontSize)) / (100 / this.offset) / 6) * this.directionX).toString() + 'px';
-    let offset2Y = (((-1 * parseFloat(this.fontSize)) / (100 / this.offset) / 6) * this.directionY).toString() + 'px';
+    this.offsetX = ((parseFloat(this.fontSize) / (100 / this.glitchOffset) / 6) * this.directionX).toString() + 'px';
+    this.offsetY = ((parseFloat(this.fontSize) / (100 / this.glitchOffset) / 6) * this.directionY).toString() + 'px';
+    let offset2X = (((-1 * parseFloat(this.fontSize)) / (100 / this.glitchOffset) / 6) * this.directionX).toString() + 'px';
+    let offset2Y = (((-1 * parseFloat(this.fontSize)) / (100 / this.glitchOffset) / 6) * this.directionY).toString() + 'px';
     this.blurSize = (parseFloat(this.fontSize) / (100 / this.blur) / 6).toString() + 'px';
 
     let textShadow =
@@ -440,7 +598,7 @@ export class TextEffectsComponent implements OnInit {
   }
 
   onInputGlitchOffsetChange(event) {
-    this.offset = event.value;
+    this.glitchOffset = event.value;
 
     this.setGlitchEffect();
   }
