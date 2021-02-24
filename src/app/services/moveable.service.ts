@@ -20,7 +20,7 @@ import Moveable, {
   OnResizeEnd,
   OnRotateEnd,
 } from 'moveable';
-import Selecto, { OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
+import Selecto, { OnDragEnd, OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
 import { ToolbarService } from './toolbar.service';
 import { DesignService } from './design.service';
 import { Item } from '../models/models';
@@ -53,6 +53,8 @@ export class MoveableService {
 
   isShowDownload: boolean = false;
   selectFisShowDownload: boolean;
+
+  isDragItem: boolean = false;
 
   constructor(
     private ds: DesignService,
@@ -212,8 +214,9 @@ export class MoveableService {
         this.ds.onSelectElementItem(thePageId, item);
       }
     } else {
-      if (this.ds.status == 4) {
+      if (this.ds.status == ItemStatus.image_crop || this.ds.status == ItemStatus.element_crop) {
         this.ur.saveTheData(this.ds.theDesign);
+        console.log('crop');
       }
       this.ds.onSelectNothing();
       if (
@@ -291,9 +294,11 @@ export class MoveableService {
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
+        this.isDragItem = true;
       })
       .on('dragEnd', (e) => {
-        this.ur.saveTheData(this.ds.theDesign);
+        if (this.isDragItem) this.ur.saveTheData(this.ds.theDesign);
+        this.isDrag = false;
       })
       .on('dragGroupStart', (ev: OnDragGroupStart) => {
         ev.events.forEach((e) => {
@@ -304,9 +309,11 @@ export class MoveableService {
         ev.events.forEach((e) => {
           moveable.emit('drag', e);
         });
+        this.isDragItem = true;
       })
       .on('dragGroupEnd', (e) => {
-        this.ur.saveTheData(this.ds.theDesign);
+        if (this.isDragItem) this.ur.saveTheData(this.ds.theDesign);
+        this.isDragItem = false;
       });
 
     /* resizable */
@@ -419,9 +426,11 @@ export class MoveableService {
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
+        this.isDragItem = true;
       })
       .on('dragEnd', (e) => {
-        this.ur.saveTheData(this.ds.theDesign);
+        if (this.isDragItem) this.ur.saveTheData(this.ds.theDesign);
+        this.isDragItem = false;
       });
 
     /* resizable */
@@ -552,7 +561,9 @@ export class MoveableService {
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
-      });
+        // this.isDragItem = true;
+      })
+      .on('dragEnd', (e: OnDragEnd) => {});
 
     return moveable;
   }
@@ -634,7 +645,6 @@ export class MoveableService {
     });
 
     /* draggable */
-    let isSaveOnDrag: boolean = false;
     moveable
       .on('dragStart', (e: OnDragStart) => {
         // if (this.ds.isStatus(ItemStatus.text_effect)) {
@@ -655,13 +665,13 @@ export class MoveableService {
           this.isDrag = true;
         }
 
-        isSaveOnDrag = true;
+        this.isDragItem = true;
       })
       .on('dragEnd', (e) => {
-        if (isSaveOnDrag) {
+        if (this.isDragItem) {
           this.ur.saveTheData(this.ds.theDesign);
         }
-        isSaveOnDrag = false;
+        this.isDragItem = false;
       });
 
     /* resize */
@@ -878,9 +888,14 @@ export class MoveableService {
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
+        this.isDragItem = true;
       })
       .on('dragEnd', (e) => {
-        this.ur.saveTheData(this.ds.theDesign);
+        if (this.isDragItem) {
+          console.log(this.ds.theDesign.pages[this.selectedPageId].items[this.selectedItemId]);
+          this.ur.saveTheData(this.ds.theDesign);
+        }
+        this.isDragItem = false;
       });
 
     /* resizable */

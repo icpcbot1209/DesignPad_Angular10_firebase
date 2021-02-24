@@ -3,6 +3,7 @@ import { DesignService } from 'src/app/services/design.service';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { ItemStatus, ItemType } from '../../../../models/enums';
 import { Colors } from '../../../../constants/colors.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
 
 @Component({
   selector: 'app-element-toolbar',
@@ -16,7 +17,7 @@ export class ElementToolbarComponent implements OnInit {
   color;
   colorAndIndex;
 
-  constructor(public moveableService: MoveableService, public ds: DesignService) {}
+  constructor(public moveableService: MoveableService, public ds: DesignService, public ur: UndoRedoService) {}
 
   ngOnInit(): void {
     this.color = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId]['color'];
@@ -86,6 +87,7 @@ export class ElementToolbarComponent implements OnInit {
   setColorToSvg(event, index) {
     this.renameKey(this.colorAndIndex, this.color[index], event.target.value);
     this.color[index] = event.target.value;
+    this.ur.theData(this.ds.theDesign);
   }
 
   renameKey(obj, oldKey, newKey) {

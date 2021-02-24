@@ -269,16 +269,22 @@ export class DesignService {
     }
 
     if (!this.isOnInput && e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+      console.log(this.status);
       if (!this.isStatus(ItemStatus.text_effect)) {
         this.ur.isUndoRedo = true;
         this.theDesign = this.ur.undoTheData();
         this.isResizeObserver = true;
+        this.status = ItemStatus.none;
       }
     }
 
     if (!this.isOnInput && e.key === 'y' && (e.ctrlKey || e.metaKey)) {
-      this.theDesign = this.ur.redoTheData();
-      this.isResizeObserver = true;
+      if (!this.isStatus(ItemStatus.text_effect)) {
+        this.ur.isUndoRedo = true;
+        this.theDesign = this.ur.redoTheData();
+        this.isResizeObserver = true;
+        this.status = ItemStatus.none;
+      }
     }
   }
 
@@ -337,9 +343,12 @@ export class DesignService {
   }
 
   onSelectElementItem(pageId: number, item: Item) {
-    this.thePageId = pageId;
-    this.theItem = item;
-    this.setStatus(ItemStatus.element_selected);
+    if (!this.ur.isUndoRedo) {
+      console.log('selected element');
+      this.thePageId = pageId;
+      this.theItem = item;
+      this.setStatus(ItemStatus.element_selected);
+    }
   }
 
   isStatus(status: ItemStatus): boolean {
@@ -365,9 +374,17 @@ export class DesignService {
    * Image Crop
    **********************************************/
   startImageCrop() {
-    if (!this.theItem || !(this.theItem.type == ItemType.image || this.theItem.type == ItemType.element)) return;
+    if (!this.theItem || !(this.theItem.type == ItemType.image)) return;
     this.status = ItemStatus.image_crop;
-    console.log(this.status);
+
+    const ms = this.injector.get(MoveableService);
+    ms.startImageCrop();
+  }
+
+  startElementCrop() {
+    console.log('selected element');
+    if (!this.theItem || !(this.theItem.type == ItemType.element)) return;
+    this.status = ItemStatus.element_crop;
 
     const ms = this.injector.get(MoveableService);
     ms.startImageCrop();

@@ -19,25 +19,27 @@ export class SVGElementComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    let svgEle = document.querySelector('#SVGElement-' + this.item.pageId + '-' + this.item.itemId);
-    svgEle.innerHTML = this.item.SVGElement;
+    setTimeout(() => {
+      let svgEle = document.querySelector('#SVGElement-' + this.item.pageId + '-' + this.item.itemId);
+      svgEle.innerHTML = this.item.SVGElement;
 
-    let htmlCollect = svgEle.querySelectorAll('svg');
+      let htmlCollect = svgEle.querySelectorAll('svg');
 
-    if (htmlCollect[0].getAttribute('viewBox')) {
-      htmlCollect[0].setAttribute('viewBox', htmlCollect[0].getAttribute('viewBox'));
-    } else {
-      let width = htmlCollect[0].clientWidth;
-      let height = htmlCollect[0].clientHeight;
-      htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
-    }
-    htmlCollect[0].setAttribute('width', this.item.w);
-    htmlCollect[0].setAttribute('height', this.item.h);
+      if (htmlCollect[0].getAttribute('viewBox')) {
+        htmlCollect[0].setAttribute('viewBox', htmlCollect[0].getAttribute('viewBox'));
+      } else {
+        let width = htmlCollect[0].clientWidth;
+        let height = htmlCollect[0].clientHeight;
+        htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
+      }
+      htmlCollect[0].setAttribute('width', this.item.w);
+      htmlCollect[0].setAttribute('height', this.item.h);
 
-    this.moveableService.selectedItemId = this.item.itemId;
-    this.moveableService.selectedPageId = this.item.pageId;
+      this.moveableService.selectedItemId = this.item.itemId;
+      this.moveableService.selectedPageId = this.item.pageId;
 
-    this.setSVGColorCollection();
+      this.setSVGColorCollection();
+    });
   }
 
   styleItem(item: Item): CSS.Properties {

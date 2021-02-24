@@ -11,6 +11,7 @@ export enum ItemStatus {
   image_preset,
   image_filter,
   image_crop,
+  element_crop,
   text_selected,
   text_edit,
   text_font_list,
