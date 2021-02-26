@@ -1,4 +1,8 @@
+import { HttpClient, XhrFactory, HttpXhrBackend } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { saveAs } from 'file-saver';
+import { binaryStringToBlob } from 'blob-util';
+declare let JSZip;
 
 @Injectable({
   providedIn: 'root',
@@ -6,7 +10,7 @@ import { Injectable } from '@angular/core';
 export class DownloadService {
   onDownloading: boolean;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   download(selectedFileType) {
     if (selectedFileType == 'PDF') this.downloadAsPdf();
@@ -53,16 +57,16 @@ export class DownloadService {
 
     xhr.responseType = 'blob';
     xhr.onload = (event) => {
-      var blob = xhr.response;
+      let blob = xhr.response;
 
-      var fr = new FileReader();
+      let fr = new FileReader();
       fr.onload = (result) => {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob);
           return;
         }
         const url = window.URL.createObjectURL(blob);
-        var link = document.createElement('a');
+        let link = document.createElement('a');
         link.href = url;
         link.download = 'result.pdf';
         link.click();
@@ -77,14 +81,20 @@ export class DownloadService {
     xhr.send(formData);
   }
 
-  downloadAsImg() {
+  async downloadAsImg() {
+    let zip = new JSZip();
+    this.onDownloading = true;
+
     document.querySelectorAll('.ql-editor').forEach((ele) => {
       if (ele.parentElement.children[2]) {
         ele.parentElement.children[2].remove();
       }
     });
 
-    document.querySelectorAll('.card').forEach(async (ele) => {
+    const arr = document.querySelectorAll('.card');
+    for (let i = 0; i < arr.length; i++) {
+      console.log('start ', i);
+      let ele = arr[i];
       if (ele.querySelectorAll('p').length != 0) {
         ele.querySelectorAll('p').forEach((el) => {
           el.style.margin = '0';
@@ -97,40 +107,39 @@ export class DownloadService {
       htmlStr = `<div style="width: 600px; height: 500px; position: absolute;">` + htmlStr + '</div>';
       htmlContent = htmlContent + htmlStr + '</body>';
 
-      this.downloadOnePageAsImg(htmlContent);
+      const blob = await this.downloadOnePageAsImg(htmlContent, i);
+      zip.file(i + 1 + '.jpg', blob);
+    }
+
+    this.onDownloading = false;
+    zip.generateAsync({ type: 'blob' }).then(function (content) {
+      // see FileSaver.js
+      saveAs(content, 'image.zip');
     });
   }
 
-  downloadOnePageAsImg(htmlContent) {
-    let xhr = new XMLHttpRequest();
-    let formData = new FormData();
+  downloadOnePageAsImg(htmlContent, index) {
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      let formData = new FormData();
 
-    formData.append('text', htmlContent);
-    formData.append('screenshot_width', '600');
-    formData.append('screenshot_height', '500');
-    formData.append('output_format', 'jpg');
+      formData.append('text', htmlContent);
+      formData.append('screenshot_width', '600');
+      formData.append('screenshot_height', '500');
+      formData.append('output_format', 'jpg');
 
-    xhr.responseType = 'blob';
-    xhr.onload = (event) => {
-      var blob = xhr.response;
-
-      var fr = new FileReader();
-      fr.onload = (result) => {
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(blob);
-          return;
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(xhr.response);
+        } else {
+          reject(xhr.statusText);
         }
-        const url = window.URL.createObjectURL(blob);
-        var link = document.createElement('a');
-        link.href = url;
-        link.download = '1.jpg';
-        link.click();
       };
-      fr.readAsText(blob);
-    };
 
-    xhr.open('POST', 'https://api.pdfcrowd.com/convert/20.10/');
-    xhr.setRequestHeader('Authorization', 'Basic ' + btoa('adwitglobal' + ':' + '7b61297e35af1139edd33821adadd19e'));
-    xhr.send(formData);
+      xhr.open('POST', 'https://api.pdfcrowd.com/convert/20.10/', true);
+      xhr.setRequestHeader('Authorization', 'Basic ' + btoa('adwitglobal' + ':' + '7b61297e35af1139edd33821adadd19e'));
+      xhr.send(formData);
+    });
   }
 }

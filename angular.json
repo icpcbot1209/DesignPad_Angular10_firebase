@@ -162,7 +162,7 @@
                 "inject": false
               }
             ],
-            "scripts": ["./node_modules/quill/dist/quill.min.js"]
+            "scripts": ["./node_modules/quill/dist/quill.min.js", "./node_modules/jszip/dist/jszip.min.js"]
           },
           "configurations": {
             "production": {
