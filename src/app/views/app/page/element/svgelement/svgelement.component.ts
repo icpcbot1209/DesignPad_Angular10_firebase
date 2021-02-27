@@ -54,6 +54,7 @@ export class SVGElementComponent implements OnInit {
       filter: item.filter,
       WebkitFilter: item.filter,
       clipPath: item.clipStyle,
+      zIndex: item.zIndex,
     };
   }
 

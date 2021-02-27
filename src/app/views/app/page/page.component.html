@@ -6,7 +6,7 @@
     <div [ngStyle]="styleLayer()" style="overflow: hidden">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <ng-container *ngIf="item.type == ItemType.image">
-          <img [id]="'imageElement-' + pageId + '-' + itemId" [ngStyle]="styleItem(item)" [lazyLoad]="item.url" [defaultImage]="item.thumbnail" />
+          <app-image-element [item]="item" [itemId]="itemId" [pageId]="pageId"></app-image-element>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.text">
           <app-edit-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-edit-item>
@@ -20,15 +20,7 @@
     <div [id]="'page-' + pageId" [ngStyle]="styleLayer()" style="overflow: disable; pointer-events: all">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <ng-container *ngIf="item.type == ItemType.image">
-          <div
-            class="target"
-            [ngStyle]="styleItemPosition(item)"
-            [attr.pageId]="pageId"
-            [attr.itemId]="itemId"
-            [attr.itemType]="item.type"
-            (dblclick)="ds.startImageCrop()"
-            (mousemove)="onMouseMoveItem($event, item)"
-          ></div>
+          <app-image-selector [item]="item" [itemId]="itemId" [pageId]="pageId"></app-image-selector>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.text">
           <app-text-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-text-item>

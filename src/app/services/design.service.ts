@@ -115,12 +115,12 @@ export class DesignService {
   addItemToCurrentPage(item: Item) {
     item.pageId = this.thePageId;
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
+    item.zIndex = 100 + item.itemId;
 
     // if (item.url && item.type == ItemType.element) {
     // this.getSVGElement(item);
     // }
     this.theDesign.pages[this.thePageId].items.push(item);
-    console.log('add item');
     this.ur.saveTheData(this.theDesign);
   }
 
@@ -156,6 +156,7 @@ export class DesignService {
       rotate: 0,
       scaleX: 1,
       scaleY: 1,
+      zIndex: 0,
     });
   }
 
@@ -200,6 +201,7 @@ export class DesignService {
       curveText: '',
       textOpacity: '1',
       curveOpacity: '0',
+      zIndex: 0,
     });
   }
 
@@ -248,6 +250,7 @@ export class DesignService {
           SVGElement: str,
           color: [],
           colorAndIndex: {},
+          zIndex: 0,
         });
       };
       fr.readAsText(blob);
@@ -269,7 +272,6 @@ export class DesignService {
     }
 
     if (!this.isOnInput && e.key === 'z' && (e.ctrlKey || e.metaKey)) {
-      console.log(this.status);
       if (!this.isStatus(ItemStatus.text_effect)) {
         this.ur.isUndoRedo = true;
         this.theDesign = this.ur.undoTheData();
@@ -344,7 +346,6 @@ export class DesignService {
 
   onSelectElementItem(pageId: number, item: Item) {
     if (!this.ur.isUndoRedo) {
-      console.log('selected element');
       this.thePageId = pageId;
       this.theItem = item;
       this.setStatus(ItemStatus.element_selected);
@@ -382,7 +383,6 @@ export class DesignService {
   }
 
   startElementCrop() {
-    console.log('selected element');
     if (!this.theItem || !(this.theItem.type == ItemType.element)) return;
     this.status = ItemStatus.element_crop;
 

@@ -40,18 +40,19 @@ export class TextItemComponent implements OnInit, AfterViewInit {
         width: item.w + 'px',
         height: item.h + 'px',
         transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
+        zIndex: item.zIndex,
       };
 
     if (item.type === ItemType.text)
       return {
         position: 'absolute',
-        zIndex: 100,
         top: 0,
         left: 0,
         width: item.w + 'px',
         height: item.h + 'px',
         transform: this.moveableService.strTransform(item),
         WebkitTransform: this.moveableService.strTransform(item),
+        zIndex: item.zIndex,
       };
   }
   styleItem(item: Item): CSS.Properties {
@@ -68,6 +69,7 @@ export class TextItemComponent implements OnInit, AfterViewInit {
         filter: item.filter,
         WebkitFilter: item.filter,
         clipPath: item.clipStyle,
+        zIndex: item.zIndex,
       };
 
     if (item.type === ItemType.text)
@@ -77,10 +79,9 @@ export class TextItemComponent implements OnInit, AfterViewInit {
         left: 0,
         width: item.w + 'px',
         height: item.h + 'px',
-        // height: "auto",
         transform: this.moveableService.strTransform(item),
         WebkitTransform: this.moveableService.strTransform(item),
-        // transform: `translate(${item.x}px, ${item.y}px)`,
+        zIndex: item.zIndex,
       };
   }
 

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-
 import { DesignService } from 'src/app/services/design.service';
 import { MoveableService } from 'src/app/services/moveable.service';
-import { Item, Page } from 'src/app/models/models';
+import { Item } from 'src/app/models/models';
 
 import * as CSS from 'csstype';
 
@@ -30,6 +29,7 @@ export class SVGSelectorComponent implements OnInit {
       width: item.w + 'px',
       height: item.h + 'px',
       transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
+      zIndex: item.zIndex,
     };
   }
 }

@@ -53,6 +53,8 @@ export class MoveableService {
 
   isShowDownload: boolean = false;
   isDimension: boolean = false;
+  isPosition: boolean = false;
+
   selectFisShowDownload: boolean;
 
   isDragItem: boolean = false;
@@ -196,8 +198,6 @@ export class MoveableService {
           this.moveable = this.makeMoveableText(thePageId, targets[0]);
           this.ds.onSelectTextItem();
           this.isSelectedTarget = true;
-          this.selectedItemId = targets[0].getAttribute('itemId');
-          this.selectedPageId = targets[0].getAttribute('pageId');
           this.onChangeSelectedItem(targets[0]);
           this.selectableTextEditor();
           this.resetTextToolbar();
@@ -209,15 +209,14 @@ export class MoveableService {
           );
         }
       } else if (item.type === ItemType.element) {
-        this.selectedItemId = targets[0].getAttribute('itemId');
-        this.selectedPageId = targets[0].getAttribute('pageId');
         this.moveable = this.makeMoveableElement(thePageId, targets[0]);
         this.ds.onSelectElementItem(thePageId, item);
       }
+      this.selectedItemId = targets[0].getAttribute('itemId');
+      this.selectedPageId = targets[0].getAttribute('pageId');
     } else {
       if (this.ds.status == ItemStatus.image_crop || this.ds.status == ItemStatus.element_crop) {
         this.ur.saveTheData(this.ds.theDesign);
-        console.log('crop');
       }
       this.ds.onSelectNothing();
       if (
@@ -235,6 +234,8 @@ export class MoveableService {
       this.ds.isOnInput = false;
       this.isShowDownload = false;
       this.isDimension = false;
+      this.isPosition = false;
+
       this.selectableTextEditor();
 
       if (
@@ -649,10 +650,6 @@ export class MoveableService {
     /* draggable */
     moveable
       .on('dragStart', (e: OnDragStart) => {
-        // if (this.ds.isStatus(ItemStatus.text_effect)) {
-        //   console.log('font_list-item_drag');
-        //   this.ur.saveTheData(this.ds.theDesign);
-        // }
         let item = this.getItem(e.target);
         e.set([item.x, item.y]);
       })
@@ -837,8 +834,11 @@ export class MoveableService {
   selectableTextEditor() {
     /* reset textEditor layer on textEditor selector */
     document.querySelectorAll<HTMLElement>('.ql-editor').forEach((ele) => {
-      if (ele.parentElement.style.zIndex !== '100') {
-        ele.parentElement.style.zIndex = '100';
+      let parentElement = ele.parentElement;
+      let item = this.getItem(parentElement);
+
+      if (parentElement.style.zIndex !== item.zIndex) {
+        parentElement.style.zIndex = item.zIndex;
       }
     });
   }
@@ -894,7 +894,6 @@ export class MoveableService {
       })
       .on('dragEnd', (e) => {
         if (this.isDragItem) {
-          console.log(this.ds.theDesign.pages[this.selectedPageId].items[this.selectedItemId]);
           this.ur.saveTheData(this.ds.theDesign);
         }
         this.isDragItem = false;
@@ -952,7 +951,6 @@ export class MoveableService {
     return new ResizeObserver((entries) => {
       this.zone.run(() => {
         if (!this.ur.isUndoRedo) {
-          console.log('resizeObserver:' + pageId + itemId);
           let width = JSON.stringify(entries[0].contentRect.width) + 'px';
           let height = JSON.stringify(entries[0].contentRect.height) + 'px';
           let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);

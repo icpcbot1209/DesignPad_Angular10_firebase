@@ -46,6 +46,8 @@ import { ElementToolbarComponent } from './toolbar/element-toolbar/element-toolb
 import { HttpClientModule } from '@angular/common/http';
 import { SVGElementComponent } from './page/element/svgelement/svgelement.component';
 import { SVGSelectorComponent } from './page/element/svgselector/svgselector.component';
+import { ImageElementComponent } from './page/image/image-element/image-element.component';
+import { ImageSelectorComponent } from './page/image/image-selector/image-selector.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,6 +75,8 @@ import { SVGSelectorComponent } from './page/element/svgselector/svgselector.com
     ElementToolbarComponent,
     SVGElementComponent,
     SVGSelectorComponent,
+    ImageElementComponent,
+    ImageSelectorComponent,
   ],
   imports: [
     CommonModule,

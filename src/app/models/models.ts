@@ -31,6 +31,7 @@ export interface Item {
   curveText?;
   textOpacity?;
   curveOpacity?;
+  zIndex;
 }
 
 export interface Page {
