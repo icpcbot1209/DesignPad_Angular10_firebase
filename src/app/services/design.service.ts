@@ -54,8 +54,8 @@ export class DesignService {
   zoomValue = 100;
   zoomMethod = 'fit';
 
-  page_vw = 500;
-  page_vh = 500;
+  page_vw;
+  page_vh;
 
   pageW() {
     return this.theDesign?.category.size.x;

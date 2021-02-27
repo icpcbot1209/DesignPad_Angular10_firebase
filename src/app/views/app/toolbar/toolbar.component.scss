@@ -1,4 +1,4 @@
-#downloadContent {
+#dimensionContent {
   position: fixed;
   top: 120px;
   right: 34px;
@@ -9,4 +9,14 @@
   background-color: white;
 
   box-shadow: 0 0 0 1px rgb(64 87 109 / 7%), 0 2px 12px rgb(53 71 90 / 20%);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
 }

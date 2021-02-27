@@ -77,8 +77,8 @@ export class PageComponent implements OnInit, AfterViewInit {
     return {
       borderRadius: '0%',
       overflow: 'visible',
-      width: this.ds.page_vw + 'px',
-      height: this.ds.page_vh + 'px',
+      width: (this.ds.pageW() * this.ds.zoomValue) / 100 + 'px',
+      height: (this.ds.pageH() * this.ds.zoomValue) / 100 + 'px',
       boxShadow: this.pageId == this.ds.thePageId ? '' : 'none',
     };
   }
@@ -86,9 +86,11 @@ export class PageComponent implements OnInit, AfterViewInit {
   styleCardInside(): CSS.Properties {
     return {
       transformOrigin: 'top left',
-      transform: `scale(${this.ds.zoomValue / 100})`,
-      width: this.ds.pageW() + 'px',
-      height: this.ds.pageH() + 'px',
+      width: '100%',
+      height: '100%',
+      // transform: `scale(${this.ds.zoomValue / 100})`,
+      // width: this.ds.pageW() + 'px',
+      // height: this.ds.pageH() + 'px',
     };
   }
 

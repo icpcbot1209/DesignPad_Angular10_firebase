@@ -1,4 +1,4 @@
-<ng-container *ngIf="!ds.isStatus(ItemStatus.none); else downloadToolbar">
+<ng-container *ngIf="!ds.isStatus(ItemStatus.none); else defaultToolbar">
   <ng-container *ngIf="ds.isStatus(ItemStatus.image_selected)">
     <app-image-toolbar></app-image-toolbar>
   </ng-container>
@@ -30,28 +30,25 @@
     </button>
   </mat-menu> -->
 </ng-container>
-<ng-template #downloadToolbar>
-  <button mat-button style="display: flex; margin-left: auto" (click)="showDownloadContent()">
-    <mat-icon>download</mat-icon>
-    Download
-  </button>
-  <div id="downloadContent" [ngStyle]="{ display: this.moveableService.isShowDownload ? 'block' : 'none' }">
-    <div style="display: flex; flex-direction: column">
-      <label style="font-size: 12px; font-weight: 500">File type</label>
-      <ng-select
-        style="width: 280px; margin-bottom: 15px"
-        appearance="outline"
-        [searchable]="false"
-        [clearable]="false"
-        [items]="fileTypeItems"
-        [(ngModel)]="selectedFileType"
-        (change)="changeFileType($event)"
-      >
-      </ng-select>
-      <mat-progress-bar *ngIf="this.downloadService.onDownloading" mode="indeterminate"></mat-progress-bar>
-      <button class="btn btn-secondary" style="width: 100%; border-radius: 4px; font-weight: 500; margin-top: 15px" (click)="download()">
-        Download
-      </button>
+<ng-template #defaultToolbar>
+  <div style="width: 100%; height: 100%; display: flex; justify-content: flex-end">
+    <button mat-button (click)="showDimensionContent()">Dimension</button>
+    <div id="dimensionContent" [ngStyle]="{ display: this.moveableService.isDimension ? 'block' : 'none' }">
+      <div style="display: flex; flex-direction: column">
+        <label style="font-size: 12px; font-weight: 500">Dimension</label>
+        <div>
+          <span style="margin-right: 10px">Width:</span>
+          <input type="number" style="width: 50px; text-align: center" [(ngModel)]="theDesignWidth" />
+          <span style="margin-left: 5px; margin-right: 50px">px</span>
+
+          <span style="margin-right: 10px">Height:</span>
+          <input type="number" style="width: 50px; text-align: center" [(ngModel)]="theDesignHeight" />
+          <span style="margin-left: 5px">px</span>
+        </div>
+        <button class="btn btn-secondary" style="width: 100%; border-radius: 4px; font-weight: 500; margin-top: 15px" (click)="setDesign()">
+          Resize design
+        </button>
+      </div>
     </div>
   </div>
 </ng-template>

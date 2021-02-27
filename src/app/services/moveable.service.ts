@@ -52,6 +52,7 @@ export class MoveableService {
   isOnResize: boolean = false;
 
   isShowDownload: boolean = false;
+  isDimension: boolean = false;
   selectFisShowDownload: boolean;
 
   isDragItem: boolean = false;
@@ -233,6 +234,7 @@ export class MoveableService {
       this.isEditable = false;
       this.ds.isOnInput = false;
       this.isShowDownload = false;
+      this.isDimension = false;
       this.selectableTextEditor();
 
       if (

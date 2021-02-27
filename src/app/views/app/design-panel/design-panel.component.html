@@ -11,22 +11,59 @@
     <app-toolbar style="width: 100%; height: 100%; display: flex; justify-content: space-between"></app-toolbar>
   </div>
 
-  <div style="position: fixed; bottom: 20px; right: 20px; z-index: 100" dropdown [dropup]="true">
-    <button dropdownToggle type="button" class="btn btn-outline-primary">
-      {{ ds.zoomValue + '%' }}
-    </button>
-    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" style="height: 430px">
-      <li role="menuitem" *ngFor="let option of zoomOptions" (click)="onSelectZoomOption('custom', option.value)" style="text-align: center">
-        <a class="dropdown-item" href="javascript:;">{{ option.label }} </a>
-      </li>
-      <li class="divider dropdown-divider"></li>
-      <li role="menuitem" (click)="onSelectZoomOption('fit')" style="text-align: center">
-        <a class="dropdown-item" href="javascript:;">Fit</a>
-      </li>
-      <li role="menuitem" (click)="onSelectZoomOption('fill')" style="text-align: center">
-        <a class="dropdown-item" href="javascript:;">Fill</a>
-      </li>
-    </ul>
+  <div style="position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; align-items: center">
+    <div dropdown [dropup]="true">
+      <button dropdownToggle type="button" class="btn btn-outline-primary">
+        {{ ds.zoomValue + '%' }}
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" style="height: 430px">
+        <li role="menuitem" *ngFor="let option of zoomOptions" (click)="onSelectZoomOption('custom', option.value)" style="text-align: center">
+          <a class="dropdown-item" href="javascript:;">{{ option.label }} </a>
+        </li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem" (click)="onSelectZoomOption('fit')" style="text-align: center">
+          <a class="dropdown-item" href="javascript:;">Fit</a>
+        </li>
+        <li role="menuitem" (click)="onSelectZoomOption('fill')" style="text-align: center">
+          <a class="dropdown-item" href="javascript:;">Fill</a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <button
+        onMouseOver="this.style.background='#26d6d4'"
+        onMouseOut="this.style.background='#00aba9'"
+        type="button"
+        class="btn"
+        style="width: 45px; height: 45px; padding: 0; background-color: #00aba9; margin: 0px 10px"
+        (click)="showDownloadContent()"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" fill="white" width="28px" height="28px">
+          <g><rect fill="none" height="24" width="24" /></g>
+          <g><path d="M5,20h14v-2H5V20z M19,9h-4V3H9v6H5l7,7L19,9z" /></g>
+        </svg>
+      </button>
+      <div id="downloadContent" [ngStyle]="{ display: this.moveableService.isShowDownload ? 'block' : 'none' }">
+        <div style="display: flex; flex-direction: column">
+          <label style="font-size: 12px; font-weight: 500">File type</label>
+          <ng-select
+            style="width: 280px; margin-bottom: 15px"
+            appearance="outline"
+            [searchable]="false"
+            [clearable]="false"
+            [items]="fileTypeItems"
+            [(ngModel)]="selectedFileType"
+            (change)="changeFileType($event)"
+          >
+          </ng-select>
+          <mat-progress-bar *ngIf="this.downloadService.onDownloading" mode="indeterminate"></mat-progress-bar>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 4px; font-weight: 500; margin-top: 15px" (click)="download()">
+            Download
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="selecto-container" id="selecto-container">

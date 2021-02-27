@@ -13,6 +13,9 @@ import { DownloadService } from 'src/app/services/download.service';
 export class ToolbarComponent implements OnInit {
   constructor(public ds: DesignService, public moveableService: MoveableService, public downloadService: DownloadService) {}
 
+  theDesignWidth;
+  theDesignHeight;
+
   activeColor = Colors.getColors().separatorColor;
   ItemType = ItemType;
   ItemStatus = ItemStatus;
@@ -24,12 +27,16 @@ export class ToolbarComponent implements OnInit {
     this.fileTypeItems = ['PDF', 'JPG'];
   }
 
-  download() {
-    this.downloadService.download(this.selectedFileType);
+  setDesign() {
+    this.ds.theDesign.category.size.x = this.theDesignWidth;
+    this.ds.theDesign.category.size.y = this.theDesignHeight;
+    console.log(this.theDesignWidth, this.theDesignHeight);
   }
 
-  showDownloadContent() {
-    this.moveableService.isShowDownload = !this.moveableService.isShowDownload;
+  showDimensionContent() {
+    this.theDesignWidth = this.ds.pageW();
+    this.theDesignHeight = this.ds.pageH();
+    this.moveableService.isDimension = !this.moveableService.isDimension;
   }
 
   changeFileType(event) {

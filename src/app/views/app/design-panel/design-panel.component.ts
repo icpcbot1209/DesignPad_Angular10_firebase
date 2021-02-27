@@ -4,6 +4,8 @@ import { Colors } from 'src/app/constants/colors.service';
 import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
+import { ItemStatus, ItemType } from 'src/app/models/enums';
+import { DownloadService } from 'src/app/services/download.service';
 
 declare var ResizeObserver;
 
@@ -19,7 +21,13 @@ declare var ResizeObserver;
   ],
 })
 export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
-  constructor(public ds: DesignService, private moveableService: MoveableService, private zone: NgZone, public toolbarService: ToolbarService) {}
+  constructor(
+    public ds: DesignService,
+    public moveableService: MoveableService,
+    private zone: NgZone,
+    public toolbarService: ToolbarService,
+    public downloadService: DownloadService
+  ) {}
 
   foreColor = Colors.getColors().separatorColor;
 
@@ -27,9 +35,15 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('moveableContainer') moveableContainer: ElementRef;
 
   resizeObserver;
+  ItemType = ItemType;
+  ItemStatus = ItemStatus;
+
+  selectedFileType = 'PDF';
+  fileTypeItems = [];
 
   ngOnInit(): void {
     this.ds.init();
+    this.fileTypeItems = ['PDF', 'JPG'];
   }
 
   ngAfterViewInit(): void {
@@ -88,5 +102,17 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ds.addPage();
 
     this.toolbarService.textEditItems.push([]);
+  }
+
+  showDownloadContent() {
+    this.moveableService.isShowDownload = !this.moveableService.isShowDownload;
+  }
+
+  download() {
+    this.downloadService.download(this.selectedFileType);
+  }
+
+  changeFileType(event) {
+    this.selectedFileType = event;
   }
 }
