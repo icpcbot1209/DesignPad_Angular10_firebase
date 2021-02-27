@@ -169,17 +169,6 @@ export class TextEffectsComponent implements OnInit {
   ngAfterViewInit(): void {}
   ngOnDestroy(): void {
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
-    // console.log('text effect');
-    // this.ur.saveTheData(this.ds.theDesign);
-
-    // this.isShadow = false;
-    // this.isLift = false;
-    // this.isHollow = false;
-    // this.isSplice = false;
-    // this.isEcho = false;
-    // this.isGlitch = false;
-    // this.isNeon = false;
-    // this.isCurve = false;
   }
 
   saveTheData() {

@@ -28,31 +28,30 @@
       </svg>
       Flip vertical
     </button>
-  </mat-menu>
-</ng-container> -->
-  <ng-template #downloadToolbar>
-    <button mat-button style="display: flex; margin-left: auto" (click)="showDownloadContent()">
-      <mat-icon>download</mat-icon>
-      Download
-    </button>
-    <div id="downloadContent" [ngStyle]="{ display: this.moveableService.isShowDownload ? 'block' : 'none' }">
-      <div style="display: flex; flex-direction: column">
-        <label style="font-size: 12px; font-weight: 500">File type</label>
-        <ng-select
-          style="width: 280px; margin-bottom: 15px"
-          appearance="outline"
-          [searchable]="false"
-          [clearable]="false"
-          [items]="fileTypeItems"
-          [(ngModel)]="selectedFileType"
-          (change)="changeFileType($event)"
-        >
-        </ng-select>
-        <mat-progress-bar *ngIf="this.downloadService.onDownloading" mode="indeterminate"></mat-progress-bar>
-        <button class="btn btn-secondary" style="width: 100%; border-radius: 4px; font-weight: 500; margin-top: 15px" (click)="download()">
-          Download
-        </button>
-      </div>
-    </div>
-  </ng-template>
+  </mat-menu> -->
 </ng-container>
+<ng-template #downloadToolbar>
+  <button mat-button style="display: flex; margin-left: auto" (click)="showDownloadContent()">
+    <mat-icon>download</mat-icon>
+    Download
+  </button>
+  <div id="downloadContent" [ngStyle]="{ display: this.moveableService.isShowDownload ? 'block' : 'none' }">
+    <div style="display: flex; flex-direction: column">
+      <label style="font-size: 12px; font-weight: 500">File type</label>
+      <ng-select
+        style="width: 280px; margin-bottom: 15px"
+        appearance="outline"
+        [searchable]="false"
+        [clearable]="false"
+        [items]="fileTypeItems"
+        [(ngModel)]="selectedFileType"
+        (change)="changeFileType($event)"
+      >
+      </ng-select>
+      <mat-progress-bar *ngIf="this.downloadService.onDownloading" mode="indeterminate"></mat-progress-bar>
+      <button class="btn btn-secondary" style="width: 100%; border-radius: 4px; font-weight: 500; margin-top: 15px" (click)="download()">
+        Download
+      </button>
+    </div>
+  </div>
+</ng-template>
