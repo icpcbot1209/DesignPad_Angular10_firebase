@@ -1,21 +1,17 @@
 .selecto-container {
-  height: calc(100% - 70px);
+  height: calc(100% - 50px);
   overflow: hidden;
 }
 
 .selecto-area {
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: scroll;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   user-select: none;
 }
 

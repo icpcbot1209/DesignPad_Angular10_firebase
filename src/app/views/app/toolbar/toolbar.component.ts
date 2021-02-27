@@ -30,7 +30,6 @@ export class ToolbarComponent implements OnInit {
   setDesign() {
     this.ds.theDesign.category.size.x = this.theDesignWidth;
     this.ds.theDesign.category.size.y = this.theDesignHeight;
-    console.log(this.theDesignWidth, this.theDesignHeight);
   }
 
   showDimensionContent() {

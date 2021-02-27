@@ -68,12 +68,22 @@
 
   <div class="selecto-container" id="selecto-container">
     <div class="selecto-area" id="selecto-area">
-      <div [ngStyle]="{ width: ds.page_vw + 'px' }">
-        <div *ngFor="let page of ds.theDesign?.pages; let i = index" style="margin: 50px 0">
+      <div
+        [ngStyle]="{ width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 100 + 'px' }"
+        style="display: flex; flex-direction: column; align-items: center; margin: auto"
+      >
+        <div *ngFor="let page of ds.theDesign?.pages; let i = index" style="margin: 50px 0px">
           <app-page [page]="page" [pageId]="i"></app-page>
         </div>
 
-        <button class="btn btn-primary" style="width: 100%; margin-bottom: 50px" (click)="addPage()">Add Page</button>
+        <button
+          class="btn btn-primary"
+          [ngStyle]="{ width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 'px' }"
+          style="margin-bottom: 50px"
+          (click)="addPage()"
+        >
+          Add Page
+        </button>
       </div>
     </div>
   </div>
