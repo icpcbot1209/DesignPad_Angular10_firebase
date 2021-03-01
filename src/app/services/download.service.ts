@@ -1,16 +1,18 @@
 import { HttpClient, XhrFactory, HttpXhrBackend } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
+import { DesignService } from 'src/app/services/design.service';
 import { saveAs } from 'file-saver';
-import { binaryStringToBlob } from 'blob-util';
+
 declare let JSZip;
 
 @Injectable({
   providedIn: 'root',
 })
 export class DownloadService {
+  ds = this.injector.get(DesignService);
   onDownloading: boolean;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public injector: Injector) {}
 
   download(selectedFileType) {
     if (selectedFileType == 'PDF') this.downloadAsPdf();
@@ -20,8 +22,8 @@ export class DownloadService {
   downloadAsPdf() {
     let xhr = new XMLHttpRequest();
     let formData = new FormData();
-    let width = 600;
-    let height = 500;
+    let width = this.ds.theDesign.category.size.x;
+    let height = this.ds.theDesign.category.size.y;
     this.onDownloading = true;
 
     document.querySelectorAll('.ql-editor').forEach((ele) => {
@@ -125,8 +127,8 @@ export class DownloadService {
       let formData = new FormData();
 
       formData.append('text', htmlContent);
-      formData.append('screenshot_width', '600');
-      formData.append('screenshot_height', '500');
+      formData.append('screenshot_width', this.ds.theDesign.category.size.x.toString());
+      formData.append('screenshot_height', this.ds.theDesign.category.size.y.toString());
       formData.append('output_format', 'jpg');
 
       xhr.onload = () => {
