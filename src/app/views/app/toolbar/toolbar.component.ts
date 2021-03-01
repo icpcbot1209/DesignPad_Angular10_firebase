@@ -56,14 +56,19 @@ export class ToolbarComponent implements OnInit {
         this.moveableService.selectedItemId
     );
     const itemsOnPage = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
+    let overlapItems = [];
 
     for (let i = 0; i < itemsOnPage.length; i++) {
       if (itemsOnPage[i].itemId != this.moveableService.selectedItemId) {
         let otherItem = document.querySelector(this.getType(itemsOnPage[i].type) + itemsOnPage[i].pageId + '-' + itemsOnPage[i].itemId);
 
         if (this.collision(selectedItem, otherItem)) {
-          console.log(itemsOnPage[i]);
+          overlapItems.push(otherItem);
         }
+      }
+
+      if (overlapItems.length) {
+        console.log('Hey');
       }
     }
   }
