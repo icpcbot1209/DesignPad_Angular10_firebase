@@ -117,9 +117,6 @@ export class DesignService {
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
     item.zIndex = 100 + item.itemId;
 
-    // if (item.url && item.type == ItemType.element) {
-    // this.getSVGElement(item);
-    // }
     this.theDesign.pages[this.thePageId].items.push(item);
     this.ur.saveTheData(this.theDesign);
   }

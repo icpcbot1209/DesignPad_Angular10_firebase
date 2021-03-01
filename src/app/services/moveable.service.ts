@@ -39,7 +39,7 @@ export class MoveableService {
   isSelectedTarget: boolean;
   isEditable: boolean = true;
   pageId: number;
-  previousTarget: HTMLElement;
+  previousTarget;
   selectedPageId: string = '0';
   selectedItemId: string = '0';
   itemScale: number;
@@ -190,6 +190,10 @@ export class MoveableService {
       this.ds.onSelectGroup(thePageId);
     } else if (targets.length === 1) {
       let item = this.getItem(targets[0]);
+      this.selectedItemId = targets[0].getAttribute('itemId');
+      this.selectedPageId = targets[0].getAttribute('pageId');
+      this.selectableTextEditor();
+
       if (item.type === ItemType.image) {
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);
         this.ds.onSelectImageItem(thePageId, item);
@@ -199,7 +203,6 @@ export class MoveableService {
           this.ds.onSelectTextItem();
           this.isSelectedTarget = true;
           this.onChangeSelectedItem(targets[0]);
-          this.selectableTextEditor();
           this.resetTextToolbar();
         }
 
@@ -212,8 +215,8 @@ export class MoveableService {
         this.moveable = this.makeMoveableElement(thePageId, targets[0]);
         this.ds.onSelectElementItem(thePageId, item);
       }
-      this.selectedItemId = targets[0].getAttribute('itemId');
-      this.selectedPageId = targets[0].getAttribute('pageId');
+
+      this.previousTarget = targets[0];
     } else {
       if (this.ds.status == ItemStatus.image_crop || this.ds.status == ItemStatus.element_crop) {
         this.ur.saveTheData(this.ds.theDesign);
@@ -771,7 +774,6 @@ export class MoveableService {
         this.ds.isOnInput = false;
       }
     }
-    this.previousTarget = target;
   }
   enableTextEdit(event: MouseEvent) {
     if (!this.isDrag) {
