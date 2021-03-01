@@ -137,8 +137,8 @@ export class DesignService {
     h = Math.min(w / ratio, H * 0.8);
     w = h * ratio;
 
-    x = ((W * this.zoomValue) / 100 - w) / 2;
-    y = ((H * this.zoomValue) / 100 - h) / 2;
+    x = (W - w) / 2;
+    y = (H - h) / 2;
 
     this.addItemToCurrentPage({
       type: ItemType.image,
@@ -168,8 +168,8 @@ export class DesignService {
     w = 156.562;
     h = 34;
 
-    x = ((W * this.zoomValue) / 100 - w) / 2;
-    y = ((H * this.zoomValue) / 100 - h) / 2;
+    x = (W - w) / 2;
+    y = (H - h) / 2;
 
     const ms = this.injector.get(MoveableService);
     ms.isCreateTextItem = true;
@@ -220,8 +220,8 @@ export class DesignService {
       }
     }
 
-    x = ((W * this.zoomValue) / 100 - w) / 2;
-    y = ((H * this.zoomValue) / 100 - h) / 2;
+    x = (W - w) / 2;
+    y = (H - h) / 2;
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'blob';

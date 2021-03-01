@@ -83,9 +83,11 @@ export class PageComponent implements OnInit, AfterViewInit {
 
   styleCardInside(): CSS.Properties {
     return {
+      position: 'absolute',
       transformOrigin: 'top left',
-      width: '100%',
-      height: '100%',
+      width: this.ds.theDesign.category.size.x + 'px',
+      height: this.ds.theDesign.category.size.y + 'px',
+      transform: `scale(${this.ds.zoomValue / 100})`,
     };
   }
 
