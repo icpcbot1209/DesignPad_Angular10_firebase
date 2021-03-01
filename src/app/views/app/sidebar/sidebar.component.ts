@@ -6,6 +6,7 @@ import { SidebarService, ISidebar } from 'src/app/containers/layout/sidebar/side
 import { Subscription } from 'rxjs';
 import { DesignService } from 'src/app/services/design.service';
 import { ItemStatus } from 'src/app/models/enums';
+import { MoveableService } from 'src/app/services/moveable.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -20,7 +21,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   sidebar: ISidebar;
   subscription: Subscription;
 
-  constructor(private sidebarService: SidebarService, public ds: DesignService) {
+  constructor(private sidebarService: SidebarService, public ds: DesignService, public moveableService: MoveableService) {
     this.subscription = this.sidebarService.getSidebar().subscribe(
       (res) => {
         this.sidebar = res;
@@ -42,6 +43,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   menuClicked(event) {
     event.stopPropagation();
+    this.moveableService.isPosition = false;
   }
 
   menuItemClicked(event, item, index) {

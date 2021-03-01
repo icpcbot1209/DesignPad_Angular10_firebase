@@ -363,9 +363,13 @@ export class DesignService {
   }
 
   setStatus(status: ItemStatus): void {
+    const moveableService = this.injector.get(MoveableService);
+
     if (status === ItemStatus.image_crop) this.startImageCrop();
     else if (this.status === ItemStatus.image_crop) this.endImageCrop(true);
     else this.status = status;
+
+    moveableService.isPosition = false;
   }
 
   /*********************************************

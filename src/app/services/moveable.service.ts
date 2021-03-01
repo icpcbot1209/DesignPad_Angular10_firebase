@@ -193,6 +193,7 @@ export class MoveableService {
       this.selectedItemId = targets[0].getAttribute('itemId');
       this.selectedPageId = targets[0].getAttribute('pageId');
       this.selectableTextEditor();
+      this.onChangeSelectedItem(targets[0]);
 
       if (item.type === ItemType.image) {
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);
@@ -202,7 +203,6 @@ export class MoveableService {
           this.moveable = this.makeMoveableText(thePageId, targets[0]);
           this.ds.onSelectTextItem();
           this.isSelectedTarget = true;
-          this.onChangeSelectedItem(targets[0]);
           this.resetTextToolbar();
         }
 
@@ -772,6 +772,7 @@ export class MoveableService {
           this.isEditable = false;
         }
         this.ds.isOnInput = false;
+        this.isPosition = false;
       }
     }
   }
