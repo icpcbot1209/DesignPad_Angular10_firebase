@@ -23,6 +23,9 @@ export class ToolbarComponent implements OnInit {
   selectedFileType = 'PDF';
   fileTypeItems = [];
 
+  underItem = -1;
+  overItem = -1;
+
   ngOnInit(): void {
     this.fileTypeItems = ['PDF', 'JPG'];
   }
@@ -40,8 +43,8 @@ export class ToolbarComponent implements OnInit {
   }
 
   showPositionContent() {
-    this.moveableService.isPosition = !this.moveableService.isPosition;
     this.detectOverlaps();
+    this.moveableService.isPosition = !this.moveableService.isPosition;
   }
 
   changeFileType(event) {
@@ -63,14 +66,91 @@ export class ToolbarComponent implements OnInit {
         let otherItem = document.querySelector(this.getType(itemsOnPage[i].type) + itemsOnPage[i].pageId + '-' + itemsOnPage[i].itemId);
 
         if (this.collision(selectedItem, otherItem)) {
-          overlapItems.push(otherItem);
+          overlapItems.push(i);
         }
       }
+    }
 
-      if (overlapItems.length) {
-        console.log('Hey');
+    this.underItem = this.catchUnderItem(overlapItems);
+    this.overItem = this.catchOverItem(overlapItems);
+  }
+
+  forwardItem() {
+    let pageItems = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
+    let item = pageItems[this.moveableService.selectedItemId];
+
+    for (let i = Number.parseInt(this.moveableService.selectedItemId); i < this.overItem; i++) {
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i] = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[
+        i + 1
+      ];
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].itemId = i;
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].zIndex = 100 + i;
+    }
+
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.overItem] = item;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.overItem].zIndex = 100 + this.overItem;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.overItem].itemId = this.overItem;
+    this.moveableService.selectedItemId = this.overItem.toString();
+
+    setTimeout(() => {
+      this.detectOverlaps();
+    });
+  }
+
+  backwardItem() {
+    let pageItems = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
+    let item = pageItems[this.moveableService.selectedItemId];
+
+    for (let i = Number.parseInt(this.moveableService.selectedItemId); i > this.underItem; i--) {
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i] = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[
+        i - 1
+      ];
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].itemId = i;
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].zIndex = 100 + i;
+    }
+
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.underItem] = item;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.underItem].zIndex = 100 + this.underItem;
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.underItem].itemId = this.underItem;
+    this.moveableService.selectedItemId = this.underItem.toString();
+
+    setTimeout(() => {
+      this.detectOverlaps();
+    });
+  }
+
+  catchOverItem(overlapItems) {
+    for (let i = 0; i < overlapItems.length; i++) {
+      if (overlapItems[i] > this.moveableService.selectedItemId) {
+        this.addHoverEvent('forward');
+        return overlapItems[i];
       }
     }
+
+    this.removeHoverEvent('forward');
+    return -1;
+  }
+
+  catchUnderItem(overlapItems) {
+    for (let i = overlapItems.length; i >= 0; i--) {
+      if (overlapItems[i] < this.moveableService.selectedItemId) {
+        this.addHoverEvent('backward');
+        return overlapItems[i];
+      }
+    }
+
+    this.removeHoverEvent('backward');
+    return -1;
+  }
+
+  addHoverEvent(action) {
+    let element = document.getElementById(action);
+    element.classList.add('hover');
+  }
+
+  removeHoverEvent(action) {
+    let element = document.getElementById(action);
+    element.classList.remove('hover');
   }
 
   getType(status) {
@@ -111,17 +191,5 @@ export class ToolbarComponent implements OnInit {
 
     if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
     return true;
-  }
-
-  forwardItem() {
-    let item = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId];
-
-    item.zIndex += 1;
-  }
-
-  backwardItem() {
-    let item = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId];
-
-    item.zIndex -= 1;
   }
 }
