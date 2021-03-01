@@ -33,6 +33,12 @@ export class MusicUpload {
   }
 
   async uploadMusic(file: File, isAdmin: boolean) {
+    let str = file.name.split('').reverse();
+    let name = str
+      .slice(str.indexOf('.') + 1, str.length)
+      .reverse()
+      .join('');
+
     this.orignal = await this.fileToDataURL(file);
 
     let userId = this.authService.user.uid;

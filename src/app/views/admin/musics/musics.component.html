@@ -72,8 +72,8 @@
             <td class="text-center">
               <img
                 [src]="assetMusic.thumbnail != '' ? assetMusic.thumbnail : '../../../../../../assets/img/icons/music.png'"
-                height="50px"
-                width="50px"
+                height="70px"
+                width="70px"
                 style="margin: 5px; cursor: pointer"
                 (click)="musicThumbnailInput.click()"
               />
@@ -82,7 +82,13 @@
 
             <td>
               <div style="max-width: 650px; overflow-y: visible">
+                <input
+                  [(ngModel)]="assetMusic.tags"
+                  style="border: 1px solid #d7d7d7; width: 70%; height: 36px; padding: 10px; margin-bottom: 10px"
+                  type="text"
+                />
                 <ng-select
+                  style="width: 70%"
                   [items]="[]"
                   [addTag]="addTagFn"
                   (add)="onAddRemoveTag(assetMusic)"

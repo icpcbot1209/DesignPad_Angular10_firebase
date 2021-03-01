@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { AuthService } from '../shared/auth.service';
 import { AssetImage } from '../models/models';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -10,24 +8,16 @@ import { AngularFireStorage } from '@angular/fire/storage';
   providedIn: 'root',
 })
 export class MyfilesService {
-  constructor(
-    private db: AngularFirestore,
-    private storage: AngularFireStorage,
-    private authService: AuthService
-  ) {}
+  constructor(private db: AngularFirestore, private storage: AngularFireStorage, private authService: AuthService) {}
 
   readImageByTag(userId: string, tag?: string) {
     if (!tag || tag === '')
       return this.db
-        .collection<AssetImage>('UserFiles', (ref) =>
-          ref.where('userId', '==', userId)
-        )
+        .collection<AssetImage>('UserFiles', (ref) => ref.where('userId', '==', userId))
         .snapshotChanges();
     else
       return this.db
-        .collection<AssetImage>('UserFiles', (ref) =>
-          ref.where('tags', 'array-contains', tag).where('userId', '==', userId)
-        )
+        .collection<AssetImage>('UserFiles', (ref) => ref.where('tags', 'array-contains', tag).where('userId', '==', userId))
         .snapshotChanges();
   }
 

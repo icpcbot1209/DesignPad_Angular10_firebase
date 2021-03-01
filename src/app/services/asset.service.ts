@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AssetImage } from '../models/models';
 import { AssetMusic } from '../models/models';

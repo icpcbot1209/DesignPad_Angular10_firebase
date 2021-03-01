@@ -16,9 +16,12 @@
     <div *ngIf="array != []">
       <ng-container *ngFor="let music of array; let index = i">
         <div class="musicContent" style="width: 100%; padding: 8px; margin-bottom: 8px; border-radius: 4px">
-          <div style="width: 56px; height: 56px">
-            <div style="position: absolute">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18px" height="18px">
+          <div style="position: relative; width: 56px; height: 56px">
+            <div
+              class="playIcon"
+              style="position: absolute; width: 24px; height: 24px; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path d="M8 5v14l11-7z" />
               </svg>
