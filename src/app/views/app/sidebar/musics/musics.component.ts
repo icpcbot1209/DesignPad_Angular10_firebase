@@ -89,5 +89,6 @@ export class MusicsComponent implements OnInit {
   addMusic(music) {
     this.media.selectedMusic = music;
     this.ds.setStatus(ItemStatus.music_selected);
+    this.media.addMusic();
   }
 }

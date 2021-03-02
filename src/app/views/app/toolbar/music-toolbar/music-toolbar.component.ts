@@ -12,10 +12,26 @@ export class MusicToolbarComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  ngAfterViewInit(): void {
+    document.getElementById('progress_bar_box').addEventListener('click', function (e) {
+      let x = e.pageX - this.offsetLeft;
+      let clickedValue = x / this.offsetWidth;
+    });
+  }
+
+  ngOnDestroy(): void {
+    (document.querySelector('.rotateIcon') as HTMLElement).style.border = '';
+  }
+
   togglePlayButton() {
-    if (this.media.isPlayMusic) this.media.playMusic();
-    else this.media.stopMusic();
+    if (this.media.isPlayMusic) {
+      this.media.playMusic();
+    } else this.media.stopMusic();
 
     this.media.isPlayMusic = !this.media.isPlayMusic;
+  }
+
+  deleteMusic() {
+    this.media.deleteMusic();
   }
 }

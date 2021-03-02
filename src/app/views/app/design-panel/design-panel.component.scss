@@ -27,3 +27,24 @@
 
   box-shadow: 0 0 0 1px rgb(64 87 109 / 7%), 0 2px 12px rgb(53 71 90 / 20%);
 }
+
+.rotateIcon {
+  position: fixed;
+  bottom: 20px;
+  left: 470px;
+  z-index: 1000;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  border-radius: 24px;
+  padding: 6px;
+  background: white;
+  box-shadow: 2px 2px 4px 0px #8888884f, -1px -1px 4px 0px #8888884f;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.rotateIcon:hover {
+  border: 2px solid #00c4cc;
+}
