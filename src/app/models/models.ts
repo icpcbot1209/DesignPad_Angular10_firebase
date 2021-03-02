@@ -92,4 +92,6 @@ export interface AssetMusic {
   timestamp: number;
   userId: string;
   tags: string[];
+  name: string;
+  duration;
 }

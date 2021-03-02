@@ -21,15 +21,15 @@ export class AssetService {
     if (tag === '') return this.db.collection<AssetMusic>('Musics').snapshotChanges();
     else
       return this.db
-        .collection<AssetImage>('Musics', (ref) => ref.where('tags', 'array-contains', tag))
+        .collection<AssetMusic>('Musics', (ref) => ref.where('tags', 'array-contains', tag))
         .snapshotChanges();
   }
 
   readElementByTag(tag: string) {
-    if (tag === '') return this.db.collection<AssetMusic>('Elements').snapshotChanges();
+    if (tag === '') return this.db.collection<AssetElement>('Elements').snapshotChanges();
     else
       return this.db
-        .collection<AssetImage>('Elements', (ref) => ref.where('tags', 'array-contains', tag))
+        .collection<AssetElement>('Elements', (ref) => ref.where('tags', 'array-contains', tag))
         .snapshotChanges();
   }
 
@@ -64,14 +64,14 @@ export class AssetService {
   removeMusics(arr: AssetMusic[]) {
     arr.forEach((asset) => {
       this.storage.ref(asset.path).delete();
-      this.db.collection<AssetImage>('Musics').doc(asset.uid).delete();
+      this.db.collection<AssetMusic>('Musics').doc(asset.uid).delete();
     });
   }
 
   removeElements(arr: AssetElement[]) {
     arr.forEach((asset) => {
       this.storage.ref(asset.path).delete();
-      this.db.collection<AssetImage>('Elements').doc(asset.uid).delete();
+      this.db.collection<AssetElement>('Elements').doc(asset.uid).delete();
     });
   }
 

@@ -48,6 +48,7 @@ import { SVGElementComponent } from './page/element/svgelement/svgelement.compon
 import { SVGSelectorComponent } from './page/element/svgselector/svgselector.component';
 import { ImageElementComponent } from './page/image/image-element/image-element.component';
 import { ImageSelectorComponent } from './page/image/image-selector/image-selector.component';
+import { MusicToolbarComponent } from './toolbar/music-toolbar/music-toolbar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -77,12 +78,12 @@ import { ImageSelectorComponent } from './page/image/image-selector/image-select
     SVGSelectorComponent,
     ImageElementComponent,
     ImageSelectorComponent,
+    MusicToolbarComponent,
   ],
   imports: [
     CommonModule,
     CollapseModule,
     FormsModule,
-    // ReactiveFormsModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     TabsModule.forRoot(),

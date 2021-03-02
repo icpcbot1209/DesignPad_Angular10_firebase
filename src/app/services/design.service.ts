@@ -477,6 +477,18 @@ export class DesignService {
       css: 'brightness(90%) contrast(95%) grayscale(50%)',
     },
   ];
+
+  selectedMusic = null;
+  convertDuration(duration) {
+    let min = Math.floor(parseInt(duration) / 60);
+    let sec = Math.ceil(parseInt(duration) % 60).toString();
+
+    if (Number.parseInt(sec) < 10) {
+      sec = '0' + sec;
+    }
+
+    return min + ':' + sec;
+  }
 }
 
 interface Preset {

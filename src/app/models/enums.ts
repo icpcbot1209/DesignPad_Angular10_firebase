@@ -17,4 +17,5 @@ export enum ItemStatus {
   text_font_list,
   text_effect,
   element_selected,
+  music_selected,
 }

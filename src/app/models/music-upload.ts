@@ -6,7 +6,6 @@ import { finalize } from 'rxjs/operators';
 import { AuthService } from '../shared/auth.service';
 
 import { AssetMusic } from './models';
-import { Injectable } from '@angular/core';
 
 export class MusicUpload {
   constructor(private authService: AuthService, private storage: AngularFireStorage, private db: AngularFirestore) {}
@@ -64,15 +63,36 @@ export class MusicUpload {
         this.downloadURL = await ref.getDownloadURL().toPromise();
         let collectionName = isAdmin ? 'Musics' : 'UserFiles';
 
+        let duration = await this.getDuration(this.downloadURL);
+
         this.db.collection<AssetMusic>(collectionName).add({
           downloadURL: this.downloadURL,
           path,
           timestamp: Date.now(),
           userId,
           thumbnail: '',
-          tags: [file.name],
+          tags: [],
+          name: name,
+          duration: duration,
         });
       })
     );
+  }
+
+  getDuration(downloadURL) {
+    return new Promise(function (resolve) {
+      let au = new Audio();
+
+      au.addEventListener(
+        'loadedmetadata',
+        function () {
+          console.log(au.duration);
+          resolve(au.duration);
+        },
+        false
+      );
+
+      au.src = downloadURL;
+    });
   }
 }

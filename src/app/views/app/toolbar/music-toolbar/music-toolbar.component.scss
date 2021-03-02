@@ -1,0 +1,36 @@
+#progress_bar_box {
+  position: relative;
+  background: #ccc;
+}
+#progress_bar {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40px;
+
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+#progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 40px;
+  background: #3ab3a8;
+  transition: width 0.3s linear;
+  z-index: 1;
+}
+.button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.button:hover {
+  background: rgba(57, 76, 96, 0.15);
+}

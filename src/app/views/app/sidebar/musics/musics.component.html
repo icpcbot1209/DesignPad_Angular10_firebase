@@ -15,7 +15,11 @@
   >
     <div *ngIf="array != []">
       <ng-container *ngFor="let music of array; let index = i">
-        <div class="musicContent" style="width: 100%; padding: 8px; margin-bottom: 8px; border-radius: 4px">
+        <div
+          class="musicContent"
+          style="display: flex; justify-content: space-between; width: 100%; height: 72px; padding: 8px; margin-bottom: 8px; border-radius: 4px"
+          (click)="addMusic(music)"
+        >
           <div style="position: relative; width: 56px; height: 56px">
             <div
               class="playIcon"
@@ -26,7 +30,18 @@
                 <path d="M8 5v14l11-7z" />
               </svg>
             </div>
-            <img [src]="music.thumbnail" alt="" style="width: 100%; height: 100%; border-radius: 5px" />
+            <img
+              [src]="music.thumbnail != '' ? music.thumbnail : '../../../../../assets/img/icons/music.png'"
+              alt=""
+              style="width: 100%; height: 100%; border-radius: 5px"
+            />
+          </div>
+          <div style="width: 77%; height: 100%; color: white">
+            <p style="margin: 0; font-size: 15px">{{ music.name }}</p>
+            <div style="font-size: 12px; color: hsla(0, 0%, 100%, 0.65)">
+              <p style="width: 100%; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ getSubscript(music) }}</p>
+              <p style="margin: 0">{{ convertDuration(music.duration) }}</p>
+            </div>
           </div>
         </div>
       </ng-container>
