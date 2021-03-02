@@ -13,10 +13,11 @@ export class MusicToolbarComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    document.getElementById('progress_bar_box').addEventListener('click', function (e) {
-      let x = e.pageX - this.offsetLeft;
-      let clickedValue = x / this.offsetWidth;
-    });
+    // document.getElementById('progress_bar_box').addEventListener('mousedown', function (e) {
+    //   let x = e.pageX - this.offsetLeft;
+    //   let clickedValue = (x / this.offsetWidth) * 100;
+    //   (document.querySelector('#progress') as HTMLElement).style.width = clickedValue + '%';
+    // });
   }
 
   ngOnDestroy(): void {
@@ -33,5 +34,13 @@ export class MusicToolbarComponent implements OnInit {
 
   deleteMusic() {
     this.media.deleteMusic();
+  }
+
+  setProgressPosition(e) {
+    let ele = document.getElementById('progress_bar_box') as HTMLElement;
+
+    let x = e.pageX - ele.offsetLeft;
+    let clickedValue = (x / ele.offsetWidth) * 100;
+    this.media.setMusicPosition(clickedValue);
   }
 }

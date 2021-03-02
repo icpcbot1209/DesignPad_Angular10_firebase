@@ -8,15 +8,16 @@ import { DesignService } from './design.service';
 export class MediaService {
   audio = new Audio();
   isPlayMusic: boolean = true;
-  rotateTimer;
-  progressTimer;
+  playMusicProgressTimer;
   currentTime = 0;
   angel: number = 0;
+  duration: number;
 
   constructor(public ds: DesignService) {}
 
   addMusic() {
     this.audio.src = this.selectedMusic.downloadURL;
+
     this.setDefault();
   }
 
@@ -33,60 +34,38 @@ export class MediaService {
   }
 
   playMusic() {
-    console.log(this.audio.src);
+    this.duration = this.audio.duration;
+
     this.audio.load();
     this.audio.currentTime = this.currentTime;
     this.audio.play();
 
-    // this.setProgressbar();
-    this.rotateMusicIcon();
+    this.playMusicProgress();
   }
 
   stopMusic() {
     this.audio.pause();
-    // clearInterval(this.progressTimer);
-    clearInterval(this.rotateTimer);
+    clearInterval(this.playMusicProgressTimer);
 
     let ele = document.querySelector('.rotateIcon').firstChild as HTMLElement;
     ele.style.transform = 'rotate(0deg)';
   }
 
-  rotateMusicIcon() {
+  playMusicProgress() {
     let rotateEle = document.querySelector('.rotateIcon').firstChild as HTMLElement;
     let progressEle = document.querySelector('#progress') as HTMLElement;
 
-    // ele.style.transform = 'rotate(0deg)';
-    // this.angel = 0;
-    this.rotateTimer = setInterval(() => {
+    console.log(this.audio.currentTime);
+    this.playMusicProgressTimer = setInterval(() => {
       this.angel++;
       if (this.angel == 360) this.angel = 0;
       rotateEle.style.transform = 'rotate(' + this.angel + 'deg)';
 
       this.currentTime = this.audio.currentTime;
-      progressEle.style.width = this.audio.currentTime * 10 + '%';
+      progressEle.style.width = (this.audio.currentTime / this.duration) * 100 + '%';
 
-      if (this.audio.currentTime >= 10) {
+      if (this.audio.currentTime >= this.duration) {
         this.setDefault();
-      }
-    }, 10);
-  }
-
-  setProgressbar() {
-    let ele = document.querySelector('#progress') as HTMLElement;
-
-    this.progressTimer = setInterval(() => {
-      console.log(this.audio.currentTime);
-      this.currentTime = this.audio.currentTime;
-      ele.style.width = this.audio.currentTime * 10 + '%';
-      if (this.audio.currentTime >= 10) {
-        this.currentTime = 0;
-        ele.style.width = '0%';
-
-        ele = document.querySelector('.rotateIcon').firstChild as HTMLElement;
-        ele.style.transform = 'rotate(0deg)';
-        this.isPlayMusic = true;
-        clearInterval(this.progressTimer);
-        clearInterval(this.rotateTimer);
       }
     }, 10);
   }
@@ -94,6 +73,7 @@ export class MediaService {
   deleteMusic() {
     this.selectedMusic = null;
     this.ds.status = ItemStatus.none;
+    this.audio.pause();
     this.setDefault();
   }
 
@@ -102,8 +82,7 @@ export class MediaService {
     this.currentTime = 0;
     this.angel = 0;
 
-    clearInterval(this.progressTimer);
-    clearInterval(this.rotateTimer);
+    clearInterval(this.playMusicProgressTimer);
 
     setTimeout(() => {
       let ele = document.querySelector('.rotateIcon').firstChild as HTMLElement;
@@ -111,5 +90,19 @@ export class MediaService {
       ele = document.querySelector('#progress') as HTMLElement;
       ele.style.width = '0%';
     });
+  }
+
+  setMusicPosition(pos) {
+    if (!this.isPlayMusic) {
+      this.stopMusic();
+    }
+
+    this.currentTime = (this.selectedMusic.duration * Number.parseFloat(pos)) / 100;
+    this.audio.currentTime = this.currentTime;
+    console.log(this.selectedMusic.duration, pos, this.currentTime);
+
+    this.isPlayMusic = false;
+    this.playMusic();
+    // this.audio.play();
   }
 }
