@@ -6,6 +6,7 @@ import { MoveableService } from 'src/app/services/moveable.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
 import { ItemStatus, ItemType } from 'src/app/models/enums';
 import { DownloadService } from 'src/app/services/download.service';
+import { MediaService } from 'src/app/services/media.service';
 
 declare var ResizeObserver;
 
@@ -26,7 +27,8 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     public moveableService: MoveableService,
     private zone: NgZone,
     public toolbarService: ToolbarService,
-    public downloadService: DownloadService
+    public downloadService: DownloadService,
+    public media: MediaService
   ) {}
 
   foreColor = Colors.getColors().separatorColor;

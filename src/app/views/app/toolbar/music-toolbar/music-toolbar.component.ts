@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
+import { MediaService } from 'src/app/services/media.service';
 
 @Component({
   selector: 'app-music-toolbar',
@@ -7,20 +8,14 @@ import { DesignService } from 'src/app/services/design.service';
   styleUrls: ['./music-toolbar.component.scss'],
 })
 export class MusicToolbarComponent implements OnInit {
-  isPlay: boolean = true;
-
-  constructor(public ds: DesignService) {}
+  constructor(public ds: DesignService, public media: MediaService) {}
 
   ngOnInit(): void {}
 
   togglePlayButton() {
-    this.isPlay = !this.isPlay;
+    if (this.media.isPlayMusic) this.media.playMusic();
+    else this.media.stopMusic();
 
-    if (this.isPlay) this.playMusic();
-  }
-
-  playMusic() {
-    let file = this.ds.selectedMusic.downloadURL;
-    // let player = new AudioPlayer()
+    this.media.isPlayMusic = !this.media.isPlayMusic;
   }
 }

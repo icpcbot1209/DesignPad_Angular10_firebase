@@ -3,6 +3,7 @@ import { ItemStatus } from 'src/app/models/enums';
 import { AssetMusic } from 'src/app/models/models';
 import { AssetService } from 'src/app/services/asset.service';
 import { DesignService } from 'src/app/services/design.service';
+import { MediaService } from 'src/app/services/media.service';
 
 @Component({
   selector: 'sidebar-music',
@@ -27,7 +28,7 @@ export class MusicsComponent implements OnInit {
   assetMusics: AssetMusic[] = [];
   heights: number[] = [];
 
-  constructor(public assetService: AssetService, public ds: DesignService) {}
+  constructor(public assetService: AssetService, public ds: DesignService, public media: MediaService) {}
 
   ngOnInit(): void {}
 
@@ -82,11 +83,11 @@ export class MusicsComponent implements OnInit {
   }
 
   convertDuration(duration) {
-    this.ds.convertDuration(duration);
+    this.media.convertDuration(duration);
   }
 
   addMusic(music) {
-    this.ds.selectedMusic = music;
+    this.media.selectedMusic = music;
     this.ds.setStatus(ItemStatus.music_selected);
   }
 }
