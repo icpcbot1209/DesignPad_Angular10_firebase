@@ -117,6 +117,10 @@ export class DesignService {
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
     item.zIndex = 100 + item.itemId;
 
+    for (let i = 0; i < this.theDesign.pages[this.thePageId].items.length; i++) {
+      this.theDesign.pages[this.thePageId].items[i].selected = false;
+    }
+
     this.theDesign.pages[this.thePageId].items.push(item);
     this.ur.saveTheData(this.theDesign);
   }
@@ -144,6 +148,7 @@ export class DesignService {
       type: ItemType.image,
       pageId: this.thePageId,
       itemId: 0,
+      selected: true,
       url: assetImage.downloadURL,
       thumbnail: assetImage.thumbnail,
       x,
@@ -181,6 +186,7 @@ export class DesignService {
       type: ItemType.text,
       pageId: this.thePageId,
       itemId: 0,
+      selected: true,
       x,
       y,
       w,
@@ -236,6 +242,7 @@ export class DesignService {
           type: ItemType.element,
           pageId: this.thePageId,
           itemId: 0,
+          selected: true,
           x,
           y,
           w,

@@ -110,14 +110,15 @@ export class DownloadService {
       htmlContent = htmlContent + htmlStr + '</body>';
 
       const blob = await this.downloadOnePageAsImg(htmlContent, i);
-      zip.file(i + 1 + '.jpg', blob);
+      console.log(blob);
+      // zip.file(i + 1 + '.jpg', blob);
+      saveAs(blob, i + 1 + '.jpg');
     }
 
     this.onDownloading = false;
-    zip.generateAsync({ type: 'blob' }).then(function (content) {
-      // see FileSaver.js
-      saveAs(content, 'image.zip');
-    });
+    // zip.generateAsync({ type: 'blob' }).then(function (content) {
+    //   saveAs(content, 'image.zip');
+    // });
   }
 
   downloadOnePageAsImg(htmlContent, index) {
