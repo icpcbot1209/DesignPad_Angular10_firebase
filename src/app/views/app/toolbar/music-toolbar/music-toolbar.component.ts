@@ -13,15 +13,13 @@ export class MusicToolbarComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    // document.getElementById('progress_bar_box').addEventListener('mousedown', function (e) {
-    //   let x = e.pageX - this.offsetLeft;
-    //   let clickedValue = (x / this.offsetWidth) * 100;
-    //   (document.querySelector('#progress') as HTMLElement).style.width = clickedValue + '%';
-    // });
+    (document.querySelector('#progress') as HTMLElement).style.width = (this.media.audio.currentTime / this.media.duration) * 100 + '%';
+    (document.querySelector('.rotateIcon') as HTMLElement).style.border = '2px solid #00c4cc';
   }
 
   ngOnDestroy(): void {
     (document.querySelector('.rotateIcon') as HTMLElement).style.border = '';
+    this.media.isSoundContent = false;
   }
 
   togglePlayButton() {
@@ -42,5 +40,26 @@ export class MusicToolbarComponent implements OnInit {
     let x = e.pageX - ele.offsetLeft;
     let clickedValue = (x / ele.offsetWidth) * 100;
     this.media.setMusicPosition(clickedValue);
+  }
+
+  controlVolume() {
+    this.media.isSoundContent = !this.media.isSoundContent;
+  }
+
+  changeSlide(event) {
+    this.media.volume = event.value;
+
+    if (this.media.volume == 0) this.media.isMute = true;
+    else if (event.value > 0 && this.media.isMute) this.media.isMute = false;
+  }
+
+  inputVolumeValue(event) {
+    if (event.target.value > 100) {
+      this.media.volume = 100;
+    }
+    this.media.volume = event.target.value;
+
+    if (this.media.volume == 0) this.media.isMute = true;
+    else if (this.media.volume > 0 && !this.media.isMute) this.media.isMute = false;
   }
 }
