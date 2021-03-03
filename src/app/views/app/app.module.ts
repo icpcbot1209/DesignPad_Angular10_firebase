@@ -49,6 +49,7 @@ import { SVGSelectorComponent } from './page/element/svgselector/svgselector.com
 import { ImageElementComponent } from './page/image/image-element/image-element.component';
 import { ImageSelectorComponent } from './page/image/image-selector/image-selector.component';
 import { MusicToolbarComponent } from './toolbar/music-toolbar/music-toolbar.component';
+import { VideosComponent } from './sidebar/videos/videos.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,6 +80,7 @@ import { MusicToolbarComponent } from './toolbar/music-toolbar/music-toolbar.com
     ImageElementComponent,
     ImageSelectorComponent,
     MusicToolbarComponent,
+    VideosComponent,
   ],
   imports: [
     CommonModule,

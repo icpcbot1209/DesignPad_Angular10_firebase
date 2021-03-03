@@ -1,0 +1,31 @@
+<ng-select
+  style="margin: 10px 5px"
+  [items]="tags"
+  bindLabel="name"
+  [placeholder]="'Search'"
+  (change)="readVideosByTag($event)"
+  (clear)="readVideosByTag('')"
+>
+</ng-select>
+
+<perfect-scrollbar style="height: calc(100% - 50px)" [config]="{ suppressScrollX: true, wheelPropagation: false }">
+  <div id="gridContainer" class="grid-container">
+    <ng-container *ngFor="let assetVideo of assetVideos; let i = index">
+      <img
+        [id]="'videoThumbnail' + i"
+        class="grid-item"
+        [lazyLoad]="assetVideo.thumbnail"
+        [height]="assetVideo.height * ratios[i] + padding * 2"
+        width="auto"
+        (click)="onImgClick(assetImage)"
+      />
+      <video
+        [id]="'videoLoop' + i"
+        style="position: absolute; box-sizing: border-box; padding: 3px; cursor: pointer; border: 1px solid transparent"
+        src=""
+        [height]="assetVideo.height * ratios[i] + padding * 2"
+        [width]="assetVideo.width * ratios[i] + padding * 2"
+      ></video>
+    </ng-container>
+  </div>
+</perfect-scrollbar>

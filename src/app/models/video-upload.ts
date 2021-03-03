@@ -45,11 +45,12 @@ export class VideoUpload {
         this.height = video.videoHeight;
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        console.log(this.width, this.height);
 
         if (video.videoHeight > max) {
           canvas.width = (video.videoWidth / video.videoHeight) * max;
           canvas.height = max;
+          this.width = canvas.width;
+          this.height = canvas.height;
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
         } else context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
 
