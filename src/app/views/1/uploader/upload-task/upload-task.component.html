@@ -58,7 +58,7 @@
 <div *ngIf="file.type.slice(0, 6) == 'video/'">
   <div *ngIf="!videoUpload.downloadURL" style="margin: 1rem">
     <p>{{ file.name }}</p>
-    <img [src]="'../../../../../../assets/img/icons/music.png'" height="100" />
+    <img [src]="videoUpload.thumbnail" height="100" />
 
     <div *ngIf="videoUpload.percentage | async as pct">
       <progress class="progress is-info" [value]="pct" max="100"></progress>

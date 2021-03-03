@@ -6,7 +6,6 @@ import { finalize } from 'rxjs/operators';
 import { AuthService } from '../shared/auth.service';
 
 import { AssetElement, AssetVideo } from './models';
-import { Injectable } from '@angular/core';
 
 export class VideoUpload {
   constructor(private authService: AuthService, private storage: AngularFireStorage, private db: AngularFirestore) {}
@@ -32,49 +31,43 @@ export class VideoUpload {
     });
   }
 
-  makeThumbnail(url): Promise<string> {
-    return new Promise((resolve, reject) => {
-      let thumbnail: string;
-      let video = document.createElement('video');
-      video.src = url;
-      const max = 150;
-      // video.onloadedmetadata = () => {
-      this.width = video.videoWidth;
-      this.height = video.videoHeight;
+  generateThumbnail(videoFile: Blob): Promise<string> {
+    const video: HTMLVideoElement = document.createElement('video');
+    const canvas: HTMLCanvasElement = document.createElement('canvas');
+    const context: CanvasRenderingContext2D = canvas.getContext('2d');
+    return new Promise<string>((resolve, reject) => {
+      canvas.addEventListener('error', reject);
+      video.addEventListener('error', reject);
+      video.addEventListener('canplay', (event) => {
+        let max = 85;
 
-      if (video.videoHeight > max || video.videoWidth > max) {
-        var oc = document.createElement('canvas'),
-          octx = oc.getContext('2d');
-        // oc.height = video.videoHeight;
-        // oc.width = video.videoWidth;
-        // octx.drawImage(video, 0, 0);
-        // if (oc.width > oc.height) {
-        //   oc.width = max;
-        //   oc.height = (video.videoHeight / video.videoWidth) * max;
-        // } else {
-        //   oc.width = (video.videoWidth / video.videoHeight) * max;
-        //   oc.height = max;
-        // }
-        // octx.drawImage(oc, 0, 0, oc.width, oc.height);
-        octx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-        thumbnail = oc.toDataURL();
-        console.log(thumbnail);
-      } else {
-        try {
-          thumbnail = oc.toDataURL();
-        } catch (error) {
-          return;
-        }
+        this.width = video.videoWidth;
+        this.height = video.videoHeight;
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        console.log(this.width, this.height);
+
+        if (video.videoHeight > max) {
+          canvas.width = (video.videoWidth / video.videoHeight) * max;
+          canvas.height = max;
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        } else context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+
+        resolve(canvas.toDataURL());
+      });
+      if (videoFile.type) {
+        video.setAttribute('type', videoFile.type);
       }
-
-      resolve(thumbnail);
-      // };
+      video.preload = 'auto';
+      video.src = window.URL.createObjectURL(videoFile);
+      video.load();
     });
   }
 
   async uploadVideo(file: File, isAdmin: boolean) {
-    this.orignal = await this.fileToDataURL(file);
-    console.log(this.orignal);
+    this.generateThumbnail(file).then((thumbnailData) => {
+      this.thumbnail = thumbnailData;
+    });
 
     let userId = this.authService.user.uid;
     if (isAdmin) userId = 'admin';
@@ -97,16 +90,15 @@ export class VideoUpload {
       // The file's download URL
       finalize(async () => {
         this.downloadURL = await ref.getDownloadURL().toPromise();
-        this.thumbnail = await this.makeThumbnail(this.downloadURL);
 
         let collectionName = isAdmin ? 'Videos' : 'UserFiles';
 
         this.db.collection<AssetVideo>(collectionName).add({
           downloadURL: this.downloadURL,
           path,
-          thumbnail: '',
-          // width: this.width,
-          // height: this.height,
+          thumbnail: this.thumbnail,
+          width: this.width,
+          height: this.height,
           timestamp: Date.now(),
           userId,
           tags: [file.name],
