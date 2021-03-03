@@ -2,8 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ImageUpload } from 'src/app/models/image-upload';
-import { MusicUpload } from 'src/app/models/music-upload';
+import { VideoUpload } from 'src/app/models/video-upload';
 import { ElementUpload } from 'src/app/models/element-upload';
+import { MusicUpload } from 'src/app/models/music-upload';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class UploadTaskComponent implements OnInit {
   elementUpload: ElementUpload = new ElementUpload(this.authService, this.storage, this.db);
   upload: ImageUpload = new ImageUpload(this.authService, this.storage, this.db);
   musicUpload: MusicUpload = new MusicUpload(this.authService, this.storage, this.db);
+  videoUpload: VideoUpload = new VideoUpload(this.authService, this.storage, this.db);
 
   async ngOnInit() {
     if (this.file.type == 'image/svg+xml') {
@@ -33,6 +35,10 @@ export class UploadTaskComponent implements OnInit {
     if (this.file.type == 'audio/mpeg') {
       if (this.taskType == 'user_uploads') this.musicUpload.uploadMusic(this.file, false);
       else if (this.taskType == 'admin_uploads') this.musicUpload.uploadMusic(this.file, true);
+    }
+    if (this.file.type.slice(0, 6) == 'video/') {
+      if (this.taskType == 'user_uploads') this.videoUpload.uploadVideo(this.file, false);
+      else if (this.taskType == 'admin_uploads') this.videoUpload.uploadVideo(this.file, true);
     }
   }
 

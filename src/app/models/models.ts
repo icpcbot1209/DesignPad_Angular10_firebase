@@ -95,3 +95,15 @@ export interface AssetMusic {
   name: string;
   duration;
 }
+
+export interface AssetVideo {
+  uid?: string;
+  downloadURL: string;
+  path: string;
+  thumbnail?: string;
+  width?: number;
+  height?: number;
+  timestamp: number;
+  userId: string;
+  tags: string[];
+}

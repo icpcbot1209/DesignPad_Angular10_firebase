@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
     { title: 'Photo' },
     { title: 'Element' },
     { title: 'Music' },
+    { title: 'Video' },
     { title: 'Text', disabled: true },
     { title: 'Template', disabled: false },
   ];

@@ -15,9 +15,10 @@ import { DevprogressComponent } from './devprogress/devprogress.component';
 import { MaterialModule } from 'src/app/material.module';
 import { MusicsComponent } from './musics/musics.component';
 import { ElementsComponent } from './elements/elements.component';
+import { VideosComponent } from './videos/videos.component';
 
 @NgModule({
-  declarations: [AdminAuthComponent, DashboardComponent, PhotosComponent, DevprogressComponent, MusicsComponent, ElementsComponent],
+  declarations: [AdminAuthComponent, DashboardComponent, PhotosComponent, DevprogressComponent, MusicsComponent, ElementsComponent, VideosComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

@@ -8,7 +8,6 @@
 </div>
 
 <div *ngIf="theTabId == 0">
-  <!-- [ngStyle]="{ display: theTabId == 0 ? 'block' : 'none' }" -->
   <div class="container-fluid" style="margin-top: 20px; height: calc(100vh - 200px)">
     <app-photos></app-photos>
   </div>
@@ -21,5 +20,10 @@
 <div *ngIf="theTabId == 2">
   <div class="container-fluid" style="margin-top: 20px; height: calc(100vh - 200px)">
     <app-musics></app-musics>
+  </div>
+</div>
+<div *ngIf="theTabId == 3">
+  <div class="container-fluid" style="margin-top: 20px; height: calc(100vh - 200px)">
+    <app-videos></app-videos>
   </div>
 </div>

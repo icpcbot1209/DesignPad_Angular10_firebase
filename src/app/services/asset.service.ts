@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AssetImage } from '../models/models';
 import { AssetMusic } from '../models/models';
 import { AssetElement } from '../models/models';
+import { AssetVideo } from '../models/models';
 import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({ providedIn: 'root' })
@@ -33,6 +34,14 @@ export class AssetService {
         .snapshotChanges();
   }
 
+  readVideoByTag(tag: string) {
+    if (tag === '') return this.db.collection<AssetVideo>('Videos').snapshotChanges();
+    else
+      return this.db
+        .collection<AssetVideo>('Videos', (ref) => ref.where('tags', 'array-contains', tag))
+        .snapshotChanges();
+  }
+
   updateImageTags(assetImage: AssetImage) {
     this.db.collection<AssetImage>('Images').doc(assetImage.uid).update({
       tags: assetImage.tags,
@@ -50,6 +59,13 @@ export class AssetService {
   updateElementTags(assetElement: AssetElement) {
     this.db.collection<AssetElement>('Elements').doc(assetElement.uid).update({
       tags: assetElement.tags,
+      timestamp: Date.now(),
+    });
+  }
+
+  updateVideoTags(assetVideo: AssetVideo) {
+    this.db.collection<AssetVideo>('Videos').doc(assetVideo.uid).update({
+      tags: assetVideo.tags,
       timestamp: Date.now(),
     });
   }
@@ -72,6 +88,13 @@ export class AssetService {
     arr.forEach((asset) => {
       this.storage.ref(asset.path).delete();
       this.db.collection<AssetElement>('Elements').doc(asset.uid).delete();
+    });
+  }
+
+  removeVideos(arr: AssetVideo[]) {
+    arr.forEach((asset) => {
+      this.storage.ref(asset.path).delete();
+      this.db.collection<AssetVideo>('Videos').doc(asset.uid).delete();
     });
   }
 
