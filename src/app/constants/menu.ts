@@ -36,11 +36,11 @@ const data: IMenuItem[] = [
     label: 'Text',
     // roles: [UserRole.Editor],
   },
-  {
-    icon: 'iconsminds-palette',
-    label: 'Styles',
-    // roles: [UserRole.Editor],
-  },
+  // {
+  //   icon: 'iconsminds-palette',
+  //   label: 'Styles',
+  //   // roles: [UserRole.Editor],
+  // },
   {
     icon: 'simple-icon-music-tone-alt',
     label: 'Music',
@@ -51,16 +51,16 @@ const data: IMenuItem[] = [
     label: 'Videos',
     // roles: [UserRole.Editor],
   },
-  {
-    icon: 'iconsminds-stop-2',
-    label: 'Background',
-    // roles: [UserRole.Editor],
-  },
-  {
-    icon: 'iconsminds-folder-cloud',
-    label: 'Folders',
-    // roles: [UserRole.Editor],
-  },
+  // {
+  //   icon: 'iconsminds-stop-2',
+  //   label: 'Background',
+  //   // roles: [UserRole.Editor],
+  // },
+  // {
+  //   icon: 'iconsminds-folder-cloud',
+  //   label: 'Folders',
+  //   // roles: [UserRole.Editor],
+  // },
 
   // {
   //   icon: 'iconsminds-bucket',

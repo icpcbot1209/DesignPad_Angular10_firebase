@@ -262,7 +262,7 @@ export class DevprogressComponent implements OnInit {
       ],
     },
     {
-      totalHours: 30,
+      totalHours: 50,
       description: 'Milestone 5',
       items: [
         {
@@ -303,8 +303,8 @@ export class DevprogressComponent implements OnInit {
       ],
     },
     {
-      totalHours: 30,
-      description: 'Milestone 5',
+      totalHours: 50,
+      description: 'Milestone 6',
       items: [
         {
           title: 'Music browse and edit',
@@ -322,20 +322,6 @@ export class DevprogressComponent implements OnInit {
         },
         {
           title: 'Download as MP4, GIF',
-          hours: null,
-          note: '',
-          date: null,
-          isDone: false,
-        },
-        {
-          title: 'browse styles (color & font)	',
-          hours: null,
-          note: '',
-          date: null,
-          isDone: false,
-        },
-        {
-          title: 'main/ set styles (color & font)	',
           hours: null,
           note: '',
           date: null,
