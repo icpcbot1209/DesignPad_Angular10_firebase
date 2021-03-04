@@ -16,7 +16,7 @@
         style="position: relative"
         (mouseenter)="startClipVideo(i)"
         (mouseleave)="stopClipVideo(i)"
-        (click)="addVideoOnPage(assetVideo[i])"
+        (click)="addVideoOnPage(assetVideo)"
       >
         <img
           [id]="'videoThumbnail' + i"
@@ -24,7 +24,6 @@
           [ngStyle]="{ height: assetVideo.height * ratios[i] + padding * 2 + 'px' }"
           [lazyLoad]="assetVideo.thumbnail"
           width="auto"
-          (click)="onImgClick(assetImage)"
         />
         <p class="duration">{{ convertDuration(assetVideo.duration) }}</p>
       </div>

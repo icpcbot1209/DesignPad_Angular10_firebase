@@ -50,6 +50,8 @@ import { ImageElementComponent } from './page/image/image-element/image-element.
 import { ImageSelectorComponent } from './page/image/image-selector/image-selector.component';
 import { MusicToolbarComponent } from './toolbar/music-toolbar/music-toolbar.component';
 import { VideosComponent } from './sidebar/videos/videos.component';
+import { VideoElementComponent } from './page/video/video-element/video-element.component';
+import { VideoSelectorComponent } from './page/video/video-selector/video-selector.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,6 +83,8 @@ import { VideosComponent } from './sidebar/videos/videos.component';
     ImageSelectorComponent,
     MusicToolbarComponent,
     VideosComponent,
+    VideoElementComponent,
+    VideoSelectorComponent,
   ],
   imports: [
     CommonModule,

@@ -3,6 +3,7 @@ export enum ItemType {
   image,
   text,
   element,
+  video,
 }
 
 export enum ItemStatus {
@@ -18,4 +19,5 @@ export enum ItemStatus {
   text_effect,
   element_selected,
   music_selected,
+  video_selected,
 }

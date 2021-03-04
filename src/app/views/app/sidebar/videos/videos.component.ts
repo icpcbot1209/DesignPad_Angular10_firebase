@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AssetVideo } from '../../../../../app/models/models';
-import { decideHeights } from '../../../../../app/models/geometry';
 
 import { AssetService } from '../../../../../app/services/asset.service';
 import { DesignService } from '../../../../../app/services/design.service';
+import { ItemStatus } from 'src/app/models/enums';
 
 @Component({
   selector: 'sidebar-videos',
@@ -114,5 +114,8 @@ export class VideosComponent implements AfterViewInit {
     }
   }
 
-  addVideoOnPage() {}
+  addVideoOnPage(item) {
+    this.ds.setStatus(ItemStatus.video_selected);
+    this.ds.sidebar_video_add(item);
+  }
 }

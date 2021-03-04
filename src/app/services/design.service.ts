@@ -262,6 +262,44 @@ export class DesignService {
     xhr.open('GET', item.downloadURL);
     xhr.send();
   }
+  /*********************************************
+   * Video sidebar
+   **********************************************/
+  sidebar_video_add(item) {
+    let { x: W, y: H } = this.theDesign?.category.size;
+    if (!H) return;
+
+    let w, h, x, y;
+    let max = 400;
+
+    if (item.width > item.height) {
+      h = (item.height / item.width) * max;
+      w = max;
+    } else {
+      w = (item.width / item.height) * max;
+      h = max;
+    }
+
+    x = (W - w) / 2;
+    y = (H - h) / 2;
+
+    this.addItemToCurrentPage({
+      type: ItemType.video,
+      pageId: this.thePageId,
+      itemId: 0,
+      selected: true,
+      url: item.downloadURL,
+      thumbnail: item.thumbnail,
+      x,
+      y,
+      w,
+      h,
+      rotate: 0,
+      scaleX: 1,
+      scaleY: 1,
+      zIndex: 0,
+    });
+  }
   /***********************************************
    * Key events
    **********************************************/
