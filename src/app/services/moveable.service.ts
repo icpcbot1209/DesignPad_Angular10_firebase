@@ -214,6 +214,9 @@ export class MoveableService {
       } else if (item.type === ItemType.element) {
         this.moveable = this.makeMoveableElement(thePageId, targets[0]);
         this.ds.onSelectElementItem(thePageId, item);
+      } else if (item.type === ItemType.video) {
+        this.moveable = this.makeMoveableVideo(thePageId, targets[0]);
+        this.ds.onSelectVideoItem(thePageId, item);
       }
 
       this.previousTarget = targets[0];
@@ -872,6 +875,99 @@ export class MoveableService {
       origin: true,
       keepRatio: true,
       // Resize, Scale Events at edges.
+      edge: false,
+      throttleDrag: 0,
+      throttleResize: 0,
+      throttleScale: 0,
+      throttleRotate: 0,
+      rotationPosition: 'bottom',
+    });
+
+    /* draggable */
+    moveable
+      .on('dragStart', (e: OnDragStart) => {
+        let item = this.getItem(e.target);
+        e.set([item.x, item.y]);
+      })
+      .on('drag', (e: OnDrag) => {
+        if (e.inputEvent.buttons === 0) return;
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
+
+        e.target.style.transform = this.strTransform(item);
+        this.isDragItem = true;
+      })
+      .on('dragEnd', (e) => {
+        if (this.isDragItem) {
+          this.ur.saveTheData(this.ds.theDesign);
+        }
+        this.isDragItem = false;
+      });
+
+    /* resizable */
+    moveable
+      .on('resizeStart', (e: OnResizeStart) => {
+        let item = this.getItem(e.target);
+        e.setOrigin(['%', '%']);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
+      })
+      .on('resize', (e: OnResize) => {
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.w = e.width;
+        item.h = e.height;
+
+        e.target.style.transform = this.strTransform(item);
+        e.target.style.width = `${e.width}px`;
+        e.target.style.height = `${e.height}px`;
+
+        let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId).querySelector('svg');
+        svgEle.setAttribute('width', item.w.toString());
+        svgEle.setAttribute('height', item.h.toString());
+      })
+      .on('resizeEnd', (e: OnResizeEnd) => {
+        this.ur.saveTheData(this.ds.theDesign);
+      });
+
+    /* rotatable */
+    moveable
+      .on('rotateStart', (e: OnRotateStart) => {
+        let item = this.getItem(e.target);
+        e.set(item.rotate);
+        e.dragStart && e.dragStart.set([item.x, item.y]);
+      })
+      .on('rotate', (e: OnRotate) => {
+        let item = this.getItem(e.target);
+        item.x = e.drag.beforeTranslate[0];
+        item.y = e.drag.beforeTranslate[1];
+        item.rotate = e.rotate;
+
+        e.target.style.transform = this.strTransform(item);
+      })
+      .on('rotateEnd', (e: OnRotateEnd) => {
+        this.ur.saveTheData(this.ds.theDesign);
+      });
+
+    return moveable;
+  }
+
+  makeMoveableVideo(pageId: number, target: HTMLElement | SVGElement) {
+    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
+
+    const moveable = new Moveable(pageContainer, {
+      container: pageContainer,
+      target: target,
+      draggable: true,
+      resizable: true,
+      rotatable: true,
+      originDraggable: true,
+      originRelative: true,
+
+      snapThreshold: 5,
+      origin: true,
+      keepRatio: true,
       edge: false,
       throttleDrag: 0,
       throttleResize: 0,

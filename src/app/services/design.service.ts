@@ -394,6 +394,14 @@ export class DesignService {
     }
   }
 
+  onSelectVideoItem(pageId: number, item: Item) {
+    if (!this.ur.isUndoRedo) {
+      this.thePageId = pageId;
+      this.theItem = item;
+      this.setStatus(ItemStatus.video_selected);
+    }
+  }
+
   isStatus(status: ItemStatus): boolean {
     return this.status === status;
   }
