@@ -13,7 +13,7 @@
   </ng-container>
 
   <ng-container *ngIf="!ds.isStatus(ItemStatus.music_selected)">
-    <button mat-button (click)="showPositionContent()">Position</button>
+    <button style="position: absolute; right: 0px; top: 3px" mat-button (click)="showPositionContent()">Position</button>
     <div id="dimensionContent" [ngStyle]="{ display: this.moveableService.isPosition ? 'block' : 'none' }">
       <div style="display: flex; justify-content: space-between; width: 365px">
         <div
