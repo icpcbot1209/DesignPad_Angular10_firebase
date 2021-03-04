@@ -1,19 +1,22 @@
 <div style="display: flex; align-items: center; position: relative">
-  <form class="example-form" style="padding-right: 10px; max-width: 190px; cursor: pointer" (click)="showFontList()">
-    <mat-form-field class="example-full-width">
-      <mat-label>Font</mat-label>
-      <input
-        #font
-        id="fontInput"
-        type="text"
-        aria-label="Number"
-        matInput
-        [formControl]="fontControl"
-        style="cursor: pointer"
-        [attr.disabled]="true"
-      />
-    </mat-form-field>
-  </form>
+  <div>
+    <form id="fontForm" class="example-form" style="padding-right: 10px; max-width: 190px">
+      <mat-form-field class="example-full-width">
+        <mat-label>Font</mat-label>
+        <input
+          #font
+          id="fontInput"
+          type="text"
+          aria-label="Number"
+          matInput
+          [formControl]="fontControl"
+          style="cursor: pointer"
+          [attr.disabled]="true"
+        />
+      </mat-form-field>
+    </form>
+    <div id="fontSelector" style="position: absolute; top: 0; cursor: pointer" (click)="showFontList()"></div>
+  </div>
 
   <form class="example-form" style="width: 60px">
     <mat-form-field class="example-full-width">

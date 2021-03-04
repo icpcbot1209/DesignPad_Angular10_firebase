@@ -307,6 +307,8 @@ export class DesignService {
   isResizeObserver: boolean = false;
 
   onKeyEvent(e: KeyboardEvent) {
+    e.preventDefault();
+    e.stopPropagation();
     if (!this.isOnInput && (e.key === 'Delete' || e.key === 'Backspace')) {
       this.deleteSelectedItems();
       e.stopImmediatePropagation();

@@ -97,6 +97,12 @@ export class TextToolbarComponent implements OnInit {
       .querySelector('.ql-editor') as HTMLElement;
     qlEditor.style.lineHeight = item.lineHeight + 'em';
     qlEditor.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
+
+    let fontFormEle = document.querySelector('#fontForm').firstChild.firstChild.firstChild as HTMLElement;
+    let fontSelector = document.querySelector('#fontSelector') as HTMLElement;
+
+    fontSelector.style.width = fontFormEle.clientWidth + 'px';
+    fontSelector.style.height = fontFormEle.clientHeight + 'px';
   }
 
   catchEnterKey(event) {
@@ -123,6 +129,7 @@ export class TextToolbarComponent implements OnInit {
   }
 
   showFontList() {
+    console.log('showFontList');
     this.ds.setStatus(this.ItemStatus.text_font_list);
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
   }
