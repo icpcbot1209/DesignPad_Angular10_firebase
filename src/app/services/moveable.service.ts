@@ -221,7 +221,7 @@ export class MoveableService {
 
       this.previousTarget = targets[0];
     } else {
-      if (this.ds.status == ItemStatus.image_crop || this.ds.status == ItemStatus.element_crop) {
+      if (this.ds.status == ItemStatus.image_crop || this.ds.status == ItemStatus.element_crop || this.ds.status == ItemStatus.video_crop) {
         this.ur.saveTheData(this.ds.theDesign);
       }
       this.ds.onSelectNothing();
@@ -499,6 +499,8 @@ export class MoveableService {
 
     if (item.type == ItemType.element) {
       this.moveable = this.makeClipableElement(item.pageId, target);
+    } else if (item.type == ItemType.video) {
+      this.moveable = this.makeClipableVideo(item.pageId, target);
     } else this.moveable = this.makeClipableImage(item.pageId, target);
   }
 
@@ -633,6 +635,64 @@ export class MoveableService {
     return moveable;
   }
 
+  makeClipableVideo(pageId: number, target: HTMLElement | SVGElement) {
+    let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
+
+    const moveable = new Moveable(pageContainer, {
+      // If you want to use a group, set multiple targets(type: Array<HTMLElement | SVGElement>).
+      target: target,
+      container: pageContainer,
+      clippable: true,
+      clipRelative: true,
+      clipArea: false,
+      dragArea: true,
+      dragWithClip: true,
+      defaultClipPath: 'inset',
+      clipTargetBounds: true,
+      clipVerticalGuidelines: [],
+      clipHorizontalGuidelines: [],
+
+      draggable: true,
+      throttleDrag: 0,
+      startDragRotate: 0,
+      throttleDragRotate: 0,
+      zoom: 1,
+      origin: true,
+      padding: { left: 0, top: 0, right: 0, bottom: 0 },
+      snapThreshold: 5,
+    });
+
+    moveable.on('clip', (e: OnClip) => {
+      if (e.clipType === 'rect') {
+        e.target.style.clip = e.clipStyle;
+      } else {
+        e.target.style.clipPath = e.clipStyle;
+      }
+      let item = this.getItem(e.target);
+      item.clipStyle = e.clipStyle;
+    });
+
+    /* draggable */
+    moveable
+      .on('dragStart', (e: OnDragStart) => {
+        let item = this.getItem(e.target);
+        e.set([item.x, item.y]);
+      })
+      .on('drag', (e: OnDrag) => {
+        if (e.inputEvent.buttons === 0) return;
+
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
+
+        e.target.style.transform = this.strTransform(item);
+        // this.isDragItem = true;
+      })
+      .on('dragEnd', (e: OnDragEnd) => {});
+
+    return moveable;
+  }
+
   makeMoveableText(pageId: number, target: HTMLElement | SVGElement) {
     let pageContainer: HTMLElement | SVGElement = document.querySelector('#page-' + pageId);
 
@@ -749,6 +809,38 @@ export class MoveableService {
       });
 
     return moveable;
+  }
+
+  startVideoCrop() {
+    if (!this.moveable) return;
+
+    let target = <HTMLElement | SVGElement>this.moveable.target;
+    let item = this.getItem(target);
+    if (item.clipStyle) this.tempClipStyle = JSON.parse(JSON.stringify(item.clipStyle));
+    else this.tempClipStyle = '';
+
+    this.clearMoveable();
+
+    if (item.type == ItemType.element) {
+      this.moveable = this.makeClipableElement(item.pageId, target);
+    } else this.moveable = this.makeClipableImage(item.pageId, target);
+  }
+
+  endVideoCrop(isSave: boolean) {
+    if (!this.moveable) return;
+
+    let target = <HTMLElement | SVGElement>this.moveable.target;
+    let item = this.getItem(target);
+
+    if (!isSave) {
+      target.style.clip = this.tempClipStyle;
+      target.style.clipPath = this.tempClipStyle;
+      item.clipStyle = this.tempClipStyle;
+    } else {
+    }
+
+    this.clearMoveable();
+    this.moveable = this.makeMoveableImage(item.pageId, target);
   }
 
   getItem(target: HTMLElement | SVGElement): Item {
@@ -1016,9 +1108,9 @@ export class MoveableService {
         e.target.style.width = `${e.width}px`;
         e.target.style.height = `${e.height}px`;
 
-        let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId).querySelector('svg');
-        svgEle.setAttribute('width', item.w.toString());
-        svgEle.setAttribute('height', item.h.toString());
+        let videoEle = document.querySelector('#videoElement-' + item.pageId + '-' + item.itemId) as HTMLElement;
+        videoEle.style.width = `${e.width}px`;
+        videoEle.style.height = `${e.height}px`;
       })
       .on('resizeEnd', (e: OnResizeEnd) => {
         this.ur.saveTheData(this.ds.theDesign);

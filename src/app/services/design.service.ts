@@ -418,9 +418,10 @@ export class DesignService {
   setStatus(status: ItemStatus): void {
     const moveableService = this.injector.get(MoveableService);
 
-    if (status === ItemStatus.image_crop) this.startImageCrop();
-    else if (this.status === ItemStatus.image_crop) this.endImageCrop(true);
-    else this.status = status;
+    // if (status === ItemStatus.image_crop) this.startImageCrop();
+    // else if (this.status === ItemStatus.image_crop) this.endImageCrop(true);
+    // else this.status = status;
+    this.status = status;
 
     moveableService.isPosition = false;
   }
@@ -436,6 +437,13 @@ export class DesignService {
     ms.startImageCrop();
   }
 
+  endImageCrop(isSave: boolean) {
+    this.status = ItemStatus.image_selected;
+
+    const ms = this.injector.get(MoveableService);
+    ms.endImageCrop(isSave);
+  }
+
   startElementCrop() {
     if (!this.theItem || !(this.theItem.type == ItemType.element)) return;
     this.status = ItemStatus.element_crop;
@@ -444,8 +452,16 @@ export class DesignService {
     ms.startImageCrop();
   }
 
-  endImageCrop(isSave: boolean) {
-    this.status = ItemStatus.image_selected;
+  startVideoCrop() {
+    if (!this.theItem || !(this.theItem.type == ItemType.video)) return;
+    this.status = ItemStatus.video_crop;
+
+    const ms = this.injector.get(MoveableService);
+    ms.startImageCrop();
+  }
+
+  endVideoCrop(isSave: boolean) {
+    this.status = ItemStatus.video_selected;
 
     const ms = this.injector.get(MoveableService);
     ms.endImageCrop(isSave);

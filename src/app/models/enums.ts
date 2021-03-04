@@ -20,4 +20,5 @@ export enum ItemStatus {
   element_selected,
   music_selected,
   video_selected,
+  video_crop,
 }
