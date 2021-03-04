@@ -39,7 +39,7 @@ export class VideoUpload {
       canvas.addEventListener('error', reject);
       video.addEventListener('error', reject);
       video.addEventListener('canplay', (event) => {
-        let max = 85;
+        let max = 88.38;
 
         this.width = video.videoWidth;
         this.height = video.videoHeight;
@@ -93,6 +93,7 @@ export class VideoUpload {
         this.downloadURL = await ref.getDownloadURL().toPromise();
 
         let collectionName = isAdmin ? 'Videos' : 'UserFiles';
+        let duration = await this.getDuration(this.downloadURL);
 
         this.db.collection<AssetVideo>(collectionName).add({
           downloadURL: this.downloadURL,
@@ -103,8 +104,26 @@ export class VideoUpload {
           timestamp: Date.now(),
           userId,
           tags: [file.name],
+          duration: duration,
         });
       })
     );
+  }
+
+  getDuration(downloadURL) {
+    return new Promise(function (resolve) {
+      let video = document.createElement('video');
+
+      video.addEventListener(
+        'loadedmetadata',
+        function () {
+          console.log(video.duration);
+          resolve(video.duration);
+        },
+        false
+      );
+
+      video.src = downloadURL;
+    });
   }
 }

@@ -106,4 +106,5 @@ export interface AssetVideo {
   timestamp: number;
   userId: string;
   tags: string[];
+  duration;
 }
