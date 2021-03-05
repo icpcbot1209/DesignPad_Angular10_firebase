@@ -34,6 +34,12 @@ export class ToolbarComponent implements OnInit {
     this.ds.theDesign.category.size.x = this.theDesignWidth;
     this.ds.theDesign.category.size.y = this.theDesignHeight;
     this.moveableService.isDimension = false;
+
+    let designPanel = document.querySelector<HTMLElement>('#designPanel');
+    let width = designPanel.clientWidth;
+    let height = designPanel.clientHeight;
+
+    this.ds.zoomFitInside(width, height);
   }
 
   showDimensionContent() {
