@@ -307,15 +307,17 @@ export class DesignService {
   isResizeObserver: boolean = false;
 
   onKeyEvent(e: KeyboardEvent) {
-    e.preventDefault();
-    e.stopPropagation();
     if (!this.isOnInput && (e.key === 'Delete' || e.key === 'Backspace')) {
+      e.preventDefault();
+      e.stopPropagation();
       this.deleteSelectedItems();
       e.stopImmediatePropagation();
       return false;
     }
 
     if (!this.isOnInput && e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      e.stopPropagation();
       if (!this.isStatus(ItemStatus.text_effect)) {
         this.ur.isUndoRedo = true;
         this.theDesign = this.ur.undoTheData();
@@ -325,6 +327,8 @@ export class DesignService {
     }
 
     if (!this.isOnInput && e.key === 'y' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      e.stopPropagation();
       if (!this.isStatus(ItemStatus.text_effect)) {
         this.ur.isUndoRedo = true;
         this.theDesign = this.ur.redoTheData();

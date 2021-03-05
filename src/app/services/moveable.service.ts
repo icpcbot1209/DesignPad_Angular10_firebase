@@ -764,7 +764,7 @@ export class MoveableService {
           e.target.style.height = item.h + 'px';
           e.target.style.transform = this.strTransform(item);
           let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
-          editorEle.style.width = item.w + 'px';
+          editorEle.style.width = item.w + 1 + 'px';
           editorEle.style.fontSize = item.fontSize;
         } else {
           let item = this.getItem(e.target);
