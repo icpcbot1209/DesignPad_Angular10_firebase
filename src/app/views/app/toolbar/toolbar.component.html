@@ -80,26 +80,38 @@
     <div id="dimensionContent" [ngStyle]="{ display: this.moveableService.isDimension ? 'block' : 'none' }">
       <div style="display: flex; flex-direction: column">
         <label style="font-size: 12px; font-weight: 500">Dimension</label>
-        <div>
-          <span style="margin-right: 10px">Width:</span>
+        <div style="display: flex">
+          <span style="padding: 3px 10px">Width:</span>
           <input
             type="number"
-            style="width: 50px; text-align: center"
-            [(ngModel)]="theDesignWidth"
+            style="width: 50px; text-align: center; border: 1px solid #d7d7d7"
+            [(ngModel)]="roundedWidth"
             (focus)="this.ds.isOnInput = true"
             (focusout)="this.ds.isOnInput = false"
           />
-          <span style="margin-left: 5px; margin-right: 50px">px</span>
 
-          <span style="margin-right: 10px">Height:</span>
+          <span style="padding: 3px 10px">Height:</span>
           <input
             type="number"
-            style="width: 50px; text-align: center"
-            [(ngModel)]="theDesignHeight"
+            style="width: 50px; text-align: center; border: 1px solid #d7d7d7"
+            [(ngModel)]="roundedHeight"
             (focus)="this.ds.isOnInput = true"
             (focusout)="this.ds.isOnInput = false"
           />
-          <span style="margin-left: 5px">px</span>
+
+          <div style="width: 65px; margin: 0px 10px">
+            <ng-select
+              id="dimension"
+              appearance="outline"
+              [items]="tags"
+              dropdownPosition="below"
+              [searchable]="false"
+              [clearable]="false"
+              (change)="changeValueType($event)"
+              [(ngModel)]="this.ds.selectedDimensionType"
+            >
+            </ng-select>
+          </div>
         </div>
         <button class="btn btn-secondary" style="width: 100%; border-radius: 4px; font-weight: 500; margin-top: 15px" (click)="setDesign()">
           Resize design

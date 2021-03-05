@@ -12,6 +12,9 @@ export class DesignService {
   constructor(private injector: Injector, public ur: UndoRedoService) {}
   theDesign: Design;
 
+  selectedDimensionType = 'px';
+  previousType = 'px';
+
   init() {
     this.theDesign = {
       uid: '',
@@ -500,6 +503,49 @@ export class DesignService {
       this.theItem.filter = css;
       this.updateFilterObj(this.theItem);
     }
+  }
+
+  inchToPxRatio = 0.0104166667;
+  mmToPxRatio = 0.2645833333;
+  cmToPxRatio = 0.026458333;
+
+  getRatio(type) {
+    let ratio;
+
+    switch (type) {
+      case 'px':
+        ratio = 1;
+        break;
+      case 'in':
+        ratio = this.inchToPxRatio;
+        break;
+      case 'mm':
+        ratio = this.mmToPxRatio;
+        break;
+      case 'cm':
+        ratio = this.cmToPxRatio;
+        break;
+    }
+
+    return ratio;
+  }
+
+  toPx(type, value) {
+    let ratio = this.getRatio(type);
+    // let convertedValue = Math.round((value / ratio) * 1000) / 1000;
+    let convertedValue = value / ratio;
+
+    console.log(value, ratio, value / ratio);
+
+    return convertedValue;
+  }
+
+  pxTo(type, value) {
+    let ratio = this.getRatio(type);
+    // let convertedValue = Math.round(value * ratio * 1000) / 1000;
+    let convertedValue = value * ratio;
+
+    return convertedValue;
   }
 
   presets: Preset[] = [

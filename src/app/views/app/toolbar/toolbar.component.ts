@@ -15,6 +15,10 @@ export class ToolbarComponent implements OnInit {
 
   theDesignWidth;
   theDesignHeight;
+  width;
+  height;
+  roundedWidth;
+  roundedHeight;
 
   activeColor = Colors.getColors().separatorColor;
   ItemType = ItemType;
@@ -26,11 +30,16 @@ export class ToolbarComponent implements OnInit {
   underItem = -1;
   overItem = -1;
 
+  tags = ['px', 'in', 'mm', 'cm'];
+
   ngOnInit(): void {
     this.fileTypeItems = ['PDF', 'JPG'];
   }
 
   setDesign() {
+    this.theDesignWidth = this.ds.toPx(this.ds.selectedDimensionType, this.roundedWidth);
+    this.theDesignHeight = this.ds.toPx(this.ds.selectedDimensionType, this.roundedHeight);
+
     this.ds.theDesign.category.size.x = this.theDesignWidth;
     this.ds.theDesign.category.size.y = this.theDesignHeight;
     this.moveableService.isDimension = false;
@@ -43,8 +52,10 @@ export class ToolbarComponent implements OnInit {
   }
 
   showDimensionContent() {
-    this.theDesignWidth = this.ds.pageW();
-    this.theDesignHeight = this.ds.pageH();
+    this.roundedWidth = this.ds.pxTo(this.ds.selectedDimensionType, this.ds.pageW());
+    this.roundedHeight = this.ds.pxTo(this.ds.selectedDimensionType, this.ds.pageH());
+    this.width = this.roundedWidth;
+    this.height = this.roundedHeight;
     this.moveableService.isDimension = !this.moveableService.isDimension;
   }
 
@@ -197,5 +208,19 @@ export class ToolbarComponent implements OnInit {
 
     if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
     return true;
+  }
+
+  changeValueType(event) {
+    this.theDesignWidth = this.ds.toPx(this.ds.previousType, this.width);
+    this.theDesignHeight = this.ds.toPx(this.ds.previousType, this.height);
+    this.ds.previousType = event;
+    console.log(this.ds.previousType, this.theDesignWidth, this.theDesignHeight);
+
+    this.width = this.ds.pxTo(this.ds.selectedDimensionType, this.theDesignWidth);
+    this.height = this.ds.pxTo(this.ds.selectedDimensionType, this.theDesignHeight);
+    this.roundedWidth = Math.round(this.width * 100) / 100;
+    this.roundedHeight = Math.round(this.height * 100) / 100;
+
+    console.log(this.ds.selectedDimensionType, this.width, this.height);
   }
 }
