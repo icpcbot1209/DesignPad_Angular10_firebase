@@ -1150,6 +1150,8 @@ export class MoveableService {
             item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
             selectorEle.style.width = width;
             selectorEle.style.height = height;
+            item.w = parseFloat(width);
+            item.h = parseFloat(height);
             selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
             if (!this.isOnResize) {
               this.setSelectable(itemId, pageId, '#textSelector-');
