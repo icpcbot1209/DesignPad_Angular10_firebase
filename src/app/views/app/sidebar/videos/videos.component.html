@@ -5,6 +5,8 @@
   [placeholder]="'Search'"
   (change)="readVideosByTag($event)"
   (clear)="readVideosByTag('')"
+  (focus)="this.ds.isOnInput = true"
+  (blur)="this.ds.isOnInput = false"
 >
 </ng-select>
 

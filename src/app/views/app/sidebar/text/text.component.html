@@ -1,4 +1,10 @@
-<input class="form-control search-box" (keyup)="onKeyUpSearch($event)" placeholder="Search by tag" />
+<input
+  class="form-control search-box"
+  (keyup)="onKeyUpSearch($event)"
+  placeholder="Search by tag"
+  (focus)="this.ds.isOnInput = true"
+  (focusout)="this.ds.isOnInput = false"
+/>
 
 <perfect-scrollbar style="height: calc(100% - 50px)" [config]="{ suppressScrollX: true, wheelPropagation: false }">
   <div style="margin: 20px">

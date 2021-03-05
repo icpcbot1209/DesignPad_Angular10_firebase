@@ -1,5 +1,14 @@
 <div style="height: 100%">
-  <ng-select id="searchFontInput" style="margin: 10px 5px" bindLabel="name" [placeholder]="'Search'" [isOpen]="false"> </ng-select>
+  <ng-select
+    id="searchFontInput"
+    style="margin: 10px 5px"
+    bindLabel="name"
+    [placeholder]="'Search'"
+    [isOpen]="false"
+    (focus)="this.ds.isOnInput = true"
+    (blur)="this.ds.isOnInput = false"
+  >
+  </ng-select>
 
   <div
     #perfectScroll

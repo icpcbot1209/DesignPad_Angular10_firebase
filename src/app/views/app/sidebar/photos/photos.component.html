@@ -5,13 +5,12 @@
   [placeholder]="'Search'"
   (change)="readImagesByTag($event)"
   (clear)="readImagesByTag('')"
+  (focus)="this.ds.isOnInput = true"
+  (blur)="this.ds.isOnInput = false"
 >
 </ng-select>
 
-<perfect-scrollbar
-  style="height: calc(100% - 50px)"
-  [config]="{ suppressScrollX: true, wheelPropagation: false }"
->
+<perfect-scrollbar style="height: calc(100% - 50px)" [config]="{ suppressScrollX: true, wheelPropagation: false }">
   <div #gridContainer class="grid-container">
     <img
       class="grid-item"

@@ -82,11 +82,23 @@
         <label style="font-size: 12px; font-weight: 500">Dimension</label>
         <div>
           <span style="margin-right: 10px">Width:</span>
-          <input type="number" style="width: 50px; text-align: center" [(ngModel)]="theDesignWidth" />
+          <input
+            type="number"
+            style="width: 50px; text-align: center"
+            [(ngModel)]="theDesignWidth"
+            (focus)="this.ds.isOnInput = true"
+            (focusout)="this.ds.isOnInput = false"
+          />
           <span style="margin-left: 5px; margin-right: 50px">px</span>
 
           <span style="margin-right: 10px">Height:</span>
-          <input type="number" style="width: 50px; text-align: center" [(ngModel)]="theDesignHeight" />
+          <input
+            type="number"
+            style="width: 50px; text-align: center"
+            [(ngModel)]="theDesignHeight"
+            (focus)="this.ds.isOnInput = true"
+            (focusout)="this.ds.isOnInput = false"
+          />
           <span style="margin-left: 5px">px</span>
         </div>
         <button class="btn btn-secondary" style="width: 100%; border-radius: 4px; font-weight: 500; margin-top: 15px" (click)="setDesign()">

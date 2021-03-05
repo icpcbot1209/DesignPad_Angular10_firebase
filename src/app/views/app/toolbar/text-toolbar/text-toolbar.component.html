@@ -3,16 +3,8 @@
     <form id="fontForm" class="example-form" style="padding-right: 10px; max-width: 190px">
       <mat-form-field class="example-full-width">
         <mat-label>Font</mat-label>
-        <input
-          #font
-          id="fontInput"
-          type="text"
-          aria-label="Number"
-          matInput
-          [formControl]="fontControl"
-          style="cursor: pointer"
-          [attr.disabled]="true"
-        />
+        <input #font id="fontInput" type="text" aria-label="Number" matInput [formControl]="fontControl" style="cursor: pointer" disabled />
+        <!-- [attr.disabled]="true" -->
       </mat-form-field>
     </form>
     <div id="fontSelector" style="position: absolute; top: 0; cursor: pointer" (click)="showFontList()"></div>
@@ -31,6 +23,8 @@
         [matAutocomplete]="auto"
         (keypress)="catchEnterKey($event)"
         (click)="showPanel()"
+        (focus)="this.ds.isOnInput = true"
+        (focusout)="this.ds.isOnInput = false"
       />
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected()">
         <mat-option *ngFor="let size of fontSizes" [value]="size">
@@ -75,8 +69,20 @@
               </mat-slider>
             </div>
             <div class="columnStyle">
-              <input class="lineHeightInput" type="number" [(ngModel)]="letter" />
-              <input class="lineHeightInput" type="number" [(ngModel)]="lineHeight" />
+              <input
+                class="lineHeightInput"
+                type="number"
+                [(ngModel)]="letter"
+                (focus)="this.ds.isOnInput = true"
+                (focusout)="this.ds.isOnInput = false"
+              />
+              <input
+                class="lineHeightInput"
+                type="number"
+                [(ngModel)]="lineHeight"
+                (focus)="this.ds.isOnInput = true"
+                (focusout)="this.ds.isOnInput = false"
+              />
             </div>
           </div>
         </div>

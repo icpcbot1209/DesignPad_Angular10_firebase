@@ -19,7 +19,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Offset</span>
-        <input type="number" [(ngModel)]="offset" />
+        <input type="number" [(ngModel)]="offset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -35,7 +35,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Direction</span>
-        <input type="number" [(ngModel)]="angle" />
+        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -51,7 +51,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Blur</span>
-        <input type="number" [(ngModel)]="blur" />
+        <input type="number" [(ngModel)]="blur" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -67,7 +67,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Transparency</span>
-        <input type="number" [(ngModel)]="opacity" />
+        <input type="number" [(ngModel)]="opacity" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -83,7 +83,14 @@
     <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (change)="saveTheData()" (input)="onInputShadowColorChange()" />
+        <input
+          type="color"
+          [(ngModel)]="shadowColor"
+          (change)="saveTheData()"
+          (input)="onInputShadowColorChange()"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
     </div>
   </div>
@@ -93,7 +100,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
-        <input type="number" [(ngModel)]="intensity" />
+        <input type="number" [(ngModel)]="intensity" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -128,7 +135,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Thickness</span>
-        <input type="number" [(ngModel)]="thickness" />
+        <input type="number" [(ngModel)]="thickness" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -144,7 +151,14 @@
     <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="outlineColor" (change)="saveTheData()" (input)="onInputHollowColorChange()" />
+        <input
+          type="color"
+          [(ngModel)]="outlineColor"
+          (change)="saveTheData()"
+          (input)="onInputHollowColorChange()"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
     </div>
   </div>
@@ -154,7 +168,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Offset</span>
-        <input type="number" [(ngModel)]="spliceOffset" />
+        <input type="number" [(ngModel)]="spliceOffset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -170,7 +184,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Direction</span>
-        <input type="number" [(ngModel)]="angle" />
+        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -186,7 +200,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Thickness</span>
-        <input type="number" [(ngModel)]="thickness" />
+        <input type="number" [(ngModel)]="thickness" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -202,13 +216,29 @@
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (change)="saveTheData()" (input)="onInputShadowColorChange()" [value]="shadowColor" />
+        <input
+          type="color"
+          [(ngModel)]="shadowColor"
+          (change)="saveTheData()"
+          (input)="onInputShadowColorChange()"
+          [value]="shadowColor"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
     </div>
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Outline Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="outlineColor" (change)="saveTheData()" (input)="onInputHollowColorChange()" [value]="outlineColor" />
+        <input
+          type="color"
+          [(ngModel)]="outlineColor"
+          (change)="saveTheData()"
+          (input)="onInputHollowColorChange()"
+          [value]="outlineColor"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
     </div>
   </div>
@@ -218,7 +248,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Offset</span>
-        <input type="number" [(ngModel)]="echoOffset" />
+        <input type="number" [(ngModel)]="echoOffset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -234,7 +264,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Direction</span>
-        <input type="number" [(ngModel)]="angle" />
+        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -250,7 +280,15 @@
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (change)="saveTheData()" (input)="onInputMultiShadowColorChange()" [value]="shadowColor" />
+        <input
+          type="color"
+          [(ngModel)]="shadowColor"
+          (change)="saveTheData()"
+          (input)="onInputMultiShadowColorChange()"
+          [value]="shadowColor"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
     </div>
   </div>
@@ -275,7 +313,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Offset</span>
-        <input type="number" [(ngModel)]="glitchOffset" />
+        <input type="number" [(ngModel)]="glitchOffset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -291,7 +329,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Direction</span>
-        <input type="number" [(ngModel)]="angle" />
+        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -330,7 +368,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
-        <input type="number" [(ngModel)]="neonValue" />
+        <input type="number" [(ngModel)]="neonValue" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -346,7 +384,15 @@
     <div class="d-flex justify-content-between" style="padding: 8px">
       <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
       <div id="colorPicker" style="margin-left: auto">
-        <input type="color" [(ngModel)]="shadowColor" (change)="saveTheData()" (input)="onInputNeonColorChange()" [value]="shadowColor" />
+        <input
+          type="color"
+          [(ngModel)]="shadowColor"
+          (change)="saveTheData()"
+          (input)="onInputNeonColorChange()"
+          [value]="shadowColor"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
     </div>
   </div>
@@ -356,7 +402,7 @@
     <div>
       <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
         <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
-        <input type="number" [(ngModel)]="curveValue" />
+        <input type="number" [(ngModel)]="curveValue" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
       </div>
       <mat-slider
         class="shadowSlider"

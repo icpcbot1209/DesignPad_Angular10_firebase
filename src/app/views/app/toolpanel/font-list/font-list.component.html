@@ -6,6 +6,8 @@
   [isOpen]="false"
   (clear)="onClear()"
   (search)="onSearch($event)"
+  (focus)="this.ds.isOnInput = true"
+  (blur)="this.ds.isOnInput = false"
 >
 </ng-select>
 
