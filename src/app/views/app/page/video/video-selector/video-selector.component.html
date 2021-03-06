@@ -6,12 +6,16 @@
   [attr.itemId]="item.itemId"
   [attr.itemType]="item.type"
   (dblclick)="startVideoCrop()"
-  (mouseenter)="ds.isShowPlayButton = true"
-  (mouseleave)="ds.isShowPlayButton = false"
+  (mouseenter)="ds.onPlayButton = true"
+  (mouseleave)="ds.onPlayButton = false"
 >
-  <div [ngStyle]="{ display: ds.isShowPlayButton ? 'block' : 'none' }">
+  <div
+    [ngStyle]="{
+      display: ds.isStatus(ItemStatus.video_selected) && (!ds.onPlayVideo || ds.onPlayButton) ? 'block' : 'none'
+    }"
+  >
     <div [ngStyle]="playButtonSelector(item)" (click)="playVideo()">
-      <svg [ngStyle]="{ display: !ds.isPlayVideo ? 'block' : 'none' }" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg [ngStyle]="{ display: !ds.onPlayVideo ? 'block' : 'none' }" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -20,7 +24,7 @@
         ></path>
       </svg>
       <svg
-        [ngStyle]="{ display: ds.isPlayVideo ? 'block' : 'none' }"
+        [ngStyle]="{ display: ds.onPlayVideo ? 'block' : 'none' }"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="white"

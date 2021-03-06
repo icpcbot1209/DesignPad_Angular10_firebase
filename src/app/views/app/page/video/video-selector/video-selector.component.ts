@@ -14,9 +14,13 @@ import * as CSS from 'csstype';
 export class VideoSelectorComponent implements OnInit {
   @Input('item') item;
 
+  ItemStatus = ItemStatus;
+
   constructor(public ds: DesignService, public moveableService: MoveableService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.ds.setStatus(ItemStatus.video_selected);
+  }
 
   ngAfterViewInit(): void {
     this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-');
@@ -63,6 +67,9 @@ export class VideoSelectorComponent implements OnInit {
   }
 
   startVideoCrop() {
+    if (this.ds.onPlayVideo) {
+      this.ds.playVideo(this.item);
+    }
     this.ds.setStatus(ItemStatus.video_crop);
   }
 }

@@ -365,7 +365,7 @@ export class DesignService {
    **********************************************/
 
   theItem: Item;
-  public status: ItemStatus = ItemStatus.none;
+  status: ItemStatus = ItemStatus.none;
 
   onSelectNothing() {
     this.theItem = null;
@@ -553,15 +553,15 @@ export class DesignService {
   }
 
   selectedVideo: HTMLVideoElement;
-  isPlayVideo = false;
-  isShowPlayButton = true;
+  onPlayVideo = false;
+  onPlayButton = true;
   playVideo(item) {
     let vid = document.getElementById('videoElement-' + item.pageId + '-' + item.itemId) as HTMLVideoElement;
-    console.log(this.isPlayVideo);
-    if (!this.isPlayVideo) vid.play();
+    console.log(this.onPlayVideo);
+    if (!this.onPlayVideo) vid.play();
     else vid.pause();
 
-    this.isPlayVideo = !this.isPlayVideo;
+    this.onPlayVideo = !this.onPlayVideo;
   }
 
   setClipPathToNumber() {

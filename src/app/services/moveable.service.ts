@@ -221,6 +221,10 @@ export class MoveableService {
 
       this.previousTarget = targets[0];
     } else {
+      if (this.ds.onPlayVideo) {
+        let item = this.ds.theDesign.pages[this.selectedPageId].items[this.selectedItemId];
+        this.ds.playVideo(item);
+      }
       if (this.ds.status == ItemStatus.image_crop || this.ds.status == ItemStatus.element_crop || this.ds.status == ItemStatus.video_crop) {
         this.ur.saveTheData(this.ds.theDesign);
       }
