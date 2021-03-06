@@ -6,6 +6,8 @@
   [attr.itemId]="item.itemId"
   [attr.itemType]="item.type"
   (dblclick)="ds.startVideoCrop()"
+  (mouseenter)="ds.isShowPlayButton = true"
+  (mouseleave)="ds.isShowPlayButton = false"
 >
   <div [ngStyle]="playButtonSelector(item)" (click)="playVideo()"></div>
 </div>

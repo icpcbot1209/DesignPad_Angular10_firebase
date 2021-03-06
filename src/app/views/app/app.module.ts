@@ -52,6 +52,7 @@ import { MusicToolbarComponent } from './toolbar/music-toolbar/music-toolbar.com
 import { VideosComponent } from './sidebar/videos/videos.component';
 import { VideoElementComponent } from './page/video/video-element/video-element.component';
 import { VideoSelectorComponent } from './page/video/video-selector/video-selector.component';
+import { VideoToolbarComponent } from './toolbar/video-toolbar/video-toolbar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -85,6 +86,7 @@ import { VideoSelectorComponent } from './page/video/video-selector/video-select
     VideosComponent,
     VideoElementComponent,
     VideoSelectorComponent,
+    VideoToolbarComponent,
   ],
   imports: [
     CommonModule,

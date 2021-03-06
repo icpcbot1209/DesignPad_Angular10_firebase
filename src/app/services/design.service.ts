@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { ElementRef, Injectable, Injector } from '@angular/core';
 import { ItemStatus, ItemType } from '../models/enums';
 import { ImageFilterObj } from '../models/image-filter';
 import { AssetImage, Design, Item } from '../models/models';
@@ -547,6 +547,18 @@ export class DesignService {
     let convertedValue = value * ratio;
 
     return convertedValue;
+  }
+
+  selectedVideo: HTMLVideoElement;
+  isPlayVideo = false;
+  isShowPlayButton = true;
+  playVideo(item) {
+    let vid = document.getElementById('videoElement-' + item.pageId + '-' + item.itemId) as HTMLVideoElement;
+    console.log(this.isPlayVideo);
+    if (!this.isPlayVideo) vid.play();
+    else vid.pause();
+
+    this.isPlayVideo = !this.isPlayVideo;
   }
 
   presets: Preset[] = [

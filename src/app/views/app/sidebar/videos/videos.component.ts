@@ -115,7 +115,6 @@ export class VideosComponent implements AfterViewInit {
   }
 
   addVideoOnPage(item) {
-    this.ds.setStatus(ItemStatus.video_selected);
     this.ds.sidebar_video_add(item);
   }
 }

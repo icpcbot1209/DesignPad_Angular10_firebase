@@ -18,6 +18,10 @@ export class VideoElementComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  ngAfterViewInit(): void {
+    this.ds.selectedVideo = document.querySelector('#videoElement-' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
+  }
+
   styleItem(item: Item): CSS.Properties {
     return {
       position: 'absolute',

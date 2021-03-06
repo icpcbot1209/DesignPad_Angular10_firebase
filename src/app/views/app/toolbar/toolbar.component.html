@@ -11,6 +11,9 @@
   <ng-container *ngIf="ds.isStatus(ItemStatus.music_selected)">
     <app-music-toolbar style="width: 100%; height: 100%"></app-music-toolbar>
   </ng-container>
+  <ng-container *ngIf="ds.isStatus(ItemStatus.video_selected)">
+    <app-video-toolbar></app-video-toolbar>
+  </ng-container>
 
   <ng-container *ngIf="!ds.isStatus(ItemStatus.music_selected)">
     <button style="position: absolute; right: 0px; top: 3px" mat-button (click)="showPositionContent()">Position</button>
