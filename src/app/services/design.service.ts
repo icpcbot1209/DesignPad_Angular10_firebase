@@ -14,6 +14,7 @@ export class DesignService {
 
   selectedDimensionType = 'px';
   previousType = 'px';
+  previousSelectedFontItemFamily = 'Alata';
 
   init() {
     this.theDesign = {

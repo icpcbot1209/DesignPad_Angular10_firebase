@@ -21,7 +21,6 @@ export class ElementsComponent implements OnInit {
   textPart: string = '';
   index: number;
   previousSelectedFontItemIndex: number = null;
-  previousSelectedFontItemFamily: string = 'Alata';
 
   isLoading = false;
   assetElements: AssetElement[] = [];

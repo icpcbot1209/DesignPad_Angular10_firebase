@@ -87,7 +87,6 @@ export class TextToolbarComponent implements OnInit {
     item = this.moveableService.getItem(ele);
 
     setTimeout(() => {
-      this.fontEle.value = 'Alata';
       this.sizeEle.value = item.fontSize.substr(0, item.fontSize.length - 2);
       this.fontControl.disable();
     });

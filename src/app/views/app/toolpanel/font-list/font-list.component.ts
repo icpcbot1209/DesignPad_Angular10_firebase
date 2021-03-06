@@ -26,7 +26,6 @@ export class FontListComponent implements OnInit {
   textPart: string = '';
   index: number;
   previousSelectedFontItemIndex: number = null;
-  previousSelectedFontItemFamily: string = 'Alata';
 
   constructor(public toolbarService: ToolbarService, public moveableService: MoveableService, public ds: DesignService, public ur: UndoRedoService) {}
 
@@ -51,11 +50,12 @@ export class FontListComponent implements OnInit {
   }
 
   checkList(index: number, fontFamily: string) {
-    let ele = (document.querySelector<HTMLElement>(
-      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
-    ).style.fontFamily = fontFamily);
+    // let ele = (document.querySelector<HTMLElement>(
+    //   '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    // ).style.fontFamily = fontFamily);
+    // this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].fontFamily = fontFamily
     document.querySelector<HTMLInputElement>('#fontInput').value = fontFamily;
-    this.previousSelectedFontItemFamily = fontFamily;
+    this.ds.previousSelectedFontItemFamily = fontFamily;
     this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].fontFamily = fontFamily;
     this.ur.saveTheData(this.ds.theDesign);
   }

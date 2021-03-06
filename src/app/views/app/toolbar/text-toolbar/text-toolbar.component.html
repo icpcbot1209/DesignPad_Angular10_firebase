@@ -3,7 +3,17 @@
     <form id="fontForm" class="example-form" style="padding-right: 10px; max-width: 190px">
       <mat-form-field class="example-full-width">
         <mat-label>Font</mat-label>
-        <input #font id="fontInput" type="text" aria-label="Number" matInput [formControl]="fontControl" style="cursor: pointer" disabled />
+        <input
+          #font
+          id="fontInput"
+          type="text"
+          aria-label="Number"
+          matInput
+          [formControl]="fontControl"
+          [(ngModel)]="ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].fontFamily"
+          style="cursor: pointer"
+          disabled
+        />
         <!-- [attr.disabled]="true" -->
       </mat-form-field>
     </form>
