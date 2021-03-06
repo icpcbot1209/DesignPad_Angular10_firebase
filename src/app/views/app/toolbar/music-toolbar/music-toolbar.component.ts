@@ -13,7 +13,7 @@ export class MusicToolbarComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    (document.querySelector('#progress') as HTMLElement).style.width = (this.media.audio.currentTime / this.media.duration) * 100 + '%';
+    (document.querySelector('#musicProgress') as HTMLElement).style.width = (this.media.audio.currentTime / this.media.duration) * 100 + '%';
     (document.querySelector('.rotateIcon') as HTMLElement).style.border = '2px solid #00c4cc';
   }
 

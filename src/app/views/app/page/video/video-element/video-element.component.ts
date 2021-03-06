@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MoveableService } from '../../../../../services/moveable.service';
 import { DesignService } from '../../../../../services/design.service';
 import { Item } from '../../../../../models/models';
+import { MediaService } from 'src/app/services/media.service';
 
 import * as CSS from 'csstype';
 
@@ -14,12 +15,12 @@ export class VideoElementComponent implements OnInit {
   @Input('item') item;
   @ViewChild('videoElement') videoElement: ElementRef;
 
-  constructor(public moveableService: MoveableService, public ds: DesignService) {}
+  constructor(public moveableService: MoveableService, public ds: DesignService, public media: MediaService) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.ds.selectedVideo = document.querySelector('#videoElement-' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
+    // this.media.selectedVideo = document.querySelector('#videoElement-' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
   }
 
   styleItem(item: Item): CSS.Properties {

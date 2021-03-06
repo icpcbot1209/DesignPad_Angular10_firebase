@@ -3,7 +3,7 @@ import { AssetVideo } from '../../../../../app/models/models';
 
 import { AssetService } from '../../../../../app/services/asset.service';
 import { DesignService } from '../../../../../app/services/design.service';
-import { ItemStatus } from 'src/app/models/enums';
+import { MediaService } from 'src/app/services/media.service';
 
 @Component({
   selector: 'sidebar-videos',
@@ -16,7 +16,7 @@ export class VideosComponent implements AfterViewInit {
   previewTimer;
   videoEle = document.createElement('video');
 
-  constructor(public assetService: AssetService, public ds: DesignService) {}
+  constructor(public assetService: AssetService, public ds: DesignService, public media: MediaService) {}
 
   ngAfterViewInit(): void {
     this.readVideosByTag('');
@@ -59,8 +59,6 @@ export class VideosComponent implements AfterViewInit {
   }
 
   decideHeights(assetVideos: AssetVideo[], count, padding) {
-    // let ratios: number[] = [];
-    // let screenWidth = (document.querySelector('#gridContainer') as HTMLElement).offsetWidth - padding * count * 2;
     let screenWidth = 330 - padding * count * 2;
 
     for (let i = 1; i < assetVideos.length; i = i + 2) {

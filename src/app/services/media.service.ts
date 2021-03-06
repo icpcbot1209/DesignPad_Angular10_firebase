@@ -15,6 +15,7 @@ export class MediaService {
   currentTime = 0;
   angel: number = 0;
   duration: number;
+  selectedVideo: HTMLVideoElement = null;
 
   constructor(public ds: DesignService) {}
 
@@ -24,7 +25,7 @@ export class MediaService {
     setTimeout(() => {
       let ele = document.querySelector('.rotateIcon').firstChild as HTMLElement;
       ele.style.transform = 'rotate(0deg)';
-      ele = document.querySelector('#progress') as HTMLElement;
+      ele = document.querySelector('#musicProgress') as HTMLElement;
       ele.style.width = '0%';
     });
     this.setDefault();
@@ -72,8 +73,8 @@ export class MediaService {
       rotateEle.style.transform = 'rotate(' + this.angel + 'deg)';
 
       this.currentTime = this.audio.currentTime;
-      if (document.querySelector('#progress'))
-        (document.querySelector('#progress') as HTMLElement).style.width = (this.audio.currentTime / this.duration) * 100 + '%';
+      if (document.querySelector('#musicProgress'))
+        (document.querySelector('#musicProgress') as HTMLElement).style.width = (this.audio.currentTime / this.duration) * 100 + '%';
 
       if (this.audio.currentTime >= this.duration) {
         this.setDefault();
@@ -86,7 +87,7 @@ export class MediaService {
   deleteMusic() {
     let ele = document.querySelector('.rotateIcon').firstChild as HTMLElement;
     ele.style.transform = 'rotate(0deg)';
-    ele = document.querySelector('#progress') as HTMLElement;
+    ele = document.querySelector('#musicProgress') as HTMLElement;
     ele.style.width = '0%';
 
     this.setDefault();
@@ -114,5 +115,34 @@ export class MediaService {
 
     this.isPlayMusic = false;
     this.playMusic();
+  }
+
+  currentVideoTime = 0;
+  playVideoProgressTimer;
+  // playVideo() {
+  //   this.selectedVideo.play();
+
+  //   this.playVideoProgressTimer = setInterval(() => {
+  //     this.currentVideoTime = this.selectedVideo.currentTime;
+
+  //     if (document.querySelector('#videoProgress')) {
+  //       (document.querySelector('#videoProgress') as HTMLElement).style.width =
+  //         (this.selectedVideo.currentTime / this.selectedVideo.duration) * 100 + '%';
+  //       // console.log((this.selectedVideo.currentTime / this.selectedVideo.duration) * 100);
+  //     }
+  //     if (this.selectedVideo.currentTime >= this.selectedVideo.duration) clearInterval(this.playVideoProgressTimer);
+  //   }, 10);
+  // }
+
+  stopVideo() {
+    this.selectedVideo.pause();
+    clearInterval(this.playVideoProgressTimer);
+    console.log('stop');
+  }
+
+  setVideoPosition(pos) {
+    this.stopVideo();
+    this.currentVideoTime = this.selectedVideo.duration * pos;
+    return this.currentVideoTime;
   }
 }

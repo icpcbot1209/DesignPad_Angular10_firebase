@@ -6,16 +6,16 @@
   [attr.itemId]="item.itemId"
   [attr.itemType]="item.type"
   (dblclick)="startVideoCrop()"
-  (mouseenter)="ds.onPlayButton = true"
-  (mouseleave)="ds.onPlayButton = false"
+  (mouseenter)="onPlayButton = true"
+  (mouseleave)="onPlayButton = false"
 >
   <div
     [ngStyle]="{
-      display: ds.isStatus(ItemStatus.video_selected) && (!ds.onPlayVideo || ds.onPlayButton) ? 'block' : 'none'
+      display: ds.isStatus(ItemStatus.video_selected) && (!onPlayVideo || onPlayButton) ? 'block' : 'none'
     }"
   >
     <div [ngStyle]="playButtonSelector(item)" (click)="playVideo()">
-      <svg [ngStyle]="{ display: !ds.onPlayVideo ? 'block' : 'none' }" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg [ngStyle]="{ display: !onPlayVideo ? 'block' : 'none' }" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -24,7 +24,7 @@
         ></path>
       </svg>
       <svg
-        [ngStyle]="{ display: ds.onPlayVideo ? 'block' : 'none' }"
+        [ngStyle]="{ display: onPlayVideo ? 'block' : 'none' }"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="white"
@@ -34,6 +34,12 @@
         <path d="M0 0h24v24H0z" fill="none" />
         <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
       </svg>
+    </div>
+  </div>
+  <div [ngStyle]="videoProgressStyle(item)">
+    <div id="progress_bar_box" style="width: 90%; height: 4px; border-radius: 1px" (click)="setProgressPosition($event, item)">
+      <div id="progress_bar"></div>
+      <div id="videoProgress"></div>
     </div>
   </div>
 </div>

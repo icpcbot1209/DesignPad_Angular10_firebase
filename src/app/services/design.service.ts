@@ -4,6 +4,7 @@ import { ImageFilterObj } from '../models/image-filter';
 import { AssetImage, Design, Item } from '../models/models';
 import { MoveableService } from './moveable.service';
 import { UndoRedoService } from 'src/app/services/undo-redo.service';
+import { MediaService } from './media.service';
 
 @Injectable({
   providedIn: 'root',
@@ -430,7 +431,6 @@ export class DesignService {
   setStatus(status: ItemStatus): void {
     const moveableService = this.injector.get(MoveableService);
 
-    console.log(status, this.status);
     if (status === ItemStatus.video_crop) this.startVideoCrop();
     else if (this.status === ItemStatus.video_crop) this.endVideoCrop(true);
     else this.status = status;
@@ -539,8 +539,6 @@ export class DesignService {
     // let convertedValue = Math.round((value / ratio) * 1000) / 1000;
     let convertedValue = value / ratio;
 
-    console.log(value, ratio, value / ratio);
-
     return convertedValue;
   }
 
@@ -552,24 +550,11 @@ export class DesignService {
     return convertedValue;
   }
 
-  selectedVideo: HTMLVideoElement;
-  onPlayVideo = false;
-  onPlayButton = true;
-  playVideo(item) {
-    let vid = document.getElementById('videoElement-' + item.pageId + '-' + item.itemId) as HTMLVideoElement;
-    console.log(this.onPlayVideo);
-    if (!this.onPlayVideo) vid.play();
-    else vid.pause();
-
-    this.onPlayVideo = !this.onPlayVideo;
-  }
-
   setClipPathToNumber() {
     const ms = this.injector.get(MoveableService);
     let item = this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId];
 
     let str: string = item.clipStyle;
-    console.log(item.clipStyle);
     let clipPathStr = str.substring(str.indexOf('inset(') + 6, str.indexOf(')')).split('%');
 
     let clipPath = [];
@@ -577,9 +562,6 @@ export class DesignService {
       clipPath.push(Number.parseFloat(clipPathStr[i]));
     }
     this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber = clipPath;
-    // console.log(this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber);
-    console.log(1 - (item.clipPathToNumber[0] + item.clipPathToNumber[2]) / 100);
-    console.log((item.h * (1 - (item.clipPathToNumber[0] + item.clipPathToNumber[2]) / 100) - 48) / 2);
   }
 
   presets: Preset[] = [

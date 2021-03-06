@@ -3,6 +3,7 @@ import { DesignService } from 'src/app/services/design.service';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { Item } from 'src/app/models/models';
 import { ItemStatus } from 'src/app/models/enums';
+import { MediaService } from 'src/app/services/media.service';
 
 import * as CSS from 'csstype';
 
@@ -15,8 +16,11 @@ export class VideoSelectorComponent implements OnInit {
   @Input('item') item;
 
   ItemStatus = ItemStatus;
+  onPlayVideo = false;
+  onPlayButton = true;
+  currentVideoduration = 0;
 
-  constructor(public ds: DesignService, public moveableService: MoveableService) {}
+  constructor(public ds: DesignService, public moveableService: MoveableService, public media: MediaService) {}
 
   ngOnInit(): void {
     this.ds.setStatus(ItemStatus.video_selected);
@@ -24,6 +28,8 @@ export class VideoSelectorComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-');
+
+    this.media.selectedVideo = document.querySelector('#videoElement-' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
   }
 
   styleItemPosition(item: Item): CSS.Properties {
@@ -54,7 +60,7 @@ export class VideoSelectorComponent implements OnInit {
       }px, ${(item.h * item.clipPathToNumber[0]) / 100 + (item.h * (1 - (item.clipPathToNumber[0] + item.clipPathToNumber[2]) / 100) - 48) / 2}px)`,
       zIndex: item.zIndex,
       cursor: 'pointer',
-      background: 'red',
+      background: 'rgba(17,23,29,.6)',
       borderRadius: '100%',
       display: 'flex',
       justifyContent: 'center',
@@ -62,14 +68,64 @@ export class VideoSelectorComponent implements OnInit {
     };
   }
 
+  videoProgressStyle(item) {
+    return {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: item.w * (1 - (item.clipPathToNumber[1] + item.clipPathToNumber[3]) / 100) + 'px',
+      height: '38px',
+      transform: `translate(${item.w * item.clipPathToNumber[3]}px, ${item.h - (item.h * item.clipPathToNumber[2]) / 100 - 38}px)`,
+      WebkitTransform: `translate(${item.w * item.clipPathToNumber[3]}px, ${item.h - (item.h * item.clipPathToNumber[2]) / 100 - 38}px)`,
+      zIndex: item.zIndex,
+      cursor: 'pointer',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    };
+  }
+
   playVideo() {
-    this.ds.playVideo(this.item);
+    if (this.onPlayVideo) this.media.stopVideo();
+    else this.setIntervalVideo();
+
+    this.onPlayVideo = !this.onPlayVideo;
   }
 
   startVideoCrop() {
-    if (this.ds.onPlayVideo) {
-      this.ds.playVideo(this.item);
+    if (this.onPlayVideo) {
+      this.media.stopVideo();
     }
     this.ds.setStatus(ItemStatus.video_crop);
+  }
+
+  setProgressPosition(e, item) {
+    let ele = document.getElementById('progress_bar_box') as HTMLElement;
+    let vid = (document.getElementById('videoElement-' + item.pageId + '-' + item.itemId) as HTMLVideoElement).getBoundingClientRect();
+
+    let x = e.pageX - ele.getBoundingClientRect().left;
+    let clickedValue = (x / ele.clientWidth / this.ds.zoomValue) * 100;
+    this.currentVideoduration = this.media.setVideoPosition(clickedValue);
+
+    this.onPlayVideo = false;
+    this.playVideo();
+  }
+
+  setIntervalVideo() {
+    this.media.selectedVideo.currentTime = this.currentVideoduration;
+    this.media.selectedVideo.play();
+
+    this.media.playVideoProgressTimer = setInterval(() => {
+      this.media.currentVideoTime = this.media.selectedVideo.currentTime;
+
+      if (document.querySelector('#videoProgress')) {
+        (document.querySelector('#videoProgress') as HTMLElement).style.width =
+          (this.media.selectedVideo.currentTime / this.media.selectedVideo.duration) * 100 + '%';
+      }
+      if (this.media.selectedVideo.currentTime >= this.media.selectedVideo.duration) {
+        clearInterval(this.media.playVideoProgressTimer);
+        this.onPlayVideo = false;
+      }
+    }, 10);
   }
 }

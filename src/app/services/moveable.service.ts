@@ -26,6 +26,7 @@ import { DesignService } from './design.service';
 import { Item } from '../models/models';
 import { ItemStatus, ItemType } from '../models/enums';
 import { UndoRedoService } from 'src/app/services/undo-redo.service';
+import { MediaService } from './media.service';
 
 declare var ResizeObserver;
 
@@ -215,15 +216,19 @@ export class MoveableService {
         this.moveable = this.makeMoveableElement(thePageId, targets[0]);
         this.ds.onSelectElementItem(thePageId, item);
       } else if (item.type === ItemType.video) {
+        const media = this.injector.get(MediaService);
+
+        media.selectedVideo = document.querySelector('#videoElement-' + item.pageId + '-' + item.itemId) as HTMLVideoElement;
         this.moveable = this.makeMoveableVideo(thePageId, targets[0]);
         this.ds.onSelectVideoItem(thePageId, item);
       }
 
       this.previousTarget = targets[0];
     } else {
-      if (this.ds.onPlayVideo) {
-        let item = this.ds.theDesign.pages[this.selectedPageId].items[this.selectedItemId];
-        this.ds.playVideo(item);
+      const media = this.injector.get(MediaService);
+      if (media.selectedVideo) {
+        media.stopVideo();
+        media.selectedVideo = null;
       }
       if (this.ds.status == ItemStatus.image_crop || this.ds.status == ItemStatus.element_crop || this.ds.status == ItemStatus.video_crop) {
         this.ur.saveTheData(this.ds.theDesign);
