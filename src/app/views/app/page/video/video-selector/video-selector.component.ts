@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { Item } from 'src/app/models/models';
+import { ItemStatus } from 'src/app/models/enums';
 
 import * as CSS from 'csstype';
 
@@ -35,22 +36,33 @@ export class VideoSelectorComponent implements OnInit {
   }
 
   playButtonSelector(item: Item): CSS.Properties {
-    let x = (item.w - 48) / 2;
-    let y = (item.h - 48) / 2;
     return {
       position: 'absolute',
       top: 0,
       left: 0,
       width: '48px',
       height: '48px',
-      transform: `translate(${x}px, ${y}px)`,
-      WebkitTransform: `translate(${x}px, ${y}px)`,
+      transform: `translate(${
+        (item.w * item.clipPathToNumber[3]) / 100 + (item.w * (1 - (item.clipPathToNumber[1] + item.clipPathToNumber[3]) / 100) - 48) / 2
+      }px, ${(item.h * item.clipPathToNumber[0]) / 100 + (item.h * (1 - (item.clipPathToNumber[0] + item.clipPathToNumber[2]) / 100) - 48) / 2}px)`,
+      WebkitTransform: `translate(${
+        (item.w * item.clipPathToNumber[3]) / 100 + (item.w * (1 - (item.clipPathToNumber[1] + item.clipPathToNumber[3]) / 100) - 48) / 2
+      }px, ${(item.h * item.clipPathToNumber[0]) / 100 + (item.h * (1 - (item.clipPathToNumber[0] + item.clipPathToNumber[2]) / 100) - 48) / 2}px)`,
       zIndex: item.zIndex,
       cursor: 'pointer',
+      background: 'red',
+      borderRadius: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     };
   }
 
   playVideo() {
     this.ds.playVideo(this.item);
+  }
+
+  startVideoCrop() {
+    this.ds.setStatus(ItemStatus.video_crop);
   }
 }

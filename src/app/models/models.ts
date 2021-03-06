@@ -32,6 +32,7 @@ export interface Item {
   textOpacity?;
   curveOpacity?;
   zIndex;
+  clipPathToNumber?: number[];
 }
 
 export interface Page {

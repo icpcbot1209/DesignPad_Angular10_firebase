@@ -827,6 +827,7 @@ export class MoveableService {
   }
 
   endVideoCrop(isSave: boolean) {
+    this.ds.setClipPathToNumber();
     if (!this.moveable) return;
 
     let target = <HTMLElement | SVGElement>this.moveable.target;

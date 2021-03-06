@@ -1,11 +1,11 @@
-<div [ngStyle]="parentVideoElement(item)">
-  <video
-    #videoElement
-    [id]="'videoElement-' + this.item.pageId + '-' + this.item.itemId"
-    [ngStyle]="styleItem(item)"
-    [src]="item.url"
-    controlsList
-  ></video>
+<video
+  #videoElement
+  [id]="'videoElement-' + this.item.pageId + '-' + this.item.itemId"
+  [ngStyle]="styleItem(item)"
+  [src]="item.url"
+  controlsList
+></video>
+<!-- <div [ngStyle]="parentVideoElement(item)">
   <div [ngStyle]="{ display: ds.isShowPlayButton ? 'block' : 'none' }">
     <div [ngStyle]="playButtonStyle(item)">
       <svg [ngStyle]="{ display: !ds.isPlayVideo ? 'block' : 'none' }" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,4 +29,4 @@
       </svg>
     </div>
   </div>
-</div>
+</div> -->

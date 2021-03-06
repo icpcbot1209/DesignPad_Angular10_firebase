@@ -29,7 +29,9 @@ export class VideoElementComponent implements OnInit {
       left: 0,
       width: item.w + 'px',
       height: item.h + 'px',
-
+      transform: this.moveableService.strTransform(item),
+      WebkitTransform: this.moveableService.strTransform(item),
+      zIndex: item.zIndex,
       border: 'none',
       filter: item.filter,
       WebkitFilter: item.filter,

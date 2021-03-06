@@ -302,6 +302,8 @@ export class DesignService {
       scaleX: 1,
       scaleY: 1,
       zIndex: 0,
+      clipStyle: 'inset(0% 0% 0% 0%)',
+      clipPathToNumber: [0, 0, 0, 0],
     });
   }
   /***********************************************
@@ -428,9 +430,10 @@ export class DesignService {
   setStatus(status: ItemStatus): void {
     const moveableService = this.injector.get(MoveableService);
 
-    // if (status === ItemStatus.image_crop) this.startImageCrop();
-    // else if (this.status === ItemStatus.image_crop) this.endImageCrop(true);
-    // else this.status = status;
+    console.log(status, this.status);
+    if (status === ItemStatus.video_crop) this.startVideoCrop();
+    else if (this.status === ItemStatus.video_crop) this.endVideoCrop(true);
+    else this.status = status;
     this.status = status;
 
     moveableService.isPosition = false;
@@ -464,7 +467,7 @@ export class DesignService {
 
   startVideoCrop() {
     if (!this.theItem || !(this.theItem.type == ItemType.video)) return;
-    this.status = ItemStatus.video_crop;
+    // this.status = ItemStatus.video_crop;
 
     const ms = this.injector.get(MoveableService);
     ms.startImageCrop();
@@ -474,7 +477,7 @@ export class DesignService {
     this.status = ItemStatus.video_selected;
 
     const ms = this.injector.get(MoveableService);
-    ms.endImageCrop(isSave);
+    ms.endVideoCrop(isSave);
   }
 
   /*********************************************
@@ -559,6 +562,24 @@ export class DesignService {
     else vid.pause();
 
     this.isPlayVideo = !this.isPlayVideo;
+  }
+
+  setClipPathToNumber() {
+    const ms = this.injector.get(MoveableService);
+    let item = this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId];
+
+    let str: string = item.clipStyle;
+    console.log(item.clipStyle);
+    let clipPathStr = str.substring(str.indexOf('inset(') + 6, str.indexOf(')')).split('%');
+
+    let clipPath = [];
+    for (let i = 0; i < clipPathStr.length - 1; i++) {
+      clipPath.push(Number.parseFloat(clipPathStr[i]));
+    }
+    this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber = clipPath;
+    // console.log(this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber);
+    console.log(1 - (item.clipPathToNumber[0] + item.clipPathToNumber[2]) / 100);
+    console.log((item.h * (1 - (item.clipPathToNumber[0] + item.clipPathToNumber[2]) / 100) - 48) / 2);
   }
 
   presets: Preset[] = [
