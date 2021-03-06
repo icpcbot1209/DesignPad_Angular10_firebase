@@ -33,4 +33,23 @@ export class VideoSelectorComponent implements OnInit {
       zIndex: item.zIndex,
     };
   }
+
+  playButtonSelector(item: Item): CSS.Properties {
+    let x = (item.w - 48) / 2;
+    let y = (item.h - 48) / 2;
+    return {
+      position: 'absolute',
+      // background: 'red',
+      top: 0,
+      left: 0,
+      width: '48px',
+      height: '48px',
+      transform: `translate(${x}px, ${y}px)`,
+      WebkitTransform: `translate(${x}px, ${y}px)`,
+      background: 'red',
+      zIndex: item.zIndex,
+    };
+  }
+
+  playVideo() {}
 }

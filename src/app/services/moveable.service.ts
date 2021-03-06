@@ -1058,7 +1058,7 @@ export class MoveableService {
       originRelative: true,
 
       snapThreshold: 5,
-      origin: true,
+      origin: false,
       keepRatio: true,
       edge: false,
       throttleDrag: 0,
