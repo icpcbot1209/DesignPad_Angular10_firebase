@@ -16,7 +16,7 @@ export class VideoSelectorComponent implements OnInit {
   @Input('item') item;
 
   ItemStatus = ItemStatus;
-  onPlayVideo = false;
+  onPlayVideo = true;
   onPlayButton = false;
   currentVideoduration = 0;
 
@@ -30,7 +30,7 @@ export class VideoSelectorComponent implements OnInit {
     this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-');
 
     this.media.selectedVideo = document.querySelector('#videoElement-' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
-    this.playVideo();
+    this.setIntervalVideo();
   }
 
   styleItemPosition(item: Item): CSS.Properties {
