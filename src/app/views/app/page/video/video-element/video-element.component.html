@@ -1,10 +1,4 @@
-<video
-  #videoElement
-  [id]="'videoElement-' + this.item.pageId + '-' + this.item.itemId"
-  [ngStyle]="styleItem(item)"
-  [src]="item.url"
-  controlsList
-></video>
+<video #videoElement [id]="'videoElement-' + this.item.pageId + '-' + this.item.itemId" [ngStyle]="styleItem(item)" [src]="item.url"></video>
 <!-- <div [ngStyle]="parentVideoElement(item)">
   <div [ngStyle]="{ display: ds.isShowPlayButton ? 'block' : 'none' }">
     <div [ngStyle]="playButtonStyle(item)">

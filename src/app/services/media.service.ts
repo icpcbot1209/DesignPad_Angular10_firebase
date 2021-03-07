@@ -117,7 +117,6 @@ export class MediaService {
     this.playMusic();
   }
 
-  currentVideoTime = 0;
   playVideoProgressTimer;
   // playVideo() {
   //   this.selectedVideo.play();
@@ -142,7 +141,7 @@ export class MediaService {
 
   setVideoPosition(pos) {
     this.stopVideo();
-    this.currentVideoTime = this.selectedVideo.duration * pos;
-    return this.currentVideoTime;
+    let currentVideoTime = this.selectedVideo.duration * pos;
+    return currentVideoTime;
   }
 }

@@ -17,7 +17,7 @@ export class VideoSelectorComponent implements OnInit {
 
   ItemStatus = ItemStatus;
   onPlayVideo = false;
-  onPlayButton = true;
+  onPlayButton = false;
   currentVideoduration = 0;
 
   constructor(public ds: DesignService, public moveableService: MoveableService, public media: MediaService) {}
@@ -30,6 +30,7 @@ export class VideoSelectorComponent implements OnInit {
     this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-');
 
     this.media.selectedVideo = document.querySelector('#videoElement-' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
+    this.playVideo();
   }
 
   styleItemPosition(item: Item): CSS.Properties {
@@ -116,7 +117,7 @@ export class VideoSelectorComponent implements OnInit {
     this.media.selectedVideo.play();
 
     this.media.playVideoProgressTimer = setInterval(() => {
-      this.media.currentVideoTime = this.media.selectedVideo.currentTime;
+      this.currentVideoduration = this.media.selectedVideo.currentTime;
 
       if (document.querySelector('#videoProgress')) {
         (document.querySelector('#videoProgress') as HTMLElement).style.width =
