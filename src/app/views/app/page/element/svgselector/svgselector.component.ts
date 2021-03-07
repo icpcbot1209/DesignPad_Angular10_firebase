@@ -28,7 +28,7 @@ export class SVGSelectorComponent implements OnInit {
       left: 0,
       width: item.w + 'px',
       height: item.h + 'px',
-      transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
+      transform: this.moveableService.strTransform(item),
       zIndex: item.zIndex,
     };
   }
