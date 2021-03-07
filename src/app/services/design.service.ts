@@ -305,6 +305,8 @@ export class DesignService {
       zIndex: 0,
       clipStyle: 'inset(0% 0% 0% 0%)',
       clipPathToNumber: [0, 0, 0, 0],
+      onPlayVideo: true,
+      onPlayButton: false,
     });
   }
   /***********************************************
@@ -467,7 +469,11 @@ export class DesignService {
 
   startVideoCrop() {
     if (!this.theItem || !(this.theItem.type == ItemType.video)) return;
-    // this.status = ItemStatus.video_crop;
+    this.status = ItemStatus.video_crop;
+    const media = this.injector.get(MediaService);
+
+    this.theItem.onPlayVideo = false;
+    media.stopVideo();
 
     const ms = this.injector.get(MoveableService);
     ms.startImageCrop();
@@ -485,14 +491,15 @@ export class DesignService {
    **********************************************/
 
   flipX() {
-    if (this.theItem && (this.theItem.type === ItemType.image || this.theItem.type === ItemType.element)) {
+    if (this.theItem && (this.theItem.type === ItemType.image || this.theItem.type === ItemType.element || this.theItem.type === ItemType.video)) {
+      if (this.theItem.type === ItemType.video) this.theItem.onPlayVideo = false;
       this.theItem.scaleX *= -1;
       this.ur.saveTheData(this.theDesign);
     }
   }
 
   flipY() {
-    if (this.theItem && (this.theItem.type === ItemType.image || this.theItem.type === ItemType.element)) {
+    if (this.theItem && (this.theItem.type === ItemType.image || this.theItem.type === ItemType.element || this.theItem.type === ItemType.video)) {
       this.theItem.scaleY *= -1;
       this.ur.saveTheData(this.theDesign);
     }
@@ -562,6 +569,7 @@ export class DesignService {
       clipPath.push(Number.parseFloat(clipPathStr[i]));
     }
     this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber = clipPath;
+    console.log(this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber);
   }
 
   presets: Preset[] = [

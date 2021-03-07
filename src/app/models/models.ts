@@ -33,6 +33,8 @@ export interface Item {
   curveOpacity?;
   zIndex;
   clipPathToNumber?: number[];
+  onPlayButton?: boolean;
+  onPlayVideo?: boolean;
 }
 
 export interface Page {

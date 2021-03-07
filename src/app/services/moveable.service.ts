@@ -672,12 +672,13 @@ export class MoveableService {
     });
 
     moveable.on('clip', (e: OnClip) => {
+      let item = this.getItem(e.target);
+
       if (e.clipType === 'rect') {
         e.target.style.clip = e.clipStyle;
       } else {
         e.target.style.clipPath = e.clipStyle;
       }
-      let item = this.getItem(e.target);
       item.clipStyle = e.clipStyle;
     });
 

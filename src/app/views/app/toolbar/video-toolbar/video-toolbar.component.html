@@ -1,5 +1,5 @@
 <div style="display: flex; align-items: center">
-  <button mat-button [style.backgroundColor]="ds.isStatus(ItemStatus.element_crop) ? activeColor : ''" (click)="ds.startElementCrop()">Crop</button>
+  <button mat-button [style.backgroundColor]="ds.isStatus(ItemStatus.video_crop) ? activeColor : ''" (click)="ds.startVideoCrop()">Crop</button>
 
   <button mat-button [matMenuTriggerFor]="menuFlip">Flip</button>
   <mat-menu #menuFlip="matMenu">
