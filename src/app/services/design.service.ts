@@ -118,6 +118,13 @@ export class DesignService {
   }
 
   addItemToCurrentPage(item: Item) {
+    const media = this.injector.get(MediaService);
+
+    if (media.selectedVideo) {
+      clearInterval(media.playVideoProgressTimer);
+      media.stopVideo();
+    }
+
     item.pageId = this.thePageId;
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
     item.zIndex = 100 + item.itemId;
@@ -125,6 +132,13 @@ export class DesignService {
     for (let i = 0; i < this.theDesign.pages[this.thePageId].items.length; i++) {
       this.theDesign.pages[this.thePageId].items[i].selected = false;
     }
+    for (let i = 0; i < this.theDesign.pages.length; i++)
+      for (let j = 0; j < this.theDesign.pages[i].items.length; j++) {
+        if (this.theDesign.pages[i].items[j].type == ItemType.video) {
+          this.theDesign.pages[i].items[j].onPlayVideo = false;
+          this.theDesign.pages[i].items[j].onPlayButton = false;
+        }
+      }
 
     this.theDesign.pages[this.thePageId].items.push(item);
     this.ur.saveTheData(this.theDesign);
@@ -317,6 +331,13 @@ export class DesignService {
 
   onKeyEvent(e: KeyboardEvent) {
     if (!this.isOnInput && (e.key === 'Delete' || e.key === 'Backspace')) {
+      const moveableService = this.injector.get(MoveableService);
+      const media = this.injector.get(MediaService);
+      if (this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].type == ItemType.video) {
+        media.stopVideo();
+        clearInterval(media.playVideoProgressTimer);
+      }
+
       e.preventDefault();
       e.stopPropagation();
       this.deleteSelectedItems();

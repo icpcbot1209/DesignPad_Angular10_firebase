@@ -11,7 +11,7 @@
 >
   <div
     [ngStyle]="{
-      display: ds.isStatus(ItemStatus.video_selected) && (!item.onPlayVideo || item.onPlayButton) ? 'block' : 'none'
+      display: ds.isStatus(ItemStatus.video_selected) && item.onPlayButton ? 'block' : 'none'
     }"
   >
     <div [ngStyle]="playButtonSelector(item)" (click)="playVideo()">

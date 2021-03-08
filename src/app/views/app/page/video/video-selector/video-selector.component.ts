@@ -122,7 +122,9 @@ export class VideoSelectorComponent implements OnInit {
       this.currentVideoduration = this.media.selectedVideo.currentTime;
 
       if (document.querySelector('#videoProgress')) {
-        (document.querySelector('#videoProgress') as HTMLElement).style.width =
+        (document
+          .querySelector('#VideoSelector-' + this.item.pageId + '-' + this.item.itemId)
+          .querySelector('#videoProgress') as HTMLElement).style.width =
           (this.media.selectedVideo.currentTime / this.media.selectedVideo.duration) * 100 + '%';
       }
       if (this.media.selectedVideo.currentTime >= this.media.selectedVideo.duration) {

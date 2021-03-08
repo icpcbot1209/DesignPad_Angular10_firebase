@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild, Injector } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
 import { Colors } from 'src/app/constants/colors.service';
 import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
@@ -28,7 +28,8 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     private zone: NgZone,
     public toolbarService: ToolbarService,
     public downloadService: DownloadService,
-    public media: MediaService
+    public media: MediaService,
+    public injector: Injector
   ) {}
 
   foreColor = Colors.getColors().separatorColor;
@@ -101,6 +102,21 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addPage() {
+    const media = this.injector.get(MediaService);
+
+    if (media.selectedVideo) {
+      clearInterval(media.playVideoProgressTimer);
+      media.stopVideo();
+    }
+
+    for (let i = 0; i < this.ds.theDesign.pages.length; i++)
+      for (let j = 0; j < this.ds.theDesign.pages[i].items.length; j++) {
+        if (this.ds.theDesign.pages[i].items[j].type == ItemType.video) {
+          this.ds.theDesign.pages[i].items[j].onPlayVideo = false;
+          this.ds.theDesign.pages[i].items[j].onPlayButton = false;
+        }
+      }
+
     this.ds.addPage();
 
     this.toolbarService.textEditItems.push([]);
