@@ -115,15 +115,18 @@ export class DownloadService {
       htmlContent = htmlContent + htmlStr + '</body>';
 
       const blob = await this.downloadOnePageAsImg(htmlContent, i);
-      // zip.file(i + 1 + '.jpg', blob);
-      saveAs(blob, i + 1 + '.jpg');
+
+      if (document.querySelectorAll('.card').length > 1) zip.file(i + 1 + '.jpg', blob);
+      else saveAs(blob, i + 1 + '.jpg');
     }
 
     this.onDownloading = false;
     this.deleteGeneratedElement();
-    // zip.generateAsync({ type: 'blob' }).then(function (content) {
-    //   saveAs(content, 'image.zip');
-    // });
+
+    if (document.querySelectorAll('.card').length > 1)
+      zip.generateAsync({ type: 'blob' }).then(function (content) {
+        saveAs(content, 'image.zip');
+      });
   }
 
   downloadOnePageAsImg(htmlContent, index) {
