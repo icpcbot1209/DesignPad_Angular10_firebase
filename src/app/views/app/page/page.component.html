@@ -12,10 +12,10 @@
           <app-edit-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-edit-item>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.element">
-          <app-svgelement [item]="item"></app-svgelement>
+          <app-svgelement [item]="item" [itemId]="itemId" [pageId]="pageId"></app-svgelement>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.video">
-          <app-video-element [item]="item"></app-video-element>
+          <app-video-element [item]="item" [itemId]="itemId" [pageId]="pageId"></app-video-element>
         </ng-container>
       </ng-container>
     </div>

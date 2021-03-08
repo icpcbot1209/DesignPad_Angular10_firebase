@@ -2,6 +2,7 @@ import { HttpClient, XhrFactory, HttpXhrBackend } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
 import { saveAs } from 'file-saver';
+import { MoveableService } from 'src/app/services/moveable.service';
 
 declare let JSZip;
 
@@ -42,6 +43,27 @@ export class DownloadService {
         });
       }
 
+      let videoEle = ele.querySelectorAll('video');
+      console.log(videoEle);
+      for (let i = 0; i < videoEle.length; i++) {
+        const ms = this.injector.get(MoveableService);
+        let vid = videoEle[i] as HTMLVideoElement;
+        let item = ms.getItem(vid);
+        let imgEle = document.createElement('IMG') as HTMLImageElement;
+
+        imgEle.style.width = vid.style.width;
+        imgEle.style.height = vid.style.height;
+        imgEle.style.transform = vid.style.transform;
+        imgEle.style.clipPath = vid.style.clipPath;
+        imgEle.style.zIndex = vid.style.zIndex;
+        imgEle.style.position = vid.style.position;
+        imgEle.style.left = '0';
+        imgEle.style.top = '0';
+        imgEle.src = item.thumbnail;
+
+        vid.parentElement.appendChild(imgEle);
+      }
+
       let htmlStr = ele.children[0].children[0].outerHTML;
 
       htmlStr = `<div style="width: 600px; height: 500px; position: absolute; top: ${500 * index}px">` + htmlStr + '</div>';
@@ -74,6 +96,13 @@ export class DownloadService {
         link.click();
 
         this.onDownloading = false;
+
+        document
+          .querySelector('#designPanel')
+          .querySelectorAll('video')
+          .forEach((ele) => {
+            ele.parentElement.querySelector('img').remove();
+          });
       };
       fr.readAsText(blob);
     };
