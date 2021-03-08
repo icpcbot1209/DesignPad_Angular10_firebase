@@ -43,26 +43,7 @@ export class DownloadService {
         });
       }
 
-      let videoEle = ele.querySelectorAll('video');
-      console.log(videoEle);
-      for (let i = 0; i < videoEle.length; i++) {
-        const ms = this.injector.get(MoveableService);
-        let vid = videoEle[i] as HTMLVideoElement;
-        let item = ms.getItem(vid);
-        let imgEle = document.createElement('IMG') as HTMLImageElement;
-
-        imgEle.style.width = vid.style.width;
-        imgEle.style.height = vid.style.height;
-        imgEle.style.transform = vid.style.transform;
-        imgEle.style.clipPath = vid.style.clipPath;
-        imgEle.style.zIndex = vid.style.zIndex;
-        imgEle.style.position = vid.style.position;
-        imgEle.style.left = '0';
-        imgEle.style.top = '0';
-        imgEle.src = item.thumbnail;
-
-        vid.parentElement.appendChild(imgEle);
-      }
+      this.generateImgElement(ele);
 
       let htmlStr = ele.children[0].children[0].outerHTML;
 
@@ -96,13 +77,7 @@ export class DownloadService {
         link.click();
 
         this.onDownloading = false;
-
-        document
-          .querySelector('#designPanel')
-          .querySelectorAll('video')
-          .forEach((ele) => {
-            ele.parentElement.querySelector('img').remove();
-          });
+        this.deleteGeneratedElement();
       };
       fr.readAsText(blob);
     };
@@ -124,13 +99,14 @@ export class DownloadService {
 
     const arr = document.querySelectorAll('.card');
     for (let i = 0; i < arr.length; i++) {
-      console.log('start ', i);
       let ele = arr[i];
       if (ele.querySelectorAll('p').length != 0) {
         ele.querySelectorAll('p').forEach((el) => {
           el.style.margin = '0';
         });
       }
+
+      this.generateImgElement(ele);
 
       let htmlContent = document.querySelector('head').outerHTML + '<body style="margin: 0; padding: 0;>';
       let htmlStr = ele.children[0].children[0].outerHTML;
@@ -139,12 +115,12 @@ export class DownloadService {
       htmlContent = htmlContent + htmlStr + '</body>';
 
       const blob = await this.downloadOnePageAsImg(htmlContent, i);
-      console.log(blob);
       // zip.file(i + 1 + '.jpg', blob);
       saveAs(blob, i + 1 + '.jpg');
     }
 
     this.onDownloading = false;
+    this.deleteGeneratedElement();
     // zip.generateAsync({ type: 'blob' }).then(function (content) {
     //   saveAs(content, 'image.zip');
     // });
@@ -173,5 +149,35 @@ export class DownloadService {
       xhr.setRequestHeader('Authorization', 'Basic ' + btoa('adwitglobal' + ':' + '7b61297e35af1139edd33821adadd19e'));
       xhr.send(formData);
     });
+  }
+  generateImgElement(ele) {
+    let videoEle = ele.querySelectorAll('video');
+    for (let i = 0; i < videoEle.length; i++) {
+      const ms = this.injector.get(MoveableService);
+      let vid = videoEle[i] as HTMLVideoElement;
+      let item = ms.getItem(vid);
+      let imgEle = document.createElement('IMG') as HTMLImageElement;
+
+      imgEle.style.width = vid.style.width;
+      imgEle.style.height = vid.style.height;
+      imgEle.style.transform = vid.style.transform;
+      imgEle.style.clipPath = vid.style.clipPath;
+      imgEle.style.zIndex = vid.style.zIndex;
+      imgEle.style.position = vid.style.position;
+      imgEle.style.left = '0';
+      imgEle.style.top = '0';
+      imgEle.src = item.thumbnail;
+
+      vid.parentElement.appendChild(imgEle);
+    }
+  }
+
+  deleteGeneratedElement() {
+    document
+      .querySelector('#designPanel')
+      .querySelectorAll('video')
+      .forEach((ele) => {
+        ele.parentElement.querySelector('img').remove();
+      });
   }
 }
