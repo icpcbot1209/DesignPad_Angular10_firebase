@@ -19,8 +19,8 @@ export class VideoElementComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  ngAfterViewInit(): void {
-    // this.media.selectedVideo = document.querySelector('#VideoElement' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
+  ngOnDestroy(): void {
+    this.media.selectedVideo = null;
   }
 
   styleItem(item: Item): CSS.Properties {

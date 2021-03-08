@@ -595,6 +595,7 @@ export class DesignService {
   deleteSelectedItem() {
     const moveableService = this.injector.get(MoveableService);
     const media = this.injector.get(MediaService);
+    console.log(media.selectedVideo);
     if (media.selectedVideo) {
       this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].onPlayVideo = false;
 
