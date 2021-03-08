@@ -39,20 +39,30 @@ export class VideoUpload {
       canvas.addEventListener('error', reject);
       video.addEventListener('error', reject);
       video.addEventListener('canplay', (event) => {
-        let max = 88.38;
+        let max = 400;
 
         this.width = video.videoWidth;
         this.height = video.videoHeight;
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
 
-        if (video.videoHeight > max) {
-          canvas.width = (video.videoWidth / video.videoHeight) * max;
-          canvas.height = max;
-          this.width = canvas.width;
-          this.height = canvas.height;
-          context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        } else context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+        if (video.videoHeight > video.videoWidth) {
+          if (video.videoHeight > max) {
+            canvas.width = (video.videoWidth / video.videoHeight) * max;
+            canvas.height = max;
+            this.width = canvas.width;
+            this.height = canvas.height;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          } else context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+        } else {
+          if (video.videoWidth > max) {
+            canvas.height = (video.videoHeight / video.videoWidth) * max;
+            canvas.width = max;
+            this.width = canvas.width;
+            this.height = canvas.height;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          } else context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+        }
 
         resolve(canvas.toDataURL());
       });

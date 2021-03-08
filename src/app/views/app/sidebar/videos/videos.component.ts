@@ -69,7 +69,11 @@ export class VideosComponent implements AfterViewInit {
     }
 
     if (assetVideos.length % 2 == 1) {
-      this.ratios.push(1);
+      let width = assetVideos[assetVideos.length - 1].width;
+      let height = assetVideos[assetVideos.length - 1].height;
+
+      if (width > height) this.ratios.push(157 / width);
+      else this.ratios.push(88.313 / height);
     }
   }
 
