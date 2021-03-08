@@ -81,6 +81,7 @@ export class ToolbarComponent implements OnInit {
     for (let i = 0; i < itemsOnPage.length; i++) {
       if (itemsOnPage[i].itemId != this.moveableService.selectedItemId) {
         let otherItem = document.querySelector(this.getType(itemsOnPage[i].type) + itemsOnPage[i].pageId + '-' + itemsOnPage[i].itemId);
+        console.log(this.getType(itemsOnPage[i].type) + itemsOnPage[i].pageId + '-' + itemsOnPage[i].itemId);
 
         if (this.collision(selectedItem, otherItem)) {
           overlapItems.push(i);
@@ -182,6 +183,9 @@ export class ToolbarComponent implements OnInit {
         break;
       case ItemType.element:
         type = '#SVGElement-';
+        break;
+      case ItemType.video:
+        type = '#VideoElement';
         break;
     }
 

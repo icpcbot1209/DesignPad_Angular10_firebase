@@ -27,7 +27,7 @@ export class VideoSelectorComponent implements OnInit {
   ngAfterViewInit(): void {
     this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-');
 
-    this.media.selectedVideo = document.querySelector('#videoElement-' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
+    this.media.selectedVideo = document.querySelector('#VideoElement' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
     this.setIntervalVideo();
   }
 
@@ -104,7 +104,7 @@ export class VideoSelectorComponent implements OnInit {
 
   setProgressPosition(e, item) {
     let ele = document.getElementById('progress_bar_box') as HTMLElement;
-    let vid = (document.getElementById('videoElement-' + item.pageId + '-' + item.itemId) as HTMLVideoElement).getBoundingClientRect();
+    let vid = (document.getElementById('VideoElement' + item.pageId + '-' + item.itemId) as HTMLVideoElement).getBoundingClientRect();
 
     let x = e.pageX - ele.getBoundingClientRect().left;
     let clickedValue = (x / ele.clientWidth / this.ds.zoomValue) * 100;

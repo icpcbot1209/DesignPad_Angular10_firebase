@@ -218,7 +218,7 @@ export class MoveableService {
       } else if (item.type === ItemType.video) {
         const media = this.injector.get(MediaService);
 
-        media.selectedVideo = document.querySelector('#videoElement-' + item.pageId + '-' + item.itemId) as HTMLVideoElement;
+        media.selectedVideo = document.querySelector('#VideoElement' + item.pageId + '-' + item.itemId) as HTMLVideoElement;
         this.moveable = this.makeMoveableVideo(thePageId, targets[0]);
         this.ds.onSelectVideoItem(thePageId, item);
       }
@@ -1119,7 +1119,7 @@ export class MoveableService {
         e.target.style.width = `${e.width}px`;
         e.target.style.height = `${e.height}px`;
 
-        let videoEle = document.querySelector('#videoElement-' + item.pageId + '-' + item.itemId) as HTMLElement;
+        let videoEle = document.querySelector('#VideoElement' + item.pageId + '-' + item.itemId) as HTMLElement;
         videoEle.style.width = `${e.width}px`;
         videoEle.style.height = `${e.height}px`;
       })
