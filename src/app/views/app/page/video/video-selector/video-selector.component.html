@@ -11,7 +11,7 @@
 >
   <div
     [ngStyle]="{
-      display: ds.isStatus(ItemStatus.video_selected) && item.onPlayButton ? 'block' : 'none'
+      display: item.selected && item.onPlayButton ? 'block' : 'none'
     }"
   >
     <div [ngStyle]="playButtonSelector(item)" (click)="playVideo()">
@@ -41,7 +41,7 @@
       id="progress_bar_box"
       style="width: 90%; height: 4px; border-radius: 1px"
       (click)="setProgressPosition($event, item)"
-      [ngStyle]="{ display: ds.isStatus(ItemStatus.video_selected) && item.onPlayButton ? 'block' : 'none' }"
+      [ngStyle]="{ display: item.selected && item.onPlayButton ? 'block' : 'none' }"
     >
       <div id="progress_bar"></div>
       <div id="videoProgress"></div>

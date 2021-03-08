@@ -125,13 +125,12 @@ export class DesignService {
       media.stopVideo();
     }
 
+    this.deleteSelectedItem();
+
     item.pageId = this.thePageId;
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
     item.zIndex = 100 + item.itemId;
 
-    for (let i = 0; i < this.theDesign.pages[this.thePageId].items.length; i++) {
-      this.theDesign.pages[this.thePageId].items[i].selected = false;
-    }
     for (let i = 0; i < this.theDesign.pages.length; i++)
       for (let j = 0; j < this.theDesign.pages[i].items.length; j++) {
         if (this.theDesign.pages[i].items[j].type == ItemType.video) {
@@ -591,6 +590,22 @@ export class DesignService {
     }
     this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber = clipPath;
     console.log(this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber);
+  }
+
+  deleteSelectedItem() {
+    const moveableService = this.injector.get(MoveableService);
+    const media = this.injector.get(MediaService);
+    if (media.selectedVideo) {
+      this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].onPlayVideo = false;
+
+      media.stopVideo();
+      media.selectedVideo = null;
+    }
+
+    for (let i = 0; i < this.theDesign.pages.length; i++)
+      for (let j = 0; j < this.theDesign.pages[i].items.length; j++) {
+        this.theDesign.pages[i].items[j].selected = false;
+      }
   }
 
   presets: Preset[] = [

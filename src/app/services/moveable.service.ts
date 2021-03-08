@@ -113,9 +113,9 @@ export class MoveableService {
       .on('selectStart', () => {
         if (this.selectedPageId) {
           let items = this.ds.theDesign.pages[this.selectedPageId].items;
-          for (let i = 0; i < items.length; i++) {
-            items[i].selected = false;
-          }
+          // for (let i = 0; i < items.length; i++) {
+          //   items[i].selected = false;
+          // }
           this.isCreateTextItem = false;
         }
       })
@@ -191,10 +191,13 @@ export class MoveableService {
       this.ds.onSelectGroup(thePageId);
     } else if (targets.length === 1) {
       let item = this.getItem(targets[0]);
+
+      this.ds.deleteSelectedItem();
       this.selectedItemId = targets[0].getAttribute('itemId');
       this.selectedPageId = targets[0].getAttribute('pageId');
       this.selectableTextEditor();
       this.onChangeSelectedItem(targets[0]);
+      item.selected = true;
 
       if (item.type === ItemType.image) {
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);
@@ -225,11 +228,8 @@ export class MoveableService {
 
       this.previousTarget = targets[0];
     } else {
-      const media = this.injector.get(MediaService);
-      if (media.selectedVideo) {
-        media.stopVideo();
-        media.selectedVideo = null;
-      }
+      this.ds.deleteSelectedItem();
+
       if (this.ds.status == ItemStatus.image_crop || this.ds.status == ItemStatus.element_crop || this.ds.status == ItemStatus.video_crop) {
         this.ur.saveTheData(this.ds.theDesign);
       }
