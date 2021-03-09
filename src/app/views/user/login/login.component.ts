@@ -1,9 +1,11 @@
-import { Component,  ViewChild } from '@angular/core';
+import { Component, ViewChild, NgZone } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
+import { User } from 'src/app/models/models';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +22,9 @@ export class LoginComponent {
   constructor(
     public authService: AuthService,
     private notifications: NotificationsService,
-    private router: Router
+    private router: Router,
+    public firebaseService: FirebaseService,
+    public ngZone: NgZone
   ) {}
 
   onSubmit(): void {
@@ -37,12 +41,44 @@ export class LoginComponent {
       .catch((error) => {
         this.buttonDisabled = false;
         this.buttonState = '';
-        this.notifications.create(
-          'Error',
-          error.message,
-          NotificationType.Bare,
-          { theClass: 'outline primary', timeOut: 6000, showProgressBar: false }
-        );
+        this.notifications.create('Error', error.message, NotificationType.Bare, {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false,
+        });
       });
+  }
+
+  users: User[];
+  googleAuth() {
+    this.authService.googleAuth().then((user: firebase.User) => {
+      this.detectOverlapUser(user);
+      this.ngZone.run(() => {
+        this.router.navigate([environment.adminRoot]);
+      });
+    });
+  }
+
+  facebookAuth() {
+    this.authService.facebookAuth().then((user: firebase.User) => {
+      this.detectOverlapUser(user);
+      this.ngZone.run(() => {
+        this.router.navigate([environment.adminRoot]);
+      });
+    });
+  }
+
+  detectOverlapUser(user) {
+    this.firebaseService.readUser(user.uid).subscribe((data) => {
+      this.users = data.map((e) => {
+        return {
+          ...e.payload.doc.data(),
+        } as User;
+      });
+
+      if (this.users.length == 0) {
+        this.firebaseService.createUser(user);
+      }
+    });
   }
 }

@@ -1,6 +1,5 @@
 <div class="card auth-card">
-  <div class="position-relative image-side ">
-  </div>
+  <div class="position-relative image-side"></div>
   <div class="form-side">
     <a class="c-pointer" routerLink="/">
       <span class="logo-single"></span>
@@ -8,14 +7,12 @@
     <h2 class="mb-4">Register</h2>
 
     <div>
-      <button (click)="authService.googleAuth()"
-      type="button" class="btn btn-outline-danger mb-5 mr-5">
-        <span><img src="https://img.icons8.com/color/48/000000/google-logo.png" class="img-fluid mr-1" width="25"></span>
+      <button (click)="authService.googleAuth()" type="button" class="btn btn-outline-danger mb-5 mr-5">
+        <span><img src="https://img.icons8.com/color/48/000000/google-logo.png" class="img-fluid mr-1" width="25" /></span>
         Google Signin
       </button>
-      <button (click)="authService.facebookAuth()"
-      type="button" class="btn btn-outline-primary mb-5 mr-5">
-        <span><img src="https://i.imgur.com/URmkevm.png" class="img-fluid mr-1" width="25"></span>
+      <button (click)="authService.facebookAuth()" type="button" class="btn btn-outline-primary mb-5 mr-5">
+        <span><img src="https://i.imgur.com/URmkevm.png" class="img-fluid mr-1" width="25" /></span>
         Facebook Signin
       </button>
       <!-- <button type="button" class="btn btn-outline-primary mb-5 mr-5">
@@ -24,34 +21,37 @@
       </button> -->
     </div>
 
-    <form #registerForm="ngForm" novalidate  (ngSubmit)="onSubmit()">
+    <form #registerForm="ngForm" novalidate (ngSubmit)="onSubmit()">
       <label class="form-group has-float-label">
-        <input class="form-control" required ngModel #displayName="ngModel" name="displayName"/>
+        <input class="form-control" required ngModel #displayName="ngModel" name="displayName" />
         <span>{{ 'user.fullname' | translate }}</span>
         <div *ngIf="!displayName.valid && registerForm.submitted" class="invalid-tooltip">Name is required!</div>
       </label>
       <label class="form-group has-float-label">
-        <input class="form-control" required email ngModel #email="ngModel" name="email"/>
+        <input class="form-control" required email ngModel #email="ngModel" name="email" />
         <span>{{ 'user.email' | translate }}</span>
         <div *ngIf="!email.valid && registerForm.submitted" class="invalid-tooltip">Email is required!</div>
         <div *ngIf="email?.errors?.email && registerForm.submitted" class="invalid-tooltip">Email must be a valid address!</div>
       </label>
       <label class="form-group has-float-label">
-        <input class="form-control" type="password" placeholder="" required ngModel #password="ngModel" name="password"/>
+        <input class="form-control" type="password" placeholder="" required ngModel #password="ngModel" name="password" />
         <span>{{ 'user.password' | translate }}</span>
         <div *ngIf="!password.valid && registerForm.submitted" class="invalid-tooltip">Password is required!</div>
       </label>
       <div class="d-flex justify-content-between align-items-center">
-        <a routerLink="/user/login">{{ 'user.login-button' | translate }}</a>.
+        <a routerLink="/user/login">{{ 'user.login-button' | translate }}</a
+        >.
         <a routerLink="/user/forgot-password">{{ 'user.forgot-password' | translate }}?</a>
-        <app-state-button [btnClass]="'btn btn-primary btn-lg btn-shadow'" [currentState]="buttonState"
-          [isDisabled]="buttonDisabled" click="onLoginClick()">
+        <app-state-button
+          [btnClass]="'btn btn-primary btn-lg btn-shadow'"
+          [currentState]="buttonState"
+          [isDisabled]="buttonDisabled"
+          click="onLoginClick()"
+        >
           {{ 'user.register-button' | translate | uppercase }}
         </app-state-button>
-
       </div>
-    </form >
-
+    </form>
   </div>
 </div>
 <simple-notifications></simple-notifications>

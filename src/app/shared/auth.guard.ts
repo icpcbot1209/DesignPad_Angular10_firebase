@@ -1,32 +1,18 @@
-import {
-  CanActivate,
-  Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  CanActivateChild,
-} from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  canActivateChild(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
-
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.authService.user) {
-      if (route.data && route.data.roles) {
-        if (route.data.roles.includes(this.authService.user.role)) {
-          return true;
-        } else {
-          this.router.navigate(['/unauthorized']);
-          return false;
-        }
-      } else {
+      if (route.data.roles.includes(this.authService.user.role)) {
         return true;
+      } else {
+        this.router.navigate(['/unauthorized']);
+        return false;
       }
     } else {
       this.router.navigate(['/user/login']);
@@ -35,17 +21,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    console.log(this.authService.user);
     if (this.authService.user) {
-      if (route.data && route.data.roles) {
-        if (route.data.roles.includes(this.authService.user.role)) {
-          return true;
-        } else {
-          this.router.navigate(['/unauthorized']);
-          return false;
-        }
-      } else {
+      if (route.data.roles.includes(this.authService.user.role)) {
         return true;
+      } else {
+        this.router.navigate(['/unauthorized']);
+        return false;
       }
     } else {
       this.router.navigate(['/user/login']);

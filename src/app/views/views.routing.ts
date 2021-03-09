@@ -17,21 +17,17 @@ let routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () =>
-      import('./admin/admin.module').then((m) => m.AdminModule),
+    loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
   },
   {
     path: 'browse-template',
-    loadChildren: () =>
-      import('./browse-template/browse-template.module').then(
-        (m) => m.BrowseTemplateModule
-      ),
+    loadChildren: () => import('./browse-template/browse-template.module').then((m) => m.BrowseTemplateModule),
   },
   {
     path: adminRoot,
     loadChildren: () => import('./app/app.module').then((m) => m.AppModule),
     data: { roles: [UserRole.Admin, UserRole.Editor] },
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     // canActivateChild: [AuthGuard],
   },
   {

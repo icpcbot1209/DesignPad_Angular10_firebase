@@ -1,4 +1,5 @@
 import { ItemType } from './enums';
+import { UserRole } from '../shared/auth.roles';
 
 export interface Item {
   type: ItemType;
@@ -110,4 +111,9 @@ export interface AssetVideo {
   userId: string;
   tags: string[];
   duration;
+}
+
+export interface User {
+  uid: string;
+  role: UserRole;
 }
