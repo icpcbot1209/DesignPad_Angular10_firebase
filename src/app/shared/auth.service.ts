@@ -38,17 +38,16 @@ export class AuthService {
   ) {}
 
   init() {
-    // this.auth.authState.subscribe(async (userData) => {
-    //   if (userData) {
-    //     await this.setLocalStorage(userData);
-    //     console.log('lll');
-    //   } else {
-    //     this.user = null;
-    //     localStorage.setItem('user', null);
-    //     JSON.parse(localStorage.getItem('user'));
-    //     this.subjectAuth.next(false);
-    //   }
-    // });
+    this.auth.authState.subscribe(async (userData) => {
+      if (userData) {
+        this.setLocalStorage(userData);
+      } else {
+        this.user = null;
+        localStorage.setItem('user', null);
+        JSON.parse(localStorage.getItem('user'));
+        this.subjectAuth.next(false);
+      }
+    });
   }
 
   // tslint:disable-next-line:typedef
@@ -133,6 +132,7 @@ export class AuthService {
         });
         this.user = { ...userData, role: role };
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('role', JSON.stringify(role));
         JSON.parse(localStorage.getItem('user'));
         this.subjectAuth.next(true);
         resolve(true);
