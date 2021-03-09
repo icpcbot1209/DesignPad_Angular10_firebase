@@ -35,7 +35,8 @@ export class LoginComponent {
     this.buttonState = 'show-spinner';
     this.authService
       .emailSignIn(this.loginForm.value)
-      .then((user) => {
+      .then(async (user) => {
+        await this.authService.setLocalStorage(user);
         this.router.navigate([environment.adminRoot]);
       })
       .catch((error) => {
@@ -51,8 +52,9 @@ export class LoginComponent {
 
   users: User[];
   googleAuth() {
-    this.authService.googleAuth().then((user: firebase.User) => {
+    this.authService.googleAuth().then(async (user: firebase.User) => {
       this.detectOverlapUser(user);
+      await this.authService.setLocalStorage(user);
       this.ngZone.run(() => {
         this.router.navigate([environment.adminRoot]);
       });
@@ -60,8 +62,9 @@ export class LoginComponent {
   }
 
   facebookAuth() {
-    this.authService.facebookAuth().then((user: firebase.User) => {
+    this.authService.facebookAuth().then(async (user: firebase.User) => {
       this.detectOverlapUser(user);
+      await this.authService.setLocalStorage(user);
       this.ngZone.run(() => {
         this.router.navigate([environment.adminRoot]);
       });

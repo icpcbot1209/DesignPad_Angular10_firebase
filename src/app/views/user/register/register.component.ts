@@ -31,8 +31,10 @@ export class RegisterComponent {
 
     this.authService
       .emailSignUp(this.registerForm.value)
-      .then((user) => {
+      .then(async (user) => {
         this.firebaseService.createUser(user);
+        await this.authService.setLocalStorage(user);
+
         this.router.navigate([environment.adminRoot]);
       })
       .catch((error) => {

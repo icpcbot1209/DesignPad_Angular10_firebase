@@ -54,25 +54,26 @@ export class AuthService {
   // tslint:disable-next-line:typedef
   emailSignIn(credentials: ISignInCredentials) {
     return this.auth.signInWithEmailAndPassword(credentials.email, credentials.password).then(async ({ user }) => {
-      await this.setLocalStorage(user);
       return user;
     });
   }
 
   async signOut() {
     await this.auth.signOut();
-    await localStorage.removeItem('user');
+
+    this.user = null;
+    localStorage.setItem('user', null);
+    JSON.parse(localStorage.getItem('user'));
+    this.subjectAuth.next(false);
   }
 
   // tslint:disable-next-line:typedef
   emailSignUp(credentials: ICreateCredentials) {
     return this.auth.createUserWithEmailAndPassword(credentials.email, credentials.password).then(async ({ user }) => {
-      user.updateProfile({
+      await user.updateProfile({
         displayName: credentials.displayName,
       });
-      this.auth.updateCurrentUser(user);
-      // this.user = user;
-      await this.setLocalStorage(user);
+      await this.auth.updateCurrentUser(user);
 
       return user;
     });
@@ -82,7 +83,6 @@ export class AuthService {
     return this.auth
       .signInWithPopup(new auth.GoogleAuthProvider())
       .then(async ({ user }) => {
-        await this.setLocalStorage(user);
         return user;
       })
       .catch((error) => {
@@ -98,7 +98,7 @@ export class AuthService {
     return this.auth
       .signInWithPopup(new auth.FacebookAuthProvider())
       .then(async ({ user }) => {
-        await this.setLocalStorage(user);
+        // await this.setLocalStorage(user);
         return user;
       })
       .catch((error) => {
@@ -135,7 +135,6 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(userData));
         JSON.parse(localStorage.getItem('user'));
         this.subjectAuth.next(true);
-        console.log(this.user.role);
         resolve(true);
       });
     });

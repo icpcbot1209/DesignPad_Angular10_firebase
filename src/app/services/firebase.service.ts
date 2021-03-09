@@ -19,7 +19,9 @@ export class FirebaseService {
   createUser(user) {
     this.db.collection<User>('User').add({
       uid: user.uid,
+      displayName: user.displayName,
       role: UserRole.Editor,
+      template: [],
     });
   }
 

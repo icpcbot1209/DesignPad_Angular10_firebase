@@ -115,5 +115,7 @@ export interface AssetVideo {
 
 export interface User {
   uid: string;
+  displayName: string;
   role: UserRole;
+  template: [];
 }
