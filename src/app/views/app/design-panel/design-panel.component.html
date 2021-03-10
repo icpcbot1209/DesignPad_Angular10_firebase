@@ -100,12 +100,22 @@
         </div>
 
         <button
+          *ngIf="currentRole != role.Admin"
           class="btn btn-primary"
           [ngStyle]="{ width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 'px' }"
           style="margin-bottom: 50px"
           (click)="addPage()"
         >
           Add Page
+        </button>
+        <button
+          *ngIf="currentRole == role.Admin"
+          class="btn btn-primary"
+          [ngStyle]="{ width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 'px' }"
+          style="margin-bottom: 50px"
+          (click)="uploadPage()"
+        >
+          Upload Page
         </button>
       </div>
     </div>

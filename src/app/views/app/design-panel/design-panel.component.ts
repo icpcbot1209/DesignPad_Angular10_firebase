@@ -7,6 +7,7 @@ import { ToolbarService } from 'src/app/services/toolbar.service';
 import { ItemStatus, ItemType } from 'src/app/models/enums';
 import { DownloadService } from 'src/app/services/download.service';
 import { MediaService } from 'src/app/services/media.service';
+import { UserRole } from 'src/app/shared/auth.roles';
 
 declare var ResizeObserver;
 
@@ -43,6 +44,8 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedFileType = 'PDF';
   fileTypeItems = [];
+  currentRole = JSON.parse(localStorage.getItem('role'));
+  role = UserRole;
 
   ngOnInit(): void {
     this.ds.init();
@@ -64,7 +67,6 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.resizeObserver.observe(this.host.nativeElement);
-
     // this.addKeyEventListeners();
 
     this.moveableService.init();
@@ -120,6 +122,11 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ds.addPage();
 
     this.toolbarService.textEditItems.push([]);
+  }
+
+  uploadPage() {
+    let templateStr = document.querySelector('.card');
+    console.log(templateStr);
   }
 
   showDownloadContent() {
