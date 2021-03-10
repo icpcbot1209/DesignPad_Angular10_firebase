@@ -8,6 +8,8 @@ import { ItemStatus, ItemType } from 'src/app/models/enums';
 import { DownloadService } from 'src/app/services/download.service';
 import { MediaService } from 'src/app/services/media.service';
 import { UserRole } from 'src/app/shared/auth.roles';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { Design, Item } from 'src/app/models/models';
 
 declare var ResizeObserver;
 
@@ -30,7 +32,9 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     public toolbarService: ToolbarService,
     public downloadService: DownloadService,
     public media: MediaService,
-    public injector: Injector
+    public injector: Injector,
+    public firebaseService: FirebaseService,
+    public ngZone: NgZone
   ) {}
 
   foreColor = Colors.getColors().separatorColor;
@@ -124,9 +128,57 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.toolbarService.textEditItems.push([]);
   }
 
-  uploadPage() {
-    let templateStr = document.querySelector('.card');
-    console.log(templateStr);
+  isUploading: boolean = false;
+  imgWidth: number;
+  imgHeight: number;
+  async uploadPage() {
+    this.isUploading = true;
+    let templateStr = (document.querySelector('.card').firstChild as HTMLElement).innerHTML;
+    let design: Design = this.ds.theDesign;
+
+    let thumbnail = await this.downloadService.getOnePageAsImg();
+    thumbnail = await this.resizeImg(thumbnail);
+    console.log(thumbnail);
+
+    await this.firebaseService.createAdminTemplates(templateStr, design, thumbnail, this.imgWidth, this.imgHeight);
+    this.isUploading = false;
+  }
+
+  resizeImg(src) {
+    return new Promise((resolve, reject) => {
+      let thumbnail: string;
+      let img = new Image();
+      const max = 165;
+      img.onload = () => {
+        this.imgWidth = img.width;
+        this.imgHeight = max;
+
+        if (img.height > max) {
+          var oc = document.createElement('canvas'),
+            octx = oc.getContext('2d');
+          oc.width = img.width;
+          oc.height = img.height;
+          octx.drawImage(img, 0, 0);
+
+          oc.width = (img.width / img.height) * max;
+          this.imgWidth = oc.width;
+
+          oc.height = max;
+          octx.drawImage(oc, 0, 0, oc.width, oc.height);
+          octx.drawImage(img, 0, 0, oc.width, oc.height);
+          thumbnail = oc.toDataURL();
+        } else {
+          try {
+            thumbnail = oc.toDataURL();
+          } catch (error) {
+            return;
+          }
+        }
+
+        resolve(thumbnail);
+      };
+      img.src = src;
+    });
   }
 
   showDownloadContent() {

@@ -1,1 +1,16 @@
+.grid-item {
+  box-sizing: border-box;
+  padding: 3px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
 
+.grid-item:hover {
+  border: 1px solid #f16624;
+}
+
+.grid-container {
+  display: flex;
+  flex-flow: row wrap;
+  // justify-content: space-between;
+}

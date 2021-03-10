@@ -589,13 +589,11 @@ export class DesignService {
       clipPath.push(Number.parseFloat(clipPathStr[i]));
     }
     this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber = clipPath;
-    console.log(this.theDesign.pages[ms.selectedPageId].items[ms.selectedItemId].clipPathToNumber);
   }
 
   deleteSelectedItem() {
     const moveableService = this.injector.get(MoveableService);
     const media = this.injector.get(MediaService);
-    console.log(media.selectedVideo);
     if (media.selectedVideo) {
       this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].onPlayVideo = false;
 

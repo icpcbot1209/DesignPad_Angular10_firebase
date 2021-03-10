@@ -6,16 +6,16 @@
     <div [ngStyle]="styleLayer()" style="overflow: hidden">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <ng-container *ngIf="item.type == ItemType.image">
-          <app-image-element [item]="item" [itemId]="itemId" [pageId]="pageId"></app-image-element>
+          <app-image-element [item]="item"></app-image-element>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.text">
           <app-edit-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-edit-item>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.element">
-          <app-svgelement [item]="item" [itemId]="itemId" [pageId]="pageId"></app-svgelement>
+          <app-svgelement [item]="item"></app-svgelement>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.video">
-          <app-video-element [item]="item" [itemId]="itemId" [pageId]="pageId"></app-video-element>
+          <app-video-element [item]="item"></app-video-element>
         </ng-container>
       </ng-container>
     </div>
@@ -23,7 +23,7 @@
     <div [id]="'page-' + pageId" [ngStyle]="styleLayer()" style="overflow: disable; pointer-events: all">
       <ng-container *ngFor="let item of page.items; let itemId = index">
         <ng-container *ngIf="item.type == ItemType.image">
-          <app-image-selector [item]="item" [itemId]="itemId" [pageId]="pageId"></app-image-selector>
+          <app-image-selector [item]="item"></app-image-selector>
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.text">
           <app-text-item [item]="item" [itemId]="itemId" [pageId]="pageId"></app-text-item>

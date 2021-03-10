@@ -114,7 +114,7 @@ export class DownloadService {
       htmlStr = `<div style="width: 600px; height: 500px; position: absolute;">` + htmlStr + '</div>';
       htmlContent = htmlContent + htmlStr + '</body>';
 
-      const blob = await this.downloadOnePageAsImg(htmlContent, i);
+      const blob = await this.downloadOnePageAsImg(htmlContent);
 
       if (document.querySelectorAll('.card').length > 1) zip.file(i + 1 + '.jpg', blob);
       else saveAs(blob, i + 1 + '.jpg');
@@ -129,7 +129,7 @@ export class DownloadService {
       });
   }
 
-  downloadOnePageAsImg(htmlContent, index) {
+  downloadOnePageAsImg(htmlContent) {
     return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
@@ -182,5 +182,39 @@ export class DownloadService {
       .forEach((ele) => {
         ele.parentElement.querySelector('img').remove();
       });
+  }
+
+  async getOnePageAsImg() {
+    return new Promise(async (resolve, reject) => {
+      document.querySelectorAll('.ql-editor').forEach((ele) => {
+        if (ele.parentElement.children[2]) {
+          ele.parentElement.children[2].remove();
+        }
+      });
+
+      const arr = document.querySelectorAll('.card');
+      let ele = arr[0];
+      if (ele.querySelectorAll('p').length != 0) {
+        ele.querySelectorAll('p').forEach((el) => {
+          el.style.margin = '0';
+        });
+      }
+
+      this.generateImgElement(ele);
+
+      let htmlContent = document.querySelector('head').outerHTML + '<body style="margin: 0; padding: 0;>';
+      let htmlStr = ele.children[0].children[0].outerHTML;
+
+      htmlStr = `<div style="width: 600px; height: 500px; position: absolute;">` + htmlStr + '</div>';
+      htmlContent = htmlContent + htmlStr + '</body>';
+
+      const blob = (await this.downloadOnePageAsImg(htmlContent)) as Blob;
+      const reader = new FileReader();
+      reader.onload = () => {
+        let original = reader.result as string;
+        resolve(original);
+      };
+      reader.readAsDataURL(blob);
+    });
   }
 }

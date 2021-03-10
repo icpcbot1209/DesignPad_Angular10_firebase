@@ -119,3 +119,11 @@ export interface User {
   role: UserRole;
   template: [];
 }
+
+export interface AdminTemplates {
+  templates: string;
+  design: Design;
+  thumbnail: string;
+  width: number;
+  height: number;
+}

@@ -9,7 +9,20 @@
       </svg>
       Favorite
     </ng-template>
-    Content 1
+    <div id="gridContainer" class="grid-container">
+      <ng-container *ngFor="let item of templates; let i = index">
+        <div style="position: relative">
+          <img
+            [id]="'templateThumbnail' + i"
+            class="grid-item"
+            [lazyLoad]="item.thumbnail"
+            [ngStyle]="{ height: item.height * ratios[i] + padding * 2 + 'px' }"
+            width="auto"
+            (click)="addTemplatePage(item)"
+          />
+        </div>
+      </ng-container>
+    </div>
   </mat-tab>
   <mat-tab label="Second">
     <ng-template mat-tab-label>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { User } from '../models/models';
+import { AdminTemplates, User } from '../models/models';
 import { UserRole } from 'src/app/shared/auth.roles';
 
 @Injectable({
@@ -25,5 +25,17 @@ export class FirebaseService {
     });
   }
 
-  updateUser(user) {}
+  readAdminTemplates() {
+    return this.db.collection<AdminTemplates>('AdminTemplates').snapshotChanges();
+  }
+
+  createAdminTemplates(templates, design, thumbnail, width, height) {
+    this.db.collection<AdminTemplates>('AdminTemplates').add({
+      templates: templates,
+      design: design,
+      thumbnail: thumbnail,
+      width: width,
+      height: height,
+    });
+  }
 }
