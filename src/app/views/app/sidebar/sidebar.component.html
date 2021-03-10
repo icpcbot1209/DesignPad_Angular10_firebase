@@ -73,6 +73,14 @@
     <div
       [ngStyle]="{
         height: '100%',
+        display: !ds.isToolpanel() && theItem.label == 'Templates' ? 'block' : 'none'
+      }"
+    >
+      <sidebar-templates></sidebar-templates>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
         display: ds.isToolpanel() ? 'block' : 'none'
       }"
     >
