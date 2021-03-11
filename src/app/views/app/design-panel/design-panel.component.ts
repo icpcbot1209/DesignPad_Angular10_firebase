@@ -138,7 +138,6 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let thumbnail = await this.downloadService.getOnePageAsImg();
     thumbnail = await this.resizeImg(thumbnail);
-    console.log(thumbnail);
 
     await this.firebaseService.createAdminTemplates(templateStr, design, thumbnail, this.imgWidth, this.imgHeight);
     this.isUploading = false;
