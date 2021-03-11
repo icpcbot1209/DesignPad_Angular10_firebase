@@ -196,4 +196,6 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     (document.querySelector('.rotateIcon') as HTMLElement).style.border = '2px solid #00c4cc';
     this.ds.status = ItemStatus.music_selected;
   }
+
+  uploadUserTemplate() {}
 }

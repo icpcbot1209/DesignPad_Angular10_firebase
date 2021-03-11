@@ -1,22 +1,22 @@
 <ng-container *ngIf="!ds.isStatus(ItemStatus.none); else defaultToolbar">
   <ng-container *ngIf="ds.isStatus(ItemStatus.image_selected)">
-    <app-image-toolbar></app-image-toolbar>
+    <app-image-toolbar class="center"></app-image-toolbar>
   </ng-container>
   <ng-container *ngIf="ds.isStatus(ItemStatus.text_selected) || ds.isStatus(ItemStatus.text_font_list) || ds.isStatus(ItemStatus.text_effect)">
-    <app-text-toolbar></app-text-toolbar>
+    <app-text-toolbar class="center" style="padding-left: 10px; padding-top: 10px"></app-text-toolbar>
   </ng-container>
   <ng-container *ngIf="ds.isStatus(ItemStatus.element_selected)" style="display: flex; align-items: center">
-    <app-element-toolbar></app-element-toolbar>
+    <app-element-toolbar class="center"></app-element-toolbar>
   </ng-container>
   <ng-container *ngIf="ds.isStatus(ItemStatus.music_selected)">
-    <app-music-toolbar style="width: 100%; height: 100%"></app-music-toolbar>
+    <app-music-toolbar style="width: 100%; height: 100%" class="center"></app-music-toolbar>
   </ng-container>
   <ng-container *ngIf="ds.isStatus(ItemStatus.video_selected)">
-    <app-video-toolbar></app-video-toolbar>
+    <app-video-toolbar class="center"></app-video-toolbar>
   </ng-container>
 
   <ng-container *ngIf="!ds.isStatus(ItemStatus.music_selected)">
-    <button style="position: absolute; right: 0px; top: 3px" mat-button (click)="showPositionContent()">Position</button>
+    <button style="position: absolute; right: 0px" mat-button (click)="showPositionContent()">Position</button>
     <div id="dimensionContent" [ngStyle]="{ display: this.moveableService.isPosition ? 'block' : 'none' }">
       <div style="display: flex; justify-content: space-between; width: 365px">
         <div

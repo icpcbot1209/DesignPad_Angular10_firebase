@@ -117,13 +117,17 @@ export interface User {
   uid: string;
   displayName: string;
   role: UserRole;
-  template: [];
+  template: uploadUserTemplate[];
 }
 
 export interface AdminTemplates {
-  templates: string;
   design: Design;
   thumbnail: string;
   width: number;
   height: number;
+}
+
+export interface uploadUserTemplate {
+  design: Design;
+  thumbnail: string;
 }

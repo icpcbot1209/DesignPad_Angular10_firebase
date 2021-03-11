@@ -31,7 +31,6 @@ export class FirebaseService {
 
   createAdminTemplates(templates, design, thumbnail, width, height) {
     this.db.collection<AdminTemplates>('AdminTemplates').add({
-      templates: templates,
       design: design,
       thumbnail: thumbnail,
       width: width,

@@ -24,3 +24,8 @@ input[type='number'] {
 .hover:hover {
   background-color: rgba(64, 87, 109, 0.07);
 }
+
+.center {
+  display: flex;
+  align-items: center;
+}
