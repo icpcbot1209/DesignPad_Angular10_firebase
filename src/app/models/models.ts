@@ -1,5 +1,6 @@
 import { ItemType } from './enums';
 import { UserRole } from '../shared/auth.roles';
+import { Data } from '@angular/router';
 
 export interface Item {
   type: ItemType;
@@ -114,10 +115,11 @@ export interface AssetVideo {
 }
 
 export interface User {
+  docId: string;
   uid: string;
   displayName: string;
   role: UserRole;
-  template: uploadUserTemplate[];
+  template: UploadUserTemplate[];
 }
 
 export interface AdminTemplates {
@@ -127,7 +129,10 @@ export interface AdminTemplates {
   height: number;
 }
 
-export interface uploadUserTemplate {
+export interface UploadUserTemplate {
   design: Design;
   thumbnail: string;
+  width: number;
+  height: number;
+  timestamp: number;
 }

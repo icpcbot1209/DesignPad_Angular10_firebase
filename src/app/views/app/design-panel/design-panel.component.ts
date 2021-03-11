@@ -9,7 +9,7 @@ import { DownloadService } from 'src/app/services/download.service';
 import { MediaService } from 'src/app/services/media.service';
 import { UserRole } from 'src/app/shared/auth.roles';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { Design, Item } from 'src/app/models/models';
+import { Design, Item, UploadUserTemplate, User } from 'src/app/models/models';
 
 declare var ResizeObserver;
 
@@ -133,13 +133,12 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   imgHeight: number;
   async uploadPage() {
     this.isUploading = true;
-    let templateStr = (document.querySelector('.card').firstChild as HTMLElement).innerHTML;
     let design: Design = this.ds.theDesign;
 
     let thumbnail = await this.downloadService.getOnePageAsImg();
     thumbnail = await this.resizeImg(thumbnail);
 
-    await this.firebaseService.createAdminTemplates(templateStr, design, thumbnail, this.imgWidth, this.imgHeight);
+    await this.firebaseService.createAdminTemplates(design, thumbnail, this.imgWidth, this.imgHeight);
     this.isUploading = false;
   }
 
@@ -197,5 +196,42 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ds.status = ItemStatus.music_selected;
   }
 
-  uploadUserTemplate() {}
+  async UploadUserTemplate() {
+    let haveItem: boolean = false;
+    for (let i = 0; i < this.ds.theDesign.pages.length; i++) {
+      for (let j = 0; j < this.ds.theDesign.pages[i].items.length; j++) {
+        if (this.ds.theDesign.pages[i].items[j]) haveItem = true;
+      }
+    }
+
+    if (haveItem) {
+      this.downloadService.onDownloading = true;
+      let thumbnail = (await this.downloadService.getOnePageAsImg()) as string;
+      thumbnail = (await this.resizeImg(thumbnail)) as string;
+
+      let template = {
+        thumbnail: thumbnail,
+        width: this.imgWidth,
+        height: this.imgHeight,
+        design: this.ds.theDesign,
+        timestamp: Date.now(),
+      } as UploadUserTemplate;
+
+      this.firebaseService.readUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((data) => {
+        let users = data.map((e) => {
+          return {
+            docId: e.payload.doc.id,
+            ...e.payload.doc.data(),
+          } as User;
+        });
+        let templates = JSON.parse(JSON.stringify(users[0].template));
+        templates.push(template);
+        console.log(templates);
+
+        this.firebaseService.updateUserTemplate(templates, users[0].docId);
+      });
+
+      this.downloadService.onDownloading = false;
+    }
+  }
 }
