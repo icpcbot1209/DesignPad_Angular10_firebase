@@ -53,21 +53,23 @@ export class TemplatesComponent implements OnInit {
 
   padding = 4;
   decideScale(templates, count, padding) {
-    let screenWidth = 330 - padding * 2 * count;
-    let ratios: number[] = [];
+    if (templates.length != 0) {
+      let screenWidth = 330 - padding * 2 * count;
+      let ratios: number[] = [];
 
-    for (let i = 1; i < templates.length; i = i + 2) {
-      let ratio = screenWidth / (templates[i].width + templates[i - 1].width);
-      ratios.push(ratio);
-      ratios.push(ratio);
+      for (let i = 1; i < templates.length; i = i + 2) {
+        let ratio = screenWidth / (templates[i].width + templates[i - 1].width);
+        ratios.push(ratio);
+        ratios.push(ratio);
+      }
+
+      if (this.templates.length % 2 == 1) {
+        let ratio = 165 / templates[templates.length - 1].width;
+        ratios.push(ratio);
+      }
+
+      return ratios;
     }
-
-    if (this.templates.length % 2 == 1) {
-      let ratio = 165 / templates[templates.length - 1].width;
-      ratios.push(ratio);
-    }
-
-    return ratios;
   }
 
   addTemplatePage(item: AdminTemplates) {
