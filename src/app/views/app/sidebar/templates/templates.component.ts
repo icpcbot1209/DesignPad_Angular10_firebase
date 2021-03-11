@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { from } from 'rxjs';
-import { AdminTemplates } from 'src/app/models/models';
+import { AdminTemplates, UploadUserTemplate, User } from 'src/app/models/models';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { DesignService } from 'src/app/services/design.service';
 
@@ -13,15 +13,18 @@ import { DesignService } from 'src/app/services/design.service';
 export class TemplatesComponent implements OnInit {
   tabBar;
   templates: AdminTemplates[];
+  userTemplates: UploadUserTemplate[];
   ratios: number[] = [];
+  userRatios: number[] = [];
 
   constructor(public firebaseSerivce: FirebaseService, public ds: DesignService) {}
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.readAdminTemplates();
+    this.readUserTemplates();
   }
+
+  ngAfterViewInit(): void {}
 
   readAdminTemplates() {
     this.firebaseSerivce.readAdminTemplates().subscribe((e) => {
@@ -31,24 +34,40 @@ export class TemplatesComponent implements OnInit {
         } as AdminTemplates;
       });
 
-      this.decideScale(this.templates, 2, this.padding);
+      this.ratios = this.decideScale(this.templates, 2, this.padding);
+    });
+  }
+
+  readUserTemplates() {
+    this.firebaseSerivce.readUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((e) => {
+      let users = e.map((data) => {
+        return {
+          ...data.payload.doc.data(),
+        } as User;
+      });
+      this.userTemplates = users[0].template;
+
+      this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
     });
   }
 
   padding = 4;
-  decideScale(templates: AdminTemplates[], count, padding) {
+  decideScale(templates, count, padding) {
     let screenWidth = 330 - padding * 2 * count;
+    let ratios: number[] = [];
 
     for (let i = 1; i < templates.length; i = i + 2) {
       let ratio = screenWidth / (templates[i].width + templates[i - 1].width);
-      this.ratios.push(ratio);
-      this.ratios.push(ratio);
+      ratios.push(ratio);
+      ratios.push(ratio);
     }
 
     if (this.templates.length % 2 == 1) {
       let ratio = 165 / templates[templates.length - 1].width;
-      this.ratios.push(ratio);
+      ratios.push(ratio);
     }
+
+    return ratios;
   }
 
   addTemplatePage(item: AdminTemplates) {
@@ -81,5 +100,9 @@ export class TemplatesComponent implements OnInit {
         pageItems[i].y = item.design.pages[0].items[i].y * ratio + deltaY + (item.design.pages[0].items[i].h * (ratio - 1)) / 2;
       }
     }
+  }
+
+  addUserTemplatePage(i) {
+    this.ds.theDesign = this.userTemplates[i].design;
   }
 }

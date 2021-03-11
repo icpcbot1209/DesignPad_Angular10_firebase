@@ -33,7 +33,21 @@
         />
         <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
       </svg>
-      Recent </ng-template
-    >Content 2
+      Recent
+    </ng-template>
+    <div id="gridContainer" class="grid-container">
+      <ng-container *ngFor="let item of userTemplates; let i = index">
+        <div style="position: relative">
+          <img
+            [id]="'usertemplateThumbnail' + i"
+            class="grid-item"
+            [lazyLoad]="item.thumbnail"
+            [ngStyle]="{ height: item.height * userRatios[i] + padding * 2 + 'px' }"
+            width="auto"
+            (click)="addUserTemplatePage(i)"
+          />
+        </div>
+      </ng-container>
+    </div>
   </mat-tab>
 </mat-tab-group>
