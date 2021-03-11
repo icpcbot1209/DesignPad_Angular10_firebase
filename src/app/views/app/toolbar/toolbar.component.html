@@ -3,7 +3,7 @@
     <app-image-toolbar class="center"></app-image-toolbar>
   </ng-container>
   <ng-container *ngIf="ds.isStatus(ItemStatus.text_selected) || ds.isStatus(ItemStatus.text_font_list) || ds.isStatus(ItemStatus.text_effect)">
-    <app-text-toolbar class="center" style="padding-left: 10px; padding-top: 10px"></app-text-toolbar>
+    <app-text-toolbar class="center" style="padding-top: 10px"></app-text-toolbar>
   </ng-container>
   <ng-container *ngIf="ds.isStatus(ItemStatus.element_selected)" style="display: flex; align-items: center">
     <app-element-toolbar class="center"></app-element-toolbar>
