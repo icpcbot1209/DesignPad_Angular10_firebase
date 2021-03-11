@@ -74,6 +74,7 @@ export class TemplatesComponent implements OnInit {
   }
 
   addTemplatePage(item: AdminTemplates) {
+    this.ds.isTemplate = true;
     let screenWidth = this.ds.theDesign.category.size.x;
     let screenHeight = this.ds.theDesign.category.size.y;
     this.ds.theDesign.category.size.x = item.design.category.size.x;
@@ -97,6 +98,7 @@ export class TemplatesComponent implements OnInit {
 
       let pageItems = this.ds.theDesign.pages[this.ds.thePageId].items;
       for (let i = 0; i < pageItems.length; i++) {
+        pageItems[i].selected = false;
         pageItems[i].scaleX = item.design.pages[0].items[i].scaleX * ratio;
         pageItems[i].scaleY = item.design.pages[0].items[i].scaleY * ratio;
         pageItems[i].x = item.design.pages[0].items[i].x * ratio + deltaX + (item.design.pages[0].items[i].w * (ratio - 1)) / 2;
@@ -106,6 +108,10 @@ export class TemplatesComponent implements OnInit {
   }
 
   addUserTemplatePage(i) {
-    this.ds.theDesign = this.userTemplates[i].design;
+    this.ds.isTemplate = true;
+    for (let i = 0; i < this.userTemplates[i].design.pages[0].items.length; i++) {
+      this.userTemplates[i].design.pages[0].items[i].selected = false;
+    }
+    this.ds.theDesign = JSON.parse(JSON.stringify(this.userTemplates[i].design));
   }
 }

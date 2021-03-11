@@ -18,7 +18,7 @@ export class ImageSelectorComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#ImgSelector-');
+    if (!this.ds.isTemplate) this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#ImgSelector-');
   }
 
   styleItemPosition(item: Item): CSS.Properties {

@@ -16,6 +16,7 @@ export class DesignService {
   selectedDimensionType = 'px';
   previousType = 'px';
   previousSelectedFontItemFamily = 'Alata';
+  isTemplate = false;
 
   init() {
     this.theDesign = {
@@ -118,6 +119,7 @@ export class DesignService {
   }
 
   addItemToCurrentPage(item: Item) {
+    this.isTemplate = false;
     const media = this.injector.get(MediaService);
 
     if (media.selectedVideo) {

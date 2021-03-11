@@ -25,7 +25,7 @@ export class VideoSelectorComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-');
+    if (!this.ds.isTemplate) this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-');
 
     this.media.selectedVideo = document.querySelector('#VideoElement' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
     this.setIntervalVideo();
