@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
-import { from } from 'rxjs';
 import { AdminTemplates, UploadUserTemplate, User } from 'src/app/models/models';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { DesignService } from 'src/app/services/design.service';
+import { UserRole } from 'src/app/shared/auth.roles';
 
 @Component({
   selector: 'sidebar-templates',
@@ -16,6 +15,8 @@ export class TemplatesComponent implements OnInit {
   userTemplates: UploadUserTemplate[];
   ratios: number[] = [];
   userRatios: number[] = [];
+  currentRole = JSON.parse(localStorage.getItem('role'));
+  role = UserRole;
 
   constructor(public firebaseSerivce: FirebaseService, public ds: DesignService) {}
 
