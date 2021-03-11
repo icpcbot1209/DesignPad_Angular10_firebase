@@ -127,7 +127,6 @@ export class VideoUpload {
       video.addEventListener(
         'loadedmetadata',
         function () {
-          console.log(video.duration);
           resolve(video.duration);
         },
         false

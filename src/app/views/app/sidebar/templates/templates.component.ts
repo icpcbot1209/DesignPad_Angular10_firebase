@@ -64,9 +64,6 @@ export class TemplatesComponent implements OnInit {
     this.ds.theDesign.category.size.x = screenWidth;
     this.ds.theDesign.category.size.y = screenHeight;
 
-    // if (this.ds.thePageId != null) {
-    //   this.ds.theDesign.pages[this.ds.thePageId].items = JSON.parse(JSON.stringify(item.design.pages[0].items));
-
     if (screenWidth != item.design.category.size.x || screenHeight != item.design.category.size.y) {
       if (screenWidth > screenHeight) {
         ratio = screenHeight / item.design.category.size.y;
@@ -85,6 +82,4 @@ export class TemplatesComponent implements OnInit {
       }
     }
   }
-  //   }
-  // } else return;
 }

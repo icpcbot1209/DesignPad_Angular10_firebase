@@ -86,7 +86,6 @@ export class MusicUpload {
       au.addEventListener(
         'loadedmetadata',
         function () {
-          console.log(au.duration);
           resolve(au.duration);
         },
         false
