@@ -1,10 +1,10 @@
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private ngZone: NgZone) {}
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (localStorage.getItem('user')) {
@@ -25,11 +25,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       if (route.data.roles.includes(JSON.parse(localStorage.getItem('role')))) {
         return true;
       } else {
-        this.router.navigate(['/unauthorized']);
+        this.ngZone.run(() => {
+          this.router.navigate(['/unauthorized']);
+        });
         return false;
       }
     } else {
-      this.router.navigate(['/user/login']);
+      this.ngZone.run(() => {
+        this.router.navigate(['/user/login']);
+      });
       return false;
     }
   }

@@ -115,7 +115,7 @@ export interface AssetVideo {
 }
 
 export interface User {
-  docId: string;
+  docId?: string;
   uid: string;
   displayName: string;
   role: UserRole;

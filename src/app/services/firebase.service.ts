@@ -18,7 +18,6 @@ export class FirebaseService {
 
   createUser(user) {
     this.db.collection<User>('User').add({
-      docId: '',
       uid: user.uid,
       displayName: user.displayName,
       role: UserRole.Editor,
@@ -26,9 +25,9 @@ export class FirebaseService {
     });
   }
 
-  updateUserTemplate(template: UploadUserTemplate[], docId) {
+  updateUserTemplate(templates: UploadUserTemplate[], docId) {
     this.db.collection<User>('User').doc(docId).update({
-      template: template,
+      template: templates,
     });
   }
 
