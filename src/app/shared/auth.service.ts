@@ -37,20 +37,21 @@ export class AuthService {
     public ngZone: NgZone,
     public firebaseService: FirebaseService
   ) {
-    auth.onAuthStateChanged((user: User) => {
-      this.setAuthData(user);
+    auth.onAuthStateChanged(async (user: User) => {
+      await this.setAuthData(user);
     });
   }
 
   async setAuthData(authUser: User) {
-    console.log('setAuthData :' + authUser);
+    console.log('setAuthData :' + JSON.stringify(authUser));
     if (authUser) {
-      if (await this.firebaseService.readUser(authUser.uid)) {
-        let role = ((await this.firebaseService.readUser(authUser.uid)) as UserData).role;
-        this.user = { displayName: authUser.displayName, role: role, photoURL: authUser.photoURL, uid: authUser.uid, email: authUser.email };
-        console.log(this.user);
-      }
+      // if (await this.firebaseService.readUser(authUser.uid)) {
+      let role = ((await this.firebaseService.readUser(authUser.uid)) as UserData).role;
+      this.user = { displayName: authUser.displayName, role: role, photoURL: authUser.photoURL, uid: authUser.uid, email: authUser.email };
+      console.log(this.user);
+      // }
     }
+    console.log(this.user);
   }
 
   // tslint:disable-next-line:typedef
@@ -62,11 +63,8 @@ export class AuthService {
 
   async signOut() {
     await this.auth.signOut();
-
     this.user = null;
-    localStorage.setItem('user', null);
-    JSON.parse(localStorage.getItem('user'));
-    this.subjectAuth.next(false);
+    // this.subjectAuth.next(false);
   }
 
   // tslint:disable-next-line:typedef
@@ -85,6 +83,7 @@ export class AuthService {
     return this.auth
       .signInWithPopup(new auth.GoogleAuthProvider())
       .then(async ({ user }) => {
+        // this.setAuthData(user);
         return user;
       })
       .catch((error) => {
@@ -94,6 +93,21 @@ export class AuthService {
           showProgressBar: false,
         });
       });
+
+    // return new Promise((resolve, reject) => {
+    //   this.auth
+    //     .signInWithPopup(new auth.GoogleAuthProvider())
+    //     .then(async ({ user }) => {
+    //       resolve(user);
+    //     })
+    //     .catch((error) => {
+    //       this.notifications.create('Error', error.message, NotificationType.Bare, {
+    //         theClass: 'outline primary',
+    //         timeOut: 6000,
+    //         showProgressBar: false,
+    //       });
+    //     });
+    // })
   }
 
   facebookAuth() {

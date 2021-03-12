@@ -53,12 +53,14 @@ export class LoginComponent {
   users: UserData[];
   googleAuth() {
     this.authService.googleAuth().then(async (user: firebase.User) => {
+      console.log('google auth');
       if (!(await this.firebaseService.readUser(user.uid))) {
         console.log('create user table');
         await this.firebaseService.createUser(user);
         await this.authService.setAuthData(user);
       }
       this.ngZone.run(() => {
+        console.log('navigator');
         this.router.navigate([environment.adminRoot]);
       });
     });
