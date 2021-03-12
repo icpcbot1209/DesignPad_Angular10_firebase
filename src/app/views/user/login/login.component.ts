@@ -36,7 +36,6 @@ export class LoginComponent {
     this.authService
       .emailSignIn(this.loginForm.value)
       .then(async (user) => {
-        await this.authService.setLocalStorage(user);
         this.router.navigate([environment.adminRoot]);
       })
       .catch((error) => {
@@ -53,42 +52,23 @@ export class LoginComponent {
   users: UserData[];
   googleAuth() {
     this.authService.googleAuth().then(async (user: firebase.User) => {
-      console.log('google auth');
       if (!(await this.firebaseService.readUser(user.uid))) {
-        console.log('create user table');
         await this.firebaseService.createUser(user);
         await this.authService.setAuthData(user);
       }
-      this.ngZone.run(() => {
-        console.log('navigator');
-        this.router.navigate([environment.adminRoot]);
-      });
+
+      this.router.navigate([environment.adminRoot]);
     });
   }
 
   facebookAuth() {
     this.authService.facebookAuth().then(async (user: firebase.User) => {
-      console.log('1');
-      await this.detectOverlapUser(user);
-      console.log('2');
-      await this.authService.setLocalStorage(user);
+      if (!(await this.firebaseService.readUser(user.uid))) {
+        await this.firebaseService.createUser(user);
+        await this.authService.setAuthData(user);
+      }
 
-      this.ngZone.run(() => {
-        this.router.navigate([environment.adminRoot]);
-      });
+      this.router.navigate([environment.adminRoot]);
     });
-  }
-
-  detectOverlapUser(user) {
-    // return new Promise((resolve, reject) => {
-    //   this.firebaseService.readUser(user.uid).subscribe((data) => {
-    //     let users = data.map((e) => {
-    //       return {
-    //         ...e.payload.doc.data(),
-    //       } as User;
-    //     });
-    //     resolve(users[0]);
-    //   });
-    // });
   }
 }

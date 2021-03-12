@@ -32,8 +32,7 @@ export class RegisterComponent {
     this.authService
       .emailSignUp(this.registerForm.value)
       .then(async (user) => {
-        this.firebaseService.createUser(user);
-        await this.authService.setLocalStorage(user);
+        await this.firebaseService.createUser(user);
 
         this.router.navigate([environment.adminRoot]);
       })
@@ -48,9 +47,25 @@ export class RegisterComponent {
       });
   }
 
-  googleAuth() {
-    let user = this.authService.googleAuth();
-    this.firebaseService.createUser(user);
-    this.router.navigate([environment.adminRoot]);
+  async googleAuth() {
+    this.authService.googleAuth().then(async (user: firebase.User) => {
+      if (!(await this.firebaseService.readUser(user.uid))) {
+        await this.firebaseService.createUser(user);
+        await this.authService.setAuthData(user);
+      }
+
+      this.router.navigate([environment.adminRoot]);
+    });
+  }
+
+  async facebookAuth() {
+    this.authService.facebookAuth().then(async (user: firebase.User) => {
+      if (!(await this.firebaseService.readUser(user.uid))) {
+        await this.firebaseService.createUser(user);
+        await this.authService.setAuthData(user);
+      }
+
+      this.router.navigate([environment.adminRoot]);
+    });
   }
 }

@@ -11,10 +11,6 @@ export class FirebaseService {
 
   users = [];
   readUser(tag) {
-    // return this.db
-    //   .collection<User>('User', (ref) => ref.where('uid', '==', tag))
-    //   .snapshotChanges();
-
     return new Promise((resolve, reject) => {
       this.db
         .collection<UserData>('User', (ref) => ref.where('uid', '==', tag))

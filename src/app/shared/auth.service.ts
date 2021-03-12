@@ -45,13 +45,10 @@ export class AuthService {
   async setAuthData(authUser: User) {
     console.log('setAuthData :' + JSON.stringify(authUser));
     if (authUser) {
-      // if (await this.firebaseService.readUser(authUser.uid)) {
       let role = ((await this.firebaseService.readUser(authUser.uid)) as UserData).role;
       this.user = { displayName: authUser.displayName, role: role, photoURL: authUser.photoURL, uid: authUser.uid, email: authUser.email };
       console.log(this.user);
-      // }
     }
-    console.log(this.user);
   }
 
   // tslint:disable-next-line:typedef
@@ -74,6 +71,7 @@ export class AuthService {
         displayName: credentials.displayName,
       });
       await this.auth.updateCurrentUser(user);
+      console.log(JSON.stringify(user));
 
       return user;
     });
@@ -83,7 +81,6 @@ export class AuthService {
     return this.auth
       .signInWithPopup(new auth.GoogleAuthProvider())
       .then(async ({ user }) => {
-        // this.setAuthData(user);
         return user;
       })
       .catch((error) => {
@@ -93,28 +90,12 @@ export class AuthService {
           showProgressBar: false,
         });
       });
-
-    // return new Promise((resolve, reject) => {
-    //   this.auth
-    //     .signInWithPopup(new auth.GoogleAuthProvider())
-    //     .then(async ({ user }) => {
-    //       resolve(user);
-    //     })
-    //     .catch((error) => {
-    //       this.notifications.create('Error', error.message, NotificationType.Bare, {
-    //         theClass: 'outline primary',
-    //         timeOut: 6000,
-    //         showProgressBar: false,
-    //       });
-    //     });
-    // })
   }
 
   facebookAuth() {
     return this.auth
       .signInWithPopup(new auth.FacebookAuthProvider())
       .then(async ({ user }) => {
-        // await this.setLocalStorage(user);
         return user;
       })
       .catch((error) => {
@@ -137,23 +118,6 @@ export class AuthService {
   resetPassword(credentials: IPasswordReset) {
     return this.auth.confirmPasswordReset(credentials.code, credentials.newPassword).then((data) => {
       return data;
-    });
-  }
-
-  setLocalStorage(userData) {
-    return new Promise((resolve, reject) => {
-      // let role;
-      // this.firebaseService.readUser(userData.uid).subscribe((data) => {
-      //   data.map((e) => {
-      //     role = e.payload.doc.data().role;
-      //   });
-      //   this.user = { ...userData, role: role };
-      //   localStorage.setItem('user', JSON.stringify(userData));
-      //   localStorage.setItem('role', JSON.stringify(role));
-      //   JSON.parse(localStorage.getItem('user'));
-      //   this.subjectAuth.next(true);
-      //   resolve(true);
-      // });
     });
   }
 }
