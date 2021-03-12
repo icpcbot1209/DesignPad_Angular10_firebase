@@ -419,7 +419,7 @@ export class DesignService {
     // this.theItem = item;
     if (this.status != ItemStatus.text_font_list && this.status != ItemStatus.text_effect) {
       this.status = ItemStatus.text_selected;
-      document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
+      // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
     }
   }
 

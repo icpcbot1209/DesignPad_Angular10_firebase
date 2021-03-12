@@ -46,7 +46,7 @@ export class FontListComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
+    // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
   }
 
   checkList(index: number, fontFamily: string) {

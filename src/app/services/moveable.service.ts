@@ -230,6 +230,11 @@ export class MoveableService {
     } else {
       this.ds.deleteSelectedItem();
 
+      let item = this.getItem(this.previousTarget);
+      if (item.type == ItemType.text) {
+        document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
+      }
+
       if (this.ds.status == ItemStatus.image_crop || this.ds.status == ItemStatus.element_crop || this.ds.status == ItemStatus.video_crop) {
         this.ur.saveTheData(this.ds.theDesign);
       }
