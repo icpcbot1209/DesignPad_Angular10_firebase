@@ -22,7 +22,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    console.log();
     if (JSON.parse(localStorage.getItem('user'))) {
+      console.log('1');
       if (route.url.toString() == '' || route.url.toString() == 'user') {
         this.ngZone.run(() => {
           this.router.navigate(['/app']);
@@ -39,10 +41,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return false;
       }
     } else {
+      console.log('2');
       if (route.url.toString() == '') {
         return true;
       }
 
+      return true;
       // this.ngZone.run(() => {
       //   this.router.navigate(['/']);
       // });
