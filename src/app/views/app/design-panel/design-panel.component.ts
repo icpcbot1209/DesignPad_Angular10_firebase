@@ -9,7 +9,7 @@ import { DownloadService } from 'src/app/services/download.service';
 import { MediaService } from 'src/app/services/media.service';
 import { UserRole } from 'src/app/shared/auth.roles';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { Design, Item, UploadUserTemplate, User } from 'src/app/models/models';
+import { Design, Item, UploadUserTemplate, UserData } from 'src/app/models/models';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 declare var ResizeObserver;
@@ -219,7 +219,7 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         timestamp: Date.now(),
       } as UploadUserTemplate;
 
-      let user: User = (await this.getTemplates()) as User;
+      let user: UserData = (await this.getTemplates()) as UserData;
       let templates = user.template;
       templates.push(template);
 
@@ -231,15 +231,15 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getTemplates() {
     return new Promise((resolve, reject) => {
-      this.firebaseService.readUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((data) => {
-        let users: User[] = data.map((e) => {
-          return {
-            docId: e.payload.doc.id,
-            ...e.payload.doc.data(),
-          } as User;
-        });
-        resolve(users[0]);
-      });
+      // this.firebaseService.readUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((data) => {
+      //   let users: User[] = data.map((e) => {
+      //     return {
+      //       docId: e.payload.doc.id,
+      //       ...e.payload.doc.data(),
+      //     } as User;
+      //   });
+      //   resolve(users[0]);
+      // });
     });
   }
 }

@@ -21,8 +21,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    if (localStorage.getItem('user')) {
-      if (route.data.roles.includes(JSON.parse(localStorage.getItem('role')))) {
+    if (this.authService.user) {
+      if (route.data.roles.includes(this.authService.user.role)) {
         return true;
       } else {
         this.ngZone.run(() => {

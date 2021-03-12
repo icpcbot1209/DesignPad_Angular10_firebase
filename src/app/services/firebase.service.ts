@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AdminTemplates, User, UploadUserTemplate } from '../models/models';
+import { AdminTemplates, UserData, UploadUserTemplate } from '../models/models';
 import { UserRole } from 'src/app/shared/auth.roles';
 
 @Injectable({
@@ -11,22 +11,41 @@ export class FirebaseService {
 
   users = [];
   readUser(tag) {
-    return this.db
-      .collection<User>('User', (ref) => ref.where('uid', '==', tag))
-      .snapshotChanges();
+    // return this.db
+    //   .collection<User>('User', (ref) => ref.where('uid', '==', tag))
+    //   .snapshotChanges();
+
+    return new Promise((resolve, reject) => {
+      this.db
+        .collection<UserData>('User', (ref) => ref.where('uid', '==', tag))
+        .snapshotChanges()
+        .subscribe((data) => {
+          let users = data.map((e) => {
+            return {
+              ...e.payload.doc.data(),
+            } as UserData;
+          });
+
+          resolve(users[0]);
+        });
+    });
   }
 
   createUser(user) {
-    this.db.collection<User>('User').add({
-      uid: user.uid,
-      displayName: user.displayName,
-      role: UserRole.Editor,
-      template: [],
+    return new Promise((resolve, reject) => {
+      this.db.collection<UserData>('User').add({
+        uid: user.uid,
+        displayName: user.displayName,
+        role: UserRole.Editor,
+        template: [],
+      });
+
+      resolve(true);
     });
   }
 
   updateUserTemplate(templates: UploadUserTemplate[], docId) {
-    this.db.collection<User>('User').doc(docId).update({
+    this.db.collection<UserData>('User').doc(docId).update({
       template: templates,
     });
   }

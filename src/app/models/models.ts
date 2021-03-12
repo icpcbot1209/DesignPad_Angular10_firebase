@@ -114,7 +114,7 @@ export interface AssetVideo {
   duration;
 }
 
-export interface User {
+export interface UserData {
   docId?: string;
   uid: string;
   displayName: string;

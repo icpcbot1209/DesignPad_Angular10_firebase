@@ -4,7 +4,7 @@ import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
-import { User } from 'src/app/models/models';
+import { UserData } from 'src/app/models/models';
 import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
@@ -50,11 +50,14 @@ export class LoginComponent {
       });
   }
 
-  users: User[];
+  users: UserData[];
   googleAuth() {
     this.authService.googleAuth().then(async (user: firebase.User) => {
-      this.detectOverlapUser(user);
-      await this.authService.setLocalStorage(user);
+      if (!(await this.firebaseService.readUser(user.uid))) {
+        console.log('create user table');
+        await this.firebaseService.createUser(user);
+        await this.authService.setAuthData(user);
+      }
       this.ngZone.run(() => {
         this.router.navigate([environment.adminRoot]);
       });
@@ -63,8 +66,11 @@ export class LoginComponent {
 
   facebookAuth() {
     this.authService.facebookAuth().then(async (user: firebase.User) => {
-      this.detectOverlapUser(user);
+      console.log('1');
+      await this.detectOverlapUser(user);
+      console.log('2');
       await this.authService.setLocalStorage(user);
+
       this.ngZone.run(() => {
         this.router.navigate([environment.adminRoot]);
       });
@@ -72,16 +78,15 @@ export class LoginComponent {
   }
 
   detectOverlapUser(user) {
-    this.firebaseService.readUser(user.uid).subscribe((data) => {
-      this.users = data.map((e) => {
-        return {
-          ...e.payload.doc.data(),
-        } as User;
-      });
-
-      if (this.users.length == 0) {
-        this.firebaseService.createUser(user);
-      }
-    });
+    // return new Promise((resolve, reject) => {
+    //   this.firebaseService.readUser(user.uid).subscribe((data) => {
+    //     let users = data.map((e) => {
+    //       return {
+    //         ...e.payload.doc.data(),
+    //       } as User;
+    //     });
+    //     resolve(users[0]);
+    //   });
+    // });
   }
 }

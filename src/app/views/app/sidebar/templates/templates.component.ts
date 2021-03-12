@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminTemplates, UploadUserTemplate, User } from 'src/app/models/models';
+import { AdminTemplates, UploadUserTemplate, UserData } from 'src/app/models/models';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { DesignService } from 'src/app/services/design.service';
 import { UserRole } from 'src/app/shared/auth.roles';
@@ -40,16 +40,15 @@ export class TemplatesComponent implements OnInit {
   }
 
   readUserTemplates() {
-    this.firebaseSerivce.readUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((e) => {
-      let users = e.map((data) => {
-        return {
-          ...data.payload.doc.data(),
-        } as User;
-      });
-      this.userTemplates = users[0].template;
-
-      this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
-    });
+    // this.firebaseSerivce.readUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((e) => {
+    //   let users = e.map((data) => {
+    //     return {
+    //       ...data.payload.doc.data(),
+    //     } as User;
+    //   });
+    //   this.userTemplates = users[0].template;
+    //   this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
+    // });
   }
 
   padding = 4;

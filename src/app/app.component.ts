@@ -18,7 +18,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
     public ToolbarService: ToolbarService
   ) {
-    this.authService.init();
+    // this.authService.init();
   }
 
   ngOnInit(): void {
