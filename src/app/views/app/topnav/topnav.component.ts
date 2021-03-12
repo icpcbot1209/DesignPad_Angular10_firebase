@@ -1,9 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
-import {
-  SidebarService,
-  ISidebar,
-} from 'src/app/containers/layout/sidebar/sidebar.service';
+import { SidebarService, ISidebar } from 'src/app/containers/layout/sidebar/sidebar.service';
 import { Router } from '@angular/router';
 import { LangService, Language } from 'src/app/shared/lang.service';
 import { AuthService } from 'src/app/shared/auth.service';
@@ -26,13 +23,9 @@ export class TopnavComponent implements OnInit, OnDestroy {
   isFullScreen = false;
   isDarkModeActive = false;
   searchKey = '';
+  currentUser = JSON.parse(localStorage.getItem('user'));
 
-  constructor(
-    private sidebarService: SidebarService,
-    public authService: AuthService,
-    private router: Router,
-    private langService: LangService
-  ) {
+  constructor(private sidebarService: SidebarService, public authService: AuthService, private router: Router, private langService: LangService) {
     this.languages = this.langService.supportedLanguages;
     this.currentLanguage = this.langService.languageShorthand;
     this.isSingleLang = this.langService.isSingleLang;
@@ -89,11 +82,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  menuButtonClick = (
-    e: { stopPropagation: () => void },
-    menuClickCount: number,
-    containerClassnames: string
-  ) => {
+  menuButtonClick = (e: { stopPropagation: () => void }, menuClickCount: number, containerClassnames: string) => {
     if (e) {
       e.stopPropagation();
     }
@@ -104,17 +93,10 @@ export class TopnavComponent implements OnInit, OnDestroy {
       window.dispatchEvent(event);
     }, 350);
 
-    this.sidebarService.setContainerClassnames(
-      ++menuClickCount,
-      containerClassnames,
-      this.sidebar.selectedMenuHasSubItems
-    );
+    this.sidebarService.setContainerClassnames(++menuClickCount, containerClassnames, this.sidebar.selectedMenuHasSubItems);
   };
 
-  mobileMenuButtonClick = (
-    event: { stopPropagation: () => void },
-    containerClassnames: string
-  ) => {
+  mobileMenuButtonClick = (event: { stopPropagation: () => void }, containerClassnames: string) => {
     if (event) {
       event.stopPropagation();
     }
@@ -147,9 +129,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
       if (!event.target.classList.contains('search')) {
         if (event.target.parentElement.classList.contains('search')) {
           elem = event.target.parentElement;
-        } else if (
-          event.target.parentElement.parentElement.classList.contains('search')
-        ) {
+        } else if (event.target.parentElement.parentElement.classList.contains('search')) {
           elem = event.target.parentElement.parentElement;
         }
       }

@@ -50,7 +50,7 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedFileType = 'PDF';
   fileTypeItems = [];
-  currentRole = JSON.parse(localStorage.getItem('role'));
+  currentRole = JSON.parse(localStorage.getItem('user')).role;
   role = UserRole;
 
   ngOnInit(): void {

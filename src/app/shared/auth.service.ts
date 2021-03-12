@@ -47,7 +47,8 @@ export class AuthService {
     if (authUser) {
       let role = ((await this.firebaseService.readUser(authUser.uid)) as UserData).role;
       this.user = { displayName: authUser.displayName, role: role, photoURL: authUser.photoURL, uid: authUser.uid, email: authUser.email };
-      console.log(this.user);
+      localStorage.setItem('user', JSON.stringify(this.user));
+      console.log(JSON.stringify(this.user));
     }
   }
 
@@ -61,6 +62,10 @@ export class AuthService {
   async signOut() {
     await this.auth.signOut();
     this.user = null;
+    localStorage.setItem('user', null);
+    this.ngZone.run(() => {
+      this.router.navigate(['/']);
+    });
     // this.subjectAuth.next(false);
   }
 

@@ -13,7 +13,8 @@ let routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
-    pathMatch: 'full',
+    data: { roles: [UserRole.Admin, UserRole.Editor] },
+    canActivate: [AuthGuard],
   },
   {
     path: 'admin',
@@ -35,6 +36,8 @@ let routes: Routes = [
   {
     path: 'user',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+    data: { roles: [UserRole.Admin, UserRole.Editor] },
+    canActivate: [AuthGuard],
   },
   { path: 'error', component: ErrorComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },

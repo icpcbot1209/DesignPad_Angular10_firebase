@@ -1,6 +1,7 @@
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { Injectable, NgZone } from '@angular/core';
 import { AuthService } from './auth.service';
+import { JAN } from '@angular/material/core';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
@@ -21,8 +22,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    if (this.authService.user) {
-      if (route.data.roles.includes(this.authService.user.role)) {
+    if (JSON.parse(localStorage.getItem('user'))) {
+      if (route.url.toString() == '' || route.url.toString() == 'user') {
+        this.ngZone.run(() => {
+          this.router.navigate(['/app']);
+        });
+        return false;
+      }
+
+      if (route.data.roles.includes(JSON.parse(localStorage.getItem('user')).role)) {
         return true;
       } else {
         this.ngZone.run(() => {
@@ -31,10 +39,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return false;
       }
     } else {
-      this.ngZone.run(() => {
-        this.router.navigate(['/user/login']);
-      });
-      return false;
+      if (route.url.toString() == '') {
+        return true;
+      }
+
+      // this.ngZone.run(() => {
+      //   this.router.navigate(['/']);
+      // });
+      // return false;
     }
   }
 }

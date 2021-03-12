@@ -15,7 +15,7 @@ export class TemplatesComponent implements OnInit {
   userTemplates: UploadUserTemplate[];
   ratios: number[] = [];
   userRatios: number[] = [];
-  currentRole = JSON.parse(localStorage.getItem('role'));
+  currentRole = JSON.parse(localStorage.getItem('user')).role;
   role = UserRole;
 
   constructor(public firebaseSerivce: FirebaseService, public ds: DesignService) {}
