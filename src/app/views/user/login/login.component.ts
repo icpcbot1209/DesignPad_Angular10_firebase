@@ -36,6 +36,7 @@ export class LoginComponent {
     this.authService
       .emailSignIn(this.loginForm.value)
       .then(async (user) => {
+        await this.authService.setAuthData(user);
         this.router.navigate([environment.adminRoot]);
       })
       .catch((error) => {
