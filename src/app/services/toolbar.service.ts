@@ -23,14 +23,16 @@ export class ToolbarService {
     this.textEditItems.push([]);
   }
 
+  quill;
+
   createTextEditor(selectedPageId, selectedItemId, item) {
-    let quill = new Quill('#textEditor-' + selectedPageId + '-' + selectedItemId, {
+    this.quill = new Quill('#textEditor-' + selectedPageId + '-' + selectedItemId, {
       modules: {
         toolbar: '#toolbar',
       },
       theme: 'snow',
     });
-    quill.on('selection-change', (range, range2) => {
+    this.quill.on('selection-change', (range, range2) => {
       if (range && range2 === null) {
         this.ds.isOnInput = true;
       }
@@ -39,7 +41,7 @@ export class ToolbarService {
     const ds = this.injector.get(DesignService);
     const ur = this.injector.get(UndoRedoService);
 
-    quill.on('text-change', function (delta, oldDelta, source) {
+    this.quill.on('text-change', function (delta, oldDelta, source) {
       this.quillData = document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId).querySelector('.ql-editor');
       ds.theDesign.pages[selectedPageId].items[selectedItemId].quillData = this.quillData.outerHTML;
       console.log('text change');
@@ -51,10 +53,10 @@ export class ToolbarService {
 
     if (this.isCreateQuill) {
       if (this.textEditItems[selectedPageId].length > selectedItemId) {
-        this.textEditItems[selectedPageId][selectedItemId] = quill;
+        this.textEditItems[selectedPageId][selectedItemId] = this.quill;
         this.isCreateQuill = false;
       } else {
-        this.textEditItems[selectedPageId].push(quill);
+        this.textEditItems[selectedPageId].push(this.quill);
         this.isCreateQuill = false;
       }
     }

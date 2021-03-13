@@ -1,5 +1,5 @@
-<mat-tab-group animationDuration="0ms" [selectedIndex]="0">
-  <mat-tab label="First">
+<mat-tab-group animationDuration="0ms" [selectedIndex]="0" style="height: 100%">
+  <mat-tab label="First" style="height: 100%">
     <ng-template mat-tab-label>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px" style="margin-right: 5px">
         <path d="M0 0h24v24H0z" fill="none" />
@@ -9,20 +9,21 @@
       </svg>
       Browse
     </ng-template>
-    <div id="gridContainer" class="grid-container">
-      <ng-container *ngFor="let item of templates; let i = index">
-        <div style="position: relative">
-          <img
-            [id]="'templateThumbnail' + i"
-            class="grid-item"
-            [lazyLoad]="item.thumbnail"
-            [ngStyle]="{ height: item.height * ratios[i] + padding * 2 + 'px' }"
-            width="auto"
-            (click)="addTemplatePage(item)"
-          />
-        </div>
-      </ng-container>
-    </div>
+    <perfect-scrollbar style="height: 100%" [config]="{ suppressScrollX: true, wheelPropagation: false }">
+      <div id="gridContainer" class="grid-container">
+        <ng-container *ngFor="let item of templates; let i = index">
+          <div style="position: relative">
+            <img
+              [id]="'templateThumbnail' + i"
+              class="grid-item"
+              [lazyLoad]="item.thumbnail"
+              [ngStyle]="{ height: item.height * ratios[i] + padding * 2 + 'px' }"
+              width="auto"
+              (click)="addTemplatePage(item)"
+            />
+          </div>
+        </ng-container></div
+    ></perfect-scrollbar>
   </mat-tab>
   <mat-tab label="Second" [disabled]="currentRole == role.Admin">
     <ng-template mat-tab-label>
@@ -34,19 +35,21 @@
       </svg>
       My Template
     </ng-template>
-    <div id="gridContainer" class="grid-container">
-      <ng-container *ngFor="let item of userTemplates; let i = index">
-        <div style="position: relative">
-          <img
-            [id]="'usertemplateThumbnail' + i"
-            class="grid-item"
-            [lazyLoad]="item.thumbnail"
-            [ngStyle]="{ height: item.height * userRatios[i] + padding * 2 + 'px' }"
-            width="auto"
-            (click)="addUserTemplatePage(i)"
-          />
-        </div>
-      </ng-container>
-    </div>
+    <perfect-scrollbar style="height: calc(100% - 50px)" [config]="{ suppressScrollX: true, wheelPropagation: false }">
+      <div id="gridContainer" class="grid-container">
+        <ng-container *ngFor="let item of userTemplates; let i = index">
+          <div style="position: relative">
+            <img
+              [id]="'usertemplateThumbnail' + i"
+              class="grid-item"
+              [lazyLoad]="item.thumbnail"
+              [ngStyle]="{ height: item.height * userRatios[i] + padding * 2 + 'px' }"
+              width="auto"
+              (click)="addUserTemplatePage(i)"
+            />
+          </div>
+        </ng-container>
+      </div>
+    </perfect-scrollbar>
   </mat-tab>
 </mat-tab-group>

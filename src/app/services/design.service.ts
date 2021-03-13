@@ -218,7 +218,7 @@ export class DesignService {
       fontFamily: 'Alata',
       lineHeight: '1.35',
       letterSpacing: '-21',
-      quillData: '<div class="ql-editor" style="line-height: 1.35em; letter-spacing: -0.021em;"><p>Add a heading</p></div>',
+      quillData: '<div class="ql-editor" style="line-height: 1.35em; letter-spacing: -0.021em; overflow: hidden"><p>Add a heading</p></div>',
       textShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px',
       textStroke: '0px rgb(0, 0, 0)',
       curveText: '',

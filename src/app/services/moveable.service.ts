@@ -1157,7 +1157,7 @@ export class MoveableService {
   resizeObserver(pageId, itemId) {
     return new ResizeObserver((entries) => {
       this.zone.run(() => {
-        if (!this.ur.isUndoRedo) {
+        if (!this.ur.isUndoRedo && this.toolbarService.quill.hasFocus()) {
           let width = JSON.stringify(entries[0].contentRect.width) + 'px';
           let height = JSON.stringify(entries[0].contentRect.height) + 'px';
           let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);

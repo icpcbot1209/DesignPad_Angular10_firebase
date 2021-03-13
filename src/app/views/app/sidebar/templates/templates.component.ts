@@ -3,6 +3,7 @@ import { AdminTemplates, UploadUserTemplate, UserData } from 'src/app/models/mod
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { DesignService } from 'src/app/services/design.service';
 import { UserRole } from 'src/app/shared/auth.roles';
+import { MoveableService } from 'src/app/services/moveable.service';
 
 @Component({
   selector: 'sidebar-templates',
@@ -18,7 +19,7 @@ export class TemplatesComponent implements OnInit {
   currentRole = JSON.parse(localStorage.getItem('user')).role;
   role = UserRole;
 
-  constructor(public firebaseSerivce: FirebaseService, public ds: DesignService) {}
+  constructor(public firebaseSerivce: FirebaseService, public ds: DesignService, public moveableService: MoveableService) {}
 
   ngOnInit(): void {
     this.readAdminTemplates();
@@ -73,6 +74,9 @@ export class TemplatesComponent implements OnInit {
   }
 
   addTemplatePage(item: AdminTemplates) {
+    this.ds.deleteSelectedItem();
+    this.ds.onSelectNothing();
+    this.moveableService.clearMoveable();
     this.ds.isTemplate = true;
     let screenWidth = this.ds.theDesign.category.size.x;
     let screenHeight = this.ds.theDesign.category.size.y;
