@@ -130,12 +130,12 @@ export class TextToolbarComponent implements OnInit {
   showFontList() {
     console.log('showFontList');
     this.ds.setStatus(this.ItemStatus.text_font_list);
-    document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
+    // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
   }
 
   showTextEffects() {
     this.ds.setStatus(this.ItemStatus.text_effect);
-    document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
+    // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
   }
 
   // set Line Height and Letter space
