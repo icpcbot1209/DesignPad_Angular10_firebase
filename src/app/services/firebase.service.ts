@@ -18,6 +18,7 @@ export class FirebaseService {
         .subscribe((data) => {
           let users = data.map((e) => {
             return {
+              docId: e.payload.doc.id,
               ...e.payload.doc.data(),
             } as UserData;
           });
@@ -41,6 +42,7 @@ export class FirebaseService {
   }
 
   updateUserTemplate(templates: UploadUserTemplate[], docId) {
+    console.log(docId);
     this.db.collection<UserData>('User').doc(docId).update({
       template: templates,
     });

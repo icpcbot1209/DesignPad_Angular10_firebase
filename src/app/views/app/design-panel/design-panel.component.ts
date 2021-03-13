@@ -219,9 +219,11 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         timestamp: Date.now(),
       } as UploadUserTemplate;
 
-      let user: UserData = (await this.getTemplates()) as UserData;
+      let user: UserData = (await this.firebaseService.readUser(JSON.parse(localStorage.getItem('user')).uid)) as UserData;
+      console.log(user);
       let templates = user.template;
       templates.push(template);
+      console.log(templates);
 
       this.firebaseService.updateUserTemplate(templates, user.docId);
 
@@ -232,11 +234,11 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   getTemplates() {
     return new Promise((resolve, reject) => {
       // this.firebaseService.readUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((data) => {
-      //   let users: User[] = data.map((e) => {
+      //   let users: UserData[] = data.map((e) => {
       //     return {
       //       docId: e.payload.doc.id,
       //       ...e.payload.doc.data(),
-      //     } as User;
+      //     } as UserData;
       //   });
       //   resolve(users[0]);
       // });

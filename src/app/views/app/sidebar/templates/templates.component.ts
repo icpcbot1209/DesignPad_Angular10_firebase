@@ -40,16 +40,10 @@ export class TemplatesComponent implements OnInit {
     });
   }
 
-  readUserTemplates() {
-    // this.firebaseSerivce.readUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((e) => {
-    //   let users = e.map((data) => {
-    //     return {
-    //       ...data.payload.doc.data(),
-    //     } as User;
-    //   });
-    //   this.userTemplates = users[0].template;
-    //   this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
-    // });
+  async readUserTemplates() {
+    let users = (await this.firebaseSerivce.readUser(JSON.parse(localStorage.getItem('user')).uid)) as UserData;
+    this.userTemplates = users.template;
+    this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
   }
 
   padding = 4;
