@@ -100,8 +100,8 @@
         </div>
       </div>
     </div>
-    <div *ngIf="currentRole != role.Admin">
-      <button class="fixedButton" type="button" style="padding: 5px; border: none; background-color: transparent" (click)="UploadUserTemplate()">
+    <div *ngIf="true">
+      <button class="fixedButton" type="button" style="padding: 5px; border: none; background-color: transparent" (click)="UploadTemplate()">
         <svg
           version="1.1"
           id="Layer_1"
@@ -175,11 +175,7 @@
         >
           Add Page
         </button>
-        <div
-          *ngIf="currentRole == role.Admin"
-          style="position: relative"
-          [ngStyle]="{ width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 'px' }"
-        >
+        <div *ngIf="false" style="position: relative" [ngStyle]="{ width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 'px' }">
           <button
             class="btn btn-primary"
             style="margin-bottom: 50px; position: relative; width: 100%"

@@ -59,7 +59,7 @@ export class TemplatesComponent implements OnInit {
       }
 
       if (this.templates.length % 2 == 1) {
-        let ratio = 165 / templates[templates.length - 1].width;
+        let ratio = 157 / templates[templates.length - 1].width;
         ratios.push(ratio);
       }
 

@@ -198,7 +198,7 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ds.status = ItemStatus.music_selected;
   }
 
-  async UploadUserTemplate() {
+  async UploadTemplate() {
     let haveItem: boolean = false;
     for (let i = 0; i < this.ds.theDesign.pages.length; i++) {
       for (let j = 0; j < this.ds.theDesign.pages[i].items.length; j++) {
@@ -219,29 +219,17 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         timestamp: Date.now(),
       } as UploadUserTemplate;
 
-      let user: UserData = (await this.firebaseService.readUser(JSON.parse(localStorage.getItem('user')).uid)) as UserData;
-      console.log(user);
-      let templates = user.template;
-      templates.push(template);
-      console.log(templates);
+      if (JSON.parse(localStorage.getItem('user')).role == 0) {
+        await this.firebaseService.createAdminTemplates(template.design, template.thumbnail, this.imgWidth, this.imgHeight);
+      } else {
+        let user: UserData = (await this.firebaseService.readUser(JSON.parse(localStorage.getItem('user')).uid)) as UserData;
+        let templates = user.template;
+        templates.push(template);
 
-      this.firebaseService.updateUserTemplate(templates, user.docId);
+        await this.firebaseService.updateUserTemplate(templates, user.docId);
+      }
 
       this.downloadService.onDownloading = false;
     }
-  }
-
-  getTemplates() {
-    return new Promise((resolve, reject) => {
-      // this.firebaseService.readUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((data) => {
-      //   let users: UserData[] = data.map((e) => {
-      //     return {
-      //       docId: e.payload.doc.id,
-      //       ...e.payload.doc.data(),
-      //     } as UserData;
-      //   });
-      //   resolve(users[0]);
-      // });
-    });
   }
 }
