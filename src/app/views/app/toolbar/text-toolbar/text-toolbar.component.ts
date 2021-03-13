@@ -87,7 +87,7 @@ export class TextToolbarComponent implements OnInit {
     item = this.moveableService.getItem(ele);
 
     setTimeout(() => {
-      this.sizeEle.value = item.fontSize.substr(0, item.fontSize.length - 2);
+      this.sizeEle.value = (Math.floor(Number.parseFloat(item.fontSize.substr(0, item.fontSize.length - 2)) * 10) / 10).toString();
       this.fontControl.disable();
     });
 

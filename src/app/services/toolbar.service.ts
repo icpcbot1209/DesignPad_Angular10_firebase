@@ -63,7 +63,7 @@ export class ToolbarService {
   resetting(item: Item) {
     let ele = document.querySelector<HTMLInputElement>('#fontSizeInput');
     if (ele) {
-      ele.value = item.fontSize.substr(0, item.fontSize.length - 2);
+      ele.value = (Math.floor(Number.parseFloat(item.fontSize.substr(0, item.fontSize.length - 2)) * 10) / 10).toString();
     }
   }
 

@@ -37,65 +37,35 @@ export class EditItemComponent implements OnInit {
   }
 
   styleItemPosition(item: Item): CSS.Properties {
-    if (item.type === ItemType.image)
-      return {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: item.w + 'px',
-        height: item.h + 'px',
-        transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
-        zIndex: item.zIndex,
-      };
+    let width = document.querySelector('#textEditor-' + item.pageId + '-' + item.itemId).clientWidth;
 
-    if (item.type === ItemType.text) {
-      let width = document.querySelector('#textEditor-' + item.pageId + '-' + item.itemId).clientWidth;
-
-      return {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: width + 'px',
-        height: item.h + 'px',
-        transform: this.moveableService.strTransform(item),
-        WebkitTransform: this.moveableService.strTransform(item),
-        zIndex: item.zIndex,
-      };
-    }
+    return {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: width + 'px',
+      height: item.h + 'px',
+      transform: this.moveableService.strTransform(item),
+      WebkitTransform: this.moveableService.strTransform(item),
+      zIndex: item.zIndex,
+    };
   }
   styleItem(item: Item): CSS.Properties {
-    if (item.type === ItemType.image)
-      return {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: item.w + 'px',
-        height: item.h + 'px',
-        transform: this.moveableService.strTransform(item),
-        WebkitTransform: this.moveableService.strTransform(item),
-        border: 'none',
-        filter: item.filter,
-        WebkitFilter: item.filter,
-        clipPath: item.clipStyle,
-        zIndex: item.zIndex,
-      };
-
-    if (item.type === ItemType.text)
-      return {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: 'auto',
-        height: 'auto',
-        transform: this.moveableService.strTransform(item),
-        WebkitTransform: this.moveableService.strTransform(item),
-        fontSize: '24px',
-        fontFamily: item.fontFamily,
-        textShadow: item.textShadow,
-        WebkitTextStroke: item.textShadow,
-        opacity: item.textOpacity,
-        zIndex: item.zIndex,
-      };
+    return {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: 'auto',
+      height: 'auto',
+      transform: this.moveableService.strTransform(item),
+      WebkitTransform: this.moveableService.strTransform(item),
+      fontSize: item.fontSize,
+      fontFamily: item.fontFamily,
+      textShadow: item.textShadow,
+      WebkitTextStroke: item.textShadow,
+      opacity: item.textOpacity,
+      zIndex: item.zIndex,
+    };
   }
   styleCurveItem(item: Item): CSS.Properties {
     return {
