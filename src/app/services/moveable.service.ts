@@ -269,10 +269,9 @@ export class MoveableService {
         let item = this.getItem(editorEle);
         editorEle.style.opacity = '0';
         curveEle.style.opacity = '1';
-        curveEle.setAttribute('style', '-webkit-opacity: 0');
+        // curveEle.setAttribute('style', '-webkit-opacity: 0');
 
-        this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angel);
-        console.log(item.curveText);
+        // this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angel);
       }
     }
   }
