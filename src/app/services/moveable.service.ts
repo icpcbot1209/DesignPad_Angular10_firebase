@@ -264,14 +264,15 @@ export class MoveableService {
         document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId) &&
         document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') == 'true'
       ) {
-        document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '0';
-        document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId).style.opacity = '1';
+        let curveEle = document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId);
+        let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
+        let item = this.getItem(editorEle);
+        editorEle.style.opacity = '0';
+        curveEle.style.opacity = '1';
+        curveEle.setAttribute('style', '-webkit-opacity: 0');
 
-        document
-          .querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId)
-          .setAttribute('style', '-webkit-opacity: 0');
-
-        this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId);
+        this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angel);
+        console.log(item.curveText);
       }
     }
   }

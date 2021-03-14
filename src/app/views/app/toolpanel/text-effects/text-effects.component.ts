@@ -5,6 +5,7 @@ import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import { DesignService } from 'src/app/services/design.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, combineLatest } from 'rxjs/operators';
+import { ItemsList } from '@ng-select/ng-select/lib/items-list';
 
 @Component({
   selector: 'toolpanel-text-effects',
@@ -309,24 +310,19 @@ export class TextEffectsComponent implements OnInit {
       this.saveTheData();
     }
     if (method == 'curve') {
+      this.editorEle = document.querySelector<HTMLElement>(
+        '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+      );
+      let item = this.moveableService.getItem(this.editorEle);
+
       this.isCurve = true;
       this.defaultEffect();
-      this.curveValue = 50;
+      this.curveValue = item.angel;
       this.toolbarService.direction = 1;
-      this.toolbarService.angel = this.curveValue * 3;
       this.setCurveEffect();
 
       document.querySelector<HTMLElement>('#curve').style.display = 'block';
       this.setEffectSelector('#selector-curve');
-
-      let curveText;
-      setTimeout(() => {
-        curveText = document.querySelector('#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId).innerHTML;
-        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].textOpacity = '0';
-        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].curveOpacity = '1';
-        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].curveText = curveText;
-        this.saveTheData();
-      });
     }
   }
 
@@ -342,6 +338,8 @@ export class TextEffectsComponent implements OnInit {
       this.previousFontColor = null;
     }
     this.editorEle.setAttribute('Curve', 'false');
+    let item = this.moveableService.getItem(this.editorEle);
+    item.isCurve = false;
 
     document.querySelector<HTMLElement>(
       '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
@@ -711,20 +709,13 @@ export class TextEffectsComponent implements OnInit {
   // curve
 
   setCurveEffect() {
-    this.toolbarService.setCurveEffect(this.moveableService.selectedPageId, this.moveableService.selectedItemId);
+    this.toolbarService.setCurveEffect(this.moveableService.selectedPageId, this.moveableService.selectedItemId, this.curveValue);
   }
 
   onInputCurveChange(event) {
     this.curveValue = event.value;
-
-    if (this.curveValue < 0) {
-      this.toolbarService.direction = -1;
-    } else this.toolbarService.direction = 1;
-    if (this.curveValue == 0) {
-      this.toolbarService.angel = 20000;
-    } else {
-      this.toolbarService.angel = (5000 / this.curveValue) * this.toolbarService.direction;
-    }
+    let item = this.moveableService.getItem(this.editorEle);
+    item.angel = this.curveValue;
 
     this.setCurveEffect();
   }

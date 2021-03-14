@@ -224,7 +224,9 @@ export class DesignService {
       curveText: '',
       textOpacity: '1',
       curveOpacity: '0',
+      isCurve: false,
       zIndex: 0,
+      angel: 50,
     });
   }
 

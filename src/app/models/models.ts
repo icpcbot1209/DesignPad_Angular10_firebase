@@ -31,6 +31,8 @@ export interface Item {
   textShadow?;
   textStroke?;
   curveText?;
+  isCurve?;
+  angel?;
   textOpacity?;
   curveOpacity?;
   zIndex;

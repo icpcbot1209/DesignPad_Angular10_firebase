@@ -5,6 +5,7 @@
   (click)="stopPropagation($event)"
   [attr.pageId]="pageId"
   [attr.itemId]="itemId"
+  [attr.Curve]="item.isCurve"
 ></div>
 <div style="display: flex; justify-content: center; align-items: center" [ngStyle]="styleItemPosition(item)">
   <div #curveText [id]="'curveText-' + pageId + '-' + itemId" [ngStyle]="styleCurveItem(item)"></div>

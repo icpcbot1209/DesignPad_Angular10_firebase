@@ -4,6 +4,7 @@ import { ItemType } from 'src/app/models/enums';
 import { MoveableService } from 'src/app/services/moveable.service';
 
 import * as CSS from 'csstype';
+import { ComponentsStateButtonModule } from 'src/app/components/state-button/components.state-button.module';
 
 @Component({
   selector: 'app-edit-item',
@@ -29,7 +30,7 @@ export class EditItemComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.quillEditor.nativeElement.innerHTML = this.item.quillData;
-    if (this.item.curveText != '') this.curveText.nativeElement.innerHTML = this.item.curveText;
+    if (this.item.isCurve) this.curveText.nativeElement.innerHTML = this.item.curveText;
   }
 
   ngOnDestroy() {

@@ -3,6 +3,8 @@ import { Item } from '../models/models';
 import { DesignService } from 'src/app/services/design.service';
 import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import ArcText from 'arc-text';
+import { MoveableService } from './moveable.service';
+import { ItemsList } from '@ng-select/ng-select/lib/items-list';
 
 declare var Quill;
 
@@ -69,15 +71,27 @@ export class ToolbarService {
     }
   }
 
-  setCurveEffect(selectedPageId, selectedItemId) {
+  setCurveEffect(selectedPageId, selectedItemId, curveValue) {
+    if (curveValue < 0) {
+      this.direction = -1;
+    } else this.direction = 1;
+    if (curveValue == 0) {
+      this.angel = 20000;
+    } else {
+      this.angel = (5000 / curveValue) * this.direction;
+    }
+
+    const moveableService = this.injector.get(MoveableService);
     let editorEle = document.querySelector<HTMLElement>('#textEditor-' + selectedPageId + '-' + selectedItemId);
     let curveText = document.querySelector<HTMLElement>('#curveText-' + selectedPageId + '-' + selectedItemId);
+    let item = moveableService.getItem(editorEle);
 
     curveText.innerHTML = editorEle.children[0].children[0].innerHTML;
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
     curveText.style.opacity = '1';
     editorEle.setAttribute('Curve', 'true');
+    item.isCurve = true;
     editorEle.style.opacity = '0';
 
     let arcText = new ArcText(curveText);
@@ -90,6 +104,15 @@ export class ToolbarService {
     curveText.querySelectorAll('span').forEach((ele) => {
       let qlEditor = editorEle.children[0] as HTMLElement;
       ele.style.lineHeight = qlEditor.style.lineHeight;
+    });
+
+    let curveTextStr;
+
+    setTimeout(() => {
+      curveTextStr = document.querySelector('#curveText-' + moveableService.selectedPageId + '-' + moveableService.selectedItemId).innerHTML;
+      this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].textOpacity = '0';
+      this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveOpacity = '1';
+      this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveText = curveTextStr;
     });
   }
 
