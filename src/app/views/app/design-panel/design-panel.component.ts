@@ -11,6 +11,7 @@ import { UserRole } from 'src/app/shared/auth.roles';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Design, Item, UploadUserTemplate, UserData } from 'src/app/models/models';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AuthService } from 'src/app/shared/auth.service';
 
 declare var ResizeObserver;
 
@@ -36,7 +37,8 @@ export class DesignPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     public injector: Injector,
     public firebaseService: FirebaseService,
     public ngZone: NgZone,
-    public db: AngularFirestore
+    public db: AngularFirestore,
+    public authService: AuthService
   ) {}
 
   foreColor = Colors.getColors().separatorColor;

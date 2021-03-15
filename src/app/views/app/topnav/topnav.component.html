@@ -146,12 +146,12 @@
     </div>
 
     <div class="user d-inline-block" dropdown>
-      <button *ngIf="!currentUser" routerLink="/user/login" class="btn btn-outline-primary" type="button">Login/Register</button>
+      <button *ngIf="!authService.user" routerLink="/user/login" class="btn btn-outline-primary" type="button">Login/Register</button>
 
-      <button *ngIf="currentUser" class="btn btn-empty p-0" type="button" dropdownToggle>
-        <span class="name">{{ currentUser?.displayName }}</span>
+      <button *ngIf="authService.user" class="btn btn-empty p-0" type="button" dropdownToggle>
+        <span class="name">{{ authService.user?.displayName }}</span>
         <span>
-          <img alt="Profile Picture" [src]="currentUser.photoURL ? currentUser.photoURL : '/assets/img/profiles/l-1.jpg'" />
+          <img alt="Profile Picture" [src]="authService.user.photoURL ? authService.user.photoURL : '/assets/img/profiles/l-1.jpg'" />
         </span>
       </button>
 

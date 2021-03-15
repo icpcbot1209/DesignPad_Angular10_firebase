@@ -38,6 +38,7 @@ export class AuthService {
     public firebaseService: FirebaseService
   ) {
     auth.onAuthStateChanged(async (user: User) => {
+      this.user = JSON.parse(localStorage.getItem('user'));
       await this.setAuthData(user);
     });
   }
@@ -47,15 +48,10 @@ export class AuthService {
     if (authUser) {
       if ((await this.firebaseService.readUser(authUser.uid)) as UserData) {
         let role = ((await this.firebaseService.readUser(authUser.uid)) as UserData).role;
-        this.user = JSON.stringify({
-          displayName: authUser.displayName,
-          role: role,
-          photoURL: authUser.photoURL,
-          uid: authUser.uid,
-          email: authUser.email,
-        });
+        this.user = { displayName: authUser.displayName, role: role, photoURL: authUser.photoURL, uid: authUser.uid, email: authUser.email };
         localStorage.setItem('user', JSON.stringify(this.user));
-        console.log(JSON.stringify(this.user));
+        this.user = JSON.parse(localStorage.getItem('user'));
+        console.log(this.user);
       }
     }
   }
@@ -84,7 +80,6 @@ export class AuthService {
         displayName: credentials.displayName,
       });
       await this.auth.updateCurrentUser(user);
-      console.log(JSON.stringify(user));
 
       return user;
     });

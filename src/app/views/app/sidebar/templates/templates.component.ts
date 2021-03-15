@@ -5,6 +5,7 @@ import { DesignService } from 'src/app/services/design.service';
 import { UserRole } from 'src/app/shared/auth.roles';
 import { MoveableService } from 'src/app/services/moveable.service';
 import data from 'src/app/data/prices';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'sidebar-templates',
@@ -20,7 +21,12 @@ export class TemplatesComponent implements OnInit {
   currentRole = JSON.parse(localStorage.getItem('user')).role;
   role = UserRole;
 
-  constructor(public firebaseSerivce: FirebaseService, public ds: DesignService, public moveableService: MoveableService) {}
+  constructor(
+    public firebaseSerivce: FirebaseService,
+    public ds: DesignService,
+    public moveableService: MoveableService,
+    public authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.readAdminTemplates();

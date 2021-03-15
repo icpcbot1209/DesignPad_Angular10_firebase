@@ -167,7 +167,7 @@
         </div>
 
         <button
-          *ngIf="currentRole != role.Admin"
+          *ngIf="authService.user?.role != role.Admin"
           class="btn btn-primary"
           [ngStyle]="{ width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 'px' }"
           style="margin-bottom: 50px"

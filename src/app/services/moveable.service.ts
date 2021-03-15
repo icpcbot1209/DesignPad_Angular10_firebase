@@ -60,6 +60,8 @@ export class MoveableService {
 
   isDragItem: boolean = false;
 
+  currentUser = JSON.parse(localStorage.getItem('user'));
+
   constructor(
     private ds: DesignService,
     private toolbarService: ToolbarService,
