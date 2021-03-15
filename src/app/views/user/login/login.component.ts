@@ -55,8 +55,8 @@ export class LoginComponent {
     this.authService.googleAuth().then(async (user: firebase.User) => {
       if (!(await this.firebaseService.readUser(user.uid))) {
         await this.firebaseService.createUser(user);
-        await this.authService.setAuthData(user);
       }
+      await this.authService.setAuthData(user);
 
       this.router.navigate([environment.adminRoot]);
     });

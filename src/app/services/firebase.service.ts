@@ -28,6 +28,12 @@ export class FirebaseService {
     });
   }
 
+  readObservableUser(tag) {
+    return this.db
+      .collection<UserData>('User', (ref) => ref.where('uid', '==', tag))
+      .snapshotChanges();
+  }
+
   createUser(user) {
     return new Promise((resolve, reject) => {
       this.db.collection<UserData>('User').add({

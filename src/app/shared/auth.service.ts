@@ -47,7 +47,13 @@ export class AuthService {
     if (authUser) {
       if ((await this.firebaseService.readUser(authUser.uid)) as UserData) {
         let role = ((await this.firebaseService.readUser(authUser.uid)) as UserData).role;
-        this.user = { displayName: authUser.displayName, role: role, photoURL: authUser.photoURL, uid: authUser.uid, email: authUser.email };
+        this.user = JSON.stringify({
+          displayName: authUser.displayName,
+          role: role,
+          photoURL: authUser.photoURL,
+          uid: authUser.uid,
+          email: authUser.email,
+        });
         localStorage.setItem('user', JSON.stringify(this.user));
         console.log(JSON.stringify(this.user));
       }

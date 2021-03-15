@@ -4,6 +4,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { DesignService } from 'src/app/services/design.service';
 import { UserRole } from 'src/app/shared/auth.roles';
 import { MoveableService } from 'src/app/services/moveable.service';
+import data from 'src/app/data/prices';
 
 @Component({
   selector: 'sidebar-templates',
@@ -41,9 +42,20 @@ export class TemplatesComponent implements OnInit {
   }
 
   async readUserTemplates() {
-    let users = (await this.firebaseSerivce.readUser(JSON.parse(localStorage.getItem('user')).uid)) as UserData;
-    this.userTemplates = users.template;
-    this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
+    // let users = (await this.firebaseSerivce.readUser(JSON.parse(localStorage.getItem('user')).uid)) as UserData;
+    // this.userTemplates = users.template;
+    // this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
+
+    this.firebaseSerivce.readObservableUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((e) => {
+      let users = e.map((data) => {
+        return {
+          ...data.payload.doc.data(),
+        } as UserData;
+      });
+
+      this.userTemplates = users[0].template;
+      this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
+    });
   }
 
   padding = 4;
