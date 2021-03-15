@@ -12,7 +12,7 @@
           [formControl]="fontControl"
           [(ngModel)]="ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].fontFamily"
           style="cursor: pointer"
-          disabled
+          [attr.disabled]="true"
         />
         <!-- [attr.disabled]="true" -->
       </mat-form-field>
