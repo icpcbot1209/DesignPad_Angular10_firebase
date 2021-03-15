@@ -5,6 +5,8 @@ import { MoveableService } from 'src/app/services/moveable.service';
 
 import * as CSS from 'csstype';
 import { ComponentsStateButtonModule } from 'src/app/components/state-button/components.state-button.module';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
+import { ToolbarService } from 'src/app/services/toolbar.service';
 
 @Component({
   selector: 'app-edit-item',
@@ -21,16 +23,25 @@ export class EditItemComponent implements OnInit {
   editorEle: HTMLElement;
   resizeObserver;
 
-  constructor(public moveableService: MoveableService, private zone: NgZone) {}
+  constructor(public moveableService: MoveableService, private zone: NgZone, public ur: UndoRedoService, public toolbarService: ToolbarService) {}
 
   ngOnInit() {
+    this.toolbarService.isCreateQuill = true;
+    this.moveableService.isCreateTextItem = true;
+    this.moveableService.isResizeObserver = true;
+    this.moveableService.isOnResize = false;
+    this.ur.isUndoRedo = false;
     this.moveableService.selectedPageId = this.pageId.toString();
     this.moveableService.selectedItemId = this.itemId.toString();
+    console.log(this.item);
   }
 
   ngAfterViewInit(): void {
     this.quillEditor.nativeElement.innerHTML = this.item.quillData;
     if (this.item.isCurve) this.curveText.nativeElement.innerHTML = this.item.curveText;
+    // this.moveableService
+    //   .resizeObserver(this.moveableService.selectedPageId, this.moveableService.selectedItemId)
+    //   .observe(document.querySelector<HTMLElement>('#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId));
   }
 
   ngOnDestroy() {

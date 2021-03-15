@@ -106,9 +106,12 @@ export class TemplatesComponent implements OnInit {
 
   addUserTemplatePage(i) {
     this.ds.isTemplate = true;
-    for (let i = 0; i < this.userTemplates[i].design.pages[0].items.length; i++) {
-      this.userTemplates[i].design.pages[0].items[i].selected = false;
-    }
+    console.log(this.userTemplates[0].design.pages[0].items);
+
+    for (let i = 0; i < this.userTemplates.length; i++)
+      for (let j = 0; j < this.userTemplates[i].design.pages[0].items.length; j++) {
+        this.userTemplates[i].design.pages[0].items[j].selected = false;
+      }
     this.ds.theDesign = JSON.parse(JSON.stringify(this.userTemplates[i].design));
   }
 }

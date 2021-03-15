@@ -211,6 +211,7 @@ export class MoveableService {
         }
 
         if (this.isResizeObserver) {
+          console.log('isResizeObserver');
           this.resizeObserver(this.selectedPageId, this.selectedItemId).observe(
             document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
           );
@@ -271,7 +272,7 @@ export class MoveableService {
         curveEle.style.opacity = '1';
         // curveEle.setAttribute('style', '-webkit-opacity: 0');
 
-        // this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angel);
+        this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angel);
       }
     }
   }
@@ -757,11 +758,13 @@ export class MoveableService {
       });
 
     /* resize */
+    let isResizeText: boolean;
     moveable
       .on('resizeStart', (e: OnResizeStart) => {
         let item = this.getItem(e.target);
         e.setOrigin(['%', '%']);
         e.dragStart && e.dragStart.set([item.x, item.y]);
+        isResizeText = true;
         if (e.direction[0] !== 0 && e.direction[1] !== 0) {
           this.isScale = true;
         } else this.isScale = false;
@@ -1159,7 +1162,8 @@ export class MoveableService {
   resizeObserver(pageId, itemId) {
     return new ResizeObserver((entries) => {
       this.zone.run(() => {
-        if (!this.ur.isUndoRedo && this.toolbarService.quill.hasFocus()) {
+        // if (!this.ur.isUndoRedo && this.toolbarService.quill.hasFocus()) {
+        if (!this.ur.isUndoRedo && !this.isOnResize) {
           let width = JSON.stringify(entries[0].contentRect.width) + 'px';
           let height = JSON.stringify(entries[0].contentRect.height) + 'px';
           let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
@@ -1170,11 +1174,9 @@ export class MoveableService {
             selectorEle.style.height = height;
             item.w = parseFloat(width);
             item.h = parseFloat(height);
-            selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
-            if (!this.isOnResize) {
-              this.setSelectable(itemId, pageId, '#textSelector-');
-              this.isResizeObserver = false;
-            }
+            selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+            this.setSelectable(itemId, pageId, '#textSelector-');
+            this.isResizeObserver = false;
           }
         }
       });

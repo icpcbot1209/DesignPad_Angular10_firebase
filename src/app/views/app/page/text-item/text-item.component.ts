@@ -33,28 +33,16 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   }
 
   styleItemPosition(item: Item): CSS.Properties {
-    if (item.type === ItemType.image)
-      return {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: item.w + 'px',
-        height: item.h + 'px',
-        transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`,
-        zIndex: item.zIndex,
-      };
-
-    if (item.type === ItemType.text)
-      return {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: item.w + 'px',
-        height: item.h + 'px',
-        transform: this.moveableService.strTransform(item),
-        WebkitTransform: this.moveableService.strTransform(item),
-        zIndex: item.zIndex,
-      };
+    return {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: item.w + 'px',
+      height: item.h + 'px',
+      transform: this.moveableService.strTransform(item),
+      WebkitTransform: this.moveableService.strTransform(item),
+      zIndex: item.zIndex,
+    };
   }
   styleItem(item: Item): CSS.Properties {
     if (item.type === ItemType.image)

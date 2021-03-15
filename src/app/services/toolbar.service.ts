@@ -90,6 +90,7 @@ export class ToolbarService {
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
     curveText.style.opacity = '1';
+    curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(0deg) scale(${item.scaleX}, ${item.scaleY})`;
     editorEle.setAttribute('Curve', 'true');
     item.isCurve = true;
     editorEle.style.opacity = '0';
@@ -100,10 +101,12 @@ export class ToolbarService {
     arcText.direction(this.direction);
 
     this.setEffectToCurve(editorEle, curveText);
+    curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
 
     curveText.querySelectorAll('span').forEach((ele) => {
       let qlEditor = editorEle.children[0] as HTMLElement;
-      ele.style.lineHeight = qlEditor.style.lineHeight;
+      // ele.style.lineHeight = qlEditor.style.lineHeight;
+      ele.style.lineHeight = item.lineHeight;
     });
 
     let curveTextStr;
