@@ -38,8 +38,13 @@
               "@firebase/firestore",
               "@firebase/functions",
               "@firebase/remote-config",
-              "@firebase/performance"
+              "@firebase/performance",
+              "file-saver",
+              "@firebase/util",
+              "@firebase/component",
+              "nouislider"
             ],
+            "showCircularDependencies": false,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",

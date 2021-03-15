@@ -33,7 +33,6 @@ export class EditItemComponent implements OnInit {
     this.ur.isUndoRedo = false;
     this.moveableService.selectedPageId = this.pageId.toString();
     this.moveableService.selectedItemId = this.itemId.toString();
-    console.log(this.item);
   }
 
   ngAfterViewInit(): void {
