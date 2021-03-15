@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth, User } from 'firebase';
+import { auth, User } from 'firebase/app';
 import { from, Subject } from 'rxjs';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { UserRole } from './auth.roles';
@@ -37,7 +37,7 @@ export class AuthService {
     public ngZone: NgZone,
     public firebaseService: FirebaseService
   ) {
-    auth.onAuthStateChanged(async (user: User) => {
+    var unsubscribe = auth.onAuthStateChanged(async (user: User) => {
       this.user = JSON.parse(localStorage.getItem('user'));
       await this.setAuthData(user);
     });

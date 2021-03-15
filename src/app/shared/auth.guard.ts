@@ -26,12 +26,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     if (JSON.parse(localStorage.getItem('user'))) {
       // if (JSON.parse(this.authService.user)) {
       console.log('1');
-      if (route.url.toString() == '' || route.url.toString() == 'user') {
-        this.ngZone.run(() => {
-          this.router.navigate(['/app']);
-        });
-        return false;
-      }
+      // if (route.url.toString() == '' || route.url.toString() == 'user') {
+      //   this.ngZone.run(() => {
+      //     this.router.navigate(['/app']);
+      //   });
+      //   return false;
+      // }
 
       if (route.data.roles.includes(JSON.parse(localStorage.getItem('user')).role)) {
         // if (route.data.roles.includes(JSON.parse(this.authService.user).role)) {
