@@ -120,6 +120,8 @@ export class DesignService {
 
   addItemToCurrentPage(item: Item) {
     this.isTemplate = false;
+    this.ur.isUndoRedo = false;
+
     const media = this.injector.get(MediaService);
 
     if (media.selectedVideo) {
@@ -200,7 +202,6 @@ export class DesignService {
     ms.isCreateTextItem = true;
     ms.isResizeObserver = true;
     ms.isOnResize = false;
-    this.ur.isUndoRedo = false;
 
     this.addItemToCurrentPage({
       type: ItemType.text,
@@ -234,6 +235,8 @@ export class DesignService {
    * Element sidebar
    **********************************************/
   sidebar_element_add(item) {
+    // this.setStatus(ItemStatus.element_selected);
+
     let { x: W, y: H } = this.theDesign?.category.size;
     if (!H) return;
 
@@ -349,17 +352,26 @@ export class DesignService {
     }
 
     if (!this.isOnInput && e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+      this.setStatus(ItemStatus.none);
       e.preventDefault();
       e.stopPropagation();
       if (!this.isStatus(ItemStatus.text_effect)) {
         this.ur.isUndoRedo = true;
+        // console.log(this.ur.undoTheData().pages[0].items[0].color);
         this.theDesign = this.ur.undoTheData();
+        // this.theDesign = null;
+        // console.log(this.theDesign.pages[0].items[0].color);
+        // this.theDesign = JSON.parse(JSON.stringify(designData));
+        // console.log(JSON.parse(JSON.stringify(designData)).pages[0].items[0].color);
+        // console.log(this.theDesign.pages[0].items[0].color);
+
         this.isResizeObserver = true;
         this.status = ItemStatus.none;
       }
     }
 
     if (!this.isOnInput && e.key === 'y' && (e.ctrlKey || e.metaKey)) {
+      this.setStatus(ItemStatus.none);
       e.preventDefault();
       e.stopPropagation();
       if (!this.isStatus(ItemStatus.text_effect)) {

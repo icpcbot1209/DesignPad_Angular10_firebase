@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { Item, Page } from 'src/app/models/models';
-import { ItemType } from 'src/app/models/enums';
+import { ItemStatus, ItemType } from 'src/app/models/enums';
 
 import * as CSS from 'csstype';
 import { DesignService } from 'src/app/services/design.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
 
 @Component({
   selector: 'app-svgelement',
@@ -14,11 +15,12 @@ import { DesignService } from 'src/app/services/design.service';
 export class SVGElementComponent implements OnInit {
   @Input('item') item;
 
-  constructor(public moveableService: MoveableService, public ds: DesignService) {}
+  constructor(public moveableService: MoveableService, public ds: DesignService, public ur: UndoRedoService) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
+    if (!this.ur.isUndoRedo) this.ds.setStatus(ItemStatus.element_selected);
     setTimeout(() => {
       let svgEle = document.querySelector('#SVGElement-' + this.item.pageId + '-' + this.item.itemId);
       svgEle.innerHTML = this.item.SVGElement;

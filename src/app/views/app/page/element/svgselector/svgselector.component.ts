@@ -4,6 +4,7 @@ import { MoveableService } from 'src/app/services/moveable.service';
 import { Item } from 'src/app/models/models';
 
 import * as CSS from 'csstype';
+import { ItemStatus } from 'src/app/models/enums';
 
 @Component({
   selector: 'app-svgselector',
@@ -18,7 +19,9 @@ export class SVGSelectorComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    if (!this.ds.isTemplate) this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#SVGSelector-');
+    if (!this.ds.isTemplate) {
+      this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#SVGSelector-');
+    }
   }
 
   styleItemPosition(item: Item): CSS.Properties {

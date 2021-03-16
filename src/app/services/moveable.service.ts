@@ -213,7 +213,6 @@ export class MoveableService {
         }
 
         if (this.isResizeObserver) {
-          console.log('isResizeObserver');
           this.resizeObserver(this.selectedPageId, this.selectedItemId).observe(
             document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
           );

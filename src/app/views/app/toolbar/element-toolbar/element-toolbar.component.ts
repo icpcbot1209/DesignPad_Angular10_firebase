@@ -87,7 +87,11 @@ export class ElementToolbarComponent implements OnInit {
   setColorToSvg(event, index) {
     this.renameKey(this.colorAndIndex, this.color[index], event.target.value);
     this.color[index] = event.target.value;
-    this.ur.theData(this.ds.theDesign);
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].color[index] = this.color[index];
+    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].SVGElement = document.querySelector(
+      '#SVGElement-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    ).innerHTML;
+    this.ur.saveTheData(this.ds.theDesign);
   }
 
   renameKey(obj, oldKey, newKey) {

@@ -138,3 +138,9 @@ export interface UploadUserTemplate {
   height: number;
   timestamp: number;
 }
+
+export interface UndoRedo {
+  maxLength: number;
+  position: number;
+  temp: any[];
+}

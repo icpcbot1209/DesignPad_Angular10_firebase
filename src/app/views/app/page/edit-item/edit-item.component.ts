@@ -30,7 +30,6 @@ export class EditItemComponent implements OnInit {
     this.moveableService.isCreateTextItem = true;
     this.moveableService.isResizeObserver = true;
     this.moveableService.isOnResize = false;
-    this.ur.isUndoRedo = false;
     this.moveableService.selectedPageId = this.pageId.toString();
     this.moveableService.selectedItemId = this.itemId.toString();
   }
