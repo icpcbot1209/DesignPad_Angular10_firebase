@@ -15,7 +15,7 @@
     <button class="btn btn-secondary" style="margin: 5px; flex: 1" (click)="fileInput.click()">Upload from device</button>
     <input #fileInput style="display: none" type="file" multiple (change)="onDrop($event.target.files)" />
   </div>
-  <mat-tab-group animationDuration="0ms" style="height: 100%" #tabGroup>
+  <mat-tab-group style="height: 100%" #tabGroup>
     <mat-tab label="First" style="height: 100%">
       <ng-template mat-tab-label> Images </ng-template>
       <perfect-scrollbar style="height: 100%" [config]="{ suppressScrollX: true, wheelPropagation: false }">
