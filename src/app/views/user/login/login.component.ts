@@ -13,8 +13,8 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 })
 export class LoginComponent {
   @ViewChild('loginForm') loginForm: NgForm;
-  emailModel = 'demo@demo.com';
-  passwordModel = '123456';
+  // emailModel;
+  // passwordModel;
 
   buttonDisabled = false;
   buttonState = '';

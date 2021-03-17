@@ -1,4 +1,4 @@
-<mat-tab-group animationDuration="0ms" [selectedIndex]="0" style="height: 100%">
+<mat-tab-group animationDuration="0ms" selectedIndex="0" style="height: 100%">
   <mat-tab label="First" style="height: 100%">
     <ng-template mat-tab-label>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px" style="margin-right: 5px">
@@ -25,7 +25,7 @@
         </ng-container></div
     ></perfect-scrollbar>
   </mat-tab>
-  <mat-tab label="Second" [disabled]="authService.user?.role == role.Admin">
+  <mat-tab label="Second">
     <ng-template mat-tab-label>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px" style="margin-right: 5px">
         <path d="M0 0h24v24H0z" fill="none" />

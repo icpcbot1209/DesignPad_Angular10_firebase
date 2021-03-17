@@ -1,57 +1,45 @@
-<div style="display: flex">
-  <button
-    *ngIf="!authService.user"
-    class="btn btn-outline-primary"
-    style="margin: 5px; flex: 1"
-    routerLink="/user/login"
-  >
-    Login/Signup
-  </button>
-</div>
+<!-- <div style="display: flex">
+  <button *ngIf="!authService.user" class="btn btn-outline-primary" style="margin: 5px; flex: 1" routerLink="/user/login">Login/Signup</button>
+</div> -->
 
 <div
-  *ngIf="authService.user"
   class="dropzone"
   dropzone
   (hovered)="toggleHover($event)"
   (dropped)="onDrop($event)"
   [class.hovering]="isHovering"
+  style="height: 100%"
+  id="upload"
 >
   <div style="display: flex">
-    <button
-      class="btn btn-secondary"
-      style="margin: 5px; flex: 1"
-      (click)="fileInput.click()"
-    >
-      Upload from device
-    </button>
-    <input
-      #fileInput
-      style="display: none"
-      type="file"
-      multiple
-      (change)="onDrop($event.target.files)"
-    />
+    <button class="btn btn-secondary" style="margin: 5px; flex: 1" (click)="fileInput.click()">Upload from device</button>
+    <input #fileInput style="display: none" type="file" multiple (change)="onDrop($event.target.files)" />
   </div>
-
-  <perfect-scrollbar
-    style="height: calc(100% - 50px)"
-    [config]="{ suppressScrollX: true, wheelPropagation: false }"
-  >
-    <div *ngFor="let file of files">
-      <upload-task [file]="file" [taskType]="'user_uploads'"></upload-task>
-    </div>
-
-    <div #gridContainer class="grid-container">
-      <img
-        class="grid-item"
-        *ngFor="let assetImage of assetImages; let i = index"
-        [lazyLoad]="assetImage.thumbnail"
-        [height]="heights[i]"
-        width="auto"
-        (click)="onImgClick(assetImage)"
-        (dragstart)="onStartDrag($event, assetImage)"
-      />
-    </div>
-  </perfect-scrollbar>
+  <mat-tab-group animationDuration="0ms" style="height: 100%" #tabGroup>
+    <mat-tab label="First" style="height: 100%">
+      <ng-template mat-tab-label> Images </ng-template>
+      <perfect-scrollbar style="height: 100%" [config]="{ suppressScrollX: true, wheelPropagation: false }">
+        <!-- <div id="gridContainer" class="grid-container">
+        <ng-container *ngFor="let item of templates; let i = index">
+          <div style="position: relative">
+            <img
+              [id]="'templateThumbnail' + i"
+              class="grid-item"
+              [lazyLoad]="item.thumbnail"
+              [ngStyle]="{ height: item.height * ratios[i] + padding * 2 + 'px' }"
+              width="auto"
+              (click)="addTemplatePage(item)"
+            />
+          </div>
+        </ng-container>
+      </div> -->
+      </perfect-scrollbar>
+    </mat-tab>
+    <mat-tab label="Second" style="height: 100%">
+      <ng-template mat-tab-label> Videos </ng-template>
+    </mat-tab>
+    <mat-tab label="Second" style="height: 100%">
+      <ng-template mat-tab-label> Audio </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </div>

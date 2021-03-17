@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MyfilesService } from 'src/app/services/myfiles.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { DesignService } from 'src/app/services/design.service';
 import { AssetImage } from 'src/app/models/models';
 import { decideHeights } from 'src/app/models/geometry';
 import { Subscription } from 'rxjs';
+import { MatTabGroup } from '@angular/material/tabs/tab-group';
 
 @Component({
   selector: 'user-uploads',
@@ -12,14 +13,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./user-uploads.component.scss'],
 })
 export class UserUploadsComponent implements AfterViewInit, OnDestroy {
-  constructor(
-    public myfilesService: MyfilesService,
-    public authService: AuthService,
-    private ds: DesignService
-  ) {}
+  @ViewChild('tabGroup', { static: false }) tab: MatTabGroup;
+
+  constructor(public myfilesService: MyfilesService, public authService: AuthService, private ds: DesignService) {}
 
   auth$: Subscription;
+  selectedTab = 0;
   ngAfterViewInit(): void {
+    this.tab.selectedIndex = 0;
     this.auth$ = this.authService.subjectAuth.subscribe((isAuth) => {
       if (!isAuth) {
         this.assetImages = [];

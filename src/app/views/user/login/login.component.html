@@ -24,12 +24,12 @@
 
     <form #loginForm="ngForm" novalidate (ngSubmit)="onSubmit()">
       <label class="form-group has-float-label mb-4">
-        <input class="form-control" required email ngModel #email="ngModel" name="email" [(ngModel)]="emailModel" />
+        <input class="form-control" required email ngModel #email="ngModel" name="email" />
         <span>{{ 'user.email' | translate }}</span>
         <div *ngIf="!email.valid && loginForm.submitted" class="invalid-tooltip">Email is required!</div>
       </label>
       <label class="form-group has-float-label mb-4">
-        <input class="form-control" type="password" placeholder="" required ngModel #password="ngModel" name="password" [(ngModel)]="passwordModel" />
+        <input class="form-control" type="password" required ngModel #password="ngModel" name="password" />
         <span>{{ 'user.password' | translate }}</span>
         <div *ngIf="!password.valid && loginForm.submitted" class="invalid-tooltip">Password is required!</div>
       </label>
