@@ -114,6 +114,39 @@ export class TextToolbarComponent implements OnInit {
         else quill.formatText(0, length - 1, 'bold', true);
       }
     });
+
+    document.querySelector('#italic').addEventListener('click', () => {
+      let quill = this.toolbarService.quill;
+      let length: number = this.toolbarService.quill.getLength();
+
+      if (quill.getSelection().length == 0) {
+        this.moveableService.enableTextEdit();
+        if (quill.getFormat(0, length - 1).italic) quill.formatText(0, length - 1, 'italic', false);
+        else quill.formatText(0, length - 1, 'italic', true);
+      }
+    });
+
+    document.querySelector('#underline').addEventListener('click', () => {
+      let quill = this.toolbarService.quill;
+      let length: number = this.toolbarService.quill.getLength();
+
+      if (quill.getSelection().length == 0) {
+        this.moveableService.enableTextEdit();
+        if (quill.getFormat(0, length - 1).underline) quill.formatText(0, length - 1, 'underline', false);
+        else quill.formatText(0, length - 1, 'underline', true);
+      }
+    });
+
+    document.querySelector('#strike').addEventListener('click', () => {
+      let quill = this.toolbarService.quill;
+      let length: number = this.toolbarService.quill.getLength();
+
+      if (quill.getSelection().length == 0) {
+        this.moveableService.enableTextEdit();
+        if (quill.getFormat(0, length - 1).strike) quill.formatText(0, length - 1, 'strike', false);
+        else quill.formatText(0, length - 1, 'strike', true);
+      }
+    });
   }
 
   catchEnterKey(event) {
