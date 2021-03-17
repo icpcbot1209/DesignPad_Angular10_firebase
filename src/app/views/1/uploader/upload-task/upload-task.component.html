@@ -1,4 +1,4 @@
-<div *ngIf="file.type == 'image/jpeg'">
+<div *ngIf="file.type != 'image/svg+xml' && file.type.slice(0, 5) == 'image'">
   <div *ngIf="!upload.downloadURL" style="margin: 1rem">
     <p>{{ file.name }}</p>
     <img [src]="upload.thumbnail" height="100" />

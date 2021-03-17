@@ -28,7 +28,7 @@ export class UploadTaskComponent implements OnInit {
       if (this.taskType == 'user_uploads') this.elementUpload.uploadElement(this.file, false);
       else if (this.taskType == 'admin_uploads') this.elementUpload.uploadElement(this.file, true);
     }
-    if (this.file.type == 'image/jpeg') {
+    if (this.file.type != 'image/svg+xml' && this.file.type.slice(0, 5) == 'image') {
       if (this.taskType == 'user_uploads') this.upload.uploadImage(this.file, false);
       else if (this.taskType == 'admin_uploads') this.upload.uploadImage(this.file, true);
     }

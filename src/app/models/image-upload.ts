@@ -67,6 +67,7 @@ export class ImageUpload {
   }
 
   async uploadImage(file: File, isAdmin: boolean) {
+    console.log(file);
     this.orignal = await this.fileToDataURL(file);
     this.thumbnail = await this.makeThumbnail(this.orignal);
 
@@ -86,6 +87,7 @@ export class ImageUpload {
     // Progress monitoring
     this.percentage = this.task.percentageChanges();
 
+    console.log('png');
     this.snapshot = this.task.snapshotChanges().pipe(
       // tap(console.log),
       // The file's download URL

@@ -51,6 +51,7 @@ export class AuthService {
         this.user = { displayName: authUser.displayName, role: role, photoURL: authUser.photoURL, uid: authUser.uid, email: authUser.email };
         localStorage.setItem('user', JSON.stringify(this.user));
         this.user = JSON.parse(localStorage.getItem('user'));
+        this.subjectAuth.next(true);
       }
     } else this.signOut();
   }
