@@ -893,7 +893,7 @@ export class MoveableService {
       }
     }
   }
-  enableTextEdit(event: MouseEvent) {
+  enableTextEdit() {
     if (!this.isDrag) {
       if (this.isEditable) {
         document.querySelectorAll<HTMLElement>('.ql-editor').forEach((ele) => {

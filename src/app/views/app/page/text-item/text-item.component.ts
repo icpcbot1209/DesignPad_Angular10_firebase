@@ -87,7 +87,7 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   }
 
   enableTextEdit(event: MouseEvent) {
-    this.moveableService.enableTextEdit(event);
+    this.moveableService.enableTextEdit();
   }
 
   onMouseDown() {

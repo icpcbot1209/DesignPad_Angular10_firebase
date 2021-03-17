@@ -102,6 +102,18 @@ export class TextToolbarComponent implements OnInit {
 
     fontSelector.style.width = fontFormEle.clientWidth + 'px';
     fontSelector.style.height = fontFormEle.clientHeight + 'px';
+
+    //add event to bolb button
+    document.querySelector('#bold').addEventListener('click', () => {
+      let quill = this.toolbarService.quill;
+      let length: number = this.toolbarService.quill.getLength();
+
+      if (quill.getSelection().length == 0) {
+        this.moveableService.enableTextEdit();
+        if (quill.getFormat(0, length - 1).bold) quill.formatText(0, length - 1, 'bold', false);
+        else quill.formatText(0, length - 1, 'bold', true);
+      }
+    });
   }
 
   catchEnterKey(event) {
