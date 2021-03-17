@@ -16,18 +16,9 @@
         <div class="separator"></div>
       </li>
       <li class="nav-item text-center">
-        <a
-          *ngIf="authService.user == null"
-          class="btn btn-outline-primary btn-sm mobile-menu-cta"
-          routerLink="/user/login"
-          >Login</a
-        >
+        <a *ngIf="authService.user == null" class="btn btn-outline-primary btn-sm mobile-menu-cta" routerLink="/user/login">Login</a>
 
-        <a
-          *ngIf="authService.user"
-          class="btn btn-outline-primary btn-sm mobile-menu-cta"
-          href="javascript:;"
-          (click)="authService.signOut()"
+        <a *ngIf="authService.user" class="btn btn-outline-primary btn-sm mobile-menu-cta" href="javascript:;" (click)="authService.signOut()"
           >Logout</a
         >
       </li>
@@ -37,14 +28,8 @@
   <div class="main-container">
     <ngx-headroom class="landing-page-nav">
       <nav>
-        <div
-          class="container d-flex align-items-center justify-content-between"
-        >
-          <a
-            class="navbar-logo pull-left"
-            (click)="scrollTo('#home')"
-            href="javascript:;"
-          >
+        <div class="container d-flex align-items-center justify-content-between">
+          <a class="navbar-logo pull-left" (click)="scrollTo('#home')" href="javascript:;">
             <span class="white"></span>
             <span class="dark"></span>
           </a>
@@ -53,34 +38,18 @@
               <a routerLink="/browse-template">Templates</a>
             </li>
             <li class="nav-item">
-              <a (click)="scrollTo('#prices')" href="javascript:;"
-                >Pricing Plans</a
-              >
+              <a (click)="scrollTo('#prices')" href="javascript:;">Pricing Plans</a>
             </li>
 
             <li class="nav-item"><a [routerLink]="'/app'">Workstation</a></li>
 
             <li class="nav-item pl-4">
-              <a
-                *ngIf="authService.user == null"
-                class="btn btn-outline-semi-light btn-sm"
-                routerLink="/user/login"
-                >Login</a
-              >
+              <a *ngIf="authService.user == null" class="btn btn-outline-semi-light btn-sm" routerLink="/user/login">Login</a>
 
-              <a
-                *ngIf="authService.user"
-                class="btn btn-outline-semi-light btn-sm"
-                href="javascript:;"
-                (click)="authService.signOut()"
-                >Logout</a
-              >
+              <a *ngIf="authService.user" class="btn btn-outline-semi-light btn-sm" href="javascript:;" (click)="authService.signOut()">Logout</a>
             </li>
           </ul>
-          <span
-            class="mobile-menu-button"
-            (click)="showMobileMenu = !showMobileMenu; $event.stopPropagation()"
-          >
+          <span class="mobile-menu-button" (click)="showMobileMenu = !showMobileMenu; $event.stopPropagation()">
             <i class="simple-icon-menu"></i>
           </span>
         </div>
@@ -93,11 +62,7 @@
           <div class="row home-row">
             <div class="col-12 d-block d-md-none">
               <a href="javascript:;">
-                <img
-                  alt="mobile hero"
-                  class="mobile-hero"
-                  src="/assets/img/landing-page/home-hero-mobile.png"
-                />
+                <img alt="mobile hero" class="mobile-hero" src="/assets/img/landing-page/home-hero-mobile.png" />
               </a>
             </div>
 
@@ -108,24 +73,17 @@
                   Design Pad is a brand new site which realize <br />
                   your imagination. <br />
                   <br />
-                  We used same design language for components, layouts, apps and
-                  other parts of the template. <br />
+                  We used same design language for components, layouts, apps and other parts of the template. <br />
                   <br />
                   Hope you enjoy it!
                 </p>
 
-                <a
-                  class="btn btn-light btn-xl mr-2 mb-2"
-                  [href]="adminRoot"
-                  target="_blank"
-                >
+                <a class="btn btn-light btn-xl mr-2 mb-2" target="_blank" (click)="goToWorkstation()">
                   Go to Workstation <i class="simple-icon-arrow-right"></i>
                 </a>
               </div>
             </div>
-            <div
-              class="col-12 col-xl-7 offset-xl-1 col-lg-7 col-md-6 d-none d-md-block"
-            >
+            <div class="col-12 col-xl-7 offset-xl-1 col-lg-7 col-md-6 d-none d-md-block">
               <a href="javascript:;">
                 <img alt="hero" src="/assets/img/landing-page/home-hero.png" />
               </a>
@@ -153,10 +111,7 @@
           </div>
 
           <div class="row">
-            <a
-              class="btn btn-circle btn-outline-semi-light hero-circle-button"
-              (click)="scrollTo('#layouts')"
-            >
+            <a class="btn btn-circle btn-outline-semi-light hero-circle-button" (click)="scrollTo('#layouts')">
               <i class="simple-icon-arrow-down"></i>
             </a>
           </div>
@@ -173,20 +128,13 @@
         <div class="container">
           <div class="row footer-row">
             <div class="col-12 text-right">
-              <a
-                class="btn btn-circle btn-outline-semi-light footer-circle-button"
-                (click)="scrollTo('#home')"
-                href="javascript:;"
+              <a class="btn btn-circle btn-outline-semi-light footer-circle-button" (click)="scrollTo('#home')" href="javascript:;"
                 ><i class="simple-icon-arrow-up"></i
               ></a>
             </div>
             <div class="col-12 text-center footer-content">
               <a (click)="scrollTo('#home')" href="javascript:;">
-                <img
-                  class="footer-logo"
-                  alt="footer logo"
-                  src="/assets/logos/white-full.svg"
-                />
+                <img class="footer-logo" alt="footer logo" src="/assets/logos/white-full.svg" />
               </a>
             </div>
           </div>

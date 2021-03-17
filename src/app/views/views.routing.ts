@@ -13,8 +13,6 @@ let routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
-    data: { roles: [UserRole.Admin, UserRole.Editor] },
-    canActivate: [AuthGuard],
   },
   {
     path: 'admin',

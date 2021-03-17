@@ -1,16 +1,6 @@
-import {
-  Component,
-  OnInit,
-  Renderer2,
-  OnDestroy,
-  HostListener,
-  ElementRef,
-} from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  ScrollToService,
-  ScrollToConfigOptions,
-} from '@nicky-lenaers/ngx-scroll-to';
+import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
@@ -25,7 +15,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private elRef: ElementRef,
     private scrollToService: ScrollToService,
-    public authService: AuthService
+    public authService: AuthService,
+    private router: Router
   ) {}
 
   showMobileMenu = false;
@@ -50,50 +41,42 @@ export class HomeComponent implements OnInit, OnDestroy {
     {
       icon: 'iconsminds-mouse-3',
       title: 'Right Click Menu',
-      detail:
-        'Increases overall usability of the project by providing additional actions menu.',
+      detail: 'Increases overall usability of the project by providing additional actions menu.',
     },
     {
       icon: 'iconsminds-electric-guitar',
       title: 'Video Player',
-      detail:
-        'Carefully themed multimedia players powered by Video.js library with Youtube support.',
+      detail: 'Carefully themed multimedia players powered by Video.js library with Youtube support.',
     },
     {
       icon: 'iconsminds-keyboard',
       title: 'Keyboard Shortcuts',
-      detail:
-        'Easily configurable keyboard shortcuts plugin that highly improves user experience.',
+      detail: 'Easily configurable keyboard shortcuts plugin that highly improves user experience.',
     },
     {
       icon: 'iconsminds-three-arrow-fork ',
       title: 'Two Panels Menu',
-      detail:
-        'Three states two panels icon menu that looks good, auto resizes and does the job well.',
+      detail: 'Three states two panels icon menu that looks good, auto resizes and does the job well.',
     },
     {
       icon: 'iconsminds-deer',
       title: 'Icons Mind',
-      detail:
-        '1040 icons in 53 different categories, designed pixel perfect and ready for your project.',
+      detail: '1040 icons in 53 different categories, designed pixel perfect and ready for your project.',
     },
     {
       icon: 'iconsminds-palette',
       title: '20 Color Schemes',
-      detail:
-        'Colors, icons and design harmony that creates excellent themes to cover entire project.',
+      detail: 'Colors, icons and design harmony that creates excellent themes to cover entire project.',
     },
     {
       icon: 'iconsminds-air-balloon-1',
       title: '3 Applications',
-      detail:
-        'Applications that mostly made of components are the way to get started to create something similar.',
+      detail: 'Applications that mostly made of components are the way to get started to create something similar.',
     },
     {
       icon: 'iconsminds-resize',
       title: 'Extra Responsive',
-      detail:
-        'Custom Bootstrap 4 xxs & xxl classes delivers better experiences for smaller and larger screens.',
+      detail: 'Custom Bootstrap 4 xxs & xxl classes delivers better experiences for smaller and larger screens.',
     },
   ];
 
@@ -113,26 +96,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event): void {
-    const homeRect = this.elRef.nativeElement
-      .querySelector('.home-row')
-      .getBoundingClientRect();
+    const homeRect = this.elRef.nativeElement.querySelector('.home-row').getBoundingClientRect();
 
-    const homeSection = this.elRef.nativeElement.querySelector(
-      '.landing-page .section.home'
-    );
+    const homeSection = this.elRef.nativeElement.querySelector('.landing-page .section.home');
     homeSection.style.backgroundPositionX = homeRect.x - 580 + 'px';
 
-    const footerSection = this.elRef.nativeElement.querySelector(
-      '.landing-page .section.footer'
-    );
-    footerSection.style.backgroundPositionX =
-      event.target.innerWidth - homeRect.x - 2000 + 'px';
+    const footerSection = this.elRef.nativeElement.querySelector('.landing-page .section.footer');
+    footerSection.style.backgroundPositionX = event.target.innerWidth - homeRect.x - 2000 + 'px';
 
     if (event.target.innerWidth >= 992) {
-      this.renderer.removeClass(
-        this.elRef.nativeElement.querySelector('.landing-page'),
-        'show-mobile-menu'
-      );
+      this.renderer.removeClass(this.elRef.nativeElement.querySelector('.landing-page'), 'show-mobile-menu');
     }
   }
 
@@ -153,5 +126,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
 
     this.scrollToService.scrollTo(config);
+  }
+
+  goToWorkstation() {
+    if (JSON.parse(localStorage.getItem('user'))) {
+      this.router.navigate(['/app']);
+    } else this.router.navigate(['/user']);
   }
 }
