@@ -94,47 +94,51 @@ export class ToolbarComponent implements OnInit {
   }
 
   forwardItem() {
-    let pageItems = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
-    let item = pageItems[this.moveableService.selectedItemId];
+    if (this.overItem != -1) {
+      let pageItems = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
+      let item = pageItems[this.moveableService.selectedItemId];
 
-    for (let i = Number.parseInt(this.moveableService.selectedItemId); i < this.overItem; i++) {
-      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i] = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[
-        i + 1
-      ];
-      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].itemId = i;
-      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].zIndex = 100 + i;
+      for (let i = Number.parseInt(this.moveableService.selectedItemId); i < this.overItem; i++) {
+        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i] = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[
+          i + 1
+        ];
+        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].itemId = i;
+        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].zIndex = 100 + i;
+      }
+
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.overItem] = item;
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.overItem].zIndex = 100 + this.overItem;
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.overItem].itemId = this.overItem;
+      this.moveableService.selectedItemId = this.overItem.toString();
+
+      setTimeout(() => {
+        this.detectOverlaps();
+      });
     }
-
-    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.overItem] = item;
-    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.overItem].zIndex = 100 + this.overItem;
-    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.overItem].itemId = this.overItem;
-    this.moveableService.selectedItemId = this.overItem.toString();
-
-    setTimeout(() => {
-      this.detectOverlaps();
-    });
   }
 
   backwardItem() {
-    let pageItems = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
-    let item = pageItems[this.moveableService.selectedItemId];
+    if (this.underItem != -1) {
+      let pageItems = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
+      let item = pageItems[this.moveableService.selectedItemId];
 
-    for (let i = Number.parseInt(this.moveableService.selectedItemId); i > this.underItem; i--) {
-      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i] = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[
-        i - 1
-      ];
-      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].itemId = i;
-      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].zIndex = 100 + i;
+      for (let i = Number.parseInt(this.moveableService.selectedItemId); i > this.underItem; i--) {
+        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i] = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[
+          i - 1
+        ];
+        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].itemId = i;
+        this.ds.theDesign.pages[this.moveableService.selectedPageId].items[i].zIndex = 100 + i;
+      }
+
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.underItem] = item;
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.underItem].zIndex = 100 + this.underItem;
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.underItem].itemId = this.underItem;
+      this.moveableService.selectedItemId = this.underItem.toString();
+
+      setTimeout(() => {
+        this.detectOverlaps();
+      });
     }
-
-    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.underItem] = item;
-    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.underItem].zIndex = 100 + this.underItem;
-    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.underItem].itemId = this.underItem;
-    this.moveableService.selectedItemId = this.underItem.toString();
-
-    setTimeout(() => {
-      this.detectOverlaps();
-    });
   }
 
   catchOverItem(overlapItems) {
