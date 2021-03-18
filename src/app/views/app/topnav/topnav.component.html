@@ -19,7 +19,7 @@
   </div>
 
   <div class="navbar-right">
-    <div class="header-icons d-inline-block align-middle">
+    <!-- <div class="header-icons d-inline-block align-middle">
       <div class="d-none d-md-inline-block align-text-bottom mr-1">
         <div class="custom-control custom-switch" tooltip="Dark Mode" placement="left">
           <input type="checkbox" class="custom-control-input" id="darkModeSwitch" [checked]="isDarkModeActive" (change)="onDarkModeChange($event)" />
@@ -64,9 +64,9 @@
             </a>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="position-relative d-inline-block">
+    <!-- <div class="position-relative d-inline-block">
         <div dropdown>
           <button id="button-basic" dropdownToggle type="button" id="notificationButton" class="header-icon btn btn-empty">
             <i class="simple-icon-bell"></i>
@@ -137,13 +137,13 @@
             </perfect-scrollbar>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="fullScreenButton" (click)="fullScreenClick()">
+    <!-- <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="fullScreenButton" (click)="fullScreenClick()">
         <i *ngIf="!isFullScreen" class="simple-icon-size-fullscreen"></i>
         <i *ngIf="isFullScreen" class="simple-icon-size-actual"></i>
       </button>
-    </div>
+    </div> -->
 
     <div class="user d-inline-block" dropdown>
       <button *ngIf="!authService.user" routerLink="/user/login" class="btn btn-outline-primary" type="button">Login/Register</button>

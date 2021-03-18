@@ -16,6 +16,7 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
 
   auth$: Subscription;
   ngAfterViewInit(): void {
+    this.readImagesByTag(JSON.parse(localStorage.getItem('user')).uid, '');
     this.auth$ = this.authService.subjectAuth.subscribe((isAuth) => {
       // if (!isAuth) {
       //   this.assetImages = [];
