@@ -49,3 +49,14 @@ html {
     border: 1px solid #f16624;
   }
 }
+
+#deleteStatus {
+  opacity: 0;
+  transition: opacity 0.6s;
+  -webkit-transition: opacity 0.6s;
+}
+
+.fixedButton:hover {
+  background: hsla(0, 0%, 100%, 0.1) !important;
+  border-radius: 4px;
+}

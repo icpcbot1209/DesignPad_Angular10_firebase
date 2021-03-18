@@ -4,7 +4,9 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { DesignService } from 'src/app/services/design.service';
 import { AssetImage } from 'src/app/models/models';
 import { decideHeights } from 'src/app/models/geometry';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+
+import * as CSS from 'csstype';
 
 @Component({
   selector: 'user-uploads',
@@ -15,6 +17,11 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
   constructor(public myfilesService: MyfilesService, public authService: AuthService, private ds: DesignService) {}
 
   auth$: Subscription;
+  item$: Subscription;
+  selectedItemTemp: number[] = [];
+  selectedItemObserve = new Subject();
+  count: number = 0;
+
   ngAfterViewInit(): void {
     this.readImagesByTag(JSON.parse(localStorage.getItem('user')).uid, '');
     this.auth$ = this.authService.subjectAuth.subscribe((isAuth) => {
@@ -24,6 +31,15 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
       // } else {
       this.readImagesByTag(JSON.parse(localStorage.getItem('user')).uid, '');
       // }
+    });
+
+    this.item$ = this.selectedItemObserve.subscribe((items: []) => {
+      this.count = items.length;
+      if (items.length != 0) {
+        (document.querySelector('#deleteStatus') as HTMLElement).style.opacity = '1';
+      } else {
+        (document.querySelector('#deleteStatus') as HTMLElement).style.opacity = '0';
+      }
     });
   }
 
@@ -56,6 +72,7 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
 
   files: File[] = [];
   onDrop(files: FileList) {
+    this.selectedItemTemp = [];
     for (let i = 0; i < files.length; i++) {
       this.files.push(files.item(i));
     }
@@ -67,5 +84,75 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
 
   onStartDrag(event: DragEvent, assetImage: AssetImage) {
     event.dataTransfer.setData('jsonAssetImage', JSON.stringify(assetImage));
+  }
+
+  overImageItem(i) {
+    if (document.querySelector('#userImageItem' + i).getAttribute('selected') == 'false') {
+      (document.querySelector('#userImageItem' + i).lastChild as HTMLElement).style.display = 'block';
+      (document.querySelector('#userImageItem' + i).firstChild as HTMLElement).style.borderColor = '#f16624';
+    }
+    // if (document.querySelector('#userImageItem' + i).getAttribute('selected') == 'true')
+    //   (document.querySelector('#userImageItem' + i).firstChild as HTMLElement).style.borderColor = '#f16624';
+  }
+
+  leaveImageItem(i) {
+    if (document.querySelector('#userImageItem' + i).getAttribute('selected') == 'false') {
+      (document.querySelector('#userImageItem' + i).lastChild as HTMLElement).style.display = 'none';
+      (document.querySelector('#userImageItem' + i).firstChild as HTMLElement).style.borderColor = 'transparent';
+    }
+  }
+
+  checkBoxStyle(i): CSS.Properties {
+    if (document.querySelector('#userImageItem' + i).getAttribute('selected') == 'true') {
+      return {
+        background: '#f16624',
+      };
+    } else
+      return {
+        background: 'white',
+      };
+  }
+
+  imageItemStyle(i): CSS.Properties {
+    if (document.querySelector('#userImageItem' + i).getAttribute('selected') == 'true') {
+      return {
+        borderColor: '#f16624',
+      };
+    } else
+      return {
+        borderColor: 'transparent',
+      };
+  }
+
+  checkItem(i: number) {
+    if (document.querySelector('#userImageItem' + i).getAttribute('selected') == 'false') {
+      document.querySelector('#userImageItem' + i).setAttribute('selected', 'true');
+      this.selectedItemTemp.push(i);
+      this.selectedItemObserve.next(this.selectedItemTemp);
+    } else {
+      document.querySelector('#userImageItem' + i).setAttribute('selected', 'false');
+      for (let j = 0; j < this.selectedItemTemp.length; j++) {
+        if (this.selectedItemTemp[j] == i) {
+          this.selectedItemTemp.splice(j, 1);
+          j--;
+        }
+      }
+      this.selectedItemObserve.next(this.selectedItemTemp);
+    }
+  }
+
+  downloadImageItem() {}
+
+  deleteImageItem() {}
+
+  closePanel() {
+    for (let i = 0; i < this.selectedItemTemp.length; i++) {
+      if (document.querySelector('#userImageItem' + this.selectedItemTemp[i]).getAttribute('selected') == 'true') {
+        document.querySelector('#userImageItem' + this.selectedItemTemp[i]).setAttribute('selected', 'false');
+        (document.querySelector('#userImageItem' + this.selectedItemTemp[i]).lastChild as HTMLElement).style.display = 'none';
+      }
+    }
+    this.selectedItemTemp = [];
+    this.selectedItemObserve.next(this.selectedItemTemp);
   }
 }
