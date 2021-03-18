@@ -61,6 +61,7 @@ export class MoveableService {
   isDragItem: boolean = false;
 
   currentUser = JSON.parse(localStorage.getItem('user'));
+  targetGroup: (HTMLElement | SVGElement)[] = [];
 
   constructor(
     private ds: DesignService,
@@ -142,7 +143,16 @@ export class MoveableService {
       .on('selectEnd', (e: OnSelectEnd) => {
         targets = e.selected;
 
-        this.onSelectTargets(targets);
+        if (!this.ds.isPressedShiftKey) {
+          this.targetGroup = [];
+        }
+
+        for (let i = 0; i < targets.length; i++) {
+          this.targetGroup.push(targets[i]);
+        }
+        if (this.ds.isPressedShiftKey) {
+          this.onSelectTargets(this.targetGroup);
+        } else this.onSelectTargets(targets);
 
         if (e.isDragStart) {
           e.inputEvent.preventDefault();

@@ -17,6 +17,7 @@ export class DesignService {
   previousType = 'px';
   previousSelectedFontItemFamily = 'Alata';
   isTemplate = false;
+  isPressedShiftKey: boolean = false;
 
   init() {
     this.theDesign = {
@@ -49,6 +50,7 @@ export class DesignService {
     //   window.location.hash = 'no-back-button';
     // };
     window.addEventListener('keydown', this.onKeyEvent.bind(this));
+    window.addEventListener('keyup', this.onKeyUpEvent.bind(this));
 
     return this.theDesign;
   }
@@ -380,6 +382,17 @@ export class DesignService {
         this.isResizeObserver = true;
         this.status = ItemStatus.none;
       }
+    }
+    if (e.shiftKey) {
+      if (!this.isPressedShiftKey) this.isPressedShiftKey = true;
+    }
+  }
+
+  onKeyUpEvent(e: KeyboardEvent) {
+    if (e.code == 'ShiftLeft') {
+      const moveableService = this.injector.get(MoveableService);
+      moveableService.targetGroup = [];
+      this.isPressedShiftKey = false;
     }
   }
 
