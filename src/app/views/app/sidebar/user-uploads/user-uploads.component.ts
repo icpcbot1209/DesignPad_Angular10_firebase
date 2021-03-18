@@ -17,12 +17,12 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
   auth$: Subscription;
   ngAfterViewInit(): void {
     this.auth$ = this.authService.subjectAuth.subscribe((isAuth) => {
-      if (!isAuth) {
-        this.assetImages = [];
-        this.heights = [];
-      } else {
-        this.readImagesByTag(JSON.parse(localStorage.getItem('user')).uid, '');
-      }
+      // if (!isAuth) {
+      //   this.assetImages = [];
+      //   this.heights = [];
+      // } else {
+      this.readImagesByTag(JSON.parse(localStorage.getItem('user')).uid, '');
+      // }
     });
   }
 
