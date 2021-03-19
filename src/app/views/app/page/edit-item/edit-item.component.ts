@@ -71,6 +71,7 @@ export class EditItemComponent implements OnInit {
       WebkitTransform: this.moveableService.strTransform(item),
       fontSize: item.fontSize,
       fontFamily: item.fontFamily,
+      fontWeight: item.fontWeight,
       textShadow: item.textShadow,
       WebkitTextStroke: item.textShadow,
       opacity: item.textOpacity,

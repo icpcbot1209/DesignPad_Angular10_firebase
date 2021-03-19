@@ -189,7 +189,7 @@ export class DesignService {
   /*********************************************
    * Text sidebar
    **********************************************/
-  sidebar_text_add() {
+  sidebar_text_add(fontSize, text, fontWeight) {
     let { x: W, y: H } = this.theDesign?.category.size;
     if (!H) return;
 
@@ -217,11 +217,12 @@ export class DesignService {
       rotate: 0,
       scaleX: 1,
       scaleY: 1,
-      fontSize: '24px',
+      fontSize: fontSize,
       fontFamily: 'Alata',
+      fontWeight: fontWeight,
       lineHeight: '1.35',
       letterSpacing: '-21',
-      quillData: '<div class="ql-editor" style="line-height: 1.35em; letter-spacing: -0.021em; overflow: hidden"><p>Add a heading</p></div>',
+      quillData: `<div class="ql-editor" style="font-weight: ${fontWeight}; line-height: 1.35em; letter-spacing: -0.021em; overflow: hidden"><p>${text}</p></div>`,
       textShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px',
       textStroke: '0px rgb(0, 0, 0)',
       curveText: '',

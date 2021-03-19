@@ -22,6 +22,7 @@ export interface Item {
   text?: string;
   fontSize?: string;
   fontFamily?: string;
+  fontWeight?: number;
   SVGElement?: string;
   color?: [];
   colorAndIndex?: {};

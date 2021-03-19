@@ -1,13 +1,23 @@
-<input
-  class="form-control search-box"
-  (keyup)="onKeyUpSearch($event)"
-  placeholder="Search by tag"
+<ng-select
+  id="searchElementInput"
+  style="padding: 10px 5px"
+  bindLabel="name"
+  [placeholder]="'Search'"
+  [isOpen]="false"
   (focus)="this.ds.isOnInput = true"
-  (focusout)="this.ds.isOnInput = false"
-/>
+  (blur)="this.ds.isOnInput = false"
+>
+</ng-select>
 
 <perfect-scrollbar style="height: calc(100% - 50px)" [config]="{ suppressScrollX: true, wheelPropagation: false }">
-  <div style="margin: 20px">
-    <button class="btn btn-secondary" style="width: 100%" (click)="onClickAddText()">Add Text</button>
+  <span style="font-size: 14px; font-weight: 600; color: white; cursor: default"> Click text to add to page </span>
+  <div class="textStyle" (click)="onClickAddText('Add a heading')">
+    <span style="font-size: 28px; font-weight: 1000; color: white; font-family: 'Alata'">Add a heading</span>
+  </div>
+  <div class="textStyle" (click)="onClickAddText('Add a subheading')">
+    <span style="font-size: 19px; font-weight: 500; color: white; font-family: 'Alata'">Add a subheading</span>
+  </div>
+  <div class="textStyle" (click)="onClickAddText('Add a little bit of body text')">
+    <span style="font-size: 12px; color: white; font-family: 'Alata'">Add a little bit of body text</span>
   </div>
 </perfect-scrollbar>
