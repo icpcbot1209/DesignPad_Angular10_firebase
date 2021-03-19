@@ -387,6 +387,47 @@ export class DesignService {
     if (e.shiftKey) {
       if (!this.isPressedShiftKey) this.isPressedShiftKey = true;
     }
+
+    if (e.code == 'ArrowDown' || e.code == 'ArrowUp' || e.code == 'ArrowLeft' || e.code == 'ArrowRight') {
+      const moveableService = this.injector.get(MoveableService);
+      if (this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId]?.selected) {
+        let item = this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId];
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (e.code == 'ArrowRight') item.x += 3;
+        if (e.code == 'ArrowDown') item.y += 3;
+        if (e.code == 'ArrowLeft') item.x -= 3;
+        if (e.code == 'ArrowUp') item.y -= 3;
+
+        let type = this.getType(item.type);
+        let selector = document.querySelector(type + moveableService.selectedPageId + '-' + moveableService.selectedItemId) as HTMLElement;
+
+        selector.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+        moveableService.setSelectable(moveableService.selectedItemId, moveableService.selectedPageId, type);
+      }
+    }
+  }
+
+  getType(status) {
+    let type;
+
+    switch (status) {
+      case ItemType.image:
+        type = '#ImgSelector-';
+        break;
+      case ItemType.text:
+        type = '#textSelector-';
+        break;
+      case ItemType.element:
+        type = '#SVGSelector-';
+        break;
+      case ItemType.video:
+        type = '#VideoSelector';
+        break;
+    }
+
+    return type;
   }
 
   onKeyUpEvent(e: KeyboardEvent) {
