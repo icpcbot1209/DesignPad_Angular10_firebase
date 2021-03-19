@@ -23,38 +23,19 @@
     *ngIf="array"
     [ngStyle]="scrollHeight()"
   >
-    <!-- <div *ngIf="array != []" style="display: flex; justify-content: space-between; flex-flow: row wrap">
-      <ng-container *ngFor="let item of array; let index = i">
-        <div
-          style="width: 100px; height: 100px; margin-bottom: 13px; display: flex; justify-content: center; align-items: center; cursor: pointer"
-          (click)="AddSVG(item)"
-        >
-          <img [src]="!item.imageData ? item.thumbnail : item.imageData" alt="" (click)="AddSVG($event, item)" />
-        </div>
-      </ng-container>
-    </div> -->
-
     <div #gridContainer class="grid-container">
       <ng-container *ngFor="let item of array; let i = index">
         <div
-          [id]="'adminImageItem' + i"
+          [id]="'adminSvgItem' + i"
           style="position: relative; cursor: pointer; display: flex; justify-content: center; align-items: center"
           [attr.selected]="false"
           [attr.index]="i"
           (mouseenter)="overImageItem(i)"
           (mouseleave)="leaveImageItem(i)"
         >
-          <!-- <img
-            class="grid-item"
-            [lazyLoad]="item.thumbnail"
-            [height]="heights[i]"
-            width="auto"
-            (click)="onImgClick(item)"
-            (dragstart)="onStartDrag($event, item)"
-            [ngStyle]="imageItemStyle(i)"
-          /> -->
           <img class="grid-item" [src]="item.thumbnail" (click)="AddSVG($event, item)" [ngStyle]="imageItemStyle(i)" />
           <div
+            *ngIf="authService.user?.role == role.Admin"
             style="
               position: absolute;
               top: 8px;

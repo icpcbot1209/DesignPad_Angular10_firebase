@@ -4,6 +4,8 @@ import { DesignService } from 'src/app/services/design.service';
 import { AssetService } from 'src/app/services/asset.service';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { Subject, Subscription } from 'rxjs';
+import { AuthService } from 'src/app/shared/auth.service';
+import { UserRole } from 'src/app/shared/auth.roles';
 
 import * as CSS from 'csstype';
 
@@ -33,8 +35,14 @@ export class ElementsComponent implements OnInit {
   selectedItemTemp: number[] = [];
   selectedItemObserve = new Subject();
   count: number = 0;
+  role = UserRole;
 
-  constructor(public assetService: AssetService, public ds: DesignService, public moveableService: MoveableService) {}
+  constructor(
+    public assetService: AssetService,
+    public ds: DesignService,
+    public moveableService: MoveableService,
+    public authService: AuthService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -100,21 +108,23 @@ export class ElementsComponent implements OnInit {
   }
 
   overImageItem(i) {
-    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'false') {
-      (document.querySelector('#adminImageItem' + i).lastChild as HTMLElement).style.display = 'block';
-      (document.querySelector('#adminImageItem' + i).firstChild as HTMLElement).style.borderColor = '#f16624';
+    if (document.querySelector('#adminSvgItem' + i).getAttribute('selected') == 'false') {
+      if (this.authService.user.role == this.role.Admin)
+        (document.querySelector('#adminSvgItem' + i).querySelector('div') as HTMLElement).style.display = 'block';
+      (document.querySelector('#adminSvgItem' + i).firstChild as HTMLElement).style.borderColor = '#f16624';
     }
   }
 
   leaveImageItem(i) {
-    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'false') {
-      (document.querySelector('#adminImageItem' + i).lastChild as HTMLElement).style.display = 'none';
-      (document.querySelector('#adminImageItem' + i).firstChild as HTMLElement).style.borderColor = 'transparent';
+    if (document.querySelector('#adminSvgItem' + i).getAttribute('selected') == 'false') {
+      if (this.authService.user.role == this.role.Admin)
+        (document.querySelector('#adminSvgItem' + i).querySelector('div') as HTMLElement).style.display = 'none';
+      (document.querySelector('#adminSvgItem' + i).firstChild as HTMLElement).style.borderColor = 'transparent';
     }
   }
 
   checkBoxStyle(i): CSS.Properties {
-    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'true') {
+    if (document.querySelector('#adminSvgItem' + i).getAttribute('selected') == 'true') {
       return {
         background: '#f16624',
       };
@@ -125,7 +135,7 @@ export class ElementsComponent implements OnInit {
   }
 
   imageItemStyle(i): CSS.Properties {
-    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'true') {
+    if (document.querySelector('#adminSvgItem' + i).getAttribute('selected') == 'true') {
       return {
         borderColor: '#f16624',
       };
@@ -143,12 +153,12 @@ export class ElementsComponent implements OnInit {
   }
 
   checkItem(i: number) {
-    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'false') {
-      document.querySelector('#adminImageItem' + i).setAttribute('selected', 'true');
+    if (document.querySelector('#adminSvgItem' + i).getAttribute('selected') == 'false') {
+      document.querySelector('#adminSvgItem' + i).setAttribute('selected', 'true');
       this.selectedItemTemp.push(i);
       this.selectedItemObserve.next(this.selectedItemTemp);
     } else {
-      document.querySelector('#adminImageItem' + i).setAttribute('selected', 'false');
+      document.querySelector('#adminSvgItem' + i).setAttribute('selected', 'false');
       for (let j = 0; j < this.selectedItemTemp.length; j++) {
         if (this.selectedItemTemp[j] == i) {
           this.selectedItemTemp.splice(j, 1);
@@ -175,9 +185,9 @@ export class ElementsComponent implements OnInit {
 
   closePanel() {
     for (let i = 0; i < this.selectedItemTemp.length; i++) {
-      if (document.querySelector('#adminImageItem' + this.selectedItemTemp[i]).getAttribute('selected') == 'true') {
-        document.querySelector('#adminImageItem' + this.selectedItemTemp[i]).setAttribute('selected', 'false');
-        (document.querySelector('#adminImageItem' + this.selectedItemTemp[i]).lastChild as HTMLElement).style.display = 'none';
+      if (document.querySelector('#adminSvgItem' + this.selectedItemTemp[i]).getAttribute('selected') == 'true') {
+        document.querySelector('#adminSvgItem' + this.selectedItemTemp[i]).setAttribute('selected', 'false');
+        (document.querySelector('#adminSvgItem' + this.selectedItemTemp[i]).lastChild as HTMLElement).style.display = 'none';
       }
     }
     this.selectedItemTemp = [];
