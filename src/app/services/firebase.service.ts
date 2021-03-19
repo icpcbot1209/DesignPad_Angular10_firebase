@@ -48,7 +48,6 @@ export class FirebaseService {
   }
 
   updateUserTemplate(templates: UploadUserTemplate[], docId) {
-    console.log(docId);
     this.db.collection<UserData>('User').doc(docId).update({
       template: templates,
     });

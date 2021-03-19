@@ -24,10 +24,14 @@ export class TemplatesComponent implements OnInit {
   role = UserRole;
 
   item$: Subscription;
+  userItem$: Subscription;
   selectedItemTemp: number[] = [];
   selectedItemObserve = new Subject();
+  selectedUserItemObserve = new Subject();
   count: number = 0;
+  userCount: number = 0;
   theTab: number = 0;
+  userDocId: string;
 
   constructor(
     public firebaseSerivce: FirebaseService,
@@ -41,17 +45,31 @@ export class TemplatesComponent implements OnInit {
   ngAfterViewInit(): void {
     this.readAdminTemplates();
     this.readUserTemplates();
-    // this.item$ = this.selectedItemObserve.subscribe((items: []) => {
-    //   this.count = items.length;
-    //   if (items.length != 0) {
-    //     (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '1';
-    //   } else {
-    //     (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '0';
-    //   }
-    // });
+    this.item$ = this.selectedItemObserve.subscribe((items: []) => {
+      this.count = items.length;
+      if (items.length != 0) {
+        (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '1';
+      } else {
+        (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '0';
+      }
+    });
+    this.userItem$ = this.selectedUserItemObserve.subscribe((items: []) => {
+      this.userCount = items.length;
+      if (items.length != 0) {
+        (document.querySelector('#deleteUserTemplateStatus') as HTMLElement).style.opacity = '1';
+      } else {
+        (document.querySelector('#deleteUserTemplateStatus') as HTMLElement).style.opacity = '0';
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.item$.unsubscribe();
+    this.userItem$.unsubscribe();
   }
 
   detectTabPage(event) {
+    this.selectedItemTemp = [];
     this.theTab = event;
   }
 
@@ -72,11 +90,13 @@ export class TemplatesComponent implements OnInit {
     this.firebaseSerivce.readObservableUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((e) => {
       let users = e.map((data) => {
         return {
+          docId: data.payload.doc.id,
           ...data.payload.doc.data(),
         } as UserData;
       });
 
       this.userTemplates = users[0].template;
+      this.userDocId = users[0].docId;
       this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
     });
   }
@@ -235,5 +255,89 @@ export class TemplatesComponent implements OnInit {
     }
     this.selectedItemTemp = [];
     this.selectedItemObserve.next(this.selectedItemTemp);
+  }
+
+  overUserTemplateItem(i) {
+    if (document.querySelector('#userTemplateItem' + i).getAttribute('selected') == 'false') {
+      (document.querySelector('#userTemplateItem' + i).querySelector('div') as HTMLElement).style.display = 'block';
+      (document.querySelector('#userTemplateItem' + i).firstChild as HTMLElement).style.borderColor = '#f16624';
+    }
+  }
+
+  leaveUserTemplateItem(i) {
+    if (document.querySelector('#userTemplateItem' + i).getAttribute('selected') == 'false') {
+      (document.querySelector('#userTemplateItem' + i).querySelector('div') as HTMLElement).style.display = 'none';
+      (document.querySelector('#userTemplateItem' + i).firstChild as HTMLElement).style.borderColor = 'transparent';
+    }
+  }
+
+  userCheckBoxStyle(i): CSS.Properties {
+    if (document.querySelector('#userTemplateItem' + i))
+      if (document.querySelector('#userTemplateItem' + i).getAttribute('selected') == 'true') {
+        return {
+          background: '#f16624',
+        };
+      } else
+        return {
+          background: 'white',
+        };
+  }
+
+  userItemStyle(i, item): CSS.Properties {
+    if (document.querySelector('#userTemplateItem' + i))
+      if (document.querySelector('#userTemplateItem' + i).getAttribute('selected') == 'true') {
+        return {
+          height: item.height * this.ratios[i] + this.padding * 2 + 'px',
+          borderColor: '#f16624',
+        };
+      } else
+        return {
+          height: item.height * this.ratios[i] + this.padding * 2 + 'px',
+          borderColor: 'transparent',
+        };
+  }
+
+  checkUserItem(i: number) {
+    if (document.querySelector('#userTemplateItem' + i).getAttribute('selected') == 'false') {
+      document.querySelector('#userTemplateItem' + i).setAttribute('selected', 'true');
+      this.selectedItemTemp.push(i);
+      this.selectedUserItemObserve.next(this.selectedItemTemp);
+    } else {
+      document.querySelector('#userTemplateItem' + i).setAttribute('selected', 'false');
+      for (let j = 0; j < this.selectedItemTemp.length; j++) {
+        if (this.selectedItemTemp[j] == i) {
+          this.selectedItemTemp.splice(j, 1);
+          j--;
+        }
+      }
+      this.selectedUserItemObserve.next(this.selectedItemTemp);
+    }
+  }
+
+  deleteUserTemplate() {
+    // let arr: UploadUserTemplate[] = [];
+    // for (let i = 0; i < this.selectedItemTemp.length; i++) {
+    //   arr.push(this.userTemplates[this.selectedItemTemp[i]]);
+    // }
+
+    for (let j = 0; j < this.selectedItemTemp.length; j++) {
+      this.userTemplates.splice(this.selectedItemTemp[j], 1);
+    }
+    this.selectedItemTemp = [];
+    this.selectedUserItemObserve.next(this.selectedItemTemp);
+
+    // this.firebaseSerivce.removeAdminTemplates(arr);
+    this.firebaseSerivce.updateUserTemplate(this.userTemplates, this.userDocId);
+  }
+
+  closeUserTemplatePanel() {
+    for (let i = 0; i < this.selectedItemTemp.length; i++) {
+      if (document.querySelector('#userTemplateItem' + this.selectedItemTemp[i]).getAttribute('selected') == 'true') {
+        document.querySelector('#userTemplateItem' + this.selectedItemTemp[i]).setAttribute('selected', 'false');
+        (document.querySelector('#userTemplateItem' + this.selectedItemTemp[i]).querySelector('div') as HTMLElement).style.display = 'none';
+      }
+    }
+    this.selectedItemTemp = [];
+    this.selectedUserItemObserve.next(this.selectedItemTemp);
   }
 }
