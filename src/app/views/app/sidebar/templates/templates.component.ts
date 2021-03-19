@@ -27,6 +27,7 @@ export class TemplatesComponent implements OnInit {
   selectedItemTemp: number[] = [];
   selectedItemObserve = new Subject();
   count: number = 0;
+  theTab: number = 0;
 
   constructor(
     public firebaseSerivce: FirebaseService,
@@ -35,12 +36,24 @@ export class TemplatesComponent implements OnInit {
     public authService: AuthService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
     this.readAdminTemplates();
     this.readUserTemplates();
+    // this.item$ = this.selectedItemObserve.subscribe((items: []) => {
+    //   this.count = items.length;
+    //   if (items.length != 0) {
+    //     (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '1';
+    //   } else {
+    //     (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '0';
+    //   }
+    // });
   }
 
-  ngAfterViewInit(): void {}
+  detectTabPage(event) {
+    this.theTab = event;
+  }
 
   readAdminTemplates() {
     this.firebaseSerivce.readAdminTemplates().subscribe((e) => {
@@ -53,21 +66,9 @@ export class TemplatesComponent implements OnInit {
 
       this.ratios = this.decideScale(this.templates, 2, this.padding);
     });
-    this.item$ = this.selectedItemObserve.subscribe((items: []) => {
-      this.count = items.length;
-      if (items.length != 0) {
-        (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '1';
-      } else {
-        (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '0';
-      }
-    });
   }
 
   async readUserTemplates() {
-    // let users = (await this.firebaseSerivce.readUser(JSON.parse(localStorage.getItem('user')).uid)) as UserData;
-    // this.userTemplates = users.template;
-    // this.userRatios = this.decideScale(this.userTemplates, 2, this.padding);
-
     this.firebaseSerivce.readObservableUser(JSON.parse(localStorage.getItem('user')).uid).subscribe((e) => {
       let users = e.map((data) => {
         return {
@@ -168,27 +169,29 @@ export class TemplatesComponent implements OnInit {
   }
 
   adminCheckBoxStyle(i): CSS.Properties {
-    if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'true') {
-      return {
-        background: '#f16624',
-      };
-    } else
-      return {
-        background: 'white',
-      };
+    if (document.querySelector('#adminTemplateItem' + i))
+      if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'true') {
+        return {
+          background: '#f16624',
+        };
+      } else
+        return {
+          background: 'white',
+        };
   }
 
   adminItemStyle(i, item): CSS.Properties {
-    if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'true') {
-      return {
-        height: item.height * this.ratios[i] + this.padding * 2 + 'px',
-        borderColor: '#f16624',
-      };
-    } else
-      return {
-        height: item.height * this.ratios[i] + this.padding * 2 + 'px',
-        borderColor: 'transparent',
-      };
+    if (document.querySelector('#adminTemplateItem' + i))
+      if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'true') {
+        return {
+          height: item.height * this.ratios[i] + this.padding * 2 + 'px',
+          borderColor: '#f16624',
+        };
+      } else
+        return {
+          height: item.height * this.ratios[i] + this.padding * 2 + 'px',
+          borderColor: 'transparent',
+        };
   }
 
   checkAdminItem(i: number) {
