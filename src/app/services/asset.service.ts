@@ -18,6 +18,10 @@ export class AssetService {
         .snapshotChanges();
   }
 
+  readUserFileImagesByDocId(assetImage: AssetImage) {
+    return this.db.collection<AssetImage>('UserFiles').doc(assetImage.uid).snapshotChanges();
+  }
+
   readMusicByTag(tag: string) {
     if (tag === '') return this.db.collection<AssetMusic>('Musics').snapshotChanges();
     else
@@ -74,6 +78,13 @@ export class AssetService {
     arr.forEach((asset) => {
       this.storage.ref(asset.path).delete();
       this.db.collection<AssetImage>('Images').doc(asset.uid).delete();
+    });
+  }
+
+  removeUserFileImages(arr: AssetImage[]) {
+    arr.forEach((asset) => {
+      this.storage.ref(asset.path).delete();
+      this.db.collection<AssetImage>('UserFiles').doc(asset.uid).delete();
     });
   }
 

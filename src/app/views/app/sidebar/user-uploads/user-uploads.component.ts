@@ -7,6 +7,8 @@ import { decideHeights } from 'src/app/models/geometry';
 import { Subject, Subscription } from 'rxjs';
 
 import * as CSS from 'csstype';
+import { saveAs } from 'file-saver';
+import { AssetService } from 'src/app/services/asset.service';
 
 @Component({
   selector: 'user-uploads',
@@ -14,7 +16,7 @@ import * as CSS from 'csstype';
   styleUrls: ['./user-uploads.component.scss'],
 })
 export class UserUploadsComponent implements AfterViewInit, OnDestroy {
-  constructor(public myfilesService: MyfilesService, public authService: AuthService, private ds: DesignService) {}
+  constructor(public myfilesService: MyfilesService, public authService: AuthService, private ds: DesignService, public assetService: AssetService) {}
 
   auth$: Subscription;
   item$: Subscription;
@@ -141,9 +143,39 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  downloadImageItem() {}
+  downloadImageItem() {
+    let arr: AssetImage[] = [];
+    for (let i = 0; i < this.selectedItemTemp.length; i++) {
+      arr.push(this.assetImages[this.selectedItemTemp[i]]);
+    }
 
-  deleteImageItem() {}
+    for (let i = 0; i < arr.length; i++) {
+      let xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = (event) => {
+        let blob = xhr.response;
+        let type = blob.type.slice(blob.type.indexOf('/') + 1, blob.type.length);
+        saveAs(blob, Date.now() + '.' + type);
+      };
+      xhr.open('GET', arr[i].downloadURL);
+      xhr.send();
+    }
+  }
+
+  deleteImageItem() {
+    let arr: AssetImage[] = [];
+    for (let i = 0; i < this.selectedItemTemp.length; i++) {
+      arr.push(this.assetImages[this.selectedItemTemp[i]]);
+    }
+
+    for (let j = 0; j < this.selectedItemTemp.length; j++) {
+      this.assetImages.splice(j, 1);
+    }
+    this.selectedItemTemp = [];
+    this.selectedItemObserve.next(this.selectedItemTemp);
+
+    this.assetService.removeUserFileImages(arr);
+  }
 
   closePanel() {
     for (let i = 0; i < this.selectedItemTemp.length; i++) {
