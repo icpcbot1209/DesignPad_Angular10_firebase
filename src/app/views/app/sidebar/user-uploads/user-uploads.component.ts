@@ -47,6 +47,7 @@ export class UserUploadsComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.auth$.unsubscribe();
+    this.item$.unsubscribe();
   }
 
   isLoading = false;

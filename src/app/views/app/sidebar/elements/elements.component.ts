@@ -3,6 +3,9 @@ import { AssetElement } from 'src/app/models/models';
 import { DesignService } from 'src/app/services/design.service';
 import { AssetService } from 'src/app/services/asset.service';
 import { MoveableService } from 'src/app/services/moveable.service';
+import { Subject, Subscription } from 'rxjs';
+
+import * as CSS from 'csstype';
 
 @Component({
   selector: 'sidebar-elements',
@@ -26,12 +29,29 @@ export class ElementsComponent implements OnInit {
   assetElements: AssetElement[] = [];
   heights: number[] = [];
 
+  item$: Subscription;
+  selectedItemTemp: number[] = [];
+  selectedItemObserve = new Subject();
+  count: number = 0;
+
   constructor(public assetService: AssetService, public ds: DesignService, public moveableService: MoveableService) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.readElementByTag('');
+    this.item$ = this.selectedItemObserve.subscribe((items: []) => {
+      this.count = items.length;
+      if (items.length != 0) {
+        (document.querySelector('#deleteSvgStatus') as HTMLElement).style.opacity = '1';
+      } else {
+        (document.querySelector('#deleteSvgStatus') as HTMLElement).style.opacity = '0';
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.item$.unsubscribe();
   }
 
   readElementByTag(tag: string) {
@@ -45,11 +65,13 @@ export class ElementsComponent implements OnInit {
       });
 
       this.isLoading = false;
+      this.array = [];
       this.appendItems(0, this.sum);
     });
   }
 
   onScrollDown(ev) {
+    console.log('asdf');
     // add another 20 items
     const start = this.sum;
     this.sum += 30;
@@ -75,5 +97,90 @@ export class ElementsComponent implements OnInit {
     if (event.type == 'click') {
       this.ds.sidebar_element_add(item);
     }
+  }
+
+  overImageItem(i) {
+    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'false') {
+      (document.querySelector('#adminImageItem' + i).lastChild as HTMLElement).style.display = 'block';
+      (document.querySelector('#adminImageItem' + i).firstChild as HTMLElement).style.borderColor = '#f16624';
+    }
+  }
+
+  leaveImageItem(i) {
+    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'false') {
+      (document.querySelector('#adminImageItem' + i).lastChild as HTMLElement).style.display = 'none';
+      (document.querySelector('#adminImageItem' + i).firstChild as HTMLElement).style.borderColor = 'transparent';
+    }
+  }
+
+  checkBoxStyle(i): CSS.Properties {
+    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'true') {
+      return {
+        background: '#f16624',
+      };
+    } else
+      return {
+        background: 'white',
+      };
+  }
+
+  imageItemStyle(i): CSS.Properties {
+    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'true') {
+      return {
+        borderColor: '#f16624',
+      };
+    } else
+      return {
+        borderColor: 'transparent',
+      };
+  }
+
+  scrollHeight(): CSS.Properties {
+    let offsetHeight = (document.querySelector('#searchElementInput') as HTMLElement).clientHeight;
+    return {
+      height: `calc(100% - ${offsetHeight}px)`,
+    };
+  }
+
+  checkItem(i: number) {
+    if (document.querySelector('#adminImageItem' + i).getAttribute('selected') == 'false') {
+      document.querySelector('#adminImageItem' + i).setAttribute('selected', 'true');
+      this.selectedItemTemp.push(i);
+      this.selectedItemObserve.next(this.selectedItemTemp);
+    } else {
+      document.querySelector('#adminImageItem' + i).setAttribute('selected', 'false');
+      for (let j = 0; j < this.selectedItemTemp.length; j++) {
+        if (this.selectedItemTemp[j] == i) {
+          this.selectedItemTemp.splice(j, 1);
+          j--;
+        }
+      }
+      this.selectedItemObserve.next(this.selectedItemTemp);
+    }
+  }
+
+  deleteImageItem() {
+    let arr: AssetElement[] = [];
+    for (let i = 0; i < this.selectedItemTemp.length; i++) {
+      arr.push(this.assetElements[this.selectedItemTemp[i]]);
+    }
+    for (let j = 0; j < this.selectedItemTemp.length; j++) {
+      this.assetElements.splice(this.selectedItemTemp[j], 1);
+    }
+
+    this.selectedItemTemp = [];
+    this.selectedItemObserve.next(this.selectedItemTemp);
+    this.assetService.removeElements(arr);
+  }
+
+  closePanel() {
+    for (let i = 0; i < this.selectedItemTemp.length; i++) {
+      if (document.querySelector('#adminImageItem' + this.selectedItemTemp[i]).getAttribute('selected') == 'true') {
+        document.querySelector('#adminImageItem' + this.selectedItemTemp[i]).setAttribute('selected', 'false');
+        (document.querySelector('#adminImageItem' + this.selectedItemTemp[i]).lastChild as HTMLElement).style.display = 'none';
+      }
+    }
+    this.selectedItemTemp = [];
+    this.selectedItemObserve.next(this.selectedItemTemp);
   }
 }

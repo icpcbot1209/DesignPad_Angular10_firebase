@@ -16,3 +16,28 @@ div::-webkit-scrollbar-thumb {
 .musicContent:hover {
   background: rgba(255, 255, 255, 0.07);
 }
+
+.grid-item {
+  box-sizing: border-box;
+  padding: 3px;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &:hover {
+    border: 1px solid #f16624;
+  }
+}
+.grid-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+#deleteSvgStatus {
+  opacity: 0;
+  transition: opacity 0.6s;
+  -webkit-transition: opacity 0.6s;
+}
+
+.fixedButton:hover {
+  background: hsla(0, 0%, 100%, 0.1) !important;
+  border-radius: 4px;
+}

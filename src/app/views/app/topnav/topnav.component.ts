@@ -6,6 +6,7 @@ import { LangService, Language } from 'src/app/shared/lang.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
 import { getThemeColor, setThemeColor } from 'src/app/utils/util';
+import { UserRole } from 'src/app/shared/auth.roles';
 
 @Component({
   selector: 'app-topnav',
@@ -23,6 +24,7 @@ export class TopnavComponent implements OnInit, OnDestroy {
   isFullScreen = false;
   isDarkModeActive = false;
   searchKey = '';
+  role = UserRole;
   currentUser = JSON.parse(localStorage.getItem('user'));
 
   constructor(private sidebarService: SidebarService, public authService: AuthService, private router: Router, private langService: LangService) {
@@ -162,5 +164,9 @@ export class TopnavComponent implements OnInit, OnDestroy {
       input.classList.remove('mobile-view');
     }
     this.searchKey = '';
+  }
+
+  adminPanel() {
+    this.router.navigate(['/admin']);
   }
 }

@@ -156,10 +156,11 @@
       </button>
 
       <div class="dropdown-menu dropdown-menu-right mt-3" *dropdownMenu role="menu">
-        <a class="dropdown-item c-pointer">Account</a>
-        <a class="dropdown-item c-pointer">Features</a>
+        <a *ngIf="authService.user?.role == role.Admin" class="dropdown-item c-pointer" (click)="adminPanel()">Admin Panel</a>
+        <!-- <a class="dropdown-item c-pointer">Account</a> -->
+        <!-- <a class="dropdown-item c-pointer">Features</a>
         <a class="dropdown-item c-pointer">History</a>
-        <a class="dropdown-item c-pointer">Support</a>
+        <a class="dropdown-item c-pointer">Support</a> -->
         <li class="divider dropdown-divider"></li>
         <a class="dropdown-item c-pointer" (click)="onSignOut()">Sign out</a>
       </div>

@@ -36,7 +36,7 @@ export class ElementUpload {
     return new Promise((resolve, reject) => {
       let thumbnail: string;
       let img = new Image();
-      const max = 100;
+      const max = 98;
       img.onload = () => {
         this.width = img.width;
         this.height = img.height;
