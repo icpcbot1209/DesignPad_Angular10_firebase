@@ -6,6 +6,8 @@ import { UserRole } from 'src/app/shared/auth.roles';
 import { MoveableService } from 'src/app/services/moveable.service';
 import data from 'src/app/data/prices';
 import { AuthService } from 'src/app/shared/auth.service';
+import { Subject, Subscription } from 'rxjs';
+import * as CSS from 'csstype';
 
 @Component({
   selector: 'sidebar-templates',
@@ -20,6 +22,11 @@ export class TemplatesComponent implements OnInit {
   userRatios: number[] = [];
   currentRole = JSON.parse(localStorage.getItem('user')).role;
   role = UserRole;
+
+  item$: Subscription;
+  selectedItemTemp: number[] = [];
+  selectedItemObserve = new Subject();
+  count: number = 0;
 
   constructor(
     public firebaseSerivce: FirebaseService,
@@ -39,11 +46,20 @@ export class TemplatesComponent implements OnInit {
     this.firebaseSerivce.readAdminTemplates().subscribe((e) => {
       this.templates = e.map((data) => {
         return {
+          docId: data.payload.doc.id,
           ...data.payload.doc.data(),
         } as AdminTemplates;
       });
 
       this.ratios = this.decideScale(this.templates, 2, this.padding);
+    });
+    this.item$ = this.selectedItemObserve.subscribe((items: []) => {
+      this.count = items.length;
+      if (items.length != 0) {
+        (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '1';
+      } else {
+        (document.querySelector('#deleteAdminTemplateStatus') as HTMLElement).style.opacity = '0';
+      }
     });
   }
 
@@ -131,5 +147,90 @@ export class TemplatesComponent implements OnInit {
         this.userTemplates[i].design.pages[0].items[j].selected = false;
       }
     this.ds.theDesign = JSON.parse(JSON.stringify(this.userTemplates[i].design));
+  }
+
+  overAdminTemplateItem(i) {
+    if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'false') {
+      if (this.authService.user.role == this.role.Admin)
+        (document.querySelector('#adminTemplateItem' + i).querySelector('div') as HTMLElement).style.display = 'block';
+      (document.querySelector('#adminTemplateItem' + i).firstChild as HTMLElement).style.borderColor = '#f16624';
+    }
+    // if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'true')
+    //   (document.querySelector('#adminTemplateItem' + i).firstChild as HTMLElement).style.borderColor = '#f16624';
+  }
+
+  leaveAdminTemplateItem(i) {
+    if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'false') {
+      if (this.authService.user.role == this.role.Admin)
+        (document.querySelector('#adminTemplateItem' + i).querySelector('div') as HTMLElement).style.display = 'none';
+      (document.querySelector('#adminTemplateItem' + i).firstChild as HTMLElement).style.borderColor = 'transparent';
+    }
+  }
+
+  adminCheckBoxStyle(i): CSS.Properties {
+    if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'true') {
+      return {
+        background: '#f16624',
+      };
+    } else
+      return {
+        background: 'white',
+      };
+  }
+
+  adminItemStyle(i, item): CSS.Properties {
+    if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'true') {
+      return {
+        height: item.height * this.ratios[i] + this.padding * 2 + 'px',
+        borderColor: '#f16624',
+      };
+    } else
+      return {
+        height: item.height * this.ratios[i] + this.padding * 2 + 'px',
+        borderColor: 'transparent',
+      };
+  }
+
+  checkAdminItem(i: number) {
+    if (document.querySelector('#adminTemplateItem' + i).getAttribute('selected') == 'false') {
+      document.querySelector('#adminTemplateItem' + i).setAttribute('selected', 'true');
+      this.selectedItemTemp.push(i);
+      this.selectedItemObserve.next(this.selectedItemTemp);
+    } else {
+      document.querySelector('#adminTemplateItem' + i).setAttribute('selected', 'false');
+      for (let j = 0; j < this.selectedItemTemp.length; j++) {
+        if (this.selectedItemTemp[j] == i) {
+          this.selectedItemTemp.splice(j, 1);
+          j--;
+        }
+      }
+      this.selectedItemObserve.next(this.selectedItemTemp);
+    }
+  }
+
+  deleteAdminTemplate() {
+    let arr: AdminTemplates[] = [];
+    for (let i = 0; i < this.selectedItemTemp.length; i++) {
+      arr.push(this.templates[this.selectedItemTemp[i]]);
+    }
+
+    for (let j = 0; j < this.selectedItemTemp.length; j++) {
+      this.templates.splice(j, 1);
+    }
+    this.selectedItemTemp = [];
+    this.selectedItemObserve.next(this.selectedItemTemp);
+
+    this.firebaseSerivce.removeAdminTemplates(arr);
+  }
+
+  closeAdminTemplatePanel() {
+    for (let i = 0; i < this.selectedItemTemp.length; i++) {
+      if (document.querySelector('#adminTemplateItem' + this.selectedItemTemp[i]).getAttribute('selected') == 'true') {
+        document.querySelector('#adminTemplateItem' + this.selectedItemTemp[i]).setAttribute('selected', 'false');
+        (document.querySelector('#adminTemplateItem' + this.selectedItemTemp[i]).querySelector('div') as HTMLElement).style.display = 'none';
+      }
+    }
+    this.selectedItemTemp = [];
+    this.selectedItemObserve.next(this.selectedItemTemp);
   }
 }

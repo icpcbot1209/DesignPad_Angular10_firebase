@@ -187,7 +187,7 @@ export class ElementsComponent implements OnInit {
     for (let i = 0; i < this.selectedItemTemp.length; i++) {
       if (document.querySelector('#adminSvgItem' + this.selectedItemTemp[i]).getAttribute('selected') == 'true') {
         document.querySelector('#adminSvgItem' + this.selectedItemTemp[i]).setAttribute('selected', 'false');
-        (document.querySelector('#adminSvgItem' + this.selectedItemTemp[i]).lastChild as HTMLElement).style.display = 'none';
+        (document.querySelector('#adminSvgItem' + this.selectedItemTemp[i]).querySelector('div') as HTMLElement).style.display = 'none';
       }
     }
     this.selectedItemTemp = [];

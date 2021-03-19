@@ -58,6 +58,12 @@ export class FirebaseService {
     return this.db.collection<AdminTemplates>('AdminTemplates').snapshotChanges();
   }
 
+  removeAdminTemplates(arr: AdminTemplates[]) {
+    arr.forEach((asset) => {
+      this.db.collection<AdminTemplates>('AdminTemplates').doc(asset.docId).delete();
+    });
+  }
+
   createAdminTemplates(design, thumbnail, width, height) {
     this.db.collection<AdminTemplates>('AdminTemplates').add({
       design: design,

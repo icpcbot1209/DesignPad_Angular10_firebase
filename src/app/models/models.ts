@@ -125,6 +125,7 @@ export interface UserData {
 }
 
 export interface AdminTemplates {
+  docId?: string;
   design: Design;
   thumbnail: string;
   width: number;
