@@ -137,6 +137,7 @@ export class MoveableService {
         e.removed.forEach((el) => {
           let item = this.getItem(el);
           if (item) {
+            console.log('removed');
             item.selected = false;
           }
         });
@@ -210,7 +211,7 @@ export class MoveableService {
     } else if (targets.length === 1) {
       let item = this.getItem(targets[0]);
 
-      this.ds.deleteSelectedItem();
+      if (this.ds.isCopiedItem) this.ds.deleteSelectedItem();
       this.selectedItemId = targets[0].getAttribute('itemId');
       this.selectedPageId = targets[0].getAttribute('pageId');
       this.selectableTextEditor();

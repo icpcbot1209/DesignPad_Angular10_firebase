@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Item, Page } from 'src/app/models/models';
-import { ItemType } from 'src/app/models/enums';
+import { ItemStatus, ItemType } from 'src/app/models/enums';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
 import { DesignService } from 'src/app/services/design.service';
@@ -29,14 +29,16 @@ export class TextItemComponent implements OnInit, AfterViewInit {
     if (this.item.isCurve) this.moveableService.isEditable = false;
     else this.moveableService.isEditable = true;
 
-    if (!this.ds.isTemplate && this.ds.isAddItem) {
-      this.moveableService.copiedTheData = [];
-      this.moveableService.copiedTheData.push(this.moveableService.getItem(this.textSelector.nativeElement));
-      this.moveableService.onSelectTargets([this.textSelector.nativeElement]);
-    } else {
-      this.ds.copiedTargets.push(this.textSelector.nativeElement);
-      this.moveableService.onSelectTargets(this.ds.copiedTargets);
-    }
+    if (!this.ds.isTemplate) {
+      if (this.ds.isAddItem) {
+        this.moveableService.copiedTheData = [];
+        this.moveableService.copiedTheData.push(this.moveableService.getItem(this.textSelector.nativeElement));
+        this.moveableService.onSelectTargets([this.textSelector.nativeElement]);
+      } else {
+        this.ds.copiedTargets.push(this.textSelector.nativeElement);
+        this.moveableService.onSelectTargets(this.ds.copiedTargets);
+      }
+    } else this.ds.setStatus(ItemStatus.none);
     this.ds.isAddItem = false;
   }
 

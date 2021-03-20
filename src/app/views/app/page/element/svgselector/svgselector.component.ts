@@ -20,16 +20,18 @@ export class SVGSelectorComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    if (!this.ds.isTemplate && this.ds.isAddItem) {
-      this.moveableService.copiedTheData = [];
-      this.moveableService.copiedTheData.push(this.moveableService.getItem(this.svgSelector.nativeElement));
-      this.moveableService.onSelectTargets([this.svgSelector.nativeElement]);
-    } else {
-      this.ds.copiedTargets.push(this.svgSelector.nativeElement);
-      this.moveableService.onSelectTargets(this.ds.copiedTargets);
-    }
+    if (!this.ds.isTemplate) {
+      if (this.ds.isAddItem) {
+        this.moveableService.copiedTheData = [];
+        this.moveableService.copiedTheData.push(this.moveableService.getItem(this.svgSelector.nativeElement));
+        this.moveableService.onSelectTargets([this.svgSelector.nativeElement]);
+      } else {
+        this.ds.copiedTargets.push(this.svgSelector.nativeElement);
+        this.moveableService.onSelectTargets(this.ds.copiedTargets);
+      }
+      // this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#SVGSelector-');
+    } else this.ds.setStatus(ItemStatus.none);
     this.ds.isAddItem = false;
-    // this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#SVGSelector-');
   }
 
   styleItemPosition(item: Item): CSS.Properties {

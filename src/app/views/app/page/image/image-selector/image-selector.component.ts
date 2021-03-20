@@ -4,6 +4,7 @@ import { MoveableService } from '../../../../../services/moveable.service';
 import { DesignService } from '../../../../../services/design.service';
 
 import * as CSS from 'csstype';
+import { ItemStatus } from 'src/app/models/enums';
 
 @Component({
   selector: 'app-image-selector',
@@ -19,14 +20,16 @@ export class ImageSelectorComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    if (!this.ds.isTemplate && this.ds.isAddItem) {
-      this.moveableService.copiedTheData = [];
-      this.moveableService.copiedTheData.push(this.moveableService.getItem(this.imgSelector.nativeElement));
-      this.moveableService.onSelectTargets([this.imgSelector.nativeElement]);
-    } else {
-      this.ds.copiedTargets.push(this.imgSelector.nativeElement);
-      this.moveableService.onSelectTargets(this.ds.copiedTargets);
-    }
+    if (!this.ds.isTemplate) {
+      if (this.ds.isAddItem) {
+        this.moveableService.copiedTheData = [];
+        this.moveableService.copiedTheData.push(this.moveableService.getItem(this.imgSelector.nativeElement));
+        this.moveableService.onSelectTargets([this.imgSelector.nativeElement]);
+      } else {
+        this.ds.copiedTargets.push(this.imgSelector.nativeElement);
+        this.moveableService.onSelectTargets(this.ds.copiedTargets);
+      }
+    } else this.ds.setStatus(ItemStatus.none);
     this.ds.isAddItem = false;
   }
 

@@ -23,6 +23,7 @@ export class DesignService {
   offsetY: number = 0;
   copiedTargets: (HTMLElement | SVGElement)[] = [];
   isAddItem: boolean = false;
+  isCopiedItem: boolean = false;
 
   init() {
     this.theDesign = {
@@ -137,7 +138,7 @@ export class DesignService {
       media.stopVideo();
     }
 
-    this.deleteSelectedItem();
+    if (!this.isCopiedItem) this.deleteSelectedItem();
 
     item.pageId = this.thePageId;
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
@@ -356,10 +357,10 @@ export class DesignService {
     if (!this.isOnInput && (e.key === 'Delete' || e.key === 'Backspace')) {
       const moveableService = this.injector.get(MoveableService);
       const media = this.injector.get(MediaService);
-      if (this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].type == ItemType.video) {
-        media.stopVideo();
-        clearInterval(media.playVideoProgressTimer);
-      }
+      // if (this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].type == ItemType.video) {
+      //   media.stopVideo();
+      //   clearInterval(media.playVideoProgressTimer);
+      // }
 
       e.preventDefault();
       e.stopPropagation();
@@ -374,13 +375,7 @@ export class DesignService {
       e.stopPropagation();
       if (!this.isStatus(ItemStatus.text_effect)) {
         this.ur.isUndoRedo = true;
-        // console.log(this.ur.undoTheData().pages[0].items[0].color);
         this.theDesign = this.ur.undoTheData();
-        // this.theDesign = null;
-        // console.log(this.theDesign.pages[0].items[0].color);
-        // this.theDesign = JSON.parse(JSON.stringify(designData));
-        // console.log(JSON.parse(JSON.stringify(designData)).pages[0].items[0].color);
-        // console.log(this.theDesign.pages[0].items[0].color);
 
         this.isResizeObserver = true;
         this.status = ItemStatus.none;
@@ -430,41 +425,33 @@ export class DesignService {
         this.offsetY = 0;
 
         this.copiedTheData = moveableService.copiedTheData;
-        console.log(this.copiedTheData);
 
         e.preventDefault();
         e.stopPropagation();
       }
     }
     if (!this.isOnInput && e.key === 'v' && (e.ctrlKey || e.metaKey)) {
+      this.isCopiedItem = true;
       e.preventDefault();
       e.stopPropagation();
 
       this.offsetX += 30;
       this.offsetY += 30;
 
+      for (let i = 0; i < this.theDesign.pages[moveableService.selectedPageId].items.length; i++) {
+        this.theDesign.pages[moveableService.selectedPageId].items[i].selected = false;
+      }
+
       for (let i = 0; i < this.copiedTheData.length; i++) {
         let theData = JSON.parse(JSON.stringify(this.copiedTheData[i]));
 
+        theData.selected = true;
         theData.x += this.offsetX;
         theData.y += this.offsetY;
 
         this.addItemToCurrentPage(theData);
       }
-
-      // let targets: (HTMLElement | SVGElement)[] = [];
-      // for (let i = 0; i < this.copiedTheData.length; i++) {
-      //   targets.push(this.copiedTheData[i]);
-      // }
-      // console.log(targets);
-      // moveableService.onSelectTargets(targets);
-      // for (let i = 0; i < selectedCount; i++) {
-      //   let items = this.theDesign.pages[moveableService.selectedPageId].items;
-
-      //   let ele = document.querySelector(this.getType(items[index + i]) + moveableService.selectedPageId + '-' + moveableService.selectedItemId);
-      //   console.log
-      //   console.log(ele);
-      // }
+      this.isCopiedItem = false;
     }
   }
 
@@ -730,7 +717,6 @@ export class DesignService {
       media.stopVideo();
       media.selectedVideo = null;
     }
-
     for (let i = 0; i < this.theDesign.pages.length; i++)
       for (let j = 0; j < this.theDesign.pages[i].items.length; j++) {
         this.theDesign.pages[i].items[j].selected = false;
