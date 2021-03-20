@@ -62,7 +62,7 @@ export class MoveableService {
 
   currentUser = JSON.parse(localStorage.getItem('user'));
   targetGroup: (HTMLElement | SVGElement)[] = [];
-  copiedTheData;
+  copiedTheData = [];
 
   constructor(
     private ds: DesignService,
@@ -143,7 +143,11 @@ export class MoveableService {
       })
       .on('selectEnd', (e: OnSelectEnd) => {
         targets = e.selected;
-        this.copiedTheData = targets;
+        this.copiedTheData = [];
+
+        for (let i = 0; i < targets.length; i++) {
+          this.copiedTheData.push(JSON.parse(JSON.stringify(this.getItem(targets[i]))));
+        }
 
         if (!this.ds.isPressedShiftKey) {
           this.targetGroup = [];

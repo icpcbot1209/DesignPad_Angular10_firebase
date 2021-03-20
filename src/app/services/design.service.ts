@@ -18,10 +18,11 @@ export class DesignService {
   previousSelectedFontItemFamily = 'Alata';
   isTemplate = false;
   isPressedShiftKey: boolean = false;
-  copiedTheData;
+  copiedTheData = [];
   offsetX: number = 0;
   offsetY: number = 0;
-  copedTargets: (HTMLElement | SVGElement)[] = [];
+  copiedTargets: (HTMLElement | SVGElement)[] = [];
+  isAddItem: boolean = false;
 
   init() {
     this.theDesign = {
@@ -125,7 +126,7 @@ export class DesignService {
   }
 
   addItemToCurrentPage(item: Item) {
-    this.copedTargets = [];
+    this.copiedTargets = [];
     this.isTemplate = false;
     this.ur.isUndoRedo = false;
 
@@ -160,6 +161,8 @@ export class DesignService {
 
   addImageItem(assetImage: AssetImage) {
     let { x: W, y: H } = this.theDesign?.category.size;
+    this.isAddItem = true;
+
     if (!H) return;
 
     if (assetImage.height <= 0 || assetImage.width <= 0) return;
@@ -196,6 +199,8 @@ export class DesignService {
    **********************************************/
   sidebar_text_add(fontSize, text, fontWeight) {
     let { x: W, y: H } = this.theDesign?.category.size;
+    this.isAddItem = true;
+
     if (!H) return;
 
     let w, h, x, y;
@@ -246,6 +251,8 @@ export class DesignService {
     // this.setStatus(ItemStatus.element_selected);
 
     let { x: W, y: H } = this.theDesign?.category.size;
+    this.isAddItem = true;
+
     if (!H) return;
 
     let w, h, x, y;
@@ -300,6 +307,8 @@ export class DesignService {
    **********************************************/
   sidebar_video_add(item) {
     let { x: W, y: H } = this.theDesign?.category.size;
+    this.isAddItem = true;
+
     if (!H) return;
 
     let w, h, x, y;
@@ -415,16 +424,13 @@ export class DesignService {
 
     if (!this.isOnInput && e.key === 'c' && (e.ctrlKey || e.metaKey)) {
       if (this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId]?.selected) {
-        let item = this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId];
         this.copiedTheData = [];
+        this.copiedTargets = [];
         this.offsetX = 0;
         this.offsetY = 0;
-        // let theData = JSON.parse(JSON.stringify(moveableService.getItem(moveableService.copiedTheData))
 
-        // for (let i = 0; i < moveableService.copiedTheData.length; i++) {
-        //   this.copiedTheData.push(moveableService.copiedTheData[0]);
-        // }
         this.copiedTheData = moveableService.copiedTheData;
+        console.log(this.copiedTheData);
 
         e.preventDefault();
         e.stopPropagation();
@@ -436,11 +442,9 @@ export class DesignService {
 
       this.offsetX += 30;
       this.offsetY += 30;
-      let selectedCount = this.copiedTheData.length;
-      let index = this.theDesign.pages[moveableService.selectedPageId].items.length;
 
       for (let i = 0; i < this.copiedTheData.length; i++) {
-        let theData = JSON.parse(JSON.stringify(moveableService.getItem(this.copiedTheData[i])));
+        let theData = JSON.parse(JSON.stringify(this.copiedTheData[i]));
 
         theData.x += this.offsetX;
         theData.y += this.offsetY;

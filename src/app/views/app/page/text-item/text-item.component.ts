@@ -28,11 +28,16 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.item.isCurve) this.moveableService.isEditable = false;
     else this.moveableService.isEditable = true;
-    if (!this.moveableService.isOnResize && !this.ds.isTemplate) {
-      this.ds.copedTargets.push(this.textSelector.nativeElement);
-      this.moveableService.onSelectTargets(this.ds.copedTargets);
-      // this.moveableService.setSelectable(this.moveableService.selectedItemId, this.moveableService.selectedPageId, '#textSelector-');
+
+    if (!this.ds.isTemplate && this.ds.isAddItem) {
+      this.moveableService.copiedTheData = [];
+      this.moveableService.copiedTheData.push(this.moveableService.getItem(this.textSelector.nativeElement));
+      this.moveableService.onSelectTargets([this.textSelector.nativeElement]);
+    } else {
+      this.ds.copiedTargets.push(this.textSelector.nativeElement);
+      this.moveableService.onSelectTargets(this.ds.copiedTargets);
     }
+    this.ds.isAddItem = false;
   }
 
   styleItemPosition(item: Item): CSS.Properties {

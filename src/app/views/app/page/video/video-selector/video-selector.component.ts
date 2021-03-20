@@ -26,11 +26,15 @@ export class VideoSelectorComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.ds.isTemplate) {
-      this.ds.copedTargets.push(this.videoSelector.nativeElement);
-      this.moveableService.onSelectTargets(this.ds.copedTargets);
-      // this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-')
+    if (!this.ds.isTemplate && this.ds.isAddItem) {
+      this.moveableService.copiedTheData = [];
+      this.moveableService.copiedTheData.push(this.moveableService.getItem(this.videoSelector.nativeElement));
+      this.moveableService.onSelectTargets([this.videoSelector.nativeElement]);
+    } else {
+      this.ds.copiedTargets.push(this.videoSelector.nativeElement);
+      this.moveableService.onSelectTargets(this.ds.copiedTargets);
     }
+    this.ds.isAddItem = false;
 
     this.media.selectedVideo = document.querySelector('#VideoElement' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
     this.setIntervalVideo();

@@ -19,11 +19,15 @@ export class ImageSelectorComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    if (!this.ds.isTemplate) {
-      this.ds.copedTargets.push(this.imgSelector.nativeElement);
-      this.moveableService.onSelectTargets(this.ds.copedTargets);
-      // this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#ImgSelector-')
+    if (!this.ds.isTemplate && this.ds.isAddItem) {
+      this.moveableService.copiedTheData = [];
+      this.moveableService.copiedTheData.push(this.moveableService.getItem(this.imgSelector.nativeElement));
+      this.moveableService.onSelectTargets([this.imgSelector.nativeElement]);
+    } else {
+      this.ds.copiedTargets.push(this.imgSelector.nativeElement);
+      this.moveableService.onSelectTargets(this.ds.copiedTargets);
     }
+    this.ds.isAddItem = false;
   }
 
   styleItemPosition(item: Item): CSS.Properties {
