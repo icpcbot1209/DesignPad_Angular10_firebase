@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { Item } from 'src/app/models/models';
@@ -14,6 +14,7 @@ import * as CSS from 'csstype';
 })
 export class VideoSelectorComponent implements OnInit {
   @Input('item') item;
+  @ViewChild('videoSelector') videoSelector: ElementRef;
 
   ItemStatus = ItemStatus;
   currentVideoduration = 0;
@@ -25,7 +26,11 @@ export class VideoSelectorComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.ds.isTemplate) this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-');
+    if (!this.ds.isTemplate) {
+      this.ds.copedTargets.push(this.videoSelector.nativeElement);
+      this.moveableService.onSelectTargets(this.ds.copedTargets);
+      // this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#VideoSelector-')
+    }
 
     this.media.selectedVideo = document.querySelector('#VideoElement' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
     this.setIntervalVideo();

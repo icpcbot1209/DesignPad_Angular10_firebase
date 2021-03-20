@@ -18,6 +18,10 @@ export class DesignService {
   previousSelectedFontItemFamily = 'Alata';
   isTemplate = false;
   isPressedShiftKey: boolean = false;
+  copiedTheData;
+  offsetX: number = 0;
+  offsetY: number = 0;
+  copedTargets: (HTMLElement | SVGElement)[] = [];
 
   init() {
     this.theDesign = {
@@ -121,6 +125,7 @@ export class DesignService {
   }
 
   addItemToCurrentPage(item: Item) {
+    this.copedTargets = [];
     this.isTemplate = false;
     this.ur.isUndoRedo = false;
 
@@ -388,8 +393,8 @@ export class DesignService {
       if (!this.isPressedShiftKey) this.isPressedShiftKey = true;
     }
 
+    const moveableService = this.injector.get(MoveableService);
     if (e.code == 'ArrowDown' || e.code == 'ArrowUp' || e.code == 'ArrowLeft' || e.code == 'ArrowRight') {
-      const moveableService = this.injector.get(MoveableService);
       if (this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId]?.selected) {
         let item = this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId];
         e.preventDefault();
@@ -404,8 +409,58 @@ export class DesignService {
         let selector = document.querySelector(type + moveableService.selectedPageId + '-' + moveableService.selectedItemId) as HTMLElement;
 
         selector.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-        moveableService.setSelectable(moveableService.selectedItemId, moveableService.selectedPageId, type);
+        // moveableService.setSelectable(moveableService.selectedItemId, moveableService.selectedPageId, type);
       }
+    }
+
+    if (!this.isOnInput && e.key === 'c' && (e.ctrlKey || e.metaKey)) {
+      if (this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId]?.selected) {
+        let item = this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId];
+        this.copiedTheData = [];
+        this.offsetX = 0;
+        this.offsetY = 0;
+        // let theData = JSON.parse(JSON.stringify(moveableService.getItem(moveableService.copiedTheData))
+
+        // for (let i = 0; i < moveableService.copiedTheData.length; i++) {
+        //   this.copiedTheData.push(moveableService.copiedTheData[0]);
+        // }
+        this.copiedTheData = moveableService.copiedTheData;
+
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }
+    if (!this.isOnInput && e.key === 'v' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      this.offsetX += 30;
+      this.offsetY += 30;
+      let selectedCount = this.copiedTheData.length;
+      let index = this.theDesign.pages[moveableService.selectedPageId].items.length;
+
+      for (let i = 0; i < this.copiedTheData.length; i++) {
+        let theData = JSON.parse(JSON.stringify(moveableService.getItem(this.copiedTheData[i])));
+
+        theData.x += this.offsetX;
+        theData.y += this.offsetY;
+
+        this.addItemToCurrentPage(theData);
+      }
+
+      // let targets: (HTMLElement | SVGElement)[] = [];
+      // for (let i = 0; i < this.copiedTheData.length; i++) {
+      //   targets.push(this.copiedTheData[i]);
+      // }
+      // console.log(targets);
+      // moveableService.onSelectTargets(targets);
+      // for (let i = 0; i < selectedCount; i++) {
+      //   let items = this.theDesign.pages[moveableService.selectedPageId].items;
+
+      //   let ele = document.querySelector(this.getType(items[index + i]) + moveableService.selectedPageId + '-' + moveableService.selectedItemId);
+      //   console.log
+      //   console.log(ele);
+      // }
     }
   }
 

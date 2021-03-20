@@ -17,6 +17,7 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   @Input() item: Item;
   @Input() itemId: number;
   @Input() pageId: number;
+  @ViewChild('textSelector') textSelector: ElementRef;
 
   constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ds: DesignService, public ur: UndoRedoService) {}
 
@@ -28,7 +29,9 @@ export class TextItemComponent implements OnInit, AfterViewInit {
     if (this.item.isCurve) this.moveableService.isEditable = false;
     else this.moveableService.isEditable = true;
     if (!this.moveableService.isOnResize && !this.ds.isTemplate) {
-      this.moveableService.setSelectable(this.moveableService.selectedItemId, this.moveableService.selectedPageId, '#textSelector-');
+      this.ds.copedTargets.push(this.textSelector.nativeElement);
+      this.moveableService.onSelectTargets(this.ds.copedTargets);
+      // this.moveableService.setSelectable(this.moveableService.selectedItemId, this.moveableService.selectedPageId, '#textSelector-');
     }
   }
 

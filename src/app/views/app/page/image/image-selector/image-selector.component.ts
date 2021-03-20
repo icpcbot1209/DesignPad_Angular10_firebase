@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Item } from '../../../../../models/models';
 import { MoveableService } from '../../../../../services/moveable.service';
 import { DesignService } from '../../../../../services/design.service';
@@ -12,13 +12,18 @@ import * as CSS from 'csstype';
 })
 export class ImageSelectorComponent implements OnInit {
   @Input('item') item;
+  @ViewChild('imgSelector') imgSelector: ElementRef;
 
   constructor(public ds: DesignService, public moveableService: MoveableService) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    if (!this.ds.isTemplate) this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#ImgSelector-');
+    if (!this.ds.isTemplate) {
+      this.ds.copedTargets.push(this.imgSelector.nativeElement);
+      this.moveableService.onSelectTargets(this.ds.copedTargets);
+      // this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#ImgSelector-')
+    }
   }
 
   styleItemPosition(item: Item): CSS.Properties {

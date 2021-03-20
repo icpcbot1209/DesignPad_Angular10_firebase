@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { Item } from 'src/app/models/models';
@@ -13,6 +13,7 @@ import { ItemStatus } from 'src/app/models/enums';
 })
 export class SVGSelectorComponent implements OnInit {
   @Input('item') item;
+  @ViewChild('svgSelector') svgSelector: ElementRef;
 
   constructor(public ds: DesignService, public moveableService: MoveableService) {}
 
@@ -20,8 +21,10 @@ export class SVGSelectorComponent implements OnInit {
 
   ngAfterViewInit(): void {
     if (!this.ds.isTemplate) {
-      this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#SVGSelector-');
+      this.ds.copedTargets.push(this.svgSelector.nativeElement);
+      this.moveableService.onSelectTargets(this.ds.copedTargets);
     }
+    // this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#SVGSelector-');
   }
 
   styleItemPosition(item: Item): CSS.Properties {
