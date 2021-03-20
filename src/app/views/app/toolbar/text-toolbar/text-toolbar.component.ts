@@ -147,6 +147,15 @@ export class TextToolbarComponent implements OnInit {
         else quill.formatText(0, length - 1, 'strike', true);
       }
     });
+
+    document.querySelector('#color').addEventListener('click', () => {
+      let quill = this.toolbarService.quill;
+      let length: number = this.toolbarService.quill.getLength();
+      if (!quill.getSelection(true).length) {
+        this.moveableService.enableTextEdit();
+        quill.setSelection(0, length - 1);
+      }
+    });
   }
 
   catchEnterKey(event) {
