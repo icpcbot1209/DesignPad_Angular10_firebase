@@ -317,7 +317,7 @@ export class TextEffectsComponent implements OnInit {
 
       this.isCurve = true;
       this.defaultEffect();
-      this.curveValue = item.angel;
+      this.curveValue = item.angle;
       this.toolbarService.direction = 1;
       this.setCurveEffect();
 
@@ -715,7 +715,7 @@ export class TextEffectsComponent implements OnInit {
   onInputCurveChange(event) {
     this.curveValue = event.value;
     let item = this.moveableService.getItem(this.editorEle);
-    item.angel = this.curveValue;
+    item.angle = this.curveValue;
 
     this.setCurveEffect();
   }

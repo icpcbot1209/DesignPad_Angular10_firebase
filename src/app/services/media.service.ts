@@ -13,7 +13,7 @@ export class MediaService {
   isMute: boolean = false;
   playMusicProgressTimer;
   currentTime = 0;
-  angel: number = 0;
+  angle: number = 0;
   duration: number;
   selectedVideo: HTMLVideoElement = null;
 
@@ -61,16 +61,16 @@ export class MediaService {
 
     let ele = document.querySelector('.rotateIcon').firstChild as HTMLElement;
     ele.style.transform = 'rotate(0deg)';
-    this.angel = 0;
+    this.angle = 0;
   }
 
   playMusicProgress() {
     let rotateEle = document.querySelector('.rotateIcon').firstChild as HTMLElement;
 
     this.playMusicProgressTimer = setInterval(() => {
-      this.angel++;
-      if (this.angel == 360) this.angel = 0;
-      rotateEle.style.transform = 'rotate(' + this.angel + 'deg)';
+      this.angle++;
+      if (this.angle == 360) this.angle = 0;
+      rotateEle.style.transform = 'rotate(' + this.angle + 'deg)';
 
       this.currentTime = this.audio.currentTime;
       if (document.querySelector('#musicProgress'))
@@ -99,7 +99,7 @@ export class MediaService {
   setDefault() {
     this.isPlayMusic = true;
     this.currentTime = 0;
-    this.angel = 0;
+    this.angle = 0;
 
     clearInterval(this.playMusicProgressTimer);
   }

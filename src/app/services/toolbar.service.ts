@@ -17,7 +17,7 @@ export class ToolbarService {
   textEditItems = [];
   isCreateQuill: boolean = false;
 
-  angel;
+  angle;
   direction;
   quillData;
 
@@ -72,13 +72,16 @@ export class ToolbarService {
   }
 
   setCurveEffect(selectedPageId, selectedItemId, curveValue) {
+    const ds = this.injector.get(DesignService);
+    let zoom = this.ds.zoomValue / 100;
+
     if (curveValue < 0) {
       this.direction = -1;
     } else this.direction = 1;
     if (curveValue == 0) {
-      this.angel = 20000;
+      this.angle = 20000;
     } else {
-      this.angel = (5000 / curveValue) * this.direction;
+      this.angle = (5000 / curveValue) * this.direction;
     }
 
     const moveableService = this.injector.get(MoveableService);
@@ -86,31 +89,33 @@ export class ToolbarService {
     let curveText = document.querySelector<HTMLElement>('#curveText-' + selectedPageId + '-' + selectedItemId);
     let item = moveableService.getItem(editorEle);
 
-    curveText.innerHTML = editorEle.children[0].children[0].innerHTML;
+    curveText.innerHTML = this.quill.getText();
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
+    curveText.style.fontWeight = item.fontWeight.toString();
     curveText.style.opacity = '1';
+    curveText.style.lineHeight = item.lineHeight;
     curveText.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
-    curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(0deg) scale(${item.scaleX}, ${item.scaleY})`;
+    curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(0deg))  scale(${item.scaleX}, ${item.scaleY})`;
     editorEle.setAttribute('Curve', 'true');
     item.isCurve = true;
     editorEle.style.opacity = '0';
 
     let arcText = new ArcText(curveText);
+    console.log(arcText);
 
-    arcText.arc(this.angel);
+    arcText.arc(this.angle);
     arcText.direction(this.direction);
 
-    this.setEffectToCurve(editorEle, curveText);
-    curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+    this.resetPosition(curveText);
+    this.getCurveTextArea(curveText);
+    // this.setEffectToCurve(editorEle, curveText);
+    // curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
 
-    curveText.querySelectorAll('span').forEach((ele) => {
-      let qlEditor = editorEle.children[0] as HTMLElement;
-      // ele.style.lineHeight = qlEditor.style.lineHeight;
-      ele.style.lineHeight = item.lineHeight;
-      ele.style.letterSpacing = item.letterSpacing;
-      console.log(item.lineHeight);
-    });
+    // curveText.querySelectorAll('span').forEach((ele) => {
+    //   ele.style.lineHeight = item.lineHeight;
+    //   ele.style.letterSpacing = item.letterSpacing;
+    // });
 
     let curveTextStr;
 
@@ -119,6 +124,53 @@ export class ToolbarService {
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].textOpacity = '0';
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveOpacity = '1';
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveText = curveTextStr;
+    });
+  }
+
+  resetPosition(curveText: HTMLElement) {
+    const ds = this.injector.get(DesignService);
+    let zoom = this.ds.zoomValue;
+    let curveEles = (curveText.firstChild as HTMLElement).children;
+
+    setTimeout(() => {
+      let center = this.getTransformOrignCenter((curveEles[0] as HTMLElement).style.transformOrigin.toString());
+      console.log(center);
+      for (let i = 0; i < curveEles.length; i++) {
+        this.setTransformOrignCenter(curveEles[i] as HTMLElement, center, zoom);
+      }
+    });
+  }
+
+  getTransformOrignCenter(center) {
+    return Number.parseFloat(center.substring(center.indexOf(' ') + 1, center.length));
+  }
+
+  setTransformOrignCenter(ele, center, zoom) {
+    ele.style.transformOrigin = `center ${center / (zoom / 100)}em`;
+  }
+
+  getCurveTextArea(curveText: HTMLElement) {
+    const moveableService = this.injector.get(MoveableService);
+    const ds = this.injector.get(DesignService);
+    let item = moveableService.getItem(curveText);
+    let curveEles = (curveText.firstChild as HTMLElement).children;
+    let topEle;
+    let bottomEle;
+
+    if (item.angle > 0) {
+      topEle = curveEles[Math.ceil(curveEles.length / 2)];
+      bottomEle = curveEles[0];
+    } else {
+      topEle = curveEles[0];
+      bottomEle = curveEles[Math.ceil(curveEles.length / 2)];
+    }
+
+    let curveTextWidth = curveEles[curveEles.length - 1].getBoundingClientRect().right - curveEles[0].getBoundingClientRect().left;
+    curveText.style.width = curveTextWidth / (ds.zoomValue / 100) + 'px';
+
+    setTimeout(() => {
+      let curveTextHeight = (curveText as HTMLElement).clientHeight;
+      // console.log(curveTextWidth, curveTextHeight);
     });
   }
 
@@ -168,6 +220,6 @@ export class ToolbarService {
 
     item.lineHeight = lineHeight.toString();
     item.letterSpacing = letter.toString();
-    if (item.isCurve) this.setCurveEffect(item.pageId, item.itemId, item.angel);
+    if (item.isCurve) this.setCurveEffect(item.pageId, item.itemId, item.angle);
   }
 }

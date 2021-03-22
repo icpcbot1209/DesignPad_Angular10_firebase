@@ -47,14 +47,14 @@ export class EditItemComponent implements OnInit {
   }
 
   styleItemPosition(item: Item): CSS.Properties {
-    let width = document.querySelector('#textEditor-' + item.pageId + '-' + item.itemId).clientWidth;
+    // let width = document.querySelector('#textEditor-' + item.pageId + '-' + item.itemId).clientWidth;
 
     return {
       position: 'absolute',
       top: 0,
       left: 0,
-      width: width + 'px',
-      height: item.h + 'px',
+      // width: width + 'px',
+      // height: item.h + 'px',
       transform: this.moveableService.strTransform(item),
       WebkitTransform: this.moveableService.strTransform(item),
       zIndex: item.zIndex,

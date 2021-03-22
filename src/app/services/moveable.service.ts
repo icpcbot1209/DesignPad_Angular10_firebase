@@ -137,7 +137,6 @@ export class MoveableService {
         e.removed.forEach((el) => {
           let item = this.getItem(el);
           if (item) {
-            console.log('removed');
             item.selected = false;
           }
         });
@@ -210,6 +209,10 @@ export class MoveableService {
       this.moveable = this.makeMoveableGroup(thePageId, targets);
       this.ds.onSelectGroup(thePageId);
     } else if (targets.length === 1) {
+      // let domRect = targets[0].getBoundingClientRect();
+      // let clientRect = targets[0].getClientRects();
+      // console.log(domRect);
+
       let item = this.getItem(targets[0]);
 
       if (this.ds.isCopiedItem) this.ds.deleteSelectedItem();
@@ -291,7 +294,7 @@ export class MoveableService {
         curveEle.style.opacity = '1';
         // curveEle.setAttribute('style', '-webkit-opacity: 0');
 
-        this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angel);
+        this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angle);
       }
     }
   }
@@ -465,7 +468,6 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        console.log('imgDrag');
         if (e.inputEvent.buttons === 0) return;
         let item = this.getItem(e.target);
         item.x = e.beforeTranslate[0];
@@ -758,7 +760,6 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        console.log('drag');
         if (e.inputEvent.buttons === 0) return;
         let item = this.getItem(e.target);
         item.x = e.beforeTranslate[0];

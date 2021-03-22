@@ -241,7 +241,7 @@ export class DesignService {
       curveOpacity: '0',
       isCurve: false,
       zIndex: 0,
-      angel: 50,
+      angle: 50,
     });
   }
 

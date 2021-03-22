@@ -17,127 +17,129 @@ const data: IKnowledgeBase[] = [
     subtitles: [
       {
         title: 'Getting Started',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Game Changing Features',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Structure',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Adding Content',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Gulp & Package.json',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Codebase',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Styles and Themes',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Fonts',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Plugins',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Changelog',
-        link: '#'
-      }
-    ]
+        link: '#',
+      },
+    ],
   },
   {
     title: 'SECURITY',
     icon: 'iconsminds-security-settings ',
-    detail: 'Tellus a sem condimentum, vitae convallis sapien feugiat. Aenean non nibh nec nunc aliquam iaculis. Ut quis suscipit nunc. Duis at lectus a est aliquam venenatis vitae eget arcu.',
+    detail:
+      'Tellus a sem condimentum, vitae convallis sapien feugiat. Aenean non nibh nec nunc aliquam iaculis. Ut quis suscipit nunc. Duis at lectus a est aliquam venenatis vitae eget arcu.',
     subtitles: [
       {
         title: 'Securing Your Account',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Privacy',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Spam',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Sensitive Content',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Abuse',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Blocking Users',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Reporting',
-        link: '#'
-      }
-    ]
+        link: '#',
+      },
+    ],
   },
   {
     title: 'ACCOUNT',
     icon: 'iconsminds-male',
-    detail: 'Squid single-origincoffeenulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beerlaborewes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butchervice lomo.',
+    detail:
+      'Squid single-origincoffeenulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beerlaborewes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butchervice lomo.',
     subtitles: [
       {
         title: 'Login and Register',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Password Reset',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Devices',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Integrations',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Notifications',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Messages',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Blocking Users',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Following Users',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Login',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Content Filters',
-        link: '#'
-      }
-    ]
+        link: '#',
+      },
+    ],
   },
   {
     title: 'POLICIES',
@@ -146,33 +148,33 @@ const data: IKnowledgeBase[] = [
     subtitles: [
       {
         title: 'About',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Policies',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Privacy',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Ad Choices',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Researches and Experiments',
-        link: '#'
+        link: '#',
       },
       {
         title: 'General Guidelines',
-        link: '#'
+        link: '#',
       },
       {
         title: 'Cookies',
-        link: '#'
-      }
-    ]
-  }
+        link: '#',
+      },
+    ],
+  },
 ];
 export default data;
