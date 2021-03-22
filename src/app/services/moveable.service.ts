@@ -162,9 +162,10 @@ export class MoveableService {
         } else this.onSelectTargets(targets);
 
         if (e.isDragStart) {
+          // it's deleted. It's because it is moving when mouse is moving.
           e.inputEvent.preventDefault();
           setTimeout(() => {
-            this.moveable?.dragStart(e.inputEvent);
+            // this.moveable?.dragStart(e.inputEvent);
           }, 10);
         }
       });
@@ -251,7 +252,7 @@ export class MoveableService {
 
       if (this.previousTarget) {
         let item = this.getItem(this.previousTarget);
-        if (item.type == ItemType.text) {
+        if (item?.type == ItemType.text) {
           document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
         }
       }
@@ -464,6 +465,7 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
+        console.log('imgDrag');
         if (e.inputEvent.buttons === 0) return;
         let item = this.getItem(e.target);
         item.x = e.beforeTranslate[0];
@@ -756,6 +758,7 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
+        console.log('drag');
         if (e.inputEvent.buttons === 0) return;
         let item = this.getItem(e.target);
         item.x = e.beforeTranslate[0];
@@ -772,7 +775,7 @@ export class MoveableService {
         if (this.isDragItem) {
           this.ur.saveTheData(this.ds.theDesign);
         }
-        this.isDragItem = false;
+        // this.isDragItem = false;
       });
 
     /* resize */
