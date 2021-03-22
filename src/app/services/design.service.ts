@@ -398,7 +398,7 @@ export class DesignService {
     }
 
     const moveableService = this.injector.get(MoveableService);
-    if (e.code == 'ArrowDown' || e.code == 'ArrowUp' || e.code == 'ArrowLeft' || e.code == 'ArrowRight') {
+    if (!this.isOnInput && (e.code == 'ArrowDown' || e.code == 'ArrowUp' || e.code == 'ArrowLeft' || e.code == 'ArrowRight')) {
       if (this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId]?.selected) {
         let item = this.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId];
         e.preventDefault();

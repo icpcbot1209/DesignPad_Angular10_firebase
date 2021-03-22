@@ -90,6 +90,7 @@ export class ToolbarService {
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
     curveText.style.opacity = '1';
+    curveText.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
     curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(0deg) scale(${item.scaleX}, ${item.scaleY})`;
     editorEle.setAttribute('Curve', 'true');
     item.isCurve = true;
@@ -107,6 +108,8 @@ export class ToolbarService {
       let qlEditor = editorEle.children[0] as HTMLElement;
       // ele.style.lineHeight = qlEditor.style.lineHeight;
       ele.style.lineHeight = item.lineHeight;
+      ele.style.letterSpacing = item.letterSpacing;
+      console.log(item.letterSpacing);
     });
 
     let curveTextStr;
