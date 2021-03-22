@@ -109,7 +109,7 @@ export class ToolbarService {
       // ele.style.lineHeight = qlEditor.style.lineHeight;
       ele.style.lineHeight = item.lineHeight;
       ele.style.letterSpacing = item.letterSpacing;
-      console.log(item.letterSpacing);
+      console.log(item.lineHeight);
     });
 
     let curveTextStr;
@@ -153,5 +153,21 @@ export class ToolbarService {
         fromIndex = text.indexOf(ele[j].outerHTML, fromIndex) + ele[j].outerHTML.length;
       }
     }
+  }
+
+  enableLineHeight(letter, lineHeight) {
+    const moveableService = this.injector.get(MoveableService);
+
+    let editorEle = document.querySelector<HTMLElement>('#textEditor-' + moveableService.selectedPageId + '-' + moveableService.selectedItemId);
+    let qlEditor = <HTMLElement>editorEle.firstChild;
+
+    qlEditor.style.lineHeight = lineHeight + 'em';
+    qlEditor.style.letterSpacing = letter / 1000 + 'em';
+
+    let item = this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId];
+
+    item.lineHeight = lineHeight.toString();
+    item.letterSpacing = letter.toString();
+    if (item.isCurve) this.setCurveEffect(item.pageId, item.itemId, item.angel);
   }
 }

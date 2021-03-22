@@ -205,26 +205,19 @@ export class TextToolbarComponent implements OnInit {
   onLetterChange(event) {
     this.letter = event.value;
 
-    this.enableLineHeight();
+    this.toolbarService.enableLineHeight(this.letter, this.lineHeight);
+  }
+  inputLetterChange(event) {
+    this.letter = event.target.value;
+    this.toolbarService.enableLineHeight(this.letter, this.lineHeight);
   }
   onLineHeightChange(event) {
     this.lineHeight = event.value;
 
-    this.enableLineHeight();
+    this.toolbarService.enableLineHeight(this.letter, this.lineHeight);
   }
-
-  enableLineHeight() {
-    let editorEle = document.querySelector<HTMLElement>(
-      '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
-    );
-    let qlEditor = <HTMLElement>editorEle.firstChild;
-
-    qlEditor.style.lineHeight = this.lineHeight + 'em';
-    qlEditor.style.letterSpacing = this.letter / 1000 + 'em';
-
-    let item = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId];
-
-    item.lineHeight = this.lineHeight.toString();
-    item.letterSpacing = this.letter.toString();
+  inputLineHeightChange(event) {
+    this.lineHeight = event.target.value;
+    this.toolbarService.enableLineHeight(this.letter, this.lineHeight);
   }
 }

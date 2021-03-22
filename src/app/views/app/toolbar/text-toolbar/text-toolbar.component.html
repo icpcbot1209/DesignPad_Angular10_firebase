@@ -85,6 +85,7 @@
                 [(ngModel)]="letter"
                 (focus)="this.ds.isOnInput = true"
                 (focusout)="this.ds.isOnInput = false"
+                (input)="inputLetterChange($event)"
               />
               <input
                 class="lineHeightInput"
@@ -92,6 +93,7 @@
                 [(ngModel)]="lineHeight"
                 (focus)="this.ds.isOnInput = true"
                 (focusout)="this.ds.isOnInput = false"
+                (input)="inputLineHeightChange($event)"
               />
             </div>
           </div>
