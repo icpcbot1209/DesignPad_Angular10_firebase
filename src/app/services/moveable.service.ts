@@ -294,7 +294,7 @@ export class MoveableService {
         curveEle.style.opacity = '1';
         // curveEle.setAttribute('style', '-webkit-opacity: 0');
 
-        this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angle);
+        // this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angle, false);
       }
     }
   }
@@ -1186,20 +1186,22 @@ export class MoveableService {
       this.zone.run(() => {
         // if (!this.ur.isUndoRedo && this.toolbarService.quill.hasFocus()) {
         if (!this.ur.isUndoRedo && !this.isOnResize) {
-          let width = JSON.stringify(entries[0].contentRect.width) + 'px';
-          let height = JSON.stringify(entries[0].contentRect.height) + 'px';
-          let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
-          let item = this.getItem(selectorEle);
-          if (item) {
-            item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
-            selectorEle.style.width = width;
-            selectorEle.style.height = height;
-            item.w = parseFloat(width);
-            item.h = parseFloat(height);
-            selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-            this.setSelectable(itemId, pageId, '#textSelector-');
-            this.isResizeObserver = false;
-          }
+          if (!this.toolbarService.isCurving) {
+            let width = JSON.stringify(entries[0].contentRect.width) + 'px';
+            let height = JSON.stringify(entries[0].contentRect.height) + 'px';
+            let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
+            let item = this.getItem(selectorEle);
+            if (item) {
+              item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
+              selectorEle.style.width = width;
+              selectorEle.style.height = height;
+              item.w = parseFloat(width);
+              item.h = parseFloat(height);
+              selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+              this.setSelectable(itemId, pageId, '#textSelector-');
+              this.isResizeObserver = false;
+            }
+          } else this.toolbarService.isCurving = false;
         }
       });
     });

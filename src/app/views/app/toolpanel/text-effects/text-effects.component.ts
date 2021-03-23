@@ -709,7 +709,8 @@ export class TextEffectsComponent implements OnInit {
   // curve
 
   setCurveEffect() {
-    this.toolbarService.setCurveEffect(this.moveableService.selectedPageId, this.moveableService.selectedItemId, this.curveValue);
+    this.toolbarService.isCurving = true;
+    this.toolbarService.setCurveEffect(this.moveableService.selectedPageId, this.moveableService.selectedItemId, this.curveValue, false);
   }
 
   onInputCurveChange(event) {

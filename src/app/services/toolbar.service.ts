@@ -4,7 +4,6 @@ import { DesignService } from 'src/app/services/design.service';
 import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import ArcText from 'arc-text';
 import { MoveableService } from './moveable.service';
-import { ItemsList } from '@ng-select/ng-select/lib/items-list';
 
 declare var Quill;
 
@@ -20,6 +19,7 @@ export class ToolbarService {
   angle;
   direction;
   quillData;
+  isCurving: boolean = false;
 
   constructor(public ds: DesignService, private injector: Injector) {
     this.textEditItems.push([]);
@@ -42,10 +42,15 @@ export class ToolbarService {
 
     const ds = this.injector.get(DesignService);
     const ur = this.injector.get(UndoRedoService);
+    const moveableService = this.injector.get(MoveableService);
 
-    this.quill.on('text-change', function (delta, oldDelta, source) {
-      this.quillData = document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId).querySelector('.ql-editor');
+    this.quill.on('text-change', (delta, oldDelta, source) => {
+      let textEle = document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId) as HTMLElement;
+      let item = moveableService.getItem(textEle);
+      this.quillData = textEle.querySelector('.ql-editor');
       ds.theDesign.pages[selectedPageId].items[selectedItemId].quillData = this.quillData.outerHTML;
+      this.setCurveEffect(item.pageId, item.itemId, item.angle, true);
+
       console.log('text change');
       ur.saveTheData(ds.theDesign);
     });
@@ -71,7 +76,8 @@ export class ToolbarService {
     }
   }
 
-  setCurveEffect(selectedPageId, selectedItemId, curveValue) {
+  setCurveEffect(selectedPageId, selectedItemId, curveValue, textChange: boolean) {
+    console.log(textChange);
     const ds = this.injector.get(DesignService);
     let zoom = this.ds.zoomValue / 100;
 
@@ -93,13 +99,14 @@ export class ToolbarService {
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
     curveText.style.fontWeight = item.fontWeight.toString();
-    curveText.style.opacity = '1';
+    if (!textChange) curveText.style.opacity = '1';
+    else curveText.style.opacity = '0.4';
     curveText.style.lineHeight = item.lineHeight;
     curveText.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
     curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(0deg))  scale(${item.scaleX}, ${item.scaleY})`;
     editorEle.setAttribute('Curve', 'true');
     item.isCurve = true;
-    editorEle.style.opacity = '0';
+    if (!textChange) editorEle.style.opacity = '0';
 
     let arcText = new ArcText(curveText);
     console.log(arcText);
@@ -108,14 +115,7 @@ export class ToolbarService {
     arcText.direction(this.direction);
 
     this.resetPosition(curveText);
-    this.getCurveTextArea(curveText);
-    // this.setEffectToCurve(editorEle, curveText);
-    // curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-
-    // curveText.querySelectorAll('span').forEach((ele) => {
-    //   ele.style.lineHeight = item.lineHeight;
-    //   ele.style.letterSpacing = item.letterSpacing;
-    // });
+    this.getCurveTextArea(curveText, textChange);
 
     let curveTextStr;
 
@@ -149,28 +149,19 @@ export class ToolbarService {
     ele.style.transformOrigin = `center ${center / (zoom / 100)}em`;
   }
 
-  getCurveTextArea(curveText: HTMLElement) {
+  getCurveTextArea(curveText: HTMLElement, textChange: boolean) {
     const moveableService = this.injector.get(MoveableService);
     const ds = this.injector.get(DesignService);
     let item = moveableService.getItem(curveText);
-    let curveEles = (curveText.firstChild as HTMLElement).children;
-    let topEle;
-    let bottomEle;
-
-    if (item.angle > 0) {
-      topEle = curveEles[Math.ceil(curveEles.length / 2)];
-      bottomEle = curveEles[0];
-    } else {
-      topEle = curveEles[0];
-      bottomEle = curveEles[Math.ceil(curveEles.length / 2)];
-    }
-
-    let curveTextWidth = curveEles[curveEles.length - 1].getBoundingClientRect().right - curveEles[0].getBoundingClientRect().left;
-    curveText.style.width = curveTextWidth / (ds.zoomValue / 100) + 'px';
 
     setTimeout(() => {
-      let curveTextHeight = (curveText as HTMLElement).clientHeight;
-      // console.log(curveTextWidth, curveTextHeight);
+      let curveTextHeight = (curveText.firstChild as HTMLElement).clientHeight;
+      let textSelector = document.querySelector('#textSelector-' + item.pageId + '-' + item.itemId) as HTMLElement;
+      curveText.style.width = item.w + 'px';
+      curveText.style.height = curveTextHeight / (ds.zoomValue / 100) + 'px';
+      textSelector.style.height = curveTextHeight / (ds.zoomValue / 100) + 'px';
+      item.h = curveTextHeight / (ds.zoomValue / 100);
+      if (!textChange) moveableService.onSelectTargets([textSelector]);
     });
   }
 
@@ -220,6 +211,6 @@ export class ToolbarService {
 
     item.lineHeight = lineHeight.toString();
     item.letterSpacing = letter.toString();
-    if (item.isCurve) this.setCurveEffect(item.pageId, item.itemId, item.angle);
+    if (item.isCurve) this.setCurveEffect(item.pageId, item.itemId, item.angle, false);
   }
 }
