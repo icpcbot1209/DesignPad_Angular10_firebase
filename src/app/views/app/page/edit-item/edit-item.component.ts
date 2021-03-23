@@ -7,6 +7,7 @@ import * as CSS from 'csstype';
 import { ComponentsStateButtonModule } from 'src/app/components/state-button/components.state-button.module';
 import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
+import { DesignService } from 'src/app/services/design.service';
 
 @Component({
   selector: 'app-edit-item',
@@ -23,7 +24,13 @@ export class EditItemComponent implements OnInit {
   editorEle: HTMLElement;
   resizeObserver;
 
-  constructor(public moveableService: MoveableService, private zone: NgZone, public ur: UndoRedoService, public toolbarService: ToolbarService) {}
+  constructor(
+    public moveableService: MoveableService,
+    private zone: NgZone,
+    public ur: UndoRedoService,
+    public toolbarService: ToolbarService,
+    public ds: DesignService
+  ) {}
 
   ngOnInit() {
     this.toolbarService.isCreateQuill = true;

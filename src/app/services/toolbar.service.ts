@@ -103,7 +103,7 @@ export class ToolbarService {
     else curveText.style.opacity = '0.4';
     curveText.style.lineHeight = item.lineHeight;
     curveText.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
-    curveText.parentElement.style.transform = `translate(${item.x}px, ${item.y}px) rotate(0deg))  scale(${item.scaleX}, ${item.scaleY})`;
+    curveText.style.transform = `translate(${item.x}px, ${item.y}px) rotate(0deg))  scale(${item.scaleX}, ${item.scaleY})`;
     editorEle.setAttribute('Curve', 'true');
     item.isCurve = true;
     if (!textChange) editorEle.style.opacity = '0';
@@ -134,7 +134,6 @@ export class ToolbarService {
 
     setTimeout(() => {
       let center = this.getTransformOrignCenter((curveEles[0] as HTMLElement).style.transformOrigin.toString());
-      console.log(center);
       for (let i = 0; i < curveEles.length; i++) {
         this.setTransformOrignCenter(curveEles[i] as HTMLElement, center, zoom);
       }

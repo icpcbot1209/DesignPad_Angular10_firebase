@@ -808,6 +808,9 @@ export class MoveableService {
           let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
           editorEle.style.width = item.w + 1 + 'px';
           editorEle.style.fontSize = item.fontSize;
+
+          let curveText = document.querySelector('#curveText-' + item.pageId + '-' + item.itemId) as HTMLElement;
+          curveText.style.width = item.w + 'px';
         } else {
           let item = this.getItem(e.target);
           item.w = e.width;
@@ -819,6 +822,9 @@ export class MoveableService {
           let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
           item = this.getItem(editorEle);
           editorEle.style.width = item.w + 'px';
+
+          let curveText = document.querySelector('#curveText-' + item.pageId + '-' + item.itemId) as HTMLElement;
+          curveText.style.width = item.w + 'px';
         }
 
         this.isOnResize = true;
