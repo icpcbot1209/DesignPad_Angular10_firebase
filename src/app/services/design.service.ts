@@ -443,7 +443,8 @@ export class DesignService {
       }
 
       for (let i = 0; i < this.copiedTheData.length; i++) {
-        let theData = JSON.parse(JSON.stringify(this.copiedTheData[i]));
+        // let theData = JSON.parse(JSON.stringify(this.copiedTheData[i]));
+        let theData = JSON.parse(JSON.stringify(this.theDesign.pages[this.copiedTheData[i].pageId].items[this.copiedTheData[i].itemId]));
 
         theData.selected = true;
         theData.x += this.offsetX;
