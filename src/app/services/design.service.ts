@@ -236,7 +236,7 @@ export class DesignService {
       quillData: `<div class="ql-editor" style="font-weight: ${fontWeight}; line-height: 1.35em; letter-spacing: -0.021em; overflow: hidden"><p>${text}</p></div>`,
       textShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px',
       textStroke: '0px rgb(0, 0, 0)',
-      curveText: '',
+      curveText: text,
       textOpacity: '1',
       curveOpacity: '0',
       isCurve: false,
@@ -424,13 +424,20 @@ export class DesignService {
         this.offsetX = 0;
         this.offsetY = 0;
 
-        this.copiedTheData = moveableService.copiedTheData;
+        // this.copiedTheData = moveableService.copiedTheData;
+        this.copiedTheData = [];
+        for (let i = 0; i < moveableService.copiedTheData.length; i++) {
+          this.copiedTheData.push(
+            JSON.parse(JSON.stringify(this.theDesign.pages[moveableService.copiedTheData[i].pageId].items[moveableService.copiedTheData[i].itemId]))
+          );
+        }
 
         e.preventDefault();
         e.stopPropagation();
       }
     }
     if (!this.isOnInput && e.key === 'v' && (e.ctrlKey || e.metaKey)) {
+      if (this.status == ItemStatus.text_effect) this.status = ItemStatus.text_selected;
       this.isCopiedItem = true;
       e.preventDefault();
       e.stopPropagation();
@@ -442,9 +449,12 @@ export class DesignService {
         this.theDesign.pages[moveableService.selectedPageId].items[i].selected = false;
       }
 
+      console.log(this.copiedTheData[0]);
       for (let i = 0; i < this.copiedTheData.length; i++) {
         // let theData = JSON.parse(JSON.stringify(this.copiedTheData[i]));
-        let theData = JSON.parse(JSON.stringify(this.theDesign.pages[this.copiedTheData[i].pageId].items[this.copiedTheData[i].itemId]));
+        // let theData = JSON.parse(JSON.stringify(this.theDesign.pages[this.copiedTheData[i].pageId].items[this.copiedTheData[i].itemId]));
+        let theData = JSON.parse(JSON.stringify(this.copiedTheData[i]));
+        console.log(theData);
 
         theData.selected = true;
         theData.x += this.offsetX;

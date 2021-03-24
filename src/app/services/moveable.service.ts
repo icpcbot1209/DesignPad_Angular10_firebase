@@ -1192,22 +1192,29 @@ export class MoveableService {
       this.zone.run(() => {
         // if (!this.ur.isUndoRedo && this.toolbarService.quill.hasFocus()) {
         if (!this.ur.isUndoRedo && !this.isOnResize) {
-          if (!this.toolbarService.isCurving) {
-            let width = JSON.stringify(entries[0].contentRect.width) + 'px';
+          let width = JSON.stringify(entries[0].contentRect.width) + 'px';
+          let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
+          let item = this.getItem(selectorEle);
+
+          if (!item?.isCurve && selectorEle) {
             let height = JSON.stringify(entries[0].contentRect.height) + 'px';
-            let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
-            let item = this.getItem(selectorEle);
-            if (item) {
-              item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
-              selectorEle.style.width = width;
-              selectorEle.style.height = height;
-              item.w = parseFloat(width);
-              item.h = parseFloat(height);
-              selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-              this.setSelectable(itemId, pageId, '#textSelector-');
-              this.isResizeObserver = false;
-            }
-          } else this.toolbarService.isCurving = false;
+            selectorEle.style.width = width;
+            selectorEle.style.height = height;
+            item.w = parseFloat(width);
+            item.h = parseFloat(height);
+            item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
+            selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+            this.setSelectable(itemId, pageId, '#textSelector-');
+            this.isResizeObserver = false;
+          } else if (item?.isCurve && this.toolbarService.quill.hasFocus() && selectorEle) {
+            item.w = parseFloat(width);
+            selectorEle.style.width = item.w + 'px';
+            this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
+            item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
+            selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+            this.setSelectable(itemId, pageId, '#textSelector-');
+            this.isResizeObserver = false;
+          }
         }
       });
     });

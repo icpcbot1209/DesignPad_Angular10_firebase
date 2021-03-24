@@ -43,10 +43,12 @@ export class EditItemComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.quillEditor.nativeElement.innerHTML = this.item.quillData;
-    if (this.item.isCurve) this.curveText.nativeElement.innerHTML = this.item.curveText;
-    // this.moveableService
-    //   .resizeObserver(this.moveableService.selectedPageId, this.moveableService.selectedItemId)
-    //   .observe(document.querySelector<HTMLElement>('#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId));
+    if (this.item.isCurve) {
+      this.moveableService
+        .resizeObserver(this.item.pageId, this.item.itemId)
+        .observe(document.querySelector<HTMLElement>('#textEditor-' + this.item.pageId + '-' + this.item.itemId));
+      this.toolbarService.setCurveEffect(this.item.pageId, this.item.itemId, this.item.angle, false);
+    }
   }
 
   ngOnDestroy() {
@@ -54,14 +56,10 @@ export class EditItemComponent implements OnInit {
   }
 
   styleItemPosition(item: Item): CSS.Properties {
-    // let width = document.querySelector('#textEditor-' + item.pageId + '-' + item.itemId).clientWidth;
-
     return {
       position: 'absolute',
       top: 0,
       left: 0,
-      // width: width + 'px',
-      // height: item.h + 'px',
       transform: this.moveableService.strTransform(item),
       WebkitTransform: this.moveableService.strTransform(item),
       zIndex: item.zIndex,

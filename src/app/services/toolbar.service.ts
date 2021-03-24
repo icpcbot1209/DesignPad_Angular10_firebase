@@ -49,9 +49,7 @@ export class ToolbarService {
       let item = moveableService.getItem(textEle);
       this.quillData = textEle.querySelector('.ql-editor');
       ds.theDesign.pages[selectedPageId].items[selectedItemId].quillData = this.quillData.outerHTML;
-      this.setCurveEffect(item.pageId, item.itemId, item.angle, true);
 
-      console.log('text change');
       ur.saveTheData(ds.theDesign);
     });
 
@@ -77,7 +75,6 @@ export class ToolbarService {
   }
 
   setCurveEffect(selectedPageId, selectedItemId, curveValue, textChange: boolean) {
-    console.log(textChange);
     const ds = this.injector.get(DesignService);
     let zoom = this.ds.zoomValue / 100;
 
@@ -95,7 +92,7 @@ export class ToolbarService {
     let curveText = document.querySelector<HTMLElement>('#curveText-' + selectedPageId + '-' + selectedItemId);
     let item = moveableService.getItem(editorEle);
 
-    curveText.innerHTML = this.quill.getText();
+    curveText.innerHTML = item.curveText;
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
     curveText.style.fontWeight = item.fontWeight.toString();
@@ -109,21 +106,20 @@ export class ToolbarService {
     if (!textChange) editorEle.style.opacity = '0';
 
     let arcText = new ArcText(curveText);
-    console.log(arcText);
 
     arcText.arc(this.angle);
     arcText.direction(this.direction);
 
     this.resetPosition(curveText);
-    this.getCurveTextArea(curveText, textChange);
+    this.getCurveTextArea(curveText, item, textChange);
 
     let curveTextStr;
 
     setTimeout(() => {
-      curveTextStr = document.querySelector('#curveText-' + moveableService.selectedPageId + '-' + moveableService.selectedItemId).innerHTML;
+      // curveTextStr = document.querySelector('#curveText-' + moveableService.selectedPageId + '-' + moveableService.selectedItemId).innerHTML;
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].textOpacity = '0';
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveOpacity = '1';
-      this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveText = curveTextStr;
+      this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveText = this.quill.getText();
     });
   }
 
@@ -148,18 +144,17 @@ export class ToolbarService {
     ele.style.transformOrigin = `center ${center / (zoom / 100)}em`;
   }
 
-  getCurveTextArea(curveText: HTMLElement, textChange: boolean) {
+  getCurveTextArea(curveText: HTMLElement, item: Item, textChange: boolean) {
     const moveableService = this.injector.get(MoveableService);
     const ds = this.injector.get(DesignService);
-    let item = moveableService.getItem(curveText);
 
     setTimeout(() => {
-      let curveTextHeight = (curveText.firstChild as HTMLElement).clientHeight;
+      item.h = (curveText.firstChild as HTMLElement).clientHeight / (ds.zoomValue / 100);
       let textSelector = document.querySelector('#textSelector-' + item.pageId + '-' + item.itemId) as HTMLElement;
+      textSelector.style.height = item.h + 'px';
       curveText.style.width = item.w + 'px';
-      curveText.style.height = curveTextHeight / (ds.zoomValue / 100) + 'px';
-      textSelector.style.height = curveTextHeight / (ds.zoomValue / 100) + 'px';
-      item.h = curveTextHeight / (ds.zoomValue / 100);
+      curveText.style.height = item.h + 'px';
+
       if (!textChange) moveableService.onSelectTargets([textSelector]);
     });
   }
