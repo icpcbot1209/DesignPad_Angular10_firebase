@@ -454,6 +454,11 @@ export class DesignService {
         // let theData = JSON.parse(JSON.stringify(this.copiedTheData[i]));
         // let theData = JSON.parse(JSON.stringify(this.theDesign.pages[this.copiedTheData[i].pageId].items[this.copiedTheData[i].itemId]));
         let theData = JSON.parse(JSON.stringify(this.copiedTheData[i]));
+        if (theData.type == ItemType.text) {
+          setTimeout(() => {
+            this.setStatus(ItemStatus.none);
+          });
+        }
         console.log(theData);
 
         theData.selected = true;
