@@ -26,8 +26,8 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.item.isCurve) this.moveableService.isEditable = false;
-    else this.moveableService.isEditable = true;
+    // if (this.item.isCurve) this.moveableService.isEditable = false;
+    this.moveableService.isEditable = true;
 
     if (!this.ds.isTemplate) {
       if (this.ds.isAddItem) {
