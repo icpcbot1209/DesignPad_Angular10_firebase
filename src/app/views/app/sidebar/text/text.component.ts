@@ -17,6 +17,9 @@ export class TextComponent implements OnInit {
   onKeyUpSearch(event) {}
 
   onClickAddText(text) {
+    setTimeout(() => {
+      this.ds.setStatus(ItemStatus.none);
+    });
     if (text == 'Add a heading') {
       this.ds.sidebar_text_add('28px', text, '1000');
     }

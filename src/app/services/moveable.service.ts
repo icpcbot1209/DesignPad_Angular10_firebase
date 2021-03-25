@@ -913,6 +913,7 @@ export class MoveableService {
     if (this.previousTarget != undefined) {
       if (this.previousTarget != target) {
         if (!this.isCreateTextItem) {
+          this.toolbarService.quill.blur();
           this.isEditable = false;
         }
         this.ds.isOnInput = false;

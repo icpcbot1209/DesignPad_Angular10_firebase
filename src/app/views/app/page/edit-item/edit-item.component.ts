@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Item } from 'src/app/models/models';
-import { ItemType } from 'src/app/models/enums';
+import { ItemStatus, ItemType } from 'src/app/models/enums';
 import { MoveableService } from 'src/app/services/moveable.service';
 
 import * as CSS from 'csstype';
@@ -42,6 +42,7 @@ export class EditItemComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
+    this.ds.setStatus(ItemStatus.text_selected);
     this.quillEditor.nativeElement.innerHTML = this.item.quillData;
     if (this.item.isCurve) {
       this.moveableService
