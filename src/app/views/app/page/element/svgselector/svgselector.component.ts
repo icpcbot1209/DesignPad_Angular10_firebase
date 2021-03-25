@@ -32,6 +32,8 @@ export class SVGSelectorComponent implements OnInit {
       // this.moveableService.setSelectable(this.item.itemId, this.item.pageId, '#SVGSelector-');
     } else this.ds.setStatus(ItemStatus.none);
     this.ds.isAddItem = false;
+
+    this.moveableService.onPageElements.push(document.querySelector(this.ds.getType(this.item.type) + this.item.pageId + '-' + this.item.itemId));
   }
 
   styleItemPosition(item: Item): CSS.Properties {

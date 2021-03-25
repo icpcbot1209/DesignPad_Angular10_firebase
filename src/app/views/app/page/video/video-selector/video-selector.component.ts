@@ -38,6 +38,8 @@ export class VideoSelectorComponent implements OnInit {
 
     this.media.selectedVideo = document.querySelector('#VideoElement' + this.item.pageId + '-' + this.item.itemId) as HTMLVideoElement;
     this.setIntervalVideo();
+
+    this.moveableService.onPageElements.push(document.querySelector(this.ds.getType(this.item.type) + this.item.pageId + '-' + this.item.itemId));
   }
 
   styleItemPosition(item: Item): CSS.Properties {

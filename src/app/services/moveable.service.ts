@@ -19,6 +19,7 @@ import Moveable, {
   OnScaleEnd,
   OnResizeEnd,
   OnRotateEnd,
+  OnSnap,
 } from 'moveable';
 import Selecto, { OnDragEnd, OnKeyEvent, OnScroll, OnSelect, OnSelectEnd } from 'selecto';
 import { ToolbarService } from './toolbar.service';
@@ -70,6 +71,8 @@ export class MoveableService {
   beforPositionY: number = 0;
   itemX: number;
   itemY: number;
+
+  onPageElements: Element[] = [];
 
   constructor(
     private ds: DesignService,
@@ -323,7 +326,19 @@ export class MoveableService {
       originDraggable: true,
       originRelative: true,
 
-      snapThreshold: 5,
+      snappable: true,
+      snapVertical: true,
+      snapHorizontal: true,
+      snapElement: true,
+      snapCenter: true,
+      isDisplaySnapDigit: true,
+      snapGap: true,
+      snapDigit: 1,
+      snapThreshold: 7,
+      elementGuidelines: this.onPageElements,
+      verticalGuidelines: [0, this.ds.theDesign.category.size.x / 2, this.ds.theDesign.category.size.x],
+      horizontalGuidelines: [0, this.ds.theDesign.category.size.y / 2, this.ds.theDesign.category.size.y],
+
       // scalable: true,
       origin: true,
       keepRatio: true,
@@ -456,7 +471,18 @@ export class MoveableService {
       originDraggable: true,
       originRelative: true,
 
-      snapThreshold: 5,
+      snappable: true,
+      snapVertical: true,
+      snapHorizontal: true,
+      snapElement: true,
+      snapCenter: true,
+      isDisplaySnapDigit: true,
+      snapGap: true,
+      snapDigit: 1,
+      snapThreshold: 7,
+      elementGuidelines: this.onPageElements,
+      verticalGuidelines: [0, this.ds.theDesign.category.size.x / 2, this.ds.theDesign.category.size.x],
+      horizontalGuidelines: [0, this.ds.theDesign.category.size.y / 2, this.ds.theDesign.category.size.y],
       // scalable: true,
       origin: true,
       keepRatio: true,
@@ -585,6 +611,19 @@ export class MoveableService {
       clipVerticalGuidelines: [],
       clipHorizontalGuidelines: [],
 
+      snappable: true,
+      snapVertical: true,
+      snapHorizontal: true,
+      snapElement: true,
+      snapCenter: true,
+      isDisplaySnapDigit: true,
+      snapGap: true,
+      snapDigit: 1,
+      snapThreshold: 7,
+      elementGuidelines: this.onPageElements,
+      verticalGuidelines: [0, this.ds.theDesign.category.size.x / 2, this.ds.theDesign.category.size.x],
+      horizontalGuidelines: [0, this.ds.theDesign.category.size.y / 2, this.ds.theDesign.category.size.y],
+
       draggable: true,
       throttleDrag: 0,
       startDragRotate: 0,
@@ -592,7 +631,6 @@ export class MoveableService {
       zoom: 1,
       origin: true,
       padding: { left: 0, top: 0, right: 0, bottom: 0 },
-      snapThreshold: 5,
     });
 
     moveable.on('clip', (e: OnClip) => {
@@ -650,7 +688,19 @@ export class MoveableService {
       zoom: 1,
       origin: true,
       padding: { left: 0, top: 0, right: 0, bottom: 0 },
-      snapThreshold: 5,
+
+      snappable: true,
+      snapVertical: true,
+      snapHorizontal: true,
+      snapElement: true,
+      snapCenter: true,
+      isDisplaySnapDigit: true,
+      snapGap: true,
+      snapDigit: 1,
+      snapThreshold: 7,
+      elementGuidelines: this.onPageElements,
+      verticalGuidelines: [0, this.ds.theDesign.category.size.x / 2, this.ds.theDesign.category.size.x],
+      horizontalGuidelines: [0, this.ds.theDesign.category.size.y / 2, this.ds.theDesign.category.size.y],
     });
 
     moveable.on('clip', (e: OnClip) => {
@@ -706,7 +756,19 @@ export class MoveableService {
       zoom: 1,
       origin: true,
       padding: { left: 0, top: 0, right: 0, bottom: 0 },
-      snapThreshold: 5,
+
+      snappable: true,
+      snapVertical: true,
+      snapHorizontal: true,
+      snapElement: true,
+      snapCenter: true,
+      isDisplaySnapDigit: true,
+      snapGap: true,
+      snapDigit: 1,
+      snapThreshold: 7,
+      elementGuidelines: this.onPageElements,
+      verticalGuidelines: [0, this.ds.theDesign.category.size.x / 2, this.ds.theDesign.category.size.x],
+      horizontalGuidelines: [0, this.ds.theDesign.category.size.y / 2, this.ds.theDesign.category.size.y],
     });
 
     moveable.on('clip', (e: OnClip) => {
@@ -759,6 +821,19 @@ export class MoveableService {
 
       rotatable: true,
       rotationPosition: 'bottom',
+
+      snappable: true,
+      snapVertical: true,
+      snapHorizontal: true,
+      snapElement: true,
+      snapCenter: true,
+      isDisplaySnapDigit: true,
+      snapGap: true,
+      snapDigit: 1,
+      snapThreshold: 7,
+      elementGuidelines: this.onPageElements,
+      verticalGuidelines: [0, this.ds.theDesign.category.size.x / 2, this.ds.theDesign.category.size.x],
+      horizontalGuidelines: [0, this.ds.theDesign.category.size.y / 2, this.ds.theDesign.category.size.y],
     });
 
     /* draggable */
@@ -1020,7 +1095,22 @@ export class MoveableService {
       originDraggable: true,
       originRelative: true,
 
-      snapThreshold: 5,
+      snappable: true,
+      snapVertical: true,
+      snapHorizontal: true,
+      snapElement: true,
+      snapCenter: true,
+      isDisplaySnapDigit: true,
+      snapGap: true,
+      snapDigit: 1,
+      snapThreshold: 7,
+      elementGuidelines: this.onPageElements,
+      verticalGuidelines: [0, this.ds.theDesign.category.size.x / 2, this.ds.theDesign.category.size.x],
+      horizontalGuidelines: [0, this.ds.theDesign.category.size.y / 2, this.ds.theDesign.category.size.y],
+
+      // bounds: { left: 0, right: 600, top: 0, bottom: 500 },
+      // innerBounds: { left: 500, top: 500, width: 100, height: 100 },
+
       // scalable: true,
       origin: true,
       keepRatio: true,
@@ -1041,17 +1131,23 @@ export class MoveableService {
       })
       .on('drag', (e: OnDrag) => {
         // if (e.inputEvent.buttons === 0) return;
-        let item = this.getItem(e.target);
-        this.drawBaseline(item);
 
-        this.beforPositionX = e.beforeTranslate[0];
-        if (!(this.itemX + this.positionOffset > this.beforPositionX && this.itemX - this.positionOffset < this.beforPositionX)) {
-          item.x = this.beforPositionX;
-        } else item.x = this.itemX;
+        let item = this.getItem(e.target);
+        item.x = e.beforeTranslate[0];
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
         this.isDragItem = true;
+
+        // this.drawBaseline(item);
+        // this.beforPositionX = e.beforeTranslate[0];
+        // if (!(this.itemX + this.positionOffset > this.beforPositionX && this.itemX - this.positionOffset < this.beforPositionX)) {
+        //   item.x = this.beforPositionX;
+        // } else item.x = this.itemX;
+        // item.y = e.beforeTranslate[1];
+
+        // e.target.style.transform = this.strTransform(item);
+        // this.isDragItem = true;
       })
       .on('dragEnd', (e) => {
         if (this.isDragItem) {
@@ -1120,7 +1216,19 @@ export class MoveableService {
       originDraggable: true,
       originRelative: true,
 
-      snapThreshold: 5,
+      snappable: true,
+      snapVertical: true,
+      snapHorizontal: true,
+      snapElement: true,
+      snapCenter: true,
+      isDisplaySnapDigit: true,
+      snapGap: true,
+      snapDigit: 1,
+      snapThreshold: 7,
+      elementGuidelines: this.onPageElements,
+      verticalGuidelines: [0, this.ds.theDesign.category.size.x / 2, this.ds.theDesign.category.size.x],
+      horizontalGuidelines: [0, this.ds.theDesign.category.size.y / 2, this.ds.theDesign.category.size.y],
+
       origin: false,
       keepRatio: true,
       edge: false,

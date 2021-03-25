@@ -40,6 +40,8 @@ export class TextItemComponent implements OnInit, AfterViewInit {
       }
     } else this.ds.setStatus(ItemStatus.none);
     this.ds.isAddItem = false;
+
+    this.moveableService.onPageElements.push(document.querySelector(this.ds.getType(this.item.type) + this.item.pageId + '-' + this.item.itemId));
   }
 
   styleItemPosition(item: Item): CSS.Properties {
