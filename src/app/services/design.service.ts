@@ -5,6 +5,8 @@ import { AssetImage, Design, Item } from '../models/models';
 import { MoveableService } from './moveable.service';
 import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import { MediaService } from './media.service';
+import { transition } from '@angular/animations';
+import { OnDrag } from 'selecto';
 
 @Injectable({
   providedIn: 'root',
@@ -409,11 +411,18 @@ export class DesignService {
         if (e.code == 'ArrowLeft') item.x -= 3;
         if (e.code == 'ArrowUp') item.y -= 3;
 
-        let type = this.getType(item.type);
-        let selector = document.querySelector(type + moveableService.selectedPageId + '-' + moveableService.selectedItemId) as HTMLElement;
+        // let type = this.getType(item.type);
+        // let selector = document.querySelector(type + moveableService.selectedPageId + '-' + moveableService.selectedItemId) as HTMLElement;
 
-        selector.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+        // selector.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
         // moveableService.setSelectable(moveableService.selectedItemId, moveableService.selectedPageId, type);
+
+        // console.log(moveableService.moveable);
+        // let target = document.querySelector('#textSelector-' + moveableService.selectedPageId + '-' + moveableService.selectedItemId) as HTMLElement;
+        // let item = moveableService.getItem(target);
+        // let beforeTranslate = [item.x, item.y, 0];
+        moveableService.moveable.request('draggable', { x: item.x, isInstant: true });
+        moveableService.moveable.request('draggable', { y: item.y, isInstant: true });
       }
     }
 
@@ -449,7 +458,6 @@ export class DesignService {
         this.theDesign.pages[moveableService.selectedPageId].items[i].selected = false;
       }
 
-      console.log(this.copiedTheData[0]);
       for (let i = 0; i < this.copiedTheData.length; i++) {
         // let theData = JSON.parse(JSON.stringify(this.copiedTheData[i]));
         // let theData = JSON.parse(JSON.stringify(this.theDesign.pages[this.copiedTheData[i].pageId].items[this.copiedTheData[i].itemId]));
@@ -459,7 +467,6 @@ export class DesignService {
             this.setStatus(ItemStatus.none);
           });
         }
-        console.log(theData);
 
         theData.selected = true;
         theData.x += this.offsetX;

@@ -164,7 +164,7 @@ export class MoveableService {
           // it's deleted. It's because it is moving when mouse is moving.
           e.inputEvent.preventDefault();
           setTimeout(() => {
-            // this.moveable?.dragStart(e.inputEvent);
+            this.moveable?.dragStart(e.inputEvent);
           }, 10);
         }
       });
@@ -223,6 +223,7 @@ export class MoveableService {
       item.selected = true;
 
       if (item.type === ItemType.image) {
+        console.log('image');
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);
         this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
@@ -467,13 +468,13 @@ export class MoveableService {
         let item = this.getItem(e.target);
         e.set([item.x, item.y]);
       })
-      .on('drag', (e: OnDrag) => {
-        if (e.inputEvent.buttons === 0) return;
-        let item = this.getItem(e.target);
-        item.x = e.beforeTranslate[0];
-        item.y = e.beforeTranslate[1];
+      .on('drag', ({ target, beforeTranslate }) => {
+        // if (e.inputEvent.buttons === 0) return;
+        let item = this.getItem(target);
+        item.x = beforeTranslate[0];
+        item.y = beforeTranslate[1];
 
-        e.target.style.transform = this.strTransform(item);
+        target.style.transform = this.strTransform(item);
         this.isDragItem = true;
       })
       .on('dragEnd', (e) => {
@@ -759,13 +760,13 @@ export class MoveableService {
         let item = this.getItem(e.target);
         e.set([item.x, item.y]);
       })
-      .on('drag', (e: OnDrag) => {
-        if (e.inputEvent.buttons === 0) return;
-        let item = this.getItem(e.target);
-        item.x = e.beforeTranslate[0];
-        item.y = e.beforeTranslate[1];
+      .on('drag', ({ target, beforeTranslate }) => {
+        // if (e.inputEvent.buttons === 0) return;
+        let item = this.getItem(target);
+        item.x = beforeTranslate[0];
+        item.y = beforeTranslate[1];
 
-        e.target.style.transform = this.strTransform(item);
+        target.style.transform = this.strTransform(item);
         if (this.isMouseDown) {
           this.isDrag = true;
         }
@@ -913,7 +914,7 @@ export class MoveableService {
     if (this.previousTarget != undefined) {
       if (this.previousTarget != target) {
         if (!this.isCreateTextItem) {
-          this.toolbarService.quill.blur();
+          this.toolbarService.quill?.blur();
           this.isEditable = false;
         }
         this.ds.isOnInput = false;
@@ -1032,13 +1033,14 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        if (e.inputEvent.buttons === 0) return;
+        // if (e.inputEvent.buttons === 0) return;
         let item = this.getItem(e.target);
         item.x = e.beforeTranslate[0];
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
         this.isDragItem = true;
+        this.drawBaseline(item);
       })
       .on('dragEnd', (e) => {
         if (this.isDragItem) {
@@ -1186,6 +1188,43 @@ export class MoveableService {
       });
 
     return moveable;
+  }
+
+  drawBaseline(item: Item) {
+    let theItems = this.ds.theDesign.pages[item.pageId].items;
+    let offset = 10;
+
+    // for (let i = 0; i < theItems.length; i++) {
+    //   if (theItems[i].itemId != item.itemId) {
+    //     if (theItems[i].x + offset < item.x && theItems[i].x - offset > item.x) {
+
+    //     }
+    //   }
+    // }
+    theItems.forEach((theItem) => {
+      if (theItem.itemId != item.itemId) {
+        // if (theItem.x + offset < item.x && theItem.x - offset > item.x) {
+        // }
+        // if (theItem.y + offset < item.y && theItem.y - offset > item.y) {
+        // }
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            if (
+              theItem.x + theItem.w * (j / 2) + offset > item.x + item.w * (i / 2) &&
+              theItem.x + theItem.w * (j / 2) - offset < item.x + item.w * (i / 2)
+            ) {
+              console.log(theItem.x + theItem.w * (j / 2) + offset, item.x + item.w * (i / 2));
+            }
+            if (
+              theItem.y + theItem.h * (j / 2) + offset > item.y + item.h * (i / 2) &&
+              theItem.y + theItem.h * (j / 2) - offset < item.y + item.h * (i / 2)
+            ) {
+              console.log(theItem.y + theItem.h * (j / 2) + offset, item.y + item.h * (i / 2));
+            }
+          }
+        }
+      }
+    });
   }
 
   resizeObserver(pageId, itemId) {
