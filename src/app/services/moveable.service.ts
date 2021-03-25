@@ -1209,7 +1209,6 @@ export class MoveableService {
               theItem.y + theItem.h * (j / 2) + offset > item.y + item.h * (i / 2) &&
               theItem.y + theItem.h * (j / 2) - offset < item.y + item.h * (i / 2)
             ) {
-              console.log(theItem.y + theItem.h * (j / 2) + offset, item.y + item.h * (i / 2));
             }
           }
         }
