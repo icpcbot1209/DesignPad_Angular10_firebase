@@ -65,6 +65,12 @@ export class MoveableService {
   targetGroup: (HTMLElement | SVGElement)[] = [];
   copiedTheData = [];
 
+  positionOffset = 7;
+  beforPositionX: number = 0;
+  beforPositionY: number = 0;
+  itemX: number;
+  itemY: number;
+
   constructor(
     private ds: DesignService,
     private toolbarService: ToolbarService,
@@ -1036,12 +1042,16 @@ export class MoveableService {
       .on('drag', (e: OnDrag) => {
         // if (e.inputEvent.buttons === 0) return;
         let item = this.getItem(e.target);
-        item.x = e.beforeTranslate[0];
+        this.drawBaseline(item);
+
+        this.beforPositionX = e.beforeTranslate[0];
+        if (!(this.itemX + this.positionOffset > this.beforPositionX && this.itemX - this.positionOffset < this.beforPositionX)) {
+          item.x = this.beforPositionX;
+        } else item.x = this.itemX;
         item.y = e.beforeTranslate[1];
 
         e.target.style.transform = this.strTransform(item);
         this.isDragItem = true;
-        this.drawBaseline(item);
       })
       .on('dragEnd', (e) => {
         if (this.isDragItem) {
@@ -1193,21 +1203,26 @@ export class MoveableService {
 
   drawBaseline(item: Item) {
     let theItems = this.ds.theDesign.pages[item.pageId].items;
-    let offset = 10;
+    let baselineEle = document.querySelector('#baseline-' + item.pageId);
+
+    for (let i = 0; i < baselineEle.children.length; i++) baselineEle.children[i].remove();
+    console.log('deleted');
 
     theItems.forEach((theItem) => {
       if (theItem.itemId != item.itemId) {
         for (let i = 0; i < 3; i++) {
           for (let j = 0; j < 3; j++) {
             if (
-              theItem.x + theItem.w * (j / 2) + offset > item.x + item.w * (i / 2) &&
-              theItem.x + theItem.w * (j / 2) - offset < item.x + item.w * (i / 2)
+              theItem.x + theItem.w * (j / 2) + this.positionOffset > item.x + item.w * (i / 2) &&
+              theItem.x + theItem.w * (j / 2) - this.positionOffset < item.x + item.w * (i / 2)
             ) {
+              this.itemX = item.x - (item.x + item.w * (i / 2) - (theItem.x + theItem.w * (j / 2)));
+              // this.moveable.request('draggable', { x: item.x, isInstant: true });
               this.drawLine(theItem, item, j, 'vertical');
             }
             if (
-              theItem.y + theItem.h * (j / 2) + offset > item.y + item.h * (i / 2) &&
-              theItem.y + theItem.h * (j / 2) - offset < item.y + item.h * (i / 2)
+              theItem.y + theItem.h * (j / 2) + this.positionOffset > item.y + item.h * (i / 2) &&
+              theItem.y + theItem.h * (j / 2) - this.positionOffset < item.y + item.h * (i / 2)
             ) {
             }
           }
@@ -1217,7 +1232,9 @@ export class MoveableService {
   }
 
   drawLine(theItem, item, j, type) {
+    let baselineEle = document.querySelector('#baseline-' + item.pageId);
     let minPos, maxPos;
+    let x = (theItem.x + theItem.w * (j / 2)) * (this.ds.zoomValue / 100);
 
     if (type == 'vertical') {
       if (item.y > theItem.y) minPos = theItem.y;
@@ -1226,7 +1243,17 @@ export class MoveableService {
       if (item.y + item.h > theItem.y + theItem.w) maxPos = item.y + item.h;
       else maxPos = theItem.y + theItem.h;
 
-      let y = theItem.x + theItem.w * (j / 2);
+      let lineEle = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      lineEle.setAttribute('x1', x.toString());
+      lineEle.setAttribute('y1', (minPos * (this.ds.zoomValue / 100)).toString());
+      lineEle.setAttribute('x2', x.toString());
+      lineEle.setAttribute('y2', (maxPos * (this.ds.zoomValue / 100)).toString());
+      lineEle.style.stroke = '#f16624';
+      lineEle.style.strokeWidth = '1';
+      lineEle.style.strokeDasharray = '4';
+
+      baselineEle.append(lineEle);
+      console.log(baselineEle);
     }
   }
 
