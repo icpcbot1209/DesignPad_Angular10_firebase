@@ -27,6 +27,7 @@ import { Item } from '../models/models';
 import { ItemStatus, ItemType } from '../models/enums';
 import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import { MediaService } from './media.service';
+import { max } from 'rxjs/operators';
 
 declare var ResizeObserver;
 
@@ -1194,26 +1195,15 @@ export class MoveableService {
     let theItems = this.ds.theDesign.pages[item.pageId].items;
     let offset = 10;
 
-    // for (let i = 0; i < theItems.length; i++) {
-    //   if (theItems[i].itemId != item.itemId) {
-    //     if (theItems[i].x + offset < item.x && theItems[i].x - offset > item.x) {
-
-    //     }
-    //   }
-    // }
     theItems.forEach((theItem) => {
       if (theItem.itemId != item.itemId) {
-        // if (theItem.x + offset < item.x && theItem.x - offset > item.x) {
-        // }
-        // if (theItem.y + offset < item.y && theItem.y - offset > item.y) {
-        // }
         for (let i = 0; i < 3; i++) {
           for (let j = 0; j < 3; j++) {
             if (
               theItem.x + theItem.w * (j / 2) + offset > item.x + item.w * (i / 2) &&
               theItem.x + theItem.w * (j / 2) - offset < item.x + item.w * (i / 2)
             ) {
-              console.log(theItem.x + theItem.w * (j / 2) + offset, item.x + item.w * (i / 2));
+              this.drawLine(theItem, item, j, 'vertical');
             }
             if (
               theItem.y + theItem.h * (j / 2) + offset > item.y + item.h * (i / 2) &&
@@ -1225,6 +1215,20 @@ export class MoveableService {
         }
       }
     });
+  }
+
+  drawLine(theItem, item, j, type) {
+    let minPos, maxPos;
+
+    if (type == 'vertical') {
+      if (item.y > theItem.y) minPos = theItem.y;
+      else minPos = item.y;
+
+      if (item.y + item.h > theItem.y + theItem.w) maxPos = item.y + item.h;
+      else maxPos = theItem.y + theItem.h;
+
+      let y = theItem.x + theItem.w * (j / 2);
+    }
   }
 
   resizeObserver(pageId, itemId) {
