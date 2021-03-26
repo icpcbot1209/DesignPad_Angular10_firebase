@@ -1386,6 +1386,8 @@ export class MoveableService {
             this.isResizeObserver = false;
           } else if (item?.isCurve && this.toolbarService.quill.hasFocus() && selectorEle) {
             item.w = parseFloat(width);
+            console.log('resize');
+
             selectorEle.style.width = item.w + 'px';
             this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
             item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;

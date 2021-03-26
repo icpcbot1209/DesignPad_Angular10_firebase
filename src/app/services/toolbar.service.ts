@@ -133,7 +133,7 @@ export class ToolbarService {
       for (let i = 0; i < curveEles.length; i++) {
         this.setTransformOrignCenter(curveEles[i] as HTMLElement, center, zoom);
       }
-    });
+    }, 50);
   }
 
   getTransformOrignCenter(center) {
@@ -156,7 +156,7 @@ export class ToolbarService {
       curveText.style.height = item.h + 'px';
 
       if (!textChange) moveableService.onSelectTargets([textSelector]);
-    });
+    }, 50);
   }
 
   setEffectToCurve(editorEle, curveText) {
