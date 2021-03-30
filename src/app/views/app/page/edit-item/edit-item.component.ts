@@ -48,7 +48,7 @@ export class EditItemComponent implements OnInit {
       this.moveableService
         .resizeObserver(this.item.pageId, this.item.itemId)
         .observe(document.querySelector<HTMLElement>('#textEditor-' + this.item.pageId + '-' + this.item.itemId));
-      this.toolbarService.setCurveEffect(this.item.pageId, this.item.itemId, this.item.angle, false);
+      // this.toolbarService.setCurveEffect(this.item.pageId, this.item.itemId, this.item.angle, false);
     }
   }
 

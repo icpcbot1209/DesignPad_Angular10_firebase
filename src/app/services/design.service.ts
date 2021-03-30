@@ -441,6 +441,7 @@ export class DesignService {
           );
         }
 
+        console.log(this.copiedTheData);
         e.preventDefault();
         e.stopPropagation();
       }
