@@ -934,13 +934,19 @@ export class MoveableService {
           curveText.style.width = item.w + 'px';
         } else {
           let item = this.getItem(e.target);
+          let editorEle = document.querySelector<HTMLElement>('#textEditor-' + item.pageId + '-' + item.itemId);
           item.w = e.width;
-          item.h = e.height;
+          if (item.h != editorEle.clientHeight) {
+            let offsetX = editorEle.clientHeight - item.h;
+            item.h = editorEle.clientHeight;
+            this.moveable.request('resizable', { offsetHeight: offsetX, isInstant: true });
+            return;
+          }
           item.x = e.drag.beforeTranslate[0];
           item.y = e.drag.beforeTranslate[1];
           e.target.style.transform = this.strTransform(item);
           e.target.style.width = `${e.width}px`;
-          let editorEle = document.querySelector<HTMLElement>('#textEditor-' + item.pageId + '-' + item.itemId);
+          e.target.style.height = `${item.h}px`;
           item = this.getItem(editorEle);
           editorEle.style.width = item.w + 'px';
 
