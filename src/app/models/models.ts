@@ -40,6 +40,7 @@ export interface Item {
   clipPathToNumber?: number[];
   onPlayButton?: boolean;
   onPlayVideo?: boolean;
+  isOnResize?: boolean;
 }
 
 export interface Page {

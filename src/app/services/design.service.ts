@@ -244,6 +244,7 @@ export class DesignService {
       isCurve: false,
       zIndex: 0,
       angle: 50,
+      isOnResize: false,
     });
   }
 
@@ -441,7 +442,6 @@ export class DesignService {
           );
         }
 
-        console.log(this.copiedTheData);
         e.preventDefault();
         e.stopPropagation();
       }

@@ -170,13 +170,13 @@ export class MoveableService {
           this.onSelectTargets(this.targetGroup);
         } else this.onSelectTargets(targets);
 
-        if (e.isDragStart) {
-          // it's deleted. It's because it is moving when mouse is moving.
-          e.inputEvent.preventDefault();
-          setTimeout(() => {
-            this.moveable?.dragStart(e.inputEvent);
-          }, 10);
-        }
+        // if (e.isDragStart) {
+        //   // it's deleted. It's because it is moving when mouse is moving.
+        //   e.inputEvent.preventDefault();
+        //   setTimeout(() => {
+        //     this.moveable?.dragStart(e.inputEvent);
+        //   }, 10);
+        // }
       });
 
     selecto.on('dragStart', (e) => {
@@ -233,7 +233,6 @@ export class MoveableService {
       item.selected = true;
 
       if (item.type === ItemType.image) {
-        console.log('image');
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);
         this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
@@ -391,21 +390,61 @@ export class MoveableService {
     moveable
       .on('resizeStart', (e: OnResizeStart) => {
         let item = this.getItem(e.target);
+        if (item.type == ItemType.text) item.isOnResize = true;
+
         e.setOrigin(['%', '%']);
         e.dragStart && e.dragStart.set([item.x, item.y]);
       })
       .on('resize', (e: OnResize) => {
         let item = this.getItem(e.target);
-        item.x = e.drag.beforeTranslate[0];
-        item.y = e.drag.beforeTranslate[1];
-        item.w = e.width;
-        item.h = e.height;
+        if (item.type == ItemType.image) {
+          item.x = e.drag.beforeTranslate[0];
+          item.y = e.drag.beforeTranslate[1];
+          item.w = e.width;
+          item.h = e.height;
 
-        e.target.style.transform = this.strTransform(item);
-        e.target.style.width = `${e.width}px`;
-        e.target.style.height = `${e.height}px`;
+          e.target.style.transform = this.strTransform(item);
+          e.target.style.width = `${e.width}px`;
+          e.target.style.height = `${e.height}px`;
+        }
+        if (item.type == ItemType.text) {
+          let scale = Math.round((e.width / item.w) * 100000) / 100000;
+          item.w = e.width;
+          item.h = item.h * scale;
+          item.x = e.drag.beforeTranslate[0];
+          item.y = e.drag.beforeTranslate[1];
+          item.fontSize = (parseFloat(item.fontSize) * scale).toString() + 'px';
+
+          e.target.style.width = item.w + 'px';
+          e.target.style.height = item.h + 'px';
+          e.target.style.transform = this.strTransform(item);
+          let editorEle = document.querySelector<HTMLElement>('#textEditor-' + item.pageId + '-' + item.itemId);
+          editorEle.style.width = item.w + 1 + 'px';
+          editorEle.style.fontSize = item.fontSize;
+
+          let curveText = document.querySelector('#curveText-' + item.pageId + '-' + item.itemId) as HTMLElement;
+          curveText.style.width = item.w + 'px';
+        }
+        if (item.type == ItemType.element) {
+          let item = this.getItem(e.target);
+          item.x = e.drag.beforeTranslate[0];
+          item.y = e.drag.beforeTranslate[1];
+          item.w = e.width;
+          item.h = e.height;
+
+          e.target.style.transform = this.strTransform(item);
+          e.target.style.width = `${e.width}px`;
+          e.target.style.height = `${e.height}px`;
+
+          let svgEle = document.querySelector('#SVGElement-' + item.pageId + '-' + item.itemId).querySelector('svg');
+          svgEle.setAttribute('width', item.w.toString());
+          svgEle.setAttribute('height', item.h.toString());
+        }
       })
       .on('resizeEnd', (e) => {
+        let item = this.getItem(e.target);
+        if (item.type == ItemType.text) item.isOnResize = false;
+
         this.ur.saveTheData(this.ds.theDesign);
       })
       .on('resizeGroupStart', (ev: OnResizeGroupStart) => {
@@ -863,13 +902,13 @@ export class MoveableService {
       });
 
     /* resize */
-    let isResizeText: boolean;
     moveable
       .on('resizeStart', (e: OnResizeStart) => {
         let item = this.getItem(e.target);
+        item.isOnResize = true;
+
         e.setOrigin(['%', '%']);
         e.dragStart && e.dragStart.set([item.x, item.y]);
-        isResizeText = true;
         if (e.direction[0] !== 0 && e.direction[1] !== 0) {
           this.isScale = true;
         } else this.isScale = false;
@@ -902,20 +941,20 @@ export class MoveableService {
           item.y = e.drag.beforeTranslate[1];
           e.target.style.transform = this.strTransform(item);
           e.target.style.width = `${e.width}px`;
-          let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
+          let editorEle = document.querySelector<HTMLElement>('#textEditor-' + item.pageId + '-' + item.itemId);
           item = this.getItem(editorEle);
           editorEle.style.width = item.w + 'px';
 
           let curveText = document.querySelector('#curveText-' + item.pageId + '-' + item.itemId) as HTMLElement;
           curveText.style.width = item.w + 'px';
         }
-
-        this.isOnResize = true;
       })
       .on('resizeEnd', ({ target, isDrag }) => {
+        let item = this.getItem(target);
+        item.isOnResize = false;
+
         this.setSelectable(target.getAttribute('itemId'), target.getAttribute('pageId'), '#textSelector-');
         this.selectableTextEditor();
-        this.isOnResize = false;
         this.ur.saveTheData(this.ds.theDesign);
       });
 
@@ -1314,7 +1353,6 @@ export class MoveableService {
     let baselineEle = document.querySelector('#baseline-' + item.pageId);
 
     for (let i = 0; i < baselineEle.children.length; i++) baselineEle.children[i].remove();
-    console.log('deleted');
 
     theItems.forEach((theItem) => {
       if (theItem.itemId != item.itemId) {
@@ -1361,7 +1399,6 @@ export class MoveableService {
       lineEle.style.strokeDasharray = '4';
 
       baselineEle.append(lineEle);
-      console.log(baselineEle);
     }
   }
 
@@ -1369,10 +1406,11 @@ export class MoveableService {
     return new ResizeObserver((entries) => {
       this.zone.run(() => {
         // if (!this.ur.isUndoRedo && this.toolbarService.quill.hasFocus()) {
-        if (!this.ur.isUndoRedo && !this.isOnResize) {
+        // if (!this.ur.isUndoRedo && !this.isOnResize) {
+        let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
+        let item = this.getItem(selectorEle);
+        if (!this.ur.isUndoRedo && !item?.isOnResize) {
           let width = JSON.stringify(entries[0].contentRect.width) + 'px';
-          let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
-          let item = this.getItem(selectorEle);
 
           if (!item?.isCurve && selectorEle) {
             let height = JSON.stringify(entries[0].contentRect.height) + 'px';
@@ -1386,7 +1424,6 @@ export class MoveableService {
             this.isResizeObserver = false;
           } else if (item?.isCurve && this.toolbarService.quill.hasFocus() && selectorEle) {
             item.w = parseFloat(width);
-            console.log('resize');
 
             selectorEle.style.width = item.w + 'px';
             this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
