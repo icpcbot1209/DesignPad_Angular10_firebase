@@ -25,6 +25,7 @@ export class ElementToolbarComponent implements OnInit {
   }
 
   changeElementColor(event, index) {
+    console.log(this.color[index], index);
     this.setColor(this.color[index], event.target.value);
   }
 
@@ -32,29 +33,17 @@ export class ElementToolbarComponent implements OnInit {
     let tagName;
     let svgEle = document.querySelector('#SVGElement-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId);
 
+    console.log(this.colorAndIndex[previousColor]);
     for (let i = 0; i < this.colorAndIndex[previousColor].length; i = i + 2) {
       tagName = this.selectTagName(this.colorAndIndex[previousColor][i]);
 
-      // let pathEles = svgEle.querySelectorAll(tagName);
-      // let index = 0;
-
-      // if (this.colorAndIndex.length != 0) {
-      //   for (let i = 0; i < pathEles.length; i++) {
-      // if (this.colorAndIndex[previousColor][index] == i) {
       let innerTag = svgEle.querySelectorAll(tagName)[this.colorAndIndex[previousColor][i + 1]];
-      if (innerTag.style.fill) {
+      // if (innerTag.style.fill) {
+      if (getComputedStyle(innerTag as Element).fill) {
         innerTag.style.fill = color;
       } else {
         innerTag.setAttribute('fill', color);
       }
-
-      // index++;
-      // if (index >= this.colorAndIndex[previousColor].length) {
-      //   return;
-      // }
-      // }
-      //   }
-      // }
     }
   }
 

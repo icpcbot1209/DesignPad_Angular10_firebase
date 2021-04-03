@@ -69,8 +69,8 @@ export class SVGElementComponent implements OnInit {
       svgEle.querySelectorAll(tags[i]).forEach((ele) => {
         let color;
         let pathEle = ele as SVGPathElement;
-        if (pathEle.style.fill) {
-          color = pathEle.style.fill;
+        if (getComputedStyle(pathEle).fill) {
+          color = getComputedStyle(pathEle).fill;
         } else {
           color = pathEle.getAttribute('fill');
         }
@@ -83,19 +83,21 @@ export class SVGElementComponent implements OnInit {
         if (color.indexOf('rgb(') == 0) {
           color = this.RGBToHex(color);
         }
+        console.log(color);
         if (color.length == 4 && color.indexOf('#') == 0) {
           color = '#' + color.substr(1) + color.substr(1);
         }
         if (color.indexOf('url') < 0 && color.indexOf('current') != 0) {
+          console.log(this.sameColorFilter(color));
           if (this.sameColorFilter(color)) {
             this.item.color.push(color);
-            if (!this.item.colorAndIndex[color]) {
-              this.item.colorAndIndex[color] = [];
-            }
-            const tagIndex = this.selectTagName(tags[i]);
-            this.item.colorAndIndex[color].push(tagIndex);
-            this.item.colorAndIndex[color].push(index);
           }
+          if (!this.item.colorAndIndex[color]) {
+            this.item.colorAndIndex[color] = [];
+          }
+          const tagIndex = this.selectTagName(tags[i]);
+          this.item.colorAndIndex[color].push(tagIndex);
+          this.item.colorAndIndex[color].push(index);
         }
         index++;
       });
