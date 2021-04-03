@@ -62,10 +62,10 @@ export class SVGElementComponent implements OnInit {
 
   setSVGColorCollection() {
     let svgEle = document.querySelector('#SVGElement-' + this.item.pageId + '-' + this.item.itemId);
-    let index = 0;
     let tags = ['path', 'circle', 'rect', 'polygon', 'ellipse', 'text'];
 
     for (let i = 0; i < tags.length; i++) {
+      let index = 0;
       svgEle.querySelectorAll(tags[i]).forEach((ele) => {
         let color;
         let pathEle = ele as SVGPathElement;
@@ -83,12 +83,10 @@ export class SVGElementComponent implements OnInit {
         if (color.indexOf('rgb(') == 0) {
           color = this.RGBToHex(color);
         }
-        console.log(color);
         if (color.length == 4 && color.indexOf('#') == 0) {
           color = '#' + color.substr(1) + color.substr(1);
         }
         if (color.indexOf('url') < 0 && color.indexOf('current') != 0) {
-          console.log(this.sameColorFilter(color));
           if (this.sameColorFilter(color)) {
             this.item.color.push(color);
           }

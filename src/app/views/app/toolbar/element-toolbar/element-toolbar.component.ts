@@ -25,7 +25,6 @@ export class ElementToolbarComponent implements OnInit {
   }
 
   changeElementColor(event, index) {
-    console.log(this.color[index], index);
     this.setColor(this.color[index], event.target.value);
   }
 
@@ -33,7 +32,6 @@ export class ElementToolbarComponent implements OnInit {
     let tagName;
     let svgEle = document.querySelector('#SVGElement-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId);
 
-    console.log(this.colorAndIndex[previousColor]);
     for (let i = 0; i < this.colorAndIndex[previousColor].length; i = i + 2) {
       tagName = this.selectTagName(this.colorAndIndex[previousColor][i]);
 
