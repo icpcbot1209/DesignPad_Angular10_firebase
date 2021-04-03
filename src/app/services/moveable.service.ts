@@ -261,6 +261,8 @@ export class MoveableService {
 
       this.previousTarget = targets[0];
     } else {
+      this.toolbarService.quill?.setSelection(0);
+      this.toolbarService.quill?.blur();
       this.ds.deleteSelectedItem();
 
       if (this.previousTarget) {
