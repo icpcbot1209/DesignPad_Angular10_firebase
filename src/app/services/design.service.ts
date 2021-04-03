@@ -422,8 +422,7 @@ export class DesignService {
         // let target = document.querySelector('#textSelector-' + moveableService.selectedPageId + '-' + moveableService.selectedItemId) as HTMLElement;
         // let item = moveableService.getItem(target);
         // let beforeTranslate = [item.x, item.y, 0];
-        moveableService.moveable.request('draggable', { x: item.x, isInstant: true });
-        moveableService.moveable.request('draggable', { y: item.y, isInstant: true });
+        moveableService.moveable.request('draggable', { x: item.x, y: item.y, isInstant: true });
       }
     }
 

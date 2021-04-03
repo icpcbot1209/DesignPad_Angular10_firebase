@@ -898,7 +898,6 @@ export class MoveableService {
         if (this.isDragItem) {
           this.ur.saveTheData(this.ds.theDesign);
         }
-        // this.isDragItem = false;
       });
 
     /* resize */
