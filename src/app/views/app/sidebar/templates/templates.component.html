@@ -154,7 +154,6 @@
                 [id]="'usertemplateThumbnail' + i"
                 class="grid-item"
                 [lazyLoad]="item.thumbnail"
-                [ngStyle]="{ height: item.height * ratios[i] + padding * 2 + 'px' }"
                 width="auto"
                 (click)="addUserTemplatePage(i)"
                 [ngStyle]="userItemStyle(i, item)"

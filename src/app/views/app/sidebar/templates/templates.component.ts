@@ -287,12 +287,12 @@ export class TemplatesComponent implements OnInit {
     if (document.querySelector('#userTemplateItem' + i))
       if (document.querySelector('#userTemplateItem' + i).getAttribute('selected') == 'true') {
         return {
-          height: item.height * this.ratios[i] + this.padding * 2 + 'px',
+          height: item.height * this.userRatios[i] + this.padding * 2 + 'px',
           borderColor: '#f16624',
         };
       } else
         return {
-          height: item.height * this.ratios[i] + this.padding * 2 + 'px',
+          height: item.height * this.userRatios[i] + this.padding * 2 + 'px',
           borderColor: 'transparent',
         };
   }
