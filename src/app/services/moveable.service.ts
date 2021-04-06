@@ -222,6 +222,11 @@ export class MoveableService {
       this.ds.onSelectGroup(thePageId);
     } else if (targets.length === 1) {
       let item = this.getItem(targets[0]);
+      let previousItem = this.getItem(this.previousTarget);
+
+      if (this.previousTarget != targets[0]) {
+        this.resetCurveText(previousItem);
+      }
 
       if (this.ds.isCopiedItem) this.ds.deleteSelectedItem();
       this.selectedItemId = targets[0].getAttribute('itemId');
@@ -235,8 +240,6 @@ export class MoveableService {
         this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
         if (!this.ur.isUndoRedo) {
-          let previousItem = this.getItem(this.previousTarget);
-
           this.moveable = this.makeMoveableText(thePageId, targets[0]);
           if (this.previousTarget != targets[0] && item.type == ItemType.text && previousItem?.type == ItemType.text) {
             setTimeout(() => {
@@ -266,12 +269,13 @@ export class MoveableService {
 
       this.previousTarget = targets[0];
     } else {
+      let item = this.getItem(this.previousTarget);
+
       this.toolbarService.quill?.setSelection(0);
       this.toolbarService.quill?.blur();
       this.ds.deleteSelectedItem();
 
       if (this.previousTarget) {
-        let item = this.getItem(this.previousTarget);
         if (item?.type == ItemType.text) {
           document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
         }
@@ -300,20 +304,35 @@ export class MoveableService {
 
       this.selectableTextEditor();
 
-      if (
-        document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId) &&
-        document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') == 'true'
-      ) {
-        let curveEle = document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId);
-        let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
-        let item = this.getItem(editorEle);
-        editorEle.style.opacity = '0';
-        curveEle.style.opacity = '1';
-        // curveEle.setAttribute('style', '-webkit-opacity: 0');
+      // if (
+      //   document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId) &&
+      //   document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId).getAttribute('curve') == 'true'
+      // ) {
+      //   let curveEle = document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId);
+      //   let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
+      //   let item = this.getItem(editorEle);
+      //   editorEle.style.opacity = '0';
+      //   curveEle.style.opacity = '1';
+      //   // curveEle.setAttribute('style', '-webkit-opacity: 0');
 
-        // this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angle, false);
-      }
+      //   // this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angle, false);
+      // }
+
+      this.resetCurveText(item);
       this.previousTarget = null;
+    }
+  }
+
+  resetCurveText(theItem) {
+    if (
+      document.querySelector<HTMLElement>('#textEditor-' + theItem?.pageId + '-' + theItem?.itemId) &&
+      document.querySelector<HTMLElement>('#textEditor-' + theItem?.pageId + '-' + theItem?.itemId).getAttribute('curve') == 'true'
+    ) {
+      let curveEle = document.querySelector<HTMLElement>('#curveText-' + theItem?.pageId + '-' + theItem?.itemId);
+      let editorEle = document.querySelector<HTMLElement>('#textEditor-' + theItem?.pageId + '-' + theItem?.itemId);
+      let item = this.getItem(editorEle);
+      editorEle.style.opacity = '0';
+      curveEle.style.opacity = '1';
     }
   }
 
