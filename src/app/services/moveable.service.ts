@@ -170,13 +170,15 @@ export class MoveableService {
           this.onSelectTargets(this.targetGroup);
         } else this.onSelectTargets(targets);
 
-        // if (e.isDragStart) {
-        //   // it's deleted. It's because it is moving when mouse is moving.
-        //   e.inputEvent.preventDefault();
-        //   setTimeout(() => {
-        //     this.moveable?.dragStart(e.inputEvent);
-        //   }, 10);
-        // }
+        let item = this.getItem(targets[0]);
+
+        if (e.isDragStart && !(item.type == ItemType.text && targets.length == 1)) {
+          // it's deleted. It's because it is moving when mouse is moving.
+          e.inputEvent.preventDefault();
+          setTimeout(() => {
+            this.moveable?.dragStart(e.inputEvent);
+          }, 10);
+        }
       });
 
     selecto.on('dragStart', (e) => {
@@ -219,10 +221,6 @@ export class MoveableService {
       this.moveable = this.makeMoveableGroup(thePageId, targets);
       this.ds.onSelectGroup(thePageId);
     } else if (targets.length === 1) {
-      // let domRect = targets[0].getBoundingClientRect();
-      // let clientRect = targets[0].getClientRects();
-      // console.log(domRect);
-
       let item = this.getItem(targets[0]);
 
       if (this.ds.isCopiedItem) this.ds.deleteSelectedItem();
@@ -1184,16 +1182,6 @@ export class MoveableService {
 
         e.target.style.transform = this.strTransform(item);
         this.isDragItem = true;
-
-        // this.drawBaseline(item);
-        // this.beforPositionX = e.beforeTranslate[0];
-        // if (!(this.itemX + this.positionOffset > this.beforPositionX && this.itemX - this.positionOffset < this.beforPositionX)) {
-        //   item.x = this.beforPositionX;
-        // } else item.x = this.itemX;
-        // item.y = e.beforeTranslate[1];
-
-        // e.target.style.transform = this.strTransform(item);
-        // this.isDragItem = true;
       })
       .on('dragEnd', (e) => {
         if (this.isDragItem) {
