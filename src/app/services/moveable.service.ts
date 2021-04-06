@@ -202,7 +202,7 @@ export class MoveableService {
   }
 
   isResizeObserver: boolean = true;
-  onSelectTargets(targets: (HTMLElement | SVGElement)[]) {
+  async onSelectTargets(targets: (HTMLElement | SVGElement)[]) {
     this.clearMoveable();
 
     let thePageId = -1;
@@ -235,8 +235,15 @@ export class MoveableService {
         this.ds.onSelectImageItem(thePageId, item);
       } else if (item.type === ItemType.text) {
         if (!this.ur.isUndoRedo) {
+          let previousItem = this.getItem(this.previousTarget);
+
           this.moveable = this.makeMoveableText(thePageId, targets[0]);
-          this.ds.onSelectTextItem();
+          if (this.previousTarget != targets[0] && item.type == ItemType.text && previousItem?.type == ItemType.text) {
+            setTimeout(() => {
+              this.ds.setStatus(ItemStatus.none);
+            });
+            this.ds.onSelectTextItem(true);
+          } else this.ds.onSelectTextItem(false);
           this.isSelectedTarget = true;
           this.resetTextToolbar();
         }
@@ -306,6 +313,7 @@ export class MoveableService {
 
         // this.toolbarService.setCurveEffect(this.selectedPageId, this.selectedItemId, item.angle, false);
       }
+      this.previousTarget = null;
     }
   }
 

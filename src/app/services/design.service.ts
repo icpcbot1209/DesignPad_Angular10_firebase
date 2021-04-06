@@ -551,13 +551,19 @@ export class DesignService {
     this.updateFilterObj(this.theItem);
   }
 
-  onSelectTextItem() {
-    // this.thePageId = pageId;
-
-    // this.theItem = item;
-    if (this.status != ItemStatus.text_font_list && this.status != ItemStatus.text_effect) {
-      this.status = ItemStatus.text_selected;
-      // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
+  onSelectTextItem(reselected: boolean) {
+    if (reselected) {
+      setTimeout(() => {
+        if (this.status != ItemStatus.text_font_list && this.status != ItemStatus.text_effect) {
+          this.status = ItemStatus.text_selected;
+          // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
+        }
+      });
+    } else {
+      if (this.status != ItemStatus.text_font_list && this.status != ItemStatus.text_effect) {
+        this.status = ItemStatus.text_selected;
+        // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
+      }
     }
   }
 
