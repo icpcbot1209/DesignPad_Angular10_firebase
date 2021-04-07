@@ -95,7 +95,7 @@ export class ToolbarService {
     curveText.innerHTML = item.curveText;
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
-    curveText.style.fontWeight = item.fontWeight.toString();
+    // curveText.style.fontWeight = item.fontWeight.toString();
     if (!textChange) curveText.style.opacity = '1';
     else curveText.style.opacity = '0.4';
     curveText.style.lineHeight = item.lineHeight;
@@ -116,11 +116,28 @@ export class ToolbarService {
     let curveTextStr;
 
     setTimeout(() => {
-      // curveTextStr = document.querySelector('#curveText-' + moveableService.selectedPageId + '-' + moveableService.selectedItemId).innerHTML;
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].textOpacity = '0';
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveOpacity = '1';
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveText = this.quill.getText();
+      for (let i = 0; i < this.quill.getLength() - 1; i++) {
+        let textFormat = this.quill.getFormat(i, 1);
+        this.effectToWord(textFormat, i, curveText);
+      }
     });
+
+    //effect style to curve text include ( blod, italic, underline, line-through, color, blackground-color )
+  }
+
+  effectToWord(textFormat, index, curveText) {
+    let texts = curveText.querySelectorAll('span');
+    console.log(textFormat);
+    if (textFormat['bold']) (texts[index] as HTMLElement).style.fontWeight = 'bold';
+    if (textFormat['italic']) (texts[index] as HTMLElement).style.fontStyle = 'italic';
+    if (textFormat['underline']) (texts[index] as HTMLElement).style.textDecoration = 'underline';
+    if (textFormat['strike']) (texts[index] as HTMLElement).style.textDecoration = 'line-through';
+    if (textFormat['strike'] && textFormat['underline']) (texts[index] as HTMLElement).style.textDecoration = 'underline line-through';
+    if (textFormat['color']) (texts[index] as HTMLElement).style.color = textFormat['color'];
+    if (textFormat['background']) (texts[index] as HTMLElement).style.background = textFormat['background'];
   }
 
   resetPosition(curveText: HTMLElement) {
