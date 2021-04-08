@@ -49,6 +49,7 @@ export class ToolbarService {
       let item = moveableService.getItem(textEle);
       this.quillData = textEle.querySelector('.ql-editor');
       ds.theDesign.pages[selectedPageId].items[selectedItemId].quillData = this.quillData.outerHTML;
+      this.setCurveEffect(item.pageId, item.itemId, item.angle, true);
 
       ur.saveTheData(ds.theDesign);
     });
@@ -92,7 +93,7 @@ export class ToolbarService {
     let curveText = document.querySelector<HTMLElement>('#curveText-' + selectedPageId + '-' + selectedItemId);
     let item = moveableService.getItem(editorEle);
 
-    curveText.innerHTML = item.curveText;
+    curveText.innerHTML = this.quill.getText();
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
     // curveText.style.fontWeight = item.fontWeight.toString();
@@ -130,7 +131,7 @@ export class ToolbarService {
 
   effectToWord(textFormat, index, curveText) {
     let texts = curveText.querySelectorAll('span');
-    console.log(textFormat);
+
     if (textFormat['bold']) (texts[index] as HTMLElement).style.fontWeight = 'bold';
     if (textFormat['italic']) (texts[index] as HTMLElement).style.fontStyle = 'italic';
     if (textFormat['underline']) (texts[index] as HTMLElement).style.textDecoration = 'underline';
