@@ -711,6 +711,14 @@ export class TextEffectsComponent implements OnInit {
   setCurveEffect() {
     this.toolbarService.isCurving = true;
     this.toolbarService.setCurveEffect(this.moveableService.selectedPageId, this.moveableService.selectedItemId, this.curveValue, false);
+
+    let curveText = document.querySelector<HTMLElement>(
+      '#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
+    );
+
+    this.moveableService
+      .curveTextObserver(this.moveableService.selectedPageId, this.moveableService.selectedItemId)
+      .observe(document.querySelector<HTMLElement>('#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId));
   }
 
   onInputCurveChange(event) {

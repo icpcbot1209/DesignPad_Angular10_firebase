@@ -49,7 +49,7 @@ export class ToolbarService {
       let item = moveableService.getItem(textEle);
       this.quillData = textEle.querySelector('.ql-editor');
       ds.theDesign.pages[selectedPageId].items[selectedItemId].quillData = this.quillData.outerHTML;
-      this.setCurveEffect(item.pageId, item.itemId, item.angle, true);
+      if (item.isCurve) this.setCurveEffect(item.pageId, item.itemId, item.angle, true);
 
       ur.saveTheData(ds.theDesign);
     });

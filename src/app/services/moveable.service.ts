@@ -1445,17 +1445,37 @@ export class MoveableService {
             this.setSelectable(itemId, pageId, '#textSelector-');
             this.isResizeObserver = false;
           } else if (item?.isCurve && this.toolbarService.quill.hasFocus() && selectorEle) {
-            item.w = parseFloat(width);
-
-            selectorEle.style.width = item.w + 'px';
-            this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
-            item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
-            selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-            this.setSelectable(itemId, pageId, '#textSelector-');
-            this.isResizeObserver = false;
+            // console.log('resize observe');
+            // item.w = parseFloat(width);
+            // selectorEle.style.width = item.w + 'px';
+            // this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
+            // item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
+            // selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+            // this.setSelectable(itemId, pageId, '#textSelector-');
+            // this.isResizeObserver = false;
           }
         }
       });
+    });
+  }
+
+  curveTextObserver(pageId, itemId) {
+    return new ResizeObserver((entries) => {
+      let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
+      let item = this.getItem(selectorEle);
+      let width = document.querySelector('#textEditor-' + pageId + '-' + itemId)?.clientWidth + 'px';
+
+      if (item?.isCurve && this.toolbarService.quill.hasFocus() && selectorEle) {
+        item.w = parseFloat(width);
+        selectorEle.style.width = item.w + 'px';
+        this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
+        item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
+        selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+        this.setSelectable(itemId, pageId, '#textSelector-');
+        this.isResizeObserver = false;
+      }
+
+      // console.log(document.querySelector('#textEditor-' + pageId + '-' + itemId).clientWidth + 'px');
     });
   }
 }
