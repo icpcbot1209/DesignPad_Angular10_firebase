@@ -129,6 +129,15 @@ export class DesignService {
   }
 
   addItemToCurrentPage(item: Item) {
+    //unobserve to item clip
+    let ms = this.injector.get(MoveableService);
+    let currentSelectedItem = ms.getItem(document.querySelector('#textEditor-' + ms.selectedPageId + '-' + ms.selectedItemId));
+    if (currentSelectedItem?.type == ItemType.text)
+      ms.resizeObserver(ms.selectedPageId, ms.selectedItemId).unobserve(
+        document.querySelector<HTMLElement>('#textEditor-' + ms.selectedPageId + '-' + ms.selectedItemId)
+      );
+
+    //add item to page
     this.copiedTargets = [];
     this.isTemplate = false;
     this.ur.isUndoRedo = false;

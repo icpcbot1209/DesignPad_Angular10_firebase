@@ -546,6 +546,7 @@ export class MoveableService {
       snapGap: true,
       snapDigit: 1,
       snapThreshold: 7,
+
       elementGuidelines: this.onPageElements,
       verticalGuidelines: [0, this.ds.theDesign.category.size.x / 2, this.ds.theDesign.category.size.x],
       horizontalGuidelines: [0, this.ds.theDesign.category.size.y / 2, this.ds.theDesign.category.size.y],
@@ -567,11 +568,11 @@ export class MoveableService {
         let item = this.getItem(e.target);
         e.set([item.x, item.y]);
       })
-      .on('drag', ({ target, beforeTranslate }) => {
-        // if (e.inputEvent.buttons === 0) return;
+      .on('drag', (e: OnDrag) => {
+        if (e.inputEvent.buttons === 0) return;
         let item = this.getItem(target);
-        item.x = beforeTranslate[0];
-        item.y = beforeTranslate[1];
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
 
         target.style.transform = this.strTransform(item);
         this.isDragItem = true;
@@ -908,11 +909,11 @@ export class MoveableService {
         let item = this.getItem(e.target);
         e.set([item.x, item.y]);
       })
-      .on('drag', ({ target, beforeTranslate }) => {
-        // if (e.inputEvent.buttons === 0) return;
+      .on('drag', (e: OnDrag) => {
+        if (e.inputEvent.buttons === 0) return;
         let item = this.getItem(target);
-        item.x = beforeTranslate[0];
-        item.y = beforeTranslate[1];
+        item.x = e.beforeTranslate[0];
+        item.y = e.beforeTranslate[1];
 
         target.style.transform = this.strTransform(item);
         if (this.isMouseDown) {
@@ -1069,6 +1070,9 @@ export class MoveableService {
         if (!this.isCreateTextItem) {
           this.toolbarService.quill?.blur();
           this.isEditable = false;
+          this.resizeObserver(this.selectedPageId, this.selectedItemId).unobserve(
+            document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
+          );
         }
         this.ds.isOnInput = false;
         this.isPosition = false;
@@ -1201,7 +1205,7 @@ export class MoveableService {
         e.set([item.x, item.y]);
       })
       .on('drag', (e: OnDrag) => {
-        // if (e.inputEvent.buttons === 0) return;
+        if (e.inputEvent.buttons === 0) return;
 
         let item = this.getItem(e.target);
         item.x = e.beforeTranslate[0];
@@ -1427,8 +1431,6 @@ export class MoveableService {
   resizeObserver(pageId, itemId) {
     return new ResizeObserver((entries) => {
       this.zone.run(() => {
-        // if (!this.ur.isUndoRedo && this.toolbarService.quill.hasFocus()) {
-        // if (!this.ur.isUndoRedo && !this.isOnResize) {
         let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
         let item = this.getItem(selectorEle);
         if (!this.ur.isUndoRedo && !item?.isOnResize) {
@@ -1444,15 +1446,6 @@ export class MoveableService {
             selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
             this.setSelectable(itemId, pageId, '#textSelector-');
             this.isResizeObserver = false;
-          } else if (item?.isCurve && this.toolbarService.quill.hasFocus() && selectorEle) {
-            // console.log('resize observe');
-            // item.w = parseFloat(width);
-            // selectorEle.style.width = item.w + 'px';
-            // this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
-            // item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
-            // selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-            // this.setSelectable(itemId, pageId, '#textSelector-');
-            // this.isResizeObserver = false;
           }
         }
       });
@@ -1474,8 +1467,6 @@ export class MoveableService {
         this.setSelectable(itemId, pageId, '#textSelector-');
         this.isResizeObserver = false;
       }
-
-      // console.log(document.querySelector('#textEditor-' + pageId + '-' + itemId).clientWidth + 'px');
     });
   }
 }

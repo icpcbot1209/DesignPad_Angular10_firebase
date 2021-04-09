@@ -25,6 +25,12 @@ export class TextItemComponent implements OnInit, AfterViewInit {
     this.ds.onSelectNothing();
   }
 
+  ngOnDestroy(): void {
+    this.moveableService
+      .resizeObserver(this.item.pageId, this.item.itemId)
+      .unobserve(document.querySelector<HTMLElement>('#textEditor-' + this.item.pageId + '-' + this.item.itemId));
+  }
+
   ngAfterViewInit(): void {
     // if (this.item.isCurve) this.moveableService.isEditable = false;
     this.moveableService.isEditable = true;
