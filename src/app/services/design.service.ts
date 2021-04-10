@@ -405,7 +405,7 @@ export class DesignService {
         this.status = ItemStatus.none;
       }
     }
-    if (e.shiftKey) {
+    if (!this.isOnInput && e.shiftKey) {
       if (!this.isPressedShiftKey) this.isPressedShiftKey = true;
     }
 
@@ -499,7 +499,7 @@ export class DesignService {
   }
 
   onKeyUpEvent(e: KeyboardEvent) {
-    if (e.code == 'ShiftLeft') {
+    if (!this.isOnInput && e.code == 'ShiftLeft') {
       const moveableService = this.injector.get(MoveableService);
       moveableService.targetGroup = [];
       this.isPressedShiftKey = false;
