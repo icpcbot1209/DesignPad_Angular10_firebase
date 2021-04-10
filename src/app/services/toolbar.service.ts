@@ -132,13 +132,15 @@ export class ToolbarService {
   effectToWord(textFormat, index, curveText) {
     let texts = curveText.querySelectorAll('span');
 
-    if (textFormat['bold']) (texts[index] as HTMLElement).style.fontWeight = 'bold';
-    if (textFormat['italic']) (texts[index] as HTMLElement).style.fontStyle = 'italic';
-    if (textFormat['underline']) (texts[index] as HTMLElement).style.textDecoration = 'underline';
-    if (textFormat['strike']) (texts[index] as HTMLElement).style.textDecoration = 'line-through';
-    if (textFormat['strike'] && textFormat['underline']) (texts[index] as HTMLElement).style.textDecoration = 'underline line-through';
-    if (textFormat['color']) (texts[index] as HTMLElement).style.color = textFormat['color'];
-    if (textFormat['background']) (texts[index] as HTMLElement).style.background = textFormat['background'];
+    if (texts[index]) {
+      if (textFormat['bold']) (texts[index] as HTMLElement).style.fontWeight = 'bold';
+      if (textFormat['italic']) (texts[index] as HTMLElement).style.fontStyle = 'italic';
+      if (textFormat['underline']) (texts[index] as HTMLElement).style.textDecoration = 'underline';
+      if (textFormat['strike']) (texts[index] as HTMLElement).style.textDecoration = 'line-through';
+      if (textFormat['strike'] && textFormat['underline']) (texts[index] as HTMLElement).style.textDecoration = 'underline line-through';
+      if (textFormat['color']) (texts[index] as HTMLElement).style.color = textFormat['color'];
+      if (textFormat['background']) (texts[index] as HTMLElement).style.background = textFormat['background'];
+    }
   }
 
   resetPosition(curveText: HTMLElement) {
@@ -167,14 +169,34 @@ export class ToolbarService {
     const ds = this.injector.get(DesignService);
 
     setTimeout(() => {
-      item.h = (curveText.firstChild as HTMLElement).clientHeight / (ds.zoomValue / 100);
       let textSelector = document.querySelector('#textSelector-' + item.pageId + '-' + item.itemId) as HTMLElement;
+
+      item.w = this.getCurveTextWidth(curveText);
+      item.h = (curveText.firstChild as HTMLElement).clientHeight / (ds.zoomValue / 100);
+
+      textSelector.style.width = item.w + 'px';
       textSelector.style.height = item.h + 'px';
       curveText.style.width = item.w + 'px';
       curveText.style.height = item.h + 'px';
 
       if (!textChange) moveableService.onSelectTargets([textSelector]);
     }, 50);
+  }
+
+  getCurveTextWidth(curveText) {
+    let left, right;
+    for (let i = 0; i < (curveText.firstChild as HTMLElement)?.children.length; i++) {
+      let rectLeft = (curveText.firstChild as HTMLElement).children[i].getBoundingClientRect().left;
+      let rectRight = (curveText.firstChild as HTMLElement).children[i].getBoundingClientRect().right;
+
+      if (!left) left = rectLeft > rectRight ? rectRight : rectLeft;
+      if (!right) right = rectLeft < rectRight ? rectRight : rectLeft;
+
+      left = (rectLeft > rectRight ? rectRight : rectLeft) < left ? (rectLeft > rectRight ? rectRight : rectLeft) : left;
+      right = (rectLeft < rectRight ? rectRight : rectLeft) > right ? (rectLeft < rectRight ? rectRight : rectLeft) : right;
+    }
+
+    return right - left;
   }
 
   setEffectToCurve(editorEle, curveText) {

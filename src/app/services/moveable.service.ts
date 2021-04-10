@@ -1441,22 +1441,21 @@ export class MoveableService {
         let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
         let item = this.getItem(selectorEle);
         if (!this.ur.isUndoRedo && !item?.isOnResize && !item?.isCurve && selectorEle) {
-          let width;
+          let width = JSON.stringify(entries[0].contentRect.width) + 'px';
 
           //reach at the end of the screen
-          if (this.toolbarService.quill?.hasFocus()) {
-            if (item.x + item.w > this.ds.theDesign.category.size.x) {
-              width = this.ds.theDesign.category.size.x - item.x;
-              editorEle.style.width = width + 'px';
-            } else width = JSON.stringify(entries[0].contentRect.width) + 'px';
-          } else width = JSON.stringify(entries[0].contentRect.width) + 'px';
+          if (this.toolbarService.quill?.hasFocus() && item.x + item.w > this.ds.theDesign.category.size.x) {
+            width = this.ds.theDesign.category.size.x - item.x + 'px';
+            console.log(this.ds.theDesign.category.size.x, item.x, width);
+            editorEle.style.width = width;
+          }
 
           let height = JSON.stringify(entries[0].contentRect.height) + 'px';
           selectorEle.style.width = width;
           selectorEle.style.height = height;
           item.w = parseFloat(width);
           item.h = parseFloat(height);
-          item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
+          item.x = item.x - (parseFloat(width) - parseFloat(selectorEle.style.width)) / 2;
           selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
           this.setSelectable(this.selectedItemId, this.selectedPageId, '#textSelector-');
           this.isResizeObserver = false;
@@ -1467,15 +1466,27 @@ export class MoveableService {
 
   curveTextObserver(pageId, itemId) {
     return new ResizeObserver((entries) => {
-      let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
+      let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + this.selectedPageId + '-' + this.selectedItemId);
+      let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
+      let curveText = document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId);
       let item = this.getItem(selectorEle);
-      let width = document.querySelector('#textEditor-' + pageId + '-' + itemId)?.clientWidth + 'px';
+      // let width = document.querySelector('#textEditor-' + this.selectedItemId + '-' + this.selectedItemId)?.clientWidth;
+      let width = this.toolbarService.getCurveTextWidth(curveText);
 
       if (item?.isCurve && this.toolbarService.quill.hasFocus() && selectorEle) {
-        item.w = parseFloat(width);
+        item.w = width;
+        item.h = (curveText.firstChild as HTMLElement).clientHeight / (this.ds.zoomValue / 100);
+        if (item.x + editorEle.getBoundingClientRect().width > this.ds.theDesign.category.size.x) {
+          // item.w = this.ds.theDesign.category.size.x - item.x;
+          editorEle.style.width = this.ds.theDesign.category.size.x - item.x + 'px';
+        }
+
         selectorEle.style.width = item.w + 'px';
-        this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
-        item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
+        selectorEle.style.height = item.h + 'px';
+        curveText.style.width = item.w + 'px';
+        curveText.style.height = item.h + 'px';
+        // this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
+        // item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
         selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
         this.setSelectable(itemId, pageId, '#textSelector-');
         this.isResizeObserver = false;
