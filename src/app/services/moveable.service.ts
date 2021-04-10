@@ -1070,9 +1070,11 @@ export class MoveableService {
         if (!this.isCreateTextItem) {
           this.toolbarService.quill?.blur();
           this.isEditable = false;
-          this.resizeObserver(this.selectedPageId, this.selectedItemId).unobserve(
-            document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
-          );
+
+          if (document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId))
+            this.resizeObserver(this.selectedPageId, this.selectedItemId).unobserve(
+              document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
+            );
         }
         this.ds.isOnInput = false;
         this.isPosition = false;
@@ -1431,14 +1433,14 @@ export class MoveableService {
   resizeObserver(pageId, itemId) {
     return new ResizeObserver((entries) => {
       this.zone.run(() => {
-        let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + pageId + '-' + itemId);
-        let editorEle = document.querySelector<HTMLElement>('#textEditor-' + pageId + '-' + itemId);
+        let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + this.selectedPageId + '-' + this.selectedItemId);
+        let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
         let item = this.getItem(selectorEle);
         if (!this.ur.isUndoRedo && !item?.isOnResize && !item?.isCurve && selectorEle) {
           let width;
 
           //reach at the end of the screen
-          if (this.toolbarService.quill.hasFocus()) {
+          if (this.toolbarService.quill?.hasFocus()) {
             if (item.x + item.w > this.ds.theDesign.category.size.x) {
               width = this.ds.theDesign.category.size.x - item.x;
               editorEle.style.width = width + 'px';
@@ -1452,7 +1454,7 @@ export class MoveableService {
           item.h = parseFloat(height);
           item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
           selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-          this.setSelectable(itemId, pageId, '#textSelector-');
+          this.setSelectable(this.selectedItemId, this.selectedPageId, '#textSelector-');
           this.isResizeObserver = false;
         }
       });
