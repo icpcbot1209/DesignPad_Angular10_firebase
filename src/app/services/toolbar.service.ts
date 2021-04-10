@@ -28,7 +28,6 @@ export class ToolbarService {
   quill;
 
   createTextEditor(selectedPageId, selectedItemId, item) {
-    console.log(selectedPageId, selectedItemId);
     this.quill = new Quill('#textEditor-' + selectedPageId + '-' + selectedItemId, {
       modules: {
         toolbar: '#toolbar',

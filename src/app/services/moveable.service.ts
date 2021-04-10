@@ -137,30 +137,30 @@ export class MoveableService {
         if (this.ur.isUndoRedo) {
           this.ur.isUndoRedo = false;
         }
-        e.added.forEach((el) => {
-          let item = this.getItem(el);
+        // e.added.forEach((el) => {
+        //   let item = this.getItem(el);
 
-          if (item) {
-            item.selected = true;
-          }
-        });
-        e.removed.forEach((el) => {
-          let item = this.getItem(el);
-          if (item) {
-            item.selected = false;
-          }
-        });
+        //   if (item) {
+        //     item.selected = true;
+        //   }
+        // });
+        // e.removed.forEach((el) => {
+        //   let item = this.getItem(el);
+        //   if (item) {
+        //     item.selected = false;
+        //   }
+        // });
       })
       .on('selectEnd', (e: OnSelectEnd) => {
         targets = e.selected;
-        this.copiedTheData = [];
+
+        if (!this.ds.isPressedShiftKey) {
+          this.copiedTheData = [];
+          this.targetGroup = [];
+        }
 
         for (let i = 0; i < targets.length; i++) {
           this.copiedTheData.push(JSON.parse(JSON.stringify(this.getItem(targets[i]))));
-        }
-
-        if (!this.ds.isPressedShiftKey) {
-          this.targetGroup = [];
         }
 
         for (let i = 0; i < targets.length; i++) {
@@ -205,9 +205,14 @@ export class MoveableService {
   async onSelectTargets(targets: (HTMLElement | SVGElement)[]) {
     this.clearMoveable();
 
+    if (!this.ds.isPressedShiftKey)
+      for (let i = 0; i < this.ds.theDesign.pages[this.selectedPageId].items.length; i++)
+        this.ds.theDesign.pages[this.selectedPageId].items[i].selected = false;
+
     let thePageId = -1;
     targets.forEach((target) => {
       let item = this.getItem(target);
+      if (item) item.selected = true;
       if (thePageId === -1) thePageId = item.pageId;
       else if (thePageId > item.pageId) thePageId = item.pageId;
     });
@@ -233,7 +238,6 @@ export class MoveableService {
       this.selectedPageId = targets[0].getAttribute('pageId');
       this.selectableTextEditor();
       this.onChangeSelectedItem(targets[0]);
-      item.selected = true;
 
       if (item.type === ItemType.image) {
         this.moveable = this.makeMoveableImage(thePageId, targets[0]);

@@ -421,16 +421,6 @@ export class DesignService {
         if (e.code == 'ArrowLeft') item.x -= 3;
         if (e.code == 'ArrowUp') item.y -= 3;
 
-        // let type = this.getType(item.type);
-        // let selector = document.querySelector(type + moveableService.selectedPageId + '-' + moveableService.selectedItemId) as HTMLElement;
-
-        // selector.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-        // moveableService.setSelectable(moveableService.selectedItemId, moveableService.selectedPageId, type);
-
-        // console.log(moveableService.moveable);
-        // let target = document.querySelector('#textSelector-' + moveableService.selectedPageId + '-' + moveableService.selectedItemId) as HTMLElement;
-        // let item = moveableService.getItem(target);
-        // let beforeTranslate = [item.x, item.y, 0];
         moveableService.moveable.request('draggable', { x: item.x, y: item.y, isInstant: true });
       }
     }
