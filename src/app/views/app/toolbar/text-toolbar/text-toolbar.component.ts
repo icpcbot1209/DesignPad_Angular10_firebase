@@ -28,8 +28,8 @@ export class TextToolbarComponent implements OnInit {
   letter;
   lineHeight;
   isShowLineHeight: boolean = false;
-  textItems = [];
-  targets = [];
+  // textItems = [];
+  // targets = [];
 
   constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ds: DesignService) {}
 
@@ -62,17 +62,26 @@ export class TextToolbarComponent implements OnInit {
 
   ngAfterViewInit(): void {
     let thePageItem = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
+    this.toolbarService.textItems = [];
+    this.toolbarService.targets = [];
 
     for (let i = 0; i < thePageItem.length; i++) {
-      if (thePageItem[i].type == ItemType.text && thePageItem[i].selected) this.textItems.push(thePageItem[i]);
+      if (thePageItem[i].selected) {
+        this.toolbarService.targets.push(
+          document.querySelector(this.ds.getType(thePageItem[i].type) + thePageItem[i].pageId + '-' + thePageItem[i].itemId)
+        );
+        if (thePageItem[i].type == ItemType.text) this.toolbarService.textItems.push(thePageItem[i]);
+      }
     }
 
-    for (let i = 0; i < this.textItems.length; i++) {
-      let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + this.textItems[i].pageId + '-' + this.textItems[i].itemId);
+    for (let i = 0; i < this.toolbarService.textItems.length; i++) {
+      let selectorEle = document.querySelector<HTMLElement>(
+        '#textSelector-' + this.toolbarService.textItems[i].pageId + '-' + this.toolbarService.textItems[i].itemId
+      );
       let item = this.moveableService.getItem(selectorEle);
 
-      if (!i) this.toolbarService.createTextEditor(this.textItems[i].pageId, this.textItems[i].itemId, true);
-      else this.toolbarService.createTextEditor(this.textItems[i].pageId, this.textItems[i].itemId, false);
+      if (!i) this.toolbarService.createTextEditor(this.toolbarService.textItems[i].pageId, this.toolbarService.textItems[i].itemId, true);
+      else this.toolbarService.createTextEditor(this.toolbarService.textItems[i].pageId, this.toolbarService.textItems[i].itemId, false);
 
       // this.sizeEle = document.querySelector<HTMLInputElement>('#fontSizeInput');
       // this.fontEle = document.querySelector<HTMLInputElement>('#fontInput');
@@ -83,7 +92,7 @@ export class TextToolbarComponent implements OnInit {
       // });
 
       let qlEditor = document
-        .querySelector('#textEditor-' + this.textItems[i].pageId + '-' + this.textItems[i].itemId)
+        .querySelector('#textEditor-' + this.toolbarService.textItems[i].pageId + '-' + this.toolbarService.textItems[i].itemId)
         .querySelector('.ql-editor') as HTMLElement;
       qlEditor.style.lineHeight = item.lineHeight + 'em';
       qlEditor.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
@@ -100,17 +109,19 @@ export class TextToolbarComponent implements OnInit {
 
     let hasSameFontSize = true;
     let hasSameFontFamily = true;
-    for (let i = 0; i < this.textItems.length - 1; i++) {
-      if (this.textItems[i].fontSize != this.textItems[i + 1].fontSize) hasSameFontSize = false;
-      if (this.textItems[i].fontFamily != this.textItems[i + 1].fontFamily) hasSameFontFamily = false;
+    for (let i = 0; i < this.toolbarService.textItems.length - 1; i++) {
+      if (this.toolbarService.textItems[i].fontSize != this.toolbarService.textItems[i + 1].fontSize) hasSameFontSize = false;
+      if (this.toolbarService.textItems[i].fontFamily != this.toolbarService.textItems[i + 1].fontFamily) hasSameFontFamily = false;
     }
 
     setTimeout(() => {
       if (hasSameFontSize)
         this.sizeEle.value = (
-          Math.floor(Number.parseFloat(this.textItems[0].fontSize.substr(0, this.textItems[0].fontSize.length - 2)) * 10) / 10
+          Math.floor(
+            Number.parseFloat(this.toolbarService.textItems[0].fontSize.substr(0, this.toolbarService.textItems[0].fontSize.length - 2)) * 10
+          ) / 10
         ).toString();
-      if (hasSameFontFamily) this.fontEle.value = this.textItems[0].fontFamily;
+      if (hasSameFontFamily) this.fontEle.value = this.toolbarService.textItems[0].fontFamily;
       else this.fontEle.value = 'Multi Fonts...';
       this.fontControl.disable();
     });
@@ -200,8 +211,10 @@ export class TextToolbarComponent implements OnInit {
   }
 
   setFontSize(fontSize: string) {
-    for (let i = 0; i < this.textItems.length; i++) {
-      let ele = document.querySelector<HTMLElement>('#textEditor-' + this.textItems[i].pageId + '-' + this.textItems[i].itemId);
+    for (let i = 0; i < this.toolbarService.textItems.length; i++) {
+      let ele = document.querySelector<HTMLElement>(
+        '#textEditor-' + this.toolbarService.textItems[i].pageId + '-' + this.toolbarService.textItems[i].itemId
+      );
       let item = this.moveableService.getItem(ele);
       item.fontSize = fontSize + 'px';
       ele.style.fontSize = item.fontSize;

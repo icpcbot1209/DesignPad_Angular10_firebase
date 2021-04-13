@@ -1458,7 +1458,11 @@ export class MoveableService {
             item.h = parseFloat(height);
             item.x = item.x - (parseFloat(width) - parseFloat(selectorEle.style.width)) / 2;
             selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-            this.setSelectable(item.itemId, item.pageId, '#textSelector-');
+            if (this.toolbarService.targets.length > 1)
+              setTimeout(() => {
+                this.onSelectTargets(this.toolbarService.targets);
+              });
+            else this.setSelectable(item.itemId, item.pageId, '#textSelector-');
             this.isResizeObserver = false;
           }
         }

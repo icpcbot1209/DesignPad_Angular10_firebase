@@ -14,6 +14,8 @@ export class ToolbarService {
   url = 'https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBipcG_GYuR_AN_TP6SxzppJz9sWZxIJSQ';
 
   textEditItems = [];
+  textItems = [];
+  targets = [];
   isCreateQuill: boolean = false;
 
   angle;
