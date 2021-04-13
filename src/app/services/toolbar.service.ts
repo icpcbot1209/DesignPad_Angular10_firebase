@@ -25,47 +25,53 @@ export class ToolbarService {
     this.textEditItems.push([]);
   }
 
-  quill;
+  quills = [];
 
-  createTextEditor(selectedPageId, selectedItemId, item) {
-    this.quill = new Quill('#textEditor-' + selectedPageId + '-' + selectedItemId, {
-      modules: {
-        toolbar: '#toolbar',
-      },
-      theme: 'snow',
-    });
-    this.quill.on('selection-change', (range, range2) => {
-      if (range && range2 === null) {
-        this.ds.isOnInput = true;
-      }
-    });
-
+  createTextEditor(selectedPageId, selectedItemId, hasToolbar) {
+    let quill;
     const ds = this.injector.get(DesignService);
     const ur = this.injector.get(UndoRedoService);
     const moveableService = this.injector.get(MoveableService);
 
-    this.quill.on('text-change', (delta, oldDelta, source) => {
-      let textEle = document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId) as HTMLElement;
-      let item = moveableService.getItem(textEle);
-      this.quillData = textEle.querySelector('.ql-editor');
-      ds.theDesign.pages[selectedPageId].items[selectedItemId].quillData = this.quillData.outerHTML;
-      if (item.isCurve) this.setCurveEffect(item.pageId, item.itemId, item.angle, true);
+    if (hasToolbar)
+      quill = new Quill('#textEditor-' + selectedPageId + '-' + selectedItemId, {
+        modules: {
+          toolbar: '#toolbar',
+        },
+        theme: 'snow',
+      });
+    else quill = new Quill('#textEditor-' + selectedPageId + '-' + selectedItemId);
 
-      ur.saveTheData(ds.theDesign);
-    });
+    quill
+      .on('selection-change', (range, range2) => {
+        if (range && range2 === null) {
+          this.ds.isOnInput = true;
+        }
+      })
+      .on('text-change', (delta, oldDelta, source) => {
+        let textEle = document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId) as HTMLElement;
+        let item = moveableService.getItem(textEle);
+        this.quillData = textEle.querySelector('.ql-editor');
+        ds.theDesign.pages[selectedPageId].items[selectedItemId].quillData = this.quillData.outerHTML;
+        if (item.isCurve) this.setCurveEffect(item.pageId, item.itemId, item.angle, true);
+
+        ur.saveTheData(ds.theDesign);
+      });
 
     (document.querySelector('#textEditor-' + selectedPageId + '-' + selectedItemId).querySelector('.ql-editor') as HTMLElement).style.overflow =
       'hidden';
 
     if (this.isCreateQuill) {
       if (this.textEditItems[selectedPageId].length > selectedItemId) {
-        this.textEditItems[selectedPageId][selectedItemId] = this.quill;
+        this.textEditItems[selectedPageId][selectedItemId] = quill;
         this.isCreateQuill = false;
       } else {
-        this.textEditItems[selectedPageId].push(this.quill);
+        this.textEditItems[selectedPageId].push(quill);
         this.isCreateQuill = false;
       }
     }
+
+    this.quills.push(quill);
   }
 
   resetting(item: Item) {
@@ -93,7 +99,7 @@ export class ToolbarService {
     let curveText = document.querySelector<HTMLElement>('#curveText-' + selectedPageId + '-' + selectedItemId);
     let item = moveableService.getItem(editorEle);
 
-    curveText.innerHTML = this.quill.getText();
+    curveText.innerHTML = this.quills[0].getText();
     curveText.style.fontSize = editorEle.style.fontSize;
     curveText.style.fontFamily = editorEle.style.fontFamily;
     // curveText.style.fontWeight = item.fontWeight.toString();
@@ -119,9 +125,9 @@ export class ToolbarService {
     setTimeout(() => {
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].textOpacity = '0';
       this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveOpacity = '1';
-      this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveText = this.quill.getText();
-      for (let i = 0; i < this.quill.getLength() - 1; i++) {
-        let textFormat = this.quill.getFormat(i, 1);
+      this.ds.theDesign.pages[moveableService.selectedPageId].items[moveableService.selectedItemId].curveText = this.quills[0].getText();
+      for (let i = 0; i < this.quills[0].getLength() - 1; i++) {
+        let textFormat = this.quills[0].getFormat(i, 1);
         this.effectToWord(textFormat, i, curveText);
       }
     });

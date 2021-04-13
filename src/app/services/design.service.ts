@@ -7,6 +7,7 @@ import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import { MediaService } from './media.service';
 import { transition } from '@angular/animations';
 import { OnDrag } from 'selecto';
+import { ToolbarService } from './toolbar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -130,6 +131,7 @@ export class DesignService {
 
   addItemToCurrentPage(item: Item) {
     //unobserve to item clip
+    const toolbarService = this.injector.get(ToolbarService);
     let ms = this.injector.get(MoveableService);
     let currentSelectedItem = ms.getItem(document.querySelector('#textEditor-' + ms.selectedPageId + '-' + ms.selectedItemId));
     if (currentSelectedItem?.type == ItemType.text)
@@ -139,6 +141,7 @@ export class DesignService {
 
     //add item to page
     this.copiedTargets = [];
+    toolbarService.quills = [];
     this.isTemplate = false;
     this.ur.isUndoRedo = false;
 
@@ -534,11 +537,23 @@ export class DesignService {
     this.setStatus(ItemStatus.none);
   }
 
-  onSelectGroup(pageId: number) {
-    this.thePageId = pageId;
+  onSelectGroup(pageId: number, targets: (HTMLElement | SVGElement)[]) {
+    const moveableService = this.injector.get(MoveableService);
+    let count = 0;
 
+    this.thePageId = pageId;
     this.theItem = null;
-    this.setStatus(ItemStatus.none);
+
+    for (let i = 0; i < targets.length; i++) {
+      let item = moveableService.getItem(targets[i]);
+      if (item.type == ItemType.text) count++;
+    }
+
+    console.log(count);
+    if (count >= 1)
+      setTimeout(() => {
+        this.setStatus(ItemStatus.text_selected);
+      });
   }
 
   onSelectImageItem(pageId: number, item: Item) {

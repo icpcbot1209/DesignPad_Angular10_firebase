@@ -131,6 +131,9 @@ export class MoveableService {
           //   items[i].selected = false;
           // }
           this.isCreateTextItem = false;
+          if (!this.ds.isPressedShiftKey) {
+            this.toolbarService.quills = [];
+          }
         }
       })
       .on('select', (e: OnSelect) => {
@@ -223,8 +226,10 @@ export class MoveableService {
     });
 
     if (targets.length > 1) {
+      this.ds.setStatus(ItemStatus.none);
+
       this.moveable = this.makeMoveableGroup(thePageId, targets);
-      this.ds.onSelectGroup(thePageId);
+      this.ds.onSelectGroup(thePageId, targets);
     } else if (targets.length === 1) {
       let item = this.getItem(targets[0]);
       let previousItem = this.getItem(this.previousTarget);
@@ -275,8 +280,8 @@ export class MoveableService {
     } else {
       let item = this.getItem(this.previousTarget);
 
-      this.toolbarService.quill?.setSelection(0);
-      this.toolbarService.quill?.blur();
+      this.toolbarService.quills[0]?.setSelection(0);
+      this.toolbarService.quills[0]?.blur();
       this.ds.deleteSelectedItem();
 
       if (this.previousTarget) {
@@ -1072,7 +1077,7 @@ export class MoveableService {
     if (this.previousTarget != undefined) {
       if (this.previousTarget != target) {
         if (!this.isCreateTextItem) {
-          this.toolbarService.quill?.blur();
+          this.toolbarService.quills[0]?.blur();
           this.isEditable = false;
 
           if (document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId))
@@ -1444,7 +1449,7 @@ export class MoveableService {
           let width = JSON.stringify(entries[0].contentRect.width) + 'px';
 
           //reach at the end of the screen
-          if (this.toolbarService.quill?.hasFocus() && item.x + item.w > this.ds.theDesign.category.size.x) {
+          if (this.toolbarService.quills[0]?.hasFocus() && item.x + item.w > this.ds.theDesign.category.size.x) {
             width = this.ds.theDesign.category.size.x - item.x + 'px';
             console.log(this.ds.theDesign.category.size.x, item.x, width);
             editorEle.style.width = width;
@@ -1473,7 +1478,7 @@ export class MoveableService {
       // let width = document.querySelector('#textEditor-' + this.selectedItemId + '-' + this.selectedItemId)?.clientWidth;
       let width = this.toolbarService.getCurveTextWidth(curveText);
 
-      if (item?.isCurve && this.toolbarService.quill.hasFocus() && selectorEle) {
+      if (item?.isCurve && this.toolbarService.quills[0].hasFocus() && selectorEle) {
         item.w = width;
         item.h = (curveText.firstChild as HTMLElement).clientHeight / (this.ds.zoomValue / 100);
         if (item.x + editorEle.getBoundingClientRect().width > this.ds.theDesign.category.size.x) {

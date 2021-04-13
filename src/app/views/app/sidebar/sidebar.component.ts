@@ -50,6 +50,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.theId = index;
     this.theItem = item;
 
-    this.ds.setStatus(ItemStatus.none);
+    // this.ds.setStatus(ItemStatus.none);
   }
 }

@@ -59,112 +59,108 @@ export class TextToolbarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    let selectorEle = document.querySelector<HTMLElement>(
-      '#textSelector-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
-    );
-    let item = this.moveableService.getItem(selectorEle);
-    this.toolbarService.createTextEditor(this.moveableService.selectedPageId, this.moveableService.selectedItemId, item);
-    if (item.x == undefined || item.y == undefined) {
-      let editorEle = document.querySelector<HTMLElement>(
-        '#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId
-      );
+    let textItems = [];
+    let thePageItem = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
 
-      item.w = editorEle.offsetWidth;
-      item.h = editorEle.offsetHeight;
-      item.x = (600 - item.w) / 2;
-      item.y = (500 - item.h) / 2;
-
-      editorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
-      selectorEle.style.width = item.w + 'px';
-      selectorEle.style.height = item.h + 'px';
-      selectorEle.style.transform = `translate(${item.x}px, ${item.y}px)`;
+    for (let i = 0; i < thePageItem.length; i++) {
+      if (thePageItem[i].type == ItemType.text && thePageItem[i].selected) textItems.push(thePageItem[i]);
     }
 
-    this.sizeEle = document.querySelector<HTMLInputElement>('#fontSizeInput');
-    this.fontEle = document.querySelector<HTMLInputElement>('#fontInput');
+    console.log(textItems);
+    for (let i = 0; i < textItems.length; i++) {
+      let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + textItems[i].pageId + '-' + textItems[i].itemId);
+      let item = this.moveableService.getItem(selectorEle);
 
-    let ele = document.querySelector<HTMLElement>('#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId);
-    item = this.moveableService.getItem(ele);
+      if (!i) this.toolbarService.createTextEditor(textItems[i].pageId, textItems[i].itemId, true);
+      else this.toolbarService.createTextEditor(textItems[i].pageId, textItems[i].itemId, false);
 
-    setTimeout(() => {
-      this.sizeEle.value = (Math.floor(Number.parseFloat(item.fontSize.substr(0, item.fontSize.length - 2)) * 10) / 10).toString();
-      this.fontControl.disable();
-    });
+      this.sizeEle = document.querySelector<HTMLInputElement>('#fontSizeInput');
+      this.fontEle = document.querySelector<HTMLInputElement>('#fontInput');
 
-    let qlEditor = document
-      .querySelector('#textEditor-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId)
-      .querySelector('.ql-editor') as HTMLElement;
-    qlEditor.style.lineHeight = item.lineHeight + 'em';
-    qlEditor.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
+      setTimeout(() => {
+        this.sizeEle.value = (Math.floor(Number.parseFloat(item.fontSize.substr(0, item.fontSize.length - 2)) * 10) / 10).toString();
+        this.fontControl.disable();
+      });
 
-    let fontFormEle = document.querySelector('#fontForm').firstChild.firstChild.firstChild as HTMLElement;
-    let fontSelector = document.querySelector('#fontSelector') as HTMLElement;
+      let qlEditor = document
+        .querySelector('#textEditor-' + textItems[i].pageId + '-' + textItems[i].itemId)
+        .querySelector('.ql-editor') as HTMLElement;
+      qlEditor.style.lineHeight = item.lineHeight + 'em';
+      qlEditor.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
 
-    fontSelector.style.width = fontFormEle.clientWidth + 'px';
-    fontSelector.style.height = fontFormEle.clientHeight + 'px';
+      let fontFormEle = document.querySelector('#fontForm').firstChild.firstChild.firstChild as HTMLElement;
+      let fontSelector = document.querySelector('#fontSelector') as HTMLElement;
+
+      fontSelector.style.width = fontFormEle.clientWidth + 'px';
+      fontSelector.style.height = fontFormEle.clientHeight + 'px';
+    }
 
     //add event to bolb button
-    document.querySelector('#bold').addEventListener('click', () => {
-      let quill = this.toolbarService.quill;
-      let length: number = this.toolbarService.quill.getLength();
+    // document.querySelector('#bold').addEventListener('click', () => {
+    //   let quill = this.toolbarService.quill;
+    //   let length: number = this.toolbarService.quill.getLength();
 
-      if (quill.getSelection().length == 0) {
-        this.moveableService.enableTextEdit();
-        if (quill.getFormat(0, length - 1).bold) quill.formatText(0, length - 1, 'bold', false);
-        else quill.formatText(0, length - 1, 'bold', true);
-      }
-    });
+    //   if (quill.getSelection().length == 0) {
+    //     this.moveableService.enableTextEdit();
+    //     if (quill.getFormat(0, length - 1).bold) quill.formatText(0, length - 1, 'bold', false);
+    //     else quill.formatText(0, length - 1, 'bold', true);
+    //   }
+    // });
 
     document.querySelector('#italic').addEventListener('click', () => {
-      let quill = this.toolbarService.quill;
-      let length: number = this.toolbarService.quill.getLength();
+      console.log(this.toolbarService.quills);
+      for (let i = 0; i < this.toolbarService.quills.length; i++) {
+        let quill = this.toolbarService.quills[i];
+        let length: number = quill.getLength();
 
-      if (quill.getSelection().length == 0) {
-        this.moveableService.enableTextEdit();
-        if (quill.getFormat(0, length - 1).italic) quill.formatText(0, length - 1, 'italic', false);
-        else quill.formatText(0, length - 1, 'italic', true);
+        if (this.toolbarService.quills.length > 1 || quill.getSelection()?.length == 0) {
+          this.moveableService.enableTextEdit();
+          if (quill.getFormat(0, length - 1).italic) quill.formatText(0, length - 1, 'italic', false);
+          else quill.formatText(0, length - 1, 'italic', true);
+        }
+        quill.blur();
       }
     });
 
-    document.querySelector('#underline').addEventListener('click', () => {
-      let quill = this.toolbarService.quill;
-      let length: number = this.toolbarService.quill.getLength();
+    // document.querySelector('#underline').addEventListener('click', () => {
+    //   let quill = this.toolbarService.quill;
+    //   let length: number = this.toolbarService.quill.getLength();
 
-      if (quill.getSelection().length == 0) {
-        this.moveableService.enableTextEdit();
-        if (quill.getFormat(0, length - 1).underline) quill.formatText(0, length - 1, 'underline', false);
-        else quill.formatText(0, length - 1, 'underline', true);
-      }
-    });
+    //   if (quill.getSelection().length == 0) {
+    //     this.moveableService.enableTextEdit();
+    //     if (quill.getFormat(0, length - 1).underline) quill.formatText(0, length - 1, 'underline', false);
+    //     else quill.formatText(0, length - 1, 'underline', true);
+    //   }
+    // });
 
-    document.querySelector('#strike').addEventListener('click', () => {
-      let quill = this.toolbarService.quill;
-      let length: number = this.toolbarService.quill.getLength();
+    // document.querySelector('#strike').addEventListener('click', () => {
+    //   let quill = this.toolbarService.quill;
+    //   let length: number = this.toolbarService.quill.getLength();
 
-      if (quill.getSelection().length == 0) {
-        this.moveableService.enableTextEdit();
-        if (quill.getFormat(0, length - 1).strike) quill.formatText(0, length - 1, 'strike', false);
-        else quill.formatText(0, length - 1, 'strike', true);
-      }
-    });
+    //   if (quill.getSelection().length == 0) {
+    //     this.moveableService.enableTextEdit();
+    //     if (quill.getFormat(0, length - 1).strike) quill.formatText(0, length - 1, 'strike', false);
+    //     else quill.formatText(0, length - 1, 'strike', true);
+    //   }
+    // });
 
-    document.querySelector('#color').addEventListener('click', () => {
-      let quill = this.toolbarService.quill;
-      let length: number = this.toolbarService.quill.getLength();
-      if (!quill.getSelection(true).length) {
-        this.moveableService.enableTextEdit();
-        quill.setSelection(0, length - 1);
-      }
-    });
+    // document.querySelector('#color').addEventListener('click', () => {
+    //   let quill = this.toolbarService.quill;
+    //   let length: number = this.toolbarService.quill.getLength();
+    //   if (!quill.getSelection(true).length) {
+    //     this.moveableService.enableTextEdit();
+    //     quill.setSelection(0, length - 1);
+    //   }
+    // });
 
-    document.querySelector('#bgColor').addEventListener('click', () => {
-      let quill = this.toolbarService.quill;
-      let length: number = this.toolbarService.quill.getLength();
-      if (!quill.getSelection(true).length) {
-        this.moveableService.enableTextEdit();
-        quill.setSelection(0, length - 1);
-      }
-    });
+    // document.querySelector('#bgColor').addEventListener('click', () => {
+    //   let quill = this.toolbarService.quill;
+    //   let length: number = this.toolbarService.quill.getLength();
+    //   if (!quill.getSelection(true).length) {
+    //     this.moveableService.enableTextEdit();
+    //     quill.setSelection(0, length - 1);
+    //   }
+    // });
   }
 
   catchEnterKey(event) {
