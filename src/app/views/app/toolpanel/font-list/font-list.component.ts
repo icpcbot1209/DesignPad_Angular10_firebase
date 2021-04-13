@@ -57,7 +57,8 @@ export class FontListComponent implements OnInit {
     // this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].fontFamily = fontFamily
     document.querySelector<HTMLInputElement>('#fontInput').value = fontFamily;
     this.ds.previousSelectedFontItemFamily = fontFamily;
-    this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].fontFamily = fontFamily;
+    for (let i = 0; i < this.toolbarService.textItems.length; i++) this.toolbarService.textItems[i].fontFamily = fontFamily;
+    // this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId].fontFamily = fontFamily;
     this.ur.saveTheData(this.ds.theDesign);
   }
 
