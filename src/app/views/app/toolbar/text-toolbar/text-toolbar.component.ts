@@ -126,20 +126,22 @@ export class TextToolbarComponent implements OnInit {
       this.fontControl.disable();
     });
 
-    //add event to bolb button
-    // document.querySelector('#bold').addEventListener('click', () => {
-    //   let quill = this.toolbarService.quill;
-    //   let length: number = this.toolbarService.quill.getLength();
+    // add event to bolb button
+    document.querySelector('#bold').addEventListener('click', () => {
+      for (let i = 0; i < this.toolbarService.quills.length; i++) {
+        let quill = this.toolbarService.quills[i];
+        let length: number = quill.getLength();
 
-    //   if (quill.getSelection().length == 0) {
-    //     this.moveableService.enableTextEdit();
-    //     if (quill.getFormat(0, length - 1).bold) quill.formatText(0, length - 1, 'bold', false);
-    //     else quill.formatText(0, length - 1, 'bold', true);
-    //   }
-    // });
+        if (this.toolbarService.quills.length > 1 || quill.getSelection()?.length == 0) {
+          this.moveableService.enableTextEdit();
+          if (quill.getFormat(0, length - 1).bold) quill.formatText(0, length - 1, 'bold', false);
+          else quill.formatText(0, length - 1, 'bold', true);
+        }
+        quill.blur();
+      }
+    });
 
     document.querySelector('#italic').addEventListener('click', () => {
-      console.log(this.toolbarService.quills);
       for (let i = 0; i < this.toolbarService.quills.length; i++) {
         let quill = this.toolbarService.quills[i];
         let length: number = quill.getLength();
@@ -222,14 +224,11 @@ export class TextToolbarComponent implements OnInit {
   }
 
   showFontList() {
-    console.log('showFontList');
     this.ds.setStatus(this.ItemStatus.text_font_list);
-    // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
   }
 
   showTextEffects() {
     this.ds.setStatus(this.ItemStatus.text_effect);
-    // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = 'white';
   }
 
   // set Line Height and Letter space
