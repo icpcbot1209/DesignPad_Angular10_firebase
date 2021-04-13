@@ -717,7 +717,7 @@ export class TextEffectsComponent implements OnInit {
     );
 
     this.moveableService
-      .curveTextObserver(this.moveableService.selectedPageId, this.moveableService.selectedItemId)
+      .curveTextObserver()
       .observe(document.querySelector<HTMLElement>('#curveText-' + this.moveableService.selectedPageId + '-' + this.moveableService.selectedItemId));
   }
 

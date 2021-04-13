@@ -26,9 +26,7 @@ export class TextItemComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.moveableService
-      .resizeObserver(this.item.pageId, this.item.itemId)
-      .unobserve(document.querySelector<HTMLElement>('#textEditor-' + this.item.pageId + '-' + this.item.itemId));
+    this.moveableService.resizeObserver().unobserve(document.querySelector<HTMLElement>('#textEditor-' + this.item.pageId + '-' + this.item.itemId));
   }
 
   ngAfterViewInit(): void {

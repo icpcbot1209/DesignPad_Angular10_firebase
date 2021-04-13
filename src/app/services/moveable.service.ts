@@ -261,9 +261,7 @@ export class MoveableService {
         }
 
         if (this.isResizeObserver) {
-          this.resizeObserver(this.selectedPageId, this.selectedItemId).observe(
-            document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
-          );
+          this.resizeObserver().observe(document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId));
         }
       } else if (item.type === ItemType.element) {
         this.moveable = this.makeMoveableElement(thePageId, targets[0]);
@@ -299,9 +297,7 @@ export class MoveableService {
         this.ds.theDesign.pages[this.selectedPageId].items[this.selectedItemId].type &&
         this.ds.theDesign.pages[this.selectedPageId].items[this.selectedItemId].type == ItemType.text
       ) {
-        this.resizeObserver(this.selectedPageId, this.selectedItemId).unobserve(
-          document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
-        );
+        this.resizeObserver().unobserve(document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId));
       }
 
       this.isResizeObserver = false;
@@ -1081,9 +1077,7 @@ export class MoveableService {
           this.isEditable = false;
 
           if (document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId))
-            this.resizeObserver(this.selectedPageId, this.selectedItemId).unobserve(
-              document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId)
-            );
+            this.resizeObserver().unobserve(document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId));
         }
         this.ds.isOnInput = false;
         this.isPosition = false;
@@ -1439,50 +1433,51 @@ export class MoveableService {
     }
   }
 
-  resizeObserver(pageId, itemId) {
+  resizeObserver() {
     return new ResizeObserver((entries) => {
       this.zone.run(() => {
-        let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + this.selectedPageId + '-' + this.selectedItemId);
-        let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
-        let item = this.getItem(selectorEle);
-        if (!this.ur.isUndoRedo && !item?.isOnResize && !item?.isCurve && selectorEle) {
-          let width = JSON.stringify(entries[0].contentRect.width) + 'px';
+        let item = this.getItem(entries[0].target);
+        if (item) {
+          let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + item.pageId + '-' + item.itemId);
+          let editorEle = document.querySelector<HTMLElement>('#textEditor-' + item.pageId + '-' + item.itemId);
 
-          //reach at the end of the screen
-          if (this.toolbarService.quills[0]?.hasFocus() && item.x + item.w > this.ds.theDesign.category.size.x) {
-            width = this.ds.theDesign.category.size.x - item.x + 'px';
-            console.log(this.ds.theDesign.category.size.x, item.x, width);
-            editorEle.style.width = width;
+          if (!this.ur.isUndoRedo && !item.isOnResize && !item.isCurve && selectorEle) {
+            let width = JSON.stringify(entries[0].contentRect.width) + 'px';
+
+            //reach at the end of the screen
+            if (this.toolbarService.quills[0]?.hasFocus() && item.x + item.w > this.ds.theDesign.category.size.x) {
+              width = this.ds.theDesign.category.size.x - item.x + 'px';
+              console.log(this.ds.theDesign.category.size.x, item.x, width);
+              editorEle.style.width = width;
+            }
+
+            let height = JSON.stringify(entries[0].contentRect.height) + 'px';
+            selectorEle.style.width = width;
+            selectorEle.style.height = height;
+            item.w = parseFloat(width);
+            item.h = parseFloat(height);
+            item.x = item.x - (parseFloat(width) - parseFloat(selectorEle.style.width)) / 2;
+            selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+            this.setSelectable(item.itemId, item.pageId, '#textSelector-');
+            this.isResizeObserver = false;
           }
-
-          let height = JSON.stringify(entries[0].contentRect.height) + 'px';
-          selectorEle.style.width = width;
-          selectorEle.style.height = height;
-          item.w = parseFloat(width);
-          item.h = parseFloat(height);
-          item.x = item.x - (parseFloat(width) - parseFloat(selectorEle.style.width)) / 2;
-          selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-          this.setSelectable(this.selectedItemId, this.selectedPageId, '#textSelector-');
-          this.isResizeObserver = false;
         }
       });
     });
   }
 
-  curveTextObserver(pageId, itemId) {
+  curveTextObserver() {
     return new ResizeObserver((entries) => {
-      let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + this.selectedPageId + '-' + this.selectedItemId);
-      let editorEle = document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId);
-      let curveText = document.querySelector<HTMLElement>('#curveText-' + this.selectedPageId + '-' + this.selectedItemId);
-      let item = this.getItem(selectorEle);
-      // let width = document.querySelector('#textEditor-' + this.selectedItemId + '-' + this.selectedItemId)?.clientWidth;
+      let item = this.getItem(entries[0].target);
+      let selectorEle = document.querySelector<HTMLElement>('#textSelector-' + item.pageId + '-' + item.itemId);
+      let editorEle = document.querySelector<HTMLElement>('#textEditor-' + item.pageId + '-' + item.itemId);
+      let curveText = document.querySelector<HTMLElement>('#curveText-' + item.pageId + '-' + item.itemId);
       let width = this.toolbarService.getCurveTextWidth(curveText);
 
-      if (item?.isCurve && this.toolbarService.quills[0].hasFocus() && selectorEle) {
+      if (item?.isCurve && this.toolbarService.quills[0]?.hasFocus() && selectorEle) {
         item.w = width;
         item.h = (curveText.firstChild as HTMLElement).clientHeight / (this.ds.zoomValue / 100);
         if (item.x + editorEle.getBoundingClientRect().width > this.ds.theDesign.category.size.x) {
-          // item.w = this.ds.theDesign.category.size.x - item.x;
           editorEle.style.width = this.ds.theDesign.category.size.x - item.x + 'px';
         }
 
@@ -1490,10 +1485,8 @@ export class MoveableService {
         selectorEle.style.height = item.h + 'px';
         curveText.style.width = item.w + 'px';
         curveText.style.height = item.h + 'px';
-        // this.toolbarService.setCurveEffect(item.pageId, item.itemId, item.angle, true);
-        // item.x = item.x - (entries[0].contentRect.width - parseFloat(selectorEle.style.width)) / 2;
         selectorEle.style.transform = `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
-        this.setSelectable(itemId, pageId, '#textSelector-');
+        this.setSelectable(item.itemId, item.pageId, '#textSelector-');
         this.isResizeObserver = false;
       }
     });

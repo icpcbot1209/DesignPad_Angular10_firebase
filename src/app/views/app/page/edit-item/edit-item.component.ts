@@ -45,9 +45,7 @@ export class EditItemComponent implements OnInit {
     this.ds.setStatus(ItemStatus.text_selected);
     this.quillEditor.nativeElement.innerHTML = this.item.quillData;
     if (this.item.isCurve) {
-      this.moveableService
-        .resizeObserver(this.item.pageId, this.item.itemId)
-        .observe(document.querySelector<HTMLElement>('#textEditor-' + this.item.pageId + '-' + this.item.itemId));
+      this.moveableService.resizeObserver().observe(document.querySelector<HTMLElement>('#textEditor-' + this.item.pageId + '-' + this.item.itemId));
       // this.toolbarService.setCurveEffect(this.item.pageId, this.item.itemId, this.item.angle, false);
     }
   }

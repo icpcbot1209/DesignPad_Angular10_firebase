@@ -135,9 +135,7 @@ export class DesignService {
     let ms = this.injector.get(MoveableService);
     let currentSelectedItem = ms.getItem(document.querySelector('#textEditor-' + ms.selectedPageId + '-' + ms.selectedItemId));
     if (currentSelectedItem?.type == ItemType.text)
-      ms.resizeObserver(ms.selectedPageId, ms.selectedItemId).unobserve(
-        document.querySelector<HTMLElement>('#textEditor-' + ms.selectedPageId + '-' + ms.selectedItemId)
-      );
+      ms.resizeObserver().unobserve(document.querySelector<HTMLElement>('#textEditor-' + ms.selectedPageId + '-' + ms.selectedItemId));
 
     //add item to page
     this.copiedTargets = [];
