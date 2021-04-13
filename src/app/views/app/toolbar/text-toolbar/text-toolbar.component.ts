@@ -155,45 +155,60 @@ export class TextToolbarComponent implements OnInit {
       }
     });
 
-    // document.querySelector('#underline').addEventListener('click', () => {
-    //   let quill = this.toolbarService.quill;
-    //   let length: number = this.toolbarService.quill.getLength();
+    document.querySelector('#underline').addEventListener('click', () => {
+      for (let i = 0; i < this.toolbarService.quills.length; i++) {
+        let quill = this.toolbarService.quills[i];
+        let length: number = quill.getLength();
 
-    //   if (quill.getSelection().length == 0) {
-    //     this.moveableService.enableTextEdit();
-    //     if (quill.getFormat(0, length - 1).underline) quill.formatText(0, length - 1, 'underline', false);
-    //     else quill.formatText(0, length - 1, 'underline', true);
-    //   }
-    // });
+        if (this.toolbarService.quills.length > 1 || quill.getSelection()?.length == 0) {
+          this.moveableService.enableTextEdit();
+          if (quill.getFormat(0, length - 1).underline) quill.formatText(0, length - 1, 'underline', false);
+          else quill.formatText(0, length - 1, 'underline', true);
+        }
+        quill.blur();
+      }
+    });
 
-    // document.querySelector('#strike').addEventListener('click', () => {
-    //   let quill = this.toolbarService.quill;
-    //   let length: number = this.toolbarService.quill.getLength();
+    document.querySelector('#strike').addEventListener('click', () => {
+      for (let i = 0; i < this.toolbarService.quills.length; i++) {
+        let quill = this.toolbarService.quills[i];
+        let length: number = quill.getLength();
 
-    //   if (quill.getSelection().length == 0) {
-    //     this.moveableService.enableTextEdit();
-    //     if (quill.getFormat(0, length - 1).strike) quill.formatText(0, length - 1, 'strike', false);
-    //     else quill.formatText(0, length - 1, 'strike', true);
-    //   }
-    // });
+        if (this.toolbarService.quills.length > 1 || quill.getSelection()?.length == 0) {
+          this.moveableService.enableTextEdit();
+          if (quill.getFormat(0, length - 1).strike) quill.formatText(0, length - 1, 'strike', false);
+          else quill.formatText(0, length - 1, 'strike', true);
+        }
+        quill.blur();
+      }
+    });
 
-    // document.querySelector('#color').addEventListener('click', () => {
-    //   let quill = this.toolbarService.quill;
-    //   let length: number = this.toolbarService.quill.getLength();
-    //   if (!quill.getSelection(true).length) {
-    //     this.moveableService.enableTextEdit();
-    //     quill.setSelection(0, length - 1);
-    //   }
-    // });
+    document.querySelector('#color').addEventListener('click', () => {
+      for (let i = 0; i < this.toolbarService.quills.length; i++) {
+        let quill = this.toolbarService.quills[i];
+        let length: number = quill.getLength();
 
-    // document.querySelector('#bgColor').addEventListener('click', () => {
-    //   let quill = this.toolbarService.quill;
-    //   let length: number = this.toolbarService.quill.getLength();
-    //   if (!quill.getSelection(true).length) {
-    //     this.moveableService.enableTextEdit();
-    //     quill.setSelection(0, length - 1);
-    //   }
-    // });
+        if (this.toolbarService.quills.length > 1 || !quill.getSelection(true).length) {
+          this.moveableService.enableTextEdit();
+          quill.setSelection(0, length - 1);
+        }
+        quill.blur();
+      }
+    });
+
+    document.querySelector('#bgColor').addEventListener('click', () => {
+      for (let i = 0; i < this.toolbarService.quills.length; i++) {
+        let quill = this.toolbarService.quills[i];
+        let length: number = quill.getLength();
+
+        if (this.toolbarService.quills.length > 1 || !quill.getSelection(true).length) {
+          this.moveableService.enableTextEdit();
+          quill.setSelection(0, length - 1);
+          console.log(length);
+        }
+        // quill.blur();
+      }
+    });
   }
 
   catchEnterKey(event) {

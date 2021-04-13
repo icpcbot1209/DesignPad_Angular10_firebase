@@ -125,6 +125,7 @@ export class MoveableService {
 
     selecto
       .on('selectStart', () => {
+        console.log('selectedStart');
         if (this.selectedPageId) {
           let items = this.ds.theDesign.pages[this.selectedPageId].items;
           // for (let i = 0; i < items.length; i++) {
@@ -280,6 +281,7 @@ export class MoveableService {
 
       this.toolbarService.quills[0]?.setSelection(0);
       this.toolbarService.quills[0]?.blur();
+      this.toolbarService.quills = [];
       this.ds.deleteSelectedItem();
 
       if (this.previousTarget) {
