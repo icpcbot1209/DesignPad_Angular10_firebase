@@ -28,6 +28,8 @@ export class TextToolbarComponent implements OnInit {
   letter;
   lineHeight;
   isShowLineHeight: boolean = false;
+  textColor = '#000000';
+  textBgColor = '#ffffff';
   // textItems = [];
   // targets = [];
 
@@ -184,31 +186,60 @@ export class TextToolbarComponent implements OnInit {
     });
 
     document.querySelector('#color').addEventListener('click', () => {
-      for (let i = 0; i < this.toolbarService.quills.length; i++) {
-        let quill = this.toolbarService.quills[i];
-        let length: number = quill.getLength();
-
-        if (this.toolbarService.quills.length > 1 || !quill.getSelection(true).length) {
-          this.moveableService.enableTextEdit();
-          quill.setSelection(0, length - 1);
-        }
-        quill.blur();
-      }
+      (document.querySelector('#color').querySelector('input') as HTMLElement).click();
     });
 
     document.querySelector('#bgColor').addEventListener('click', () => {
-      for (let i = 0; i < this.toolbarService.quills.length; i++) {
-        let quill = this.toolbarService.quills[i];
-        let length: number = quill.getLength();
-
-        if (this.toolbarService.quills.length > 1 || !quill.getSelection(true).length) {
-          this.moveableService.enableTextEdit();
-          quill.setSelection(0, length - 1);
-          console.log(length);
-        }
-        // quill.blur();
-      }
+      (document.querySelector('#bgColor').querySelector('input') as HTMLElement).click();
     });
+  }
+
+  changeTextColor() {
+    for (let i = 0; i < this.toolbarService.quills.length; i++) {
+      let quill = this.toolbarService.quills[i];
+      let length: number = quill.getLength();
+
+      if (
+        this.toolbarService.targets.length > 1 ||
+        !this.toolbarService.range ||
+        this.toolbarService.range == null ||
+        this.toolbarService.range?.length == 0
+      ) {
+        this.moveableService.enableTextEdit();
+        quill.formatText(0, length - 1, 'color', this.textColor);
+        quill.blur();
+      } else {
+        quill.formatText(this.toolbarService.range.index, this.toolbarService.range.length, 'color', this.textColor);
+        setTimeout(() => {
+          this.toolbarService.quills[0].setSelection(this.toolbarService.range.index, this.toolbarService.range.length);
+        });
+      }
+      if (this.toolbarService.quills.length != 1) quill.blur();
+    }
+  }
+
+  changeBgTextColor() {
+    for (let i = 0; i < this.toolbarService.quills.length; i++) {
+      let quill = this.toolbarService.quills[i];
+      let length: number = quill.getLength();
+
+      if (
+        this.toolbarService.targets.length > 1 ||
+        !this.toolbarService.range ||
+        this.toolbarService.range == null ||
+        this.toolbarService.range?.length == 0
+      ) {
+        this.moveableService.enableTextEdit();
+        quill.formatText(0, length - 1, 'background', this.textBgColor);
+        quill.blur();
+      } else {
+        quill.formatText(this.toolbarService.range.index, this.toolbarService.range.length, 'background', this.textBgColor);
+        setTimeout(() => {
+          this.toolbarService.quills[0].setSelection(this.toolbarService.range.index, this.toolbarService.range.length);
+        });
+      }
+      if (this.toolbarService.quills.length != 1) quill.blur();
+    }
   }
 
   catchEnterKey(event) {

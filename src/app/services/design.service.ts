@@ -140,6 +140,7 @@ export class DesignService {
     //add item to page
     this.copiedTargets = [];
     toolbarService.quills = [];
+    toolbarService.range = null;
     this.isTemplate = false;
     this.ur.isUndoRedo = false;
 
@@ -547,7 +548,6 @@ export class DesignService {
       if (item.type == ItemType.text) count++;
     }
 
-    console.log(count);
     if (count >= 1)
       setTimeout(() => {
         this.setStatus(ItemStatus.text_selected);

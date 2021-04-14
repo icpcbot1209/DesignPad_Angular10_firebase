@@ -22,6 +22,7 @@ export class ToolbarService {
   direction;
   quillData;
   isCurving: boolean = false;
+  range = null;
 
   constructor(public ds: DesignService, private injector: Injector) {
     this.textEditItems.push([]);
@@ -46,6 +47,9 @@ export class ToolbarService {
 
     quill
       .on('selection-change', (range, range2) => {
+        if (quill.hasFocus()) {
+          this.range = range;
+        }
         if (range && range2 === null) {
           this.ds.isOnInput = true;
         }

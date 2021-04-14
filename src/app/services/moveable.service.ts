@@ -125,7 +125,6 @@ export class MoveableService {
 
     selecto
       .on('selectStart', () => {
-        console.log('selectedStart');
         if (this.selectedPageId) {
           let items = this.ds.theDesign.pages[this.selectedPageId].items;
           // for (let i = 0; i < items.length; i++) {
@@ -133,6 +132,8 @@ export class MoveableService {
           // }
           this.isCreateTextItem = false;
           if (!this.ds.isPressedShiftKey) {
+            this.toolbarService.quills[0]?.setSelection(0, 0);
+            this.toolbarService.quills[0]?.blur();
             this.toolbarService.quills = [];
           }
         }
@@ -283,6 +284,7 @@ export class MoveableService {
       this.toolbarService.quills[0]?.blur();
       this.toolbarService.quills = [];
       this.ds.deleteSelectedItem();
+      this.toolbarService.range = null;
 
       if (this.previousTarget) {
         if (item?.type == ItemType.text) {
@@ -1075,7 +1077,7 @@ export class MoveableService {
     if (this.previousTarget != undefined) {
       if (this.previousTarget != target) {
         if (!this.isCreateTextItem) {
-          this.toolbarService.quills[0]?.blur();
+          // this.toolbarService.quills[0]?.blur();
           this.isEditable = false;
 
           if (document.querySelector<HTMLElement>('#textEditor-' + this.selectedPageId + '-' + this.selectedItemId))
@@ -1083,6 +1085,7 @@ export class MoveableService {
         }
         this.ds.isOnInput = false;
         this.isPosition = false;
+        this.toolbarService.range = null;
       }
     }
   }
@@ -1449,7 +1452,6 @@ export class MoveableService {
             //reach at the end of the screen
             if (this.toolbarService.quills[0]?.hasFocus() && item.x + item.w > this.ds.theDesign.category.size.x) {
               width = this.ds.theDesign.category.size.x - item.x + 'px';
-              console.log(this.ds.theDesign.category.size.x, item.x, width);
               editorEle.style.width = width;
             }
 
