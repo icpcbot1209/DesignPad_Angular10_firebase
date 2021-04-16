@@ -9,21 +9,6 @@
       </svg>
       Browse
     </ng-template>
-    <!-- <perfect-scrollbar style="height: 100%" [config]="{ suppressScrollX: true, wheelPropagation: false }">
-      <div id="gridContainer" class="grid-container">
-        <ng-container *ngFor="let item of templates; let i = index">
-          <div style="position: relative">
-            <img
-              [id]="'templateThumbnail' + i"
-              class="grid-item"
-              [lazyLoad]="item.thumbnail"
-              [ngStyle]="{ height: item.height * ratios[i] + padding * 2 + 'px' }"
-              width="auto"
-              (click)="addTemplatePage(item)"
-            />
-          </div>
-        </ng-container></div
-    ></perfect-scrollbar> -->
     <ng-container *ngIf="theTab == 0">
       <perfect-scrollbar style="height: 100%" [config]="{ suppressScrollX: true, wheelPropagation: false }">
         <div #gridContainer class="grid-container">
@@ -122,22 +107,6 @@
       </svg>
       My Template
     </ng-template>
-    <!-- <perfect-scrollbar style="height: 100%" [config]="{ suppressScrollX: true, wheelPropagation: false }">
-      <div id="gridContainer" class="grid-container">
-        <ng-container *ngFor="let item of userTemplates; let i = index">
-          <div style="position: relative">
-            <img
-              [id]="'usertemplateThumbnail' + i"
-              class="grid-item"
-              [lazyLoad]="item.thumbnail"
-              [ngStyle]="{ height: item.height * userRatios[i] + padding * 2 + 'px' }"
-              width="auto"
-              (click)="addUserTemplatePage(i)"
-            />
-          </div>
-        </ng-container>
-      </div>
-    </perfect-scrollbar> -->
     <ng-container *ngIf="theTab == 1">
       <perfect-scrollbar style="height: 100%" [config]="{ suppressScrollX: true, wheelPropagation: false }">
         <div #gridContainer class="grid-container">

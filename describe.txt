@@ -1,0 +1,18 @@
+Used Services
+  •Pdfcrowd API
+  •Firebase ( Authentication, Firestore )
+
+Components Directory
+  • views ( src\app\views )
+     • admin : admin page
+     • app
+        • design-panel
+               
+        • page
+        • sidebar
+        • toolbar
+        • toolpanel
+        • topnav
+     • home : home page
+     • user : auth page
+
