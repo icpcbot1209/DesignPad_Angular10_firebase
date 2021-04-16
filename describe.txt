@@ -1,18 +1,72 @@
-Used Services
-  •Pdfcrowd API
-  •Firebase ( Authentication, Firestore )
+Used Services and node modules
+  • Pdfcrowd API
+        It is used to download as image and pdf.
+  • Firebase ( Authentication, Firestore )
+        It is used for auth.
+  • Selecto : node module
+        It is used to select clip.
+  • Moveable : node module
+        It is used to drag, resize, scale, rotate, clip, and snap clip.
+  • SimpleUndo : node module
+        It is used to undo and redo.
 
 Components Directory
-  • views ( src\app\views )
+   • views ( src\app\views )
      • admin : admin page
      • app
-        • design-panel
-               
+        • design-panel : the page include toolbar and design panel
         • page
-        • sidebar
-        • toolbar
-        • toolpanel
-        • topnav
+           • edit-item, text-item
+                 edit-item : Quill.js is used for text clip.
+                                      There are two elements to show quill text and curve text.
+                 text-item : area to select the text
+           • element
+              • svgelement : To show the svg image
+              • svgselector : To select the svg
+           • image
+              • image-element: To show the image
+              • image-selector: To select the image
+        • sidebar : To add item on design pad
+           • elements : To show uploaded svg images on sidebar
+           • photos : To show uploaded images on sidebar
+           • templates : To show saved admin and user templates on sidebar
+           • text : To show styled text on sidebar
+           • user-uploads : User can upload files from devices
+        • toolbar : To handle the style of the clips. It is shown when clip is put on pad
+        • toolpanel : This is shown on sidebar
+           • filter: To filter images. This is on image toolbar.
+           • preset : To show filtered image
+           • font-list: To select google fonts
+           • text-effects : Add effect to text
+        • topnav : user setting drop menu
      • home : home page
      • user : auth page
 
+Functionality of the product
+   • Templates : Save admin and user templates ( src\app\views\app\design-panel\design-panel.component.ts )
+         UploadTemplate( ) : Save the thumbnail and the data to firestore.
+	The data ( src\app\services\design.service.ts : theDesign ) is the info of the design pad.
+   • Elements : Get color of SVG image ( src\app\views\app\page\element\svgelement\svgelement.component.ts )
+         getSVGColorCollection( ) : This is called when SVG image is loaded.
+   • Text : google fonts ( src\app\views\app\app.component.ts )
+         ngOnInit() : When first page is loaded, google fonts is imported
+   • design.service.ts ( src\app\services\design.service.ts )
+         theDesign : the info of the design pad
+	            theDesign.category.size :	the width and height of the design pad.
+	            theDesign.pages :	There are all pages that is created.
+	            theDesign.pages[ index of the pages ].items :	There are all items that is put on this page.
+         addItemToCurrentPage( item ) : This item is added to selected page.
+         onKeyEvent( ) : MouseEvent
+	            Delete item
+	            Undo and Redo
+	            Drag item using arrow button
+	            Copy and Paste item
+   • moveable.service.ts ( src\app\services\moveable.service.ts )
+         initSelecto() : create new selecto
+         onSelectTarget( targets ) : This targets are items that is selected.
+			 Add moveable to items ( For example: makeMoveableImage(thePageId, targets[0]) )
+         resizeObserver() : detect changed of the text area
+         curveTextObserver() : detect changed of the curved text area
+   • download.service.ts ( src\app\services\download.service.ts )
+         downloadAsPdf() : download all pages as pdf
+         downloadAsImg() : download all pages as image

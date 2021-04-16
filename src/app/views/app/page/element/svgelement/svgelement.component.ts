@@ -40,7 +40,7 @@ export class SVGElementComponent implements OnInit {
       this.moveableService.selectedItemId = this.item.itemId;
       this.moveableService.selectedPageId = this.item.pageId;
 
-      this.setSVGColorCollection();
+      this.getSVGColorCollection();
     });
   }
 
@@ -60,7 +60,7 @@ export class SVGElementComponent implements OnInit {
     };
   }
 
-  setSVGColorCollection() {
+  getSVGColorCollection() {
     let svgEle = document.querySelector('#SVGElement-' + this.item.pageId + '-' + this.item.itemId);
     let tags = ['path', 'circle', 'rect', 'polygon', 'ellipse', 'text'];
 
