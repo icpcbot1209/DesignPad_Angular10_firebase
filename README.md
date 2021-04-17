@@ -51,7 +51,7 @@ ng build --prod
 
 ### Components Directory
 
-- views ( src\app\views )
+- views (_src\app\views_)
   - admin : admin page
   - app
     - design-panel : the page include toolbar and design panel
