@@ -3,13 +3,13 @@
 This project is a design site like Microsoft Powerpoint.
 
 [Live Site](https://design-pad-a3fe7.web.app/)
-| <img src="https://firebasestorage.googleapis.com/v0/b/design-pad-a3fe7.appspot.com/o/readme%2FScreenshot_2.jpg?alt=media&token=e3306440-6624-45f7-a860-c9c9896e3ff1"/> | <img src="https://firebasestorage.googleapis.com/v0/b/design-pad-a3fe7.appspot.com/o/readme%2FScreenshot_3.jpg?alt=media&token=9fe1c934-b37a-4dae-addc-c0beb9d087ad"/> |
+| <a><img src="https://firebasestorage.googleapis.com/v0/b/design-pad-a3fe7.appspot.com/o/readme%2FScreenshot_2.jpg?alt=media&token=e3306440-6624-45f7-a860-c9c9896e3ff1"/></a> | <a><img src="https://firebasestorage.googleapis.com/v0/b/design-pad-a3fe7.appspot.com/o/readme%2FScreenshot_3.jpg?alt=media&token=9fe1c934-b37a-4dae-addc-c0beb9d087ad"/></a> |
 | --- | --- |
 | Home | Image |
 
-| <img src="https://firebasestorage.googleapis.com/v0/b/design-pad-a3fe7.appspot.com/o/readme%2FScreenshot_1.jpg?alt=media&token=4560be8c-0552-40bd-bfc3-9f1aeb0b711f"/> | <img src="https://firebasestorage.googleapis.com/v0/b/design-pad-a3fe7.appspot.com/o/readme%2FScreenshot_4.jpg?alt=media&token=22742a23-4b53-47a2-887c-442dcfa9fdc9"/> |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Element                                                                                                                                                                | Text                                                                                                                                                                   |
+| <a><img src="https://firebasestorage.googleapis.com/v0/b/design-pad-a3fe7.appspot.com/o/readme%2FScreenshot_1.jpg?alt=media&token=4560be8c-0552-40bd-bfc3-9f1aeb0b711f"/></a> | <a><img src="https://firebasestorage.googleapis.com/v0/b/design-pad-a3fe7.appspot.com/o/readme%2FScreenshot_4.jpg?alt=media&token=22742a23-4b53-47a2-887c-442dcfa9fdc9"/></a> |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Element                                                                                                                                                                       | Text                                                                                                                                                                          |
 
 ## What's included
 
