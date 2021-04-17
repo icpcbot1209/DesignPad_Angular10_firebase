@@ -70,3 +70,7 @@ Functionality of the product
    • download.service.ts ( src\app\services\download.service.ts )
          downloadAsPdf() : download all pages as pdf
          downloadAsImg() : download all pages as image
+   • toolbar.service.ts ( src\app\services\toolbar.service.ts )
+         createTextEditor() : create quill editor
+   • authentication ( src\app\shared\auth.service.ts )
+   • auth guard ( src\app\shared\auth.guard.ts )
