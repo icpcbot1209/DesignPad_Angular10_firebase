@@ -27,12 +27,10 @@ This project is a design site like Microsoft Powerpoint.
 
 ## Getting Started
 
-Run npm install to install all dependencies from NPM.
-
-- Install the Angular CLI globally
+- Install dependancies
 
 ```
-npm install -g @angular/cli@v10-lts
+npm install
 ```
 
 - Run the application
@@ -46,6 +44,23 @@ ng serve
 ```
 ng build --prod
 ```
+
+## Firebase setup
+
+- Project and billing
+
+Create a project and enable these things
+
+```
+- firebase authentication (email, google, facebook)
+- firestore
+- hosting
+- storage
+```
+
+- environment.ts
+
+Your angular environment.ts file has firebase setup. Replace that config with yours.
 
 ## Documentation
 
