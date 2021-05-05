@@ -44,6 +44,11 @@ ng serve
 ```
 ng build --prod
 ```
+- Deploy
+
+```
+firebase deploy
+```
 
 ## Firebase setup
 
